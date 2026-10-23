@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TheHauData Academy – Data Analytics Mentoring Programs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          #F7F5FF;
+    --bg2:         #EEF0FF;
+    --surface:     #FFFFFF;
+    --violet:      #5B21FF;
+    --violet-mid:  #7C4DFF;
+    --violet-lite: #A78BFA;
+    --violet-pale: #EDE9FE;
+    --purple:      #9C27FF;
+    --pink:        #E040FB;
+    --pink-lite:   #FCE4FF;
+    --coral:       #FF5252;
+    --orange:      #FF6D00;
+    --amber:       #FFB300;
+    --amber-lite:  #FFF8E1;
+    --teal:        #00BCD4;
+    --teal-lite:   #E0F7FA;
+    --green:       #00C853;
+    --ink:         #1A0A4F;
+    --ink2:        #3D2A7A;
+    --muted:       #7B6EA8;
+    --subtle:      #B8AEDE;
+    --border:      #DDD6FE;
+    --border2:     #EDE9FE;
+    --grad-hero:   linear-gradient(135deg, #5B21FF 0%, #9C27FF 55%, #E040FB 100%);
+    --grad-warm:   linear-gradient(135deg, #FF6D00, #FFB300);
+    --grad-teal:   linear-gradient(135deg, #00BCD4, #00C853);
+    --grad-soft:   linear-gradient(135deg, #EDE9FE 0%, #F3E8FF 100%);
+    --font-display: 'Nunito', 'Plus Jakarta Sans', sans-serif;
+    --font-body:    'Plus Jakarta Sans', 'Nunito', sans-serif;
+    --radius:    20px;
+    --radius-sm: 10px;
+    --shadow:    0 12px 48px rgba(91,33,255,0.13);
+    --shadow-sm: 0 4px 16px rgba(91,33,255,0.09);
+    --shadow-lg: 0 24px 80px rgba(91,33,255,0.20);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font-body);background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.65;font-size:16px}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:66px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.9);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--border2);box-shadow:0 2px 16px rgba(91,33,255,0.07)}
+  .nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:1.25rem;color:var(--ink);text-decoration:none;letter-spacing:-0.02em}
+  .nav-logo-icon{width:36px;height:36px;background:var(--grad-hero);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:0 4px 12px rgba(91,33,255,0.33)}
+  .nav-logo .acc{color:var(--violet)}
+  .nav-links{display:flex;gap:2px;list-style:none}
+  .nav-links a{padding:7px 14px;border-radius:40px;font-size:0.83rem;font-weight:600;color:var(--muted);text-decoration:none;transition:all .2s}
+  .nav-links a:hover{color:var(--violet);background:var(--violet-pale)}
+  .nav-cta{background:var(--grad-hero)!important;color:#fff!important;box-shadow:0 4px 14px rgba(91,33,255,.32)!important;font-weight:700!important}
+  .nav-cta:hover{opacity:.9;transform:translateY(-1px)}
+
+  /* ── HERO ── */
+  #hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;padding:110px 40px 80px;background:var(--surface)}
+  .hblob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(90px);opacity:.16}
+  .hb1{width:580px;height:580px;background:#7C4DFF;top:-140px;right:-60px;animation:bf 11s ease-in-out infinite}
+  .hb2{width:400px;height:400px;background:#E040FB;bottom:-80px;left:80px;animation:bf 14s 3s ease-in-out infinite}
+  .hb3{width:280px;height:280px;background:#00BCD4;top:35%;left:-70px;animation:bf 9s 1.5s ease-in-out infinite}
+  @keyframes bf{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(18px,-28px) scale(1.04)}66%{transform:translate(-14px,18px) scale(.97)}}
+  .hdots{position:absolute;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(circle,var(--violet-lite) 1px,transparent 1px);background-size:30px 30px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%)}
+  .hero-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 460px;gap:60px;align-items:center}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--violet-pale);border:1.5px solid var(--border);padding:6px 16px;border-radius:40px;font-size:.77rem;font-weight:700;color:var(--violet);letter-spacing:.05em;text-transform:uppercase;margin-bottom:20px;animation:fu .6s ease both}
+  .bdot{width:7px;height:7px;background:var(--violet);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  .hero-title{font-family:var(--font-display);font-size:clamp(2.5rem,4.5vw,3.75rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;color:var(--ink);margin-bottom:20px;animation:fu .6s .1s ease both}
+  .gt{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.75;margin-bottom:26px;font-weight:500;animation:fu .6s .18s ease both}
+  .hero-bullets{list-style:none;margin-bottom:32px;display:flex;flex-direction:column;gap:10px;animation:fu .6s .24s ease both}
+  .hero-bullets li{display:flex;align-items:flex-start;gap:10px;font-size:.95rem;color:var(--ink2);font-weight:500}
+  .bicon{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:2px;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;font-weight:900}
+  .hero-actions{display:flex;gap:13px;flex-wrap:wrap;animation:fu .6s .32s ease both}
+  .btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--grad-hero);color:#fff;font-weight:800;font-size:.95rem;font-family:var(--font-body);padding:13px 30px;border-radius:50px;text-decoration:none;border:none;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(91,33,255,.36);letter-spacing:-.01em}
+  .btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(91,33,255,.5)}
+  .btn-s{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:2px solid var(--border);color:var(--ink2);font-weight:700;font-size:.95rem;font-family:var(--font-body);padding:12px 26px;border-radius:50px;text-decoration:none;cursor:pointer;transition:all .2s}
+  .btn-s:hover{border-color:var(--violet);color:var(--violet);background:var(--violet-pale)}
+  .hero-logos{margin-top:40px;animation:fu .6s .4s ease both}
+  .hero-logos p{font-size:.76rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:12px}
+  .logo-row{display:flex;gap:9px;flex-wrap:wrap}
+  .lchip{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:6px 15px;font-size:.82rem;font-weight:700;color:var(--ink2);box-shadow:var(--shadow-sm)}
+  @keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Hero panel */
+  .hero-visual{animation:fu .6s .18s ease both}
+  .hp{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .hp-head{background:var(--grad-hero);padding:22px 24px;display:flex;align-items:center;gap:12px}
+  .hp-head-icon{font-size:1.6rem}
+  .hp-head h3{font-family:var(--font-display);font-weight:900;font-size:1.02rem;color:#fff}
+  .hp-head p{font-size:.77rem;color:rgba(255,255,255,.72);font-weight:500}
+  .hp-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2)}
+  .hp-stat{background:var(--surface);padding:17px 20px;display:flex;flex-direction:column;gap:2px}
+  .hp-stat-n{font-family:var(--font-display);font-size:1.9rem;font-weight:900;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .hp-stat-l{font-size:.72rem;color:var(--muted);font-weight:600}
+  .hp-tags{padding:16px 20px;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--border2)}
+  .htag{font-size:.71rem;font-weight:700;padding:4px 9px;border-radius:20px;background:var(--violet-pale);color:var(--violet);border:1px solid var(--border)}
+  .htag.w{background:var(--amber-lite);color:var(--orange);border-color:rgba(255,109,0,.2)}
+  .htag.t{background:var(--teal-lite);color:var(--teal);border-color:rgba(0,188,212,.25)}
+  .hp-offers{padding:15px 20px;border-top:1px solid var(--border2);background:linear-gradient(135deg,#F7F5FF,#FFF0FF)}
+  .hp-offers p{font-size:.71rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
+  .hoc{display:flex;flex-wrap:wrap;gap:5px}
+  .hoc span{font-size:.71rem;font-weight:700;background:#fff;border:1.5px solid var(--border);border-radius:7px;padding:3px 9px;color:var(--ink2)}
+
+  /* ── SHARED ── */
+  section{padding:86px 40px}
+  .container{max-width:1200px;margin:0 auto}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--violet);margin-bottom:10px;background:var(--violet-pale);border:1.5px solid var(--border);padding:5px 14px;border-radius:40px}
+  .sec-title{font-family:var(--font-display);font-weight:900;font-size:clamp(1.9rem,3.5vw,2.75rem);line-height:1.12;letter-spacing:-.03em;color:var(--ink);margin-bottom:13px}
+  .sec-sub{font-size:1rem;color:var(--muted);font-weight:500;max-width:560px;line-height:1.72}
+
+  /* ── MARQUEE ── */
+  #companies{padding:34px 0;background:var(--surface);border-top:1.5px solid var(--border2);border-bottom:1.5px solid var(--border2);overflow:hidden}
+  .mq-label{text-align:center;font-size:.74rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin-bottom:16px}
+  .mq-track{display:flex;gap:11px;animation:mq 32s linear infinite;white-space:nowrap}
+  .mq-track:hover{animation-play-state:paused}
+  .mchip{flex-shrink:0;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 17px;font-size:.82rem;font-weight:700;color:var(--ink2);transition:all .2s;cursor:default}
+  .mchip:hover{border-color:var(--violet);color:var(--violet);background:var(--violet-pale)}
+  @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ── MENTOR ── */
+  #mentor{background:var(--surface)}
+  .mentor-grid{display:grid;grid-template-columns:290px 1fr;gap:52px;align-items:start;margin-top:46px}
+  .mentor-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:30px 26px;text-align:center;box-shadow:var(--shadow);position:sticky;top:88px}
+  .mavatar{width:104px;height:104px;border-radius:50%;margin:0 auto 15px;overflow:hidden;border:3px solid var(--violet-lite);box-shadow:0 0 0 6px var(--violet-pale)}
+  .mavatar-ph{width:100%;height:100%;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:2.1rem;font-weight:900;color:#fff}
+  .mentor-name{font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:var(--ink);margin-bottom:4px}
+  .mentor-role{display:inline-block;margin-bottom:18px;background:var(--violet-pale);color:var(--violet);font-size:.78rem;font-weight:700;padding:4px 13px;border-radius:20px;border:1.5px solid var(--border)}
+  .mcbtn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:9px 13px;margin-bottom:8px;font-size:.83rem;font-weight:700;color:var(--ink2);text-decoration:none;transition:all .2s}
+  .mcbtn:hover{background:var(--violet-pale);border-color:var(--violet);color:var(--violet)}
+  .mnote{font-size:.74rem;color:var(--subtle);margin-top:10px;font-weight:500}
+  .social-links{display:flex;justify-content:center;gap:9px;margin-top:16px;padding-top:16px;border-top:1.5px solid var(--border2)}
+  .soc-btn{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);background:var(--bg);text-decoration:none;transition:all .2s;flex-shrink:0}
+  .soc-btn:hover{border-color:var(--violet);background:var(--violet-pale);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .soc-btn svg{width:17px;height:17px;fill:var(--ink2);transition:fill .2s}
+  .soc-btn:hover svg{fill:var(--violet)}
+  .mentor-info{display:flex;flex-direction:column;gap:28px}
+  .iblock{background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--radius);padding:26px}
+  .iblock h3{font-family:var(--font-display);font-size:.97rem;font-weight:800;color:var(--violet);margin-bottom:16px;display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--border2);padding-bottom:10px}
+  .exp-item{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid var(--border2)}
+  .exp-item:last-child{border-bottom:none;padding-bottom:0}
+  .edot{width:7px;height:7px;border-radius:50%;background:var(--violet);margin-top:6px;flex-shrink:0}
+  .exp-item span{font-size:.88rem;color:var(--muted);font-weight:500}
+  .exp-item b{color:var(--ink);font-weight:700}
+  .dchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .dc{font-size:.73rem;font-weight:700;padding:4px 12px;border-radius:20px;background:var(--violet-pale);color:var(--violet);border:1.5px solid var(--border)}
+  .dc.w{background:var(--amber-lite);color:var(--orange);border-color:rgba(255,109,0,.2)}
+  .dc.t{background:var(--teal-lite);color:var(--teal);border-color:rgba(0,188,212,.25)}
+
+  /* ── FOR WHOM ── */
+  #for-whom{background:var(--bg2)}
+  .fw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:46px}
+  .fw-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;transition:all .25s;position:relative;overflow:hidden}
+  .fw-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-hero);opacity:0;transition:opacity .25s}
+  .fw-card:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+  .fw-card:hover::after{opacity:1}
+  .fw-icon{font-size:2.1rem;margin-bottom:13px}
+  .fw-card h3{font-family:var(--font-display);font-size:1.03rem;font-weight:800;color:var(--ink);margin-bottom:9px}
+  .fw-card p{font-size:.87rem;color:var(--muted);line-height:1.7;font-weight:500}
+  .fw-card p strong{color:var(--violet);font-weight:800}
+  .fw-cta{text-align:center;margin-top:36px;background:var(--violet-pale);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px}
+  .fw-cta p{font-family:var(--font-display);font-size:1.25rem;font-weight:900;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+  /* ── WHY ── */
+  #why{background:var(--surface)}
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:46px}
+  .why-card{background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--radius);padding:24px 20px;transition:all .25s}
+  .why-card:hover{border-color:var(--violet-lite);box-shadow:var(--shadow-sm);transform:translateY(-3px);background:var(--surface)}
+  .why-num{font-family:var(--font-display);font-size:.7rem;font-weight:900;color:var(--violet-lite);margin-bottom:10px;letter-spacing:.1em}
+  .why-icon{font-size:1.85rem;margin-bottom:8px}
+  .why-card h3{font-family:var(--font-display);font-size:.93rem;font-weight:800;color:var(--ink);margin-bottom:7px}
+  .why-card p{font-size:.82rem;color:var(--muted);line-height:1.65;font-weight:500}
+
+  /* ── TRACKS ── */
+  #tracks{background:var(--bg2)}
+  .tracks-hd{text-align:center;margin-bottom:46px}
+  .tracks-hd .eyebrow{display:flex;margin:0 auto 10px}
+  .tracks-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+  .track-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px 28px;position:relative;overflow:hidden;transition:all .25s}
+  .track-card:hover{box-shadow:var(--shadow);transform:translateY(-3px);border-color:var(--violet-lite)}
+  .tbign{position:absolute;top:14px;right:20px;font-family:var(--font-display);font-size:5rem;font-weight:900;line-height:1;color:var(--bg2);pointer-events:none}
+  .tbadge{display:inline-block;padding:4px 13px;border-radius:20px;font-size:.71rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+  .tbv{background:var(--violet-pale);color:var(--violet);border:1.5px solid var(--border)}
+  .tbp{background:var(--pink-lite);color:var(--purple);border:1.5px solid rgba(156,39,255,.22)}
+  .track-title{font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:var(--ink);margin-bottom:5px;line-height:1.2}
+  .track-sub{font-size:.82rem;color:var(--violet);font-weight:700;margin-bottom:18px}
+  .track-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .track-list li{font-size:.87rem;color:var(--ink2);font-weight:500;display:flex;gap:9px;align-items:flex-start}
+  .track-list li::before{content:'→';color:var(--violet);font-weight:800;flex-shrink:0}
+  .track-meta{margin-top:20px;display:flex;gap:7px;flex-wrap:wrap}
+  .tmt{font-size:.73rem;font-weight:700;color:var(--muted);background:var(--bg);border:1.5px solid var(--border2);border-radius:20px;padding:4px 11px}
+  .sup-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:30px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .sup-head{grid-column:1/-1;font-family:var(--font-display);font-size:1.02rem;font-weight:900;color:var(--ink);margin-bottom:6px}
+  .sup-head span{color:var(--violet)}
+  .sup-item{font-size:.86rem;color:var(--ink2);font-weight:600;display:flex;align-items:flex-start;gap:8px;background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--radius-sm);padding:11px 13px}
+  .scheck{color:var(--violet);font-size:.78rem;font-weight:900;flex-shrink:0;margin-top:1px}
+
+  /* ── OUTCOMES ── */
+  #outcomes{background:var(--surface)}
+  .oc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:46px}
+  .oc-card{background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--radius);padding:24px 20px;transition:all .25s}
+  .oc-card:hover{border-color:var(--violet-lite);box-shadow:var(--shadow-sm);background:var(--surface)}
+  .oc-icon{font-size:2rem;margin-bottom:13px}
+  .oc-card h3{font-family:var(--font-display);font-size:.97rem;font-weight:800;color:var(--ink);margin-bottom:7px}
+  .oc-card p{font-size:.83rem;color:var(--muted);line-height:1.65;font-weight:500}
+
+  /* ── PRICING ── */
+  #pricing{background:var(--bg2)}
+  .pricing-hd{text-align:center;margin-bottom:46px}
+  .pricing-hd .eyebrow{display:flex;margin:0 auto 10px}
+  .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+  .pcard{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:34px 30px;transition:all .25s;position:relative}
+  .pcard.feat{border-color:var(--violet);box-shadow:var(--shadow-lg)}
+  .pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grad-warm);color:#fff;font-size:.71rem;font-weight:800;padding:4px 17px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 12px rgba(255,109,0,.33)}
+  .pt{font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:5px}
+  .pname{font-family:var(--font-display);font-size:1.45rem;font-weight:900;color:var(--ink);margin-bottom:18px}
+  .p-old{text-decoration:line-through;color:var(--subtle);font-size:.97rem;font-weight:600}
+  .p-main{font-family:var(--font-display);font-size:2.3rem;font-weight:900;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .p-per{font-size:.86rem;color:var(--muted);font-weight:500;margin-bottom:5px}
+  .p-note{font-size:.77rem;color:var(--orange);font-weight:700;margin-bottom:20px;background:var(--amber-lite);border-radius:6px;padding:4px 10px;display:inline-block}
+  .pf{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+  .pf li{font-size:.87rem;color:var(--ink2);font-weight:500;display:flex;gap:9px;align-items:flex-start}
+  .pfchk{color:var(--violet);font-weight:800;flex-shrink:0}
+  .psingle{font-size:.8rem;color:var(--muted);font-weight:600;margin-bottom:16px}
+  .psingle b{color:var(--ink2)}
+  .pcta{display:block;text-align:center;padding:13px;border-radius:11px;font-weight:800;font-size:.93rem;font-family:var(--font-body);text-decoration:none;transition:all .2s}
+  .pcta-m{background:var(--grad-hero);color:#fff;box-shadow:0 4px 18px rgba(91,33,255,.28)}
+  .pcta-m:hover{opacity:.92;transform:translateY(-1px)}
+  .pcta-o{border:2px solid var(--border);color:var(--ink2)}
+  .pcta-o:hover{border-color:var(--violet);color:var(--violet);background:var(--violet-pale)}
+  .cwrap{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .ctit{background:var(--bg2);padding:15px 22px;border-bottom:1.5px solid var(--border);font-family:var(--font-display);font-size:.88rem;font-weight:800;color:var(--ink)}
+  .ctable{width:100%;border-collapse:collapse}
+  .ctable th{padding:13px 19px;font-size:.83rem;font-weight:800;text-align:left;border-bottom:1.5px solid var(--border);background:var(--bg);font-family:var(--font-display)}
+  .ctable th:nth-child(2){color:var(--teal)}
+  .ctable th:nth-child(3){color:var(--violet)}
+  .ctable td{padding:12px 19px;font-size:.85rem;color:var(--ink2);font-weight:500;border-bottom:1px solid var(--border2);vertical-align:top}
+  .ctable tr:last-child td{border-bottom:none}
+  .ctable td:first-child{font-weight:700;color:var(--ink)}
+  .cy{color:var(--violet);font-weight:700}
+  .cp{color:var(--amber);font-weight:700}
+  .tip{margin-top:16px;background:var(--teal-lite);border:1.5px solid rgba(0,188,212,.25);border-radius:var(--radius-sm);padding:15px 19px;font-size:.87rem;color:var(--ink2);line-height:1.65;font-weight:500}
+  .tip strong{color:#0097a7;font-weight:800}
+
+  /* ── PROCESS ── */
+  #process{background:var(--surface)}
+  .steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:46px}
+  .step-card{text-align:center}
+  .snw{width:66px;height:66px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.45rem;font-weight:900;background:var(--grad-hero);color:#fff;box-shadow:0 6px 20px rgba(91,33,255,.28)}
+  .step-card h3{font-family:var(--font-display);font-weight:800;font-size:.94rem;color:var(--ink);margin-bottom:7px}
+  .step-card p{font-size:.83rem;color:var(--muted);font-weight:500;line-height:1.6}
+
+  /* ── FEEDBACK ── */
+  #feedback{background:var(--bg2)}
+  .fb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:24px}
+  .fb-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:23px;transition:all .25s}
+  .fb-card:hover{box-shadow:var(--shadow);border-color:var(--violet-lite);transform:translateY(-2px)}
+  .fb-hd{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+  .fba{width:42px;height:42px;border-radius:50%;background:var(--grad-hero);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:900;color:#fff;font-size:.97rem;box-shadow:0 4px 12px rgba(91,33,255,.26)}
+  .fb-name{font-weight:800;font-size:.9rem;color:var(--ink)}
+  .fb-role{font-size:.73rem;color:var(--muted);font-weight:500}
+  .fb-stars{color:var(--amber);font-size:.83rem;letter-spacing:1px;margin-bottom:9px}
+  .fb-text{font-size:.85rem;color:var(--ink2);line-height:1.68;font-weight:500}
+  .fb-tag{margin-top:11px}
+  .fb-tag span{font-size:.71rem;font-weight:700;background:var(--violet-pale);color:var(--violet);border:1.5px solid var(--border);border-radius:20px;padding:2px 9px}
+  .off-row{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:28px}
+  .off-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:16px;transition:all .2s}
+  .off-card:hover{border-color:var(--violet);box-shadow:var(--shadow-sm)}
+  .off-co{font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--violet)}
+  .off-role{font-size:.88rem;font-weight:800;color:var(--ink);margin:3px 0}
+  .off-who{font-size:.74rem;color:var(--muted);font-weight:500}
+  .wr-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .wr-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px}
+  .wr-card h4{font-size:.87rem;font-weight:800;color:var(--violet);margin-bottom:9px}
+  .wr-card p{font-size:.85rem;color:var(--ink2);line-height:1.7;font-weight:500;font-style:italic}
+  .sat-box{margin-top:20px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:26px;text-align:center}
+  .sat-num{font-family:var(--font-display);font-size:3.4rem;font-weight:900;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .sat-label{font-size:.97rem;font-weight:700;color:var(--ink);margin-top:7px}
+  .sat-sub{font-size:.83rem;color:var(--muted);margin-top:3px;font-weight:500}
+
+  /* ── CTA FINAL ── */
+  #cta-final{padding:96px 40px;background:var(--surface);border-top:1.5px solid var(--border2);text-align:center}
+  #cta-final .ci{max-width:660px;margin:0 auto}
+  #cta-final h2{font-family:var(--font-display);font-weight:900;font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.12;letter-spacing:-.03em;color:var(--ink);margin-bottom:16px}
+  #cta-final p{font-size:1.02rem;color:var(--muted);font-weight:500;margin-bottom:32px;line-height:1.72}
+  .cta-acts{display:flex;justify-content:center;gap:13px;flex-wrap:wrap}
+  .cta-chips{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:26px}
+  .cchip{font-size:.8rem;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+  .cchip::before{content:'✦';color:var(--violet);font-size:.58rem}
+
+  /* ── FOOTER ── */
+  footer{padding:52px 40px 30px;background:var(--ink);color:rgba(255,255,255,.65);display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:44px}
+  .fl{display:flex;align-items:center;gap:9px;text-decoration:none;margin-bottom:13px}
+  .fl-icon{width:34px;height:34px;border-radius:8px;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;font-size:.95rem}
+  .fl span{font-family:var(--font-display);font-weight:900;font-size:1.15rem;color:#fff}
+  .foot-brand p{font-size:.83rem;line-height:1.7;max-width:270px}
+  .foot-contact{margin-top:15px;font-size:.82rem;line-height:1.8}
+  .foot-col h4{font-family:var(--font-display);font-weight:800;font-size:.88rem;color:#fff;margin-bottom:14px}
+  .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .foot-col a{font-size:.83rem;color:rgba(255,255,255,.5);text-decoration:none;font-weight:500;transition:color .2s}
+  .foot-col a:hover{color:var(--violet-lite)}
+  .foot-btm{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:rgba(255,255,255,.3)}
+
+  /* ── SCROLL REVEAL ── */
+  .reveal{opacity:0;transform:translateY(17px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1024px){.why-grid{grid-template-columns:repeat(2,1fr)}.oc-grid{grid-template-columns:repeat(2,1fr)}.fb-grid{grid-template-columns:1fr 1fr}.off-row{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:900px){nav{padding:0 20px}.nav-links{display:none}section{padding:58px 20px}#hero{padding:98px 20px 58px}.hero-inner{grid-template-columns:1fr}.hero-visual{display:none}.mentor-grid{grid-template-columns:1fr}.mentor-card{position:static}.fw-grid{grid-template-columns:1fr}.tracks-grid{grid-template-columns:1fr}.sup-card{grid-template-columns:1fr 1fr}.pricing-grid{grid-template-columns:1fr}.steps-row{grid-template-columns:1fr 1fr}.fb-grid{grid-template-columns:1fr}.off-row{grid-template-columns:1fr 1fr}.wr-row{grid-template-columns:1fr}footer{grid-template-columns:1fr}.foot-btm{flex-direction:column;gap:7px;text-align:center}.why-grid{grid-template-columns:1fr 1fr}.oc-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.why-grid{grid-template-columns:1fr}.oc-grid{grid-template-columns:1fr}.sup-card{grid-template-columns:1fr}.steps-row{grid-template-columns:1fr}.off-row{grid-template-columns:1fr}}
+
+  /* ── NEW COURSE: General Analytics with Agentic AI ── */
+  #new-course{background:var(--surface)}
+  .nc-hero{background:linear-gradient(135deg,#0F0A2E 0%,#2D1B69 50%,#1a0a4f 100%);border-radius:var(--radius);padding:48px 44px;display:grid;grid-template-columns:1fr 340px;gap:44px;align-items:center;margin-bottom:36px;position:relative;overflow:hidden}
+  .nc-hero::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(91,33,255,.35),transparent 70%);top:-150px;right:-100px;pointer-events:none}
+  .nc-new-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,180,0,.18);border:1.5px solid rgba(255,180,0,.4);padding:5px 14px;border-radius:40px;font-size:.72rem;font-weight:800;color:#FFD54F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;animation:pulse 2s infinite}
+  .nc-hero h2{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:12px;letter-spacing:-.02em}
+  .nc-hero h2 .ai-accent{background:linear-gradient(135deg,#00E5FF,#00BCD4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .nc-hero p{font-size:.95rem;color:rgba(255,255,255,.72);line-height:1.7;font-weight:500;margin-bottom:22px}
+  .nc-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
+  .nc-pill{font-size:.72rem;font-weight:700;padding:4px 11px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.18)}
+  .nc-pill.ai{background:rgba(0,229,255,.12);color:#00E5FF;border-color:rgba(0,229,255,.3)}
+  .nc-pill.warm{background:rgba(255,109,0,.15);color:#FFB74D;border-color:rgba(255,109,0,.3)}
+  .nc-cta-dark{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#00BCD4,#0097A7);color:#fff;font-weight:800;font-size:.92rem;padding:12px 26px;border-radius:50px;text-decoration:none;transition:all .2s;box-shadow:0 6px 20px rgba(0,188,212,.35)}
+  .nc-cta-dark:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,188,212,.5)}
+  .nc-stats-col{display:flex;flex-direction:column;gap:12px}
+  .nc-stat-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px}
+  .nc-stat-icon{font-size:1.6rem;flex-shrink:0}
+  .nc-stat-n{font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:#fff;line-height:1}
+  .nc-stat-l{font-size:.72rem;color:rgba(255,255,255,.55);font-weight:600}
+
+  /* Syllabus accordion / table */
+  .syllabus-wrap{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:28px}
+  .syllabus-hd{background:var(--violet);padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+  .syllabus-hd h3{font-family:var(--font-display);font-weight:900;font-size:.97rem;color:#fff}
+  .syllabus-hd span{font-size:.78rem;color:rgba(255,255,255,.7);font-weight:600}
+  .syl-table{width:100%;border-collapse:collapse}
+  .syl-table thead th{padding:10px 16px;font-size:.75rem;font-weight:800;text-align:left;background:var(--bg2);color:var(--muted);text-transform:uppercase;letter-spacing:.07em;border-bottom:1.5px solid var(--border)}
+  .syl-table tbody tr{border-bottom:1px solid var(--border2);transition:background .15s}
+  .syl-table tbody tr:last-child{border-bottom:none}
+  .syl-table tbody tr:hover{background:var(--violet-pale)}
+  .syl-table td{padding:11px 16px;font-size:.84rem;color:var(--ink2);font-weight:500;vertical-align:middle}
+  .syl-table td:first-child{font-family:var(--font-display);font-weight:900;color:var(--violet);text-align:center;width:52px}
+  .syl-table td:nth-child(2){width:90px}
+  .syl-table td:nth-child(3){width:170px}
+  .fmt-badge{display:inline-block;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:20px}
+  .fmt-live{background:var(--violet-pale);color:var(--violet);border:1px solid var(--border)}
+  .fmt-video{background:var(--teal-lite);color:var(--teal);border:1px solid rgba(0,188,212,.3)}
+  .fmt-webinar{background:var(--amber-lite);color:var(--orange);border:1px solid rgba(255,109,0,.25)}
+  .skill-tag{display:inline-block;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:6px;background:var(--bg2);color:var(--ink2);border:1px solid var(--border2)}
+  .lesson-hl{background:linear-gradient(90deg,rgba(91,33,255,.08),transparent);font-weight:700;color:var(--violet)}
+  .lesson-cap{background:linear-gradient(90deg,rgba(0,188,212,.1),transparent);font-weight:700;color:#0097A7}
+  .bonus-row td{background:linear-gradient(90deg,rgba(255,179,0,.06),transparent)}
+
+  /* Module summary pills */
+  .module-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+  .mpill{display:flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:10px 16px;font-size:.83rem;font-weight:600;color:var(--ink2);box-shadow:var(--shadow-sm)}
+  .mpill .mi{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+  .mi-v{background:var(--violet-pale)}
+  .mi-t{background:var(--teal-lite)}
+  .mi-w{background:var(--amber-lite)}
+
+  @media(max-width:900px){.nc-hero{grid-template-columns:1fr;padding:32px 24px}.nc-stats-col{flex-direction:row;flex-wrap:wrap}.nc-stat-card{flex:1;min-width:130px}}
+
+  /* ── BRAND LOGO IMAGE ── */
+  .nav-logo-img{width:34px;height:34px;border-radius:8px;object-fit:contain;display:block}
+
+  /* ── UPCOMING TIMELINE ── */
+  #upcoming{background:var(--bg2);padding:86px 40px}
+  .timeline{display:flex;flex-direction:column;gap:0;margin-top:44px;position:relative}
+  .timeline::before{content:'';position:absolute;left:27px;top:8px;bottom:28px;width:2px;background:linear-gradient(to bottom,var(--violet),rgba(91,33,255,.1));border-radius:2px}
+  .tl-item{display:flex;gap:24px;align-items:flex-start;padding-bottom:28px}
+  .tl-dot{width:56px;height:56px;border-radius:50%;background:var(--grad-hero);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:900;font-size:1.2rem;color:#fff;box-shadow:0 6px 20px rgba(91,33,255,.3);z-index:1;position:relative}
+  .tl-card{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px 28px;box-shadow:var(--shadow-sm);transition:all .25s}
+  .tl-card:hover{box-shadow:var(--shadow);border-color:var(--violet-lite);transform:translateX(4px)}
+  .tl-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px}
+  .tl-badge{display:inline-block;font-size:.71rem;font-weight:800;padding:4px 12px;border-radius:20px;background:var(--violet-pale);color:var(--violet);border:1.5px solid var(--border);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}
+  .tl-title{font-family:var(--font-display);font-size:1.08rem;font-weight:900;color:var(--ink);line-height:1.2}
+  .tl-desc{font-size:.85rem;color:var(--muted);font-weight:500;line-height:1.65;margin-top:6px}
+  .tl-status{flex-shrink:0;font-size:.71rem;font-weight:900;padding:6px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;align-self:flex-start}
+  .tl-status.open{background:#dcfce7;color:#16a34a;border:1.5px solid #bbf7d0;animation:pulse 2.5s infinite}
+  .tl-status.full{background:#fee2e2;color:#dc2626;border:1.5px solid #fca5a5}
+  .tl-status.cohort{background:var(--amber-lite);color:var(--orange);border:1.5px solid rgba(255,109,0,.3)}
+  .tl-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .tl-m{font-size:.74rem;font-weight:700;color:var(--ink2);background:var(--bg);border:1.5px solid var(--border2);border-radius:20px;padding:3px 11px}
+  @media(max-width:680px){.timeline::before{left:19px}.tl-dot{width:40px;height:40px;font-size:.88rem}.tl-item{gap:14px}.tl-top{flex-direction:column;gap:8px}#upcoming{padding:58px 20px}}
+
+  /* ── COMPANY LOGO WALL ── */
+  #company-logos{background:var(--surface);padding:100px 60px}
+  .logo-wall-img{width:100%;border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow-sm);object-fit:contain;display:block;
+    /* To update: replace images/companies.png on Hostinger */
+  }
+  .logo-wall-note{text-align:center;margin-top:14px;font-size:.8rem;color:var(--subtle);font-weight:600}
+  .logo-wall-note span{color:var(--violet);font-weight:800}
+  @media(max-width:900px){#company-logos{padding:58px 20px}}
+
+  /* ── PROJECT SNAPSHOTS ── */
+  #projects{background:var(--bg2);padding:86px 40px}
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:36px}
+  .proj-card{border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow-sm);position:relative;background:var(--surface);transition:all .3s;cursor:pointer}
+  .proj-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-5px);border-color:var(--violet-lite)}
+  .proj-card img{width:100%;height:260px;object-fit:cover;object-position:top;display:block;transition:transform .4s ease}
+  .proj-card:hover img{transform:scale(1.03)}
+  .proj-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,79,.92) 0%,rgba(26,10,79,.1) 60%,transparent 100%);opacity:0;transition:opacity .3s}
+  .proj-card:hover .proj-overlay{opacity:1}
+  .proj-info{position:absolute;bottom:0;left:0;right:0;padding:20px 22px;transform:translateY(8px);opacity:0;transition:all .3s}
+  .proj-card:hover .proj-info{transform:translateY(0);opacity:1}
+  .proj-info h4{font-family:var(--font-display);font-weight:900;font-size:1rem;color:#fff;margin-bottom:4px;line-height:1.25}
+  .proj-info p{font-size:.77rem;color:rgba(255,255,255,.8);font-weight:500}
+  .proj-tag{font-size:.68rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:3px 10px;display:inline-block;margin-top:6px}
+  .proj-zoom-btn{position:absolute;top:14px;right:14px;width:34px;height:34px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .25s;font-size:.75rem;color:#fff;backdrop-filter:blur(4px)}
+  .proj-card:hover .proj-zoom-btn{opacity:1}
+  .proj-ph{width:100%;height:260px;background:var(--grad-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+  .proj-ph .pi{font-size:2.4rem}
+  .proj-ph span{font-size:.79rem;color:var(--muted);font-weight:600;text-align:center;padding:0 12px}
+  /* Lightbox */
+  .lbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,6,30,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px}
+  .lbox.open{display:flex}
+  .lbox-inner{position:relative;max-width:92vw;max-height:90vh;border-radius:var(--radius);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6)}
+  .lbox-inner img{display:block;max-width:92vw;max-height:85vh;object-fit:contain;border-radius:var(--radius)}
+  .lbox-close{position:absolute;top:14px;right:14px;width:38px;height:38px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1.1rem;transition:background .2s;z-index:10}
+  .lbox-close:hover{background:rgba(255,255,255,.25)}
+  .lbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1.1rem;transition:background .2s;z-index:10}
+  .lbox-nav:hover{background:rgba(255,255,255,.25)}
+  .lbox-prev{left:-54px}
+  .lbox-next{right:-54px}
+  .lbox-caption{position:absolute;bottom:0;left:0;right:0;padding:16px 22px;background:linear-gradient(to top,rgba(10,6,30,.95),transparent);color:#fff}
+  .lbox-caption h4{font-family:var(--font-display);font-weight:900;font-size:.97rem;margin-bottom:3px}
+  .lbox-caption p{font-size:.78rem;color:rgba(255,255,255,.7);font-weight:500}
+  .lbox-dots{display:flex;justify-content:center;gap:7px;margin-top:14px}
+  .lbox-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .2s}
+  .lbox-dot.active{background:#fff}
+  @media(max-width:700px){.proj-grid{grid-template-columns:1fr}#projects{padding:58px 20px}.lbox-prev{left:-10px}.lbox-next{right:-10px}}
+
+  /* ── COMMUNITY ── */
+  #community{background:var(--surface);padding:86px 40px}
+  .comm-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:36px}
+  .comm-card{border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow-sm);background:var(--bg);transition:all .25s}
+  .comm-card:hover{box-shadow:var(--shadow);border-color:var(--violet-lite);transform:translateY(-2px)}
+  .comm-card img{width:100%;height:250px;object-fit:cover;object-position:top;display:block}
+  .comm-body{padding:20px 22px}
+  .comm-body h3{font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .comm-body p{font-size:.85rem;color:var(--muted);font-weight:500;line-height:1.65}
+  .comm-chs{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .cch{font-size:.71rem;font-weight:700;padding:3px 10px;border-radius:6px;background:var(--violet-pale);color:var(--violet);border:1px solid var(--border)}
+  .cch.t{background:var(--teal-lite);color:var(--teal);border-color:rgba(0,188,212,.25)}
+  .cch.w{background:var(--amber-lite);color:var(--orange);border-color:rgba(255,109,0,.2)}
+  .comm-cta-strip{margin-top:22px;background:var(--violet-pale);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .comm-cta-strip h4{font-family:var(--font-display);font-weight:900;font-size:.97rem;color:var(--ink)}
+  .comm-cta-strip span{font-size:.83rem;color:var(--muted);font-weight:500;display:block;margin-top:2px}
+  @media(max-width:700px){.comm-grid{grid-template-columns:1fr}#community{padding:58px 20px}}
+
+  /* ══════════════════════════════════════
+     MOBILE NAV TOGGLE
+  ══════════════════════════════════════ */
+  .nav-hamburger{display:none;flex-direction:column;gap:5.5px;cursor:pointer;padding:8px 6px;border:none;background:transparent;z-index:1002;flex-shrink:0;margin-left:8px}
+  .nav-hamburger span{display:block;width:23px;height:2.5px;background:var(--ink);border-radius:3px;transition:all .3s ease}
+  .nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5.7px,5.7px)}
+  .nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+  .nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5.7px,-5.7px)}
+
+  .mobile-menu{display:none;position:fixed;top:66px;left:0;right:0;bottom:0;z-index:998;background:rgba(26,10,79,.5);backdrop-filter:blur(6px)}
+  .mobile-menu.open{display:block;animation:mmfade .22s ease}
+  @keyframes mmfade{from{opacity:0}to{opacity:1}}
+  .mobile-menu-inner{background:#fff;border-radius:0 0 22px 22px;box-shadow:0 20px 60px rgba(91,33,255,.2);animation:mmslide .28s ease;overflow:hidden}
+  @keyframes mmslide{from{transform:translateY(-14px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  .mobile-menu-inner a{display:flex;align-items:center;padding:13px 26px;font-size:.93rem;font-weight:600;color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--border2);transition:background .18s,color .18s;gap:6px}
+  .mobile-menu-inner a:last-of-type{border-bottom:none}
+  .mobile-menu-inner a:hover,.mobile-menu-inner a:active{color:var(--violet);background:var(--violet-pale)}
+  .mob-cta-wrap{padding:14px 20px 18px;display:flex;flex-direction:column;gap:9px;background:var(--bg)}
+  .mob-zalo-btn{background:linear-gradient(135deg,#0068FF 0%,#00AEEF 100%)!important;color:#fff!important;font-weight:800!important;font-size:.9rem!important;padding:12px 20px!important;border-radius:50px!important;text-decoration:none!important;text-align:center;display:block!important;box-shadow:0 5px 18px rgba(0,104,255,.35)!important;border:none!important}
+  .mob-reg-btn{background:var(--grad-hero)!important;color:#fff!important;font-weight:800!important;font-size:.9rem!important;padding:12px 20px!important;border-radius:50px!important;text-decoration:none!important;text-align:center;display:block!important;box-shadow:0 5px 18px rgba(91,33,255,.35)!important;border:none!important}
+
+  /* ══════════════════════════════════════
+     BACK TO TOP BUTTON
+  ══════════════════════════════════════ */
+  #back-to-top{position:fixed;bottom:86px;right:20px;z-index:997;width:46px;height:46px;border-radius:50%;background:var(--grad-hero);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;box-shadow:0 6px 22px rgba(91,33,255,.42);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;transform:translateY(14px)}
+  #back-to-top.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+  #back-to-top:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(91,33,255,.58)}
+
+  /* ══════════════════════════════════════
+     CTA HIGHLIGHT: ZALO (brand blue)
+  ══════════════════════════════════════ */
+  a.btn-zalo{background:linear-gradient(135deg,#0068FF 0%,#00AEEF 100%)!important;color:#fff!important;box-shadow:0 6px 22px rgba(0,104,255,.4)!important;border:none!important}
+  a.btn-zalo:hover{opacity:1!important;transform:translateY(-3px)!important;box-shadow:0 11px 34px rgba(0,104,255,.62)!important}
+  a.btn-zalo-pulse{animation:zalopulse 2.5s ease-in-out infinite}
+  @keyframes zalopulse{0%,100%{box-shadow:0 6px 22px rgba(0,104,255,.4),0 0 0 0 rgba(0,104,255,.38)}65%{box-shadow:0 6px 22px rgba(0,104,255,.4),0 0 0 10px rgba(0,104,255,0)}}
+
+  /* ══════════════════════════════════════
+     CTA HIGHLIGHT: REGISTRATION (shimmer)
+  ══════════════════════════════════════ */
+  a.btn-register{position:relative;overflow:hidden;background:var(--grad-hero)!important;color:#fff!important;box-shadow:0 6px 26px rgba(91,33,255,.46)!important;border:none!important}
+  a.btn-register::after{content:'';position:absolute;top:0;left:-80%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 2.8s 1.2s infinite}
+  @keyframes shimmer{0%{left:-80%}100%{left:160%}}
+  a.btn-register:hover{transform:translateY(-3px)!important;box-shadow:0 12px 38px rgba(91,33,255,.64)!important}
+
+  /* ══════════════════════════════════════
+     MOBILE STICKY CTA BAR (bottom)
+  ══════════════════════════════════════ */
+  #mobile-cta-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:996;padding:9px 14px 10px;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-top:1.5px solid var(--border2);box-shadow:0 -6px 28px rgba(91,33,255,.09);gap:9px;align-items:center}
+  #mobile-cta-bar a{flex:1;text-align:center;padding:11px 8px;border-radius:50px;font-weight:800;font-size:.82rem;text-decoration:none;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:5px}
+  .mob-bar-zalo{background:linear-gradient(135deg,#0068FF,#00AEEF);color:#fff!important;box-shadow:0 4px 14px rgba(0,104,255,.35)}
+  .mob-bar-reg{background:var(--grad-hero);color:#fff!important;box-shadow:0 4px 14px rgba(91,33,255,.35)}
+
+  /* ══════════════════════════════════════
+     ENHANCED RESPONSIVE — 900px
+  ══════════════════════════════════════ */
+  @media(max-width:900px){
+    .nav-hamburger{display:flex}
+    .nav-links{display:none!important}
+    #mobile-cta-bar{display:flex}
+    body{padding-bottom:70px}
+    /* Section spacing */
+    section{padding:56px 20px}
+    #upcoming,#community,#projects{padding:56px 20px}
+    #company-logos{padding:56px 22px}
+    /* Hero */
+    #hero{padding:96px 20px 56px}
+    .hero-inner{grid-template-columns:1fr}
+    .hero-visual{display:none}
+    .hero-actions{flex-direction:column;gap:10px;align-items:stretch}
+    .hero-actions a{text-align:center;justify-content:center;width:100%}
+    /* Table overflow scroll */
+    .cwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .ctable{min-width:560px}
+    /* New course */
+    .nc-hero{grid-template-columns:1fr;padding:28px 22px;gap:22px}
+    .nc-stats-col{flex-direction:row;flex-wrap:wrap;gap:10px}
+    .nc-stat-card{flex:1;min-width:120px;padding:12px 14px}
+    /* Mentor */
+    .mentor-grid{grid-template-columns:1fr}
+    .mentor-card{position:static}
+    /* Cards */
+    .fw-grid{grid-template-columns:1fr;gap:14px}
+    .why-grid{grid-template-columns:1fr 1fr}
+    .oc-grid{grid-template-columns:1fr 1fr}
+    .tracks-grid{grid-template-columns:1fr}
+    .sup-card{grid-template-columns:1fr 1fr}
+    .pricing-grid{grid-template-columns:1fr}
+    .steps-row{grid-template-columns:1fr 1fr}
+    .fb-grid{grid-template-columns:1fr}
+    .off-row{grid-template-columns:1fr 1fr}
+    .wr-row{grid-template-columns:1fr}
+    .comm-grid{grid-template-columns:1fr}
+    /* Footer */
+    footer{grid-template-columns:1fr;gap:28px;padding:44px 22px 24px}
+    .foot-btm{flex-direction:column;gap:7px;text-align:center}
+  }
+
+  /* ══════════════════════════════════════
+     ENHANCED RESPONSIVE — 600px
+  ══════════════════════════════════════ */
+  @media(max-width:600px){
+    nav{padding:0 14px}
+    .hero-title{font-size:2.15rem!important}
+    #hero{padding:86px 16px 52px}
+    #cta-final{padding:68px 18px 88px}
+    .cta-acts{flex-direction:column;gap:9px;align-items:stretch}
+    .cta-acts a{text-align:center;justify-content:center}
+    .why-grid,.oc-grid{grid-template-columns:1fr}
+    .steps-row{grid-template-columns:1fr}
+    .off-row{grid-template-columns:1fr}
+    .sup-card{grid-template-columns:1fr}
+    .nc-stats-col{flex-direction:column}
+    .module-pills{gap:7px}
+    .mpill{font-size:.78rem;padding:8px 11px}
+    .proj-grid{grid-template-columns:1fr}
+    .lbox-prev{left:4px}
+    .lbox-next{right:4px}
+    .tl-top{flex-direction:column;gap:8px}
+    .timeline::before{left:19px}
+    .tl-dot{width:40px;height:40px;font-size:.88rem}
+    .tl-item{gap:14px}
+    #upcoming{padding:52px 16px}
+    footer{padding:40px 16px 22px}
+    .sat-num{font-size:2.6rem}
+    .ctit{font-size:.82rem;padding:12px 16px}
+    .ctable th,.ctable td{padding:9px 12px;font-size:.78rem}
+    .hp-stat-n{font-size:1.6rem}
+    .pcard{padding:26px 22px}
+    .p-main{font-size:1.95rem}
+    .fb-card{padding:18px}
+    .wr-card{padding:18px}
+    #back-to-top{bottom:82px;right:14px;width:42px;height:42px;font-size:1rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">
+    <div class="nav-logo-icon" style="background:none;box-shadow:none;padding:0;overflow:visible">
+      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <defs>
+          <linearGradient id="nlbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B21FF"/><stop offset="55%" stop-color="#9C27FF"/><stop offset="100%" stop-color="#E040FB"/></linearGradient>
+          <linearGradient id="nlb1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#7C4DFF"/></linearGradient>
+          <linearGradient id="nlb2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#C084FC"/><stop offset="100%" stop-color="#9C27FF"/></linearGradient>
+          <linearGradient id="nlb3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E879F9"/><stop offset="100%" stop-color="#E040FB"/></linearGradient>
+        </defs>
+        <rect width="36" height="36" rx="8" fill="url(#nlbg)"/>
+        <rect x="6" y="22" width="5" height="9" rx="1.5" fill="url(#nlb1)" opacity="0.95"/>
+        <rect x="14" y="17" width="5" height="14" rx="1.5" fill="url(#nlb2)" opacity="0.95"/>
+        <rect x="22" y="11" width="5" height="20" rx="1.5" fill="url(#nlb3)" opacity="0.95"/>
+        <polyline points="8.5,20 16.5,15 24.5,9" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
+        <circle cx="24.5" cy="9" r="2" fill="white" opacity="0.95"/>
+      </svg>
+    </div>
+      <span class="acc">TheHauData</span> Academy
+  </a>
+  <ul class="nav-links">
+    <li><a href="#upcoming">🔥 Upcoming Courses </a></li>
+    <li><a href="#tracks">Pro Analyst Tracks </a></li>
+    <li><a href="#mentor">Về Mentor</a></li>
+    <li><a href="#feedback">Feedbacks học viên </a></li>
+    <li><a href="#pricing">Học phí</a></li>
+    <li><a href="#projects">Projects học viên </a></li>
+    <li><a href="#company-logos"> Công ty học viên </a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="https://forms.gle/oWpGhwvcoZVH1M9H8" target="_blank" class="nav-cta">Đăng ký ngay →</a></li>
+  </ul>
+  <!-- Hamburger toggle (mobile only) -->
+  <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU (slide-down dropdown) -->
+<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+  <div class="mobile-menu-inner">
+    <a href="#upcoming" class="mob-link">🔥 Upcoming Courses</a>
+    <a href="#tracks" class="mob-link">📖 Pro Analyst Tracks</a>
+    <a href="#mentor" class="mob-link">👤 Về Mentor</a>
+    <a href="#feedback" class="mob-link">💬 Feedbacks học viên</a>
+    <a href="#pricing" class="mob-link">💳 Học phí</a>
+    <a href="#projects" class="mob-link">📁 Projects học viên</a>
+    <a href="#company-logos" class="mob-link">🏢 Công ty học viên</a>
+    <a href="#community" class="mob-link">🤝 Community</a>
+    <div class="mob-cta-wrap">
+      <a href="https://zalo.me/0362550761" target="_blank" class="mob-zalo-btn">💬 Nhắn Zalo tư vấn miễn phí</a>
+      <a href="https://forms.gle/oWpGhwvcoZVH1M9H8" target="_blank" class="mob-reg-btn">✦ Đăng ký khoá học ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hblob hb1"></div>
+  <div class="hblob hb2"></div>
+  <div class="hblob hb3"></div>
+  <div class="hdots"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span class="bdot"></span>Data Analytics Mentoring Programs · 3 Khoá học</div>
+      <h1 class="hero-title">Học <span class="gt">Data Analytics</span><br>thực chiến cùng<br>mentor từ MoMo</h1>
+      <p class="hero-desc">Từ zero đến Data Analyst — được dẫn dắt bởi mentor đang làm việc thực tế tại các công ty công nghệ hàng đầu Việt Nam.</p>
+      <ul class="hero-bullets">
+        <li><span class="bicon">✓</span>Học trọn bộ core skills: SQL, Python, BI Tools, Statistics & Analytical Mindset</li>
+        <li><span class="bicon">✓</span>Mentor đồng hành trong suốt lộ trình học và sau khoá học</li>
+        <li><span class="bicon">✓</span>Tư vấn, kết nối và hỗ trợ ứng tuyển các vị trí Data Analyst sau khoá</li>
+      </ul>
+      <div class="hero-actions">
+        <a href="https://docs.google.com/forms/d/1NuVQgniEdWSd4fwCdo374Rgr29d2ME2U8s40xiCJjes/edit" target="_blank" class="btn-p">   Đăng ký ngay ✦   </a>
+        <a href="#tracks" class="btn-s">Xem chương trình →</a>
+        <a href="https://zalo.me/0362550761" target="_blank" class="btn-p" style="white-space:nowrap">💬 Nhận tư vấn về khoá</a>
+        <a href="https://thehaudata.my.canva.site/mentee-s-achievements-flexing" target="_blank" class="btn-p" style="white-space:nowrap">Mentees nói gì về khoá học?</a>
+      </div>
+      <div class="hero-logos">
+        <p>Học cùng mentor từng làm việc tại</p>
+        <div class="logo-row">
+          <div class="lchip">🟣 MoMo</div>
+          <div class="lchip">🟠 Shopee</div>
+          <div class="lchip">🎓 MindX Tech School</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hp">
+        <div class="hp-head">
+          <div class="hp-head-icon">📊</div>
+          <div><h3>TheHauData Academy · Track Highlights</h3><p>Pro Analyst Tracks with Agentic AI</p></div>
+        </div>
+        <div class="hp-stats">
+          <div class="hp-stat"><div class="hp-stat-n">3</div><div class="hp-stat-l">Khoá học đa dạng</div></div>
+          <div class="hp-stat"><div class="hp-stat-n">13+</div><div class="hp-stat-l">Buổi học / track</div></div>
+          <div class="hp-stat"><div class="hp-stat-n">25–30</div><div class="hp-stat-l">Học viên / lớp</div></div>
+          <div class="hp-stat"><div class="hp-stat-n">24/7</div><div class="hp-stat-l">Mentor support</div></div>
+        </div>
+        <div class="hp-tags">
+          <span class="htag">SQL</span><span class="htag">Python</span><span class="htag w">Power BI</span>
+          <span class="htag t">Statistics</span><span class="htag">Looker Studio</span><span class="htag w">AI Fluency</span><span class="htag t">Agentic AI</span>
+        </div>
+        <div class="hp-offers">
+          <p>Học viên đã nhận offer tại</p>
+          <div class="hoc"><span>VPBank</span><span>VNG</span><span>Ahamove</span><span>Yes4All</span><span>ACB</span><span>Kamereo</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- UPCOMING COURSES TIMELINE -->
+<section id="upcoming">
+  <div class="container reveal">
+    <span class="eyebrow">🔥 Khoá sắp mở</span>
+    <h2 class="sec-title">Upcoming <span class="gt">Courses</span></h2>
+    <p class="sec-sub">Đăng ký sớm để giữ chỗ — lớp giới hạn sĩ số, full slot rất nhanh.</p>
+
+    <div class="timeline">
+
+      <!-- 1: Pro Tracks Live Zoom K19 -->
+      <div class="tl-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-card">
+          <div class="tl-top">
+            <div>
+              <div class="tl-badge">🎥 Live Zoom · Khoá 19</div>
+              <h3 class="tl-title">Pro Analyst Tracks with Agentic AI</h3>
+              <p class="tl-desc">Học trực tiếp 100% qua Zoom với mentor. Lớp nhỏ 25–30 người, chấm bài trực tiếp, feedback project live. Phiên bản mới tích hợp Agentic AI vào workflow phân tích.</p>
+            </div>
+            <div class="tl-status open">MỞ TUYỂN SINH</div>
+          </div>
+          <div class="tl-meta">
+            <span class="tl-m">📅 Dự kiến khai giảng giữa tháng 12</span>
+            <span class="tl-m">🎓 24–26 buổi</span>
+            <span class="tl-m">👥 Lớp 25–30 người</span>
+            <span class="tl-m">💰 6.000.000 VNĐ (có giảm cho sinh viên)</span>
+            <span class="tl-m" style="background:var(--amber-lite);border-color:rgba(255,109,0,.3);color:var(--orange)">🗓️ Đăng ký sớm để giữ chỗ ưu tiên — lớp giới hạn sĩ số</span>
+          </div>
+          <a href="https://zalo.me/0362550761" target="_blank" class="btn-p" style="margin-top:18px;display:inline-flex;font-size:.85rem;padding:10px 22px">💬 Đăng ký Khoá 19 →</a>
+        </div>
+      </div>
+
+      <!-- 2: Pro Tracks Live Zoom K18 (full slot) -->
+      <div class="tl-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-card">
+          <div class="tl-top">
+            <div>
+              <div class="tl-badge">🎥 Live Zoom · Khoá 18</div>
+              <h3 class="tl-title">Pro Analyst Tracks with Agentic AI</h3>
+              <p class="tl-desc">Học trực tiếp 100% qua Zoom với mentor. Khoá 18 đã đủ sĩ số — bạn có thể đăng ký Khoá 19 ở trên để giữ chỗ.</p>
+            </div>
+            <div class="tl-status full">ĐÃ FULL SLOT</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3: Pro Tracks Online Hybrid -->
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--grad-warm)">3</div>
+        <div class="tl-card">
+          <div class="tl-top">
+            <div>
+              <div class="tl-badge" style="background:var(--amber-lite);color:var(--orange);border-color:rgba(255,109,0,.3)">💻 Online Hybrid · Cohort 01</div>
+              <h3 class="tl-title">Pro Analyst Tracks with Agentic AI</h3>
+              <p class="tl-desc">Học video kết hợp với live catch-up Zoom định kỳ. Linh hoạt thời gian, tự học theo lộ trình — phù hợp với người đi làm bận rộn muốn tiết kiệm chi phí.</p>
+            </div>
+            <div class="tl-status cohort">Cohort 2</div>
+          </div>
+          <div class="tl-meta">
+            <span class="tl-m">🎬 30h video + 4 live catch-up sessions</span>
+            <span class="tl-m">⏰ Tự học linh hoạt thời gian</span>
+            <span class="tl-m">💰 4.000.000 VNĐ </span>
+            <span class="tl-m">💬 Mentor hỗ trợ riêng qua Zalo</span>
+          </div>
+          <a href="https://zalo.me/0362550761" target="_blank" class="btn-s" style="margin-top:18px;display:inline-flex;font-size:.85rem;padding:10px 22px">Tìm hiểu thêm →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<!-- <div id="companies">
+  <p class="mq-label">Học viên đã &amp; đang làm việc tại</p>
+  <div style="overflow:hidden">
+    <div class="mq-track">
+      <span class="mchip">VPBank</span><span class="mchip">VNG</span><span class="mchip">Ahamove</span><span class="mchip">Yes4All</span><span class="mchip">Kamereo</span><span class="mchip">Shopee Xpress</span><span class="mchip">30Shine</span><span class="mchip">Bizzi</span><span class="mchip">ACB</span><span class="mchip">An Khang</span><span class="mchip">Colgate-Palmolive</span><span class="mchip">VDA</span><span class="mchip">LixiBox</span><span class="mchip">Kasatria</span><span class="mchip">NAPAS</span><span class="mchip">MB Bank</span><span class="mchip">Dat.Bike</span><span class="mchip">Rocket Studio</span><span class="mchip">Vexere</span><span class="mchip">ONE</span><span class="mchip">ROKT</span><span class="mchip">Whale Logistics</span><span class="mchip">Metso</span><span class="mchip">Citek</span>
+      <span class="mchip">VPBank</span><span class="mchip">VNG</span><span class="mchip">Ahamove</span><span class="mchip">Yes4All</span><span class="mchip">Kamereo</span><span class="mchip">Shopee Xpress</span><span class="mchip">30Shine</span><span class="mchip">Bizzi</span><span class="mchip">ACB</span><span class="mchip">An Khang</span><span class="mchip">Colgate-Palmolive</span><span class="mchip">VDA</span><span class="mchip">LixiBox</span><span class="mchip">Kasatria</span><span class="mchip">NAPAS</span><span class="mchip">MB Bank</span><span class="mchip">Dat.Bike</span><span class="mchip">Rocket Studio</span><span class="mchip">Vexere</span><span class="mchip">ONE</span><span class="mchip">ROKT</span><span class="mchip">Whale Logistics</span><span class="mchip">Metso</span><span class="mchip">Citek</span>
+    </div>
+  </div>
+</div> -->
+
+<!-- COMPANY LOGOS — where mentees landed jobs -->
+<section id="company-logos">
+  <div class="container reveal">
+    <span class="eyebrow">🏢 Nơi học viên đang làm việc</span>
+    <h2 class="sec-title">Mentees đã trúng tuyển tại <span class="gt">các công ty lớn</span></h2>
+    <p class="sec-sub">Học viên TheHauData Academy đã và đang làm việc tại các công ty công nghệ, fintech, logistics trong nước lẫn quốc tế.</p>
+    <!--
+      ═══ HƯỚNG DẪN CẬP NHẬT ẢNH LOGO ═══
+      1. Upload file ảnh mới lên: public_html/images/companies.png trên Hostinger
+      2. Ảnh bên dưới sẽ tự động cập nhật — không cần sửa code
+      3. Kích thước khuyến nghị: 1100 × 560px, nền trắng hoặc trong suốt
+    -->
+    <div style="margin-top:36px">
+      <img
+        src="images/companies.png"
+        alt="Các công ty học viên TheHauData Academy đang làm việc"
+        class="logo-wall-img"
+      >
+    </div>
+    <p class="logo-wall-note">🌍 Bao gồm <span>overseas companies</span>: ROKT · Whale Logistics · Metso và nhiều công ty quốc tế khác</p>
+  </div>
+</section>
+
+<!-- MENTOR -->
+<section id="mentor">
+  <div class="container reveal">
+    <span class="eyebrow">👤 Mentor đồng hành</span>
+    <h2 class="sec-title">Học cùng người đang <span class="gt">làm thực tế</span></h2>
+    <p class="sec-sub">Không chỉ dạy lý thuyết — mentor chia sẻ kinh nghiệm thực chiến từ chính các dự án hàng ngày tại MoMo, Shopee.</p>
+    <div class="mentor-grid">
+      <div class="mentor-card">
+        <div class="mavatar"><img src="images/mentor-avatar.jpg" alt="Lê Quốc Hậu" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
+        <div class="mentor-name">Lê Quốc Hậu</div>
+        <div class="mentor-role">Data Analytics Team Leader · MoMo</div>
+        <a href="https://zalo.me/0362550761" class="mcbtn" target="_blank">💬 Zalo: 0362 550 761</a>
+        <a href="mailto:quochauec@gmail.com" class="mcbtn">✉️ quochauec@gmail.com</a>
+        <p class="mnote">Scan QR / Zalo để nhận tư vấn miễn phí về lộ trình DA</p>
+        <div class="social-links">
+          <a href="https://substack.com/@thehaudata?utm_source=user-menu" target="_blank" class="soc-btn" title="Substack">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/le-quoc-hau/" target="_blank" class="soc-btn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://www.threads.com/" target="_blank" class="soc-btn" title="Threads">
+            <svg viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg"><path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-42.94-41.457-43.1h-.34c-14.986 0-27.449 6.396-35.12 18.036l13.779 9.452c5.73-8.695 14.724-10.548 21.348-10.548h.229c8.249.053 14.474 2.452 18.503 7.129 2.932 3.405 4.893 8.111 5.864 14.05-7.314-1.243-15.224-1.626-23.68-1.15-23.821 1.372-39.134 15.265-38.105 34.569.522 9.792 5.4 18.216 13.735 23.719 7.047 4.652 16.124 6.927 25.557 6.412 12.458-.683 22.231-5.436 29.049-14.127 5.178-6.6 8.453-15.153 9.899-25.93 5.937 3.583 10.337 8.298 12.767 13.966 4.132 9.635 4.373 25.468-8.546 38.376-11.319 11.308-24.925 16.2-45.488 16.351-22.809-.169-40.06-7.484-51.275-21.742C35.236 139.966 29.808 120.682 29.605 96c.203-24.682 5.63-43.966 16.133-57.317C56.954 24.425 74.204 17.11 97.013 16.94c22.975.17 40.526 7.52 52.171 21.847 5.71 7.026 10.015 15.86 12.853 26.162l16.147-4.308c-3.44-12.68-8.853-23.606-16.219-32.668C147.036 10.208 125.202.195 97.07 0h-.113C68.882.195 47.292 10.24 32.788 29.808 19.882 47.27 13.224 72.569 13.002 96v.027c.222 23.43 6.88 48.73 19.786 66.193 14.504 19.568 36.094 29.613 64.199 29.808h.113c25.316-.177 43.08-6.805 57.707-21.42 19.13-19.112 18.524-43.234 12.238-57.953-4.61-10.741-13.295-19.371-25.508-24.667zM97.44 135.4c-10.43.588-21.286-4.098-21.82-14.135-.397-7.442 5.296-15.745 22.461-16.735 1.966-.113 3.895-.169 5.79-.169 6.235 0 12.068.606 17.354 1.765-1.971 24.558-13.797 28.688-23.785 29.274z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="mentor-info">
+        <div class="iblock">
+          <h3>💼 Kinh nghiệm chuyên môn</h3>
+          <div class="exp-item"><div class="edot"></div><div><b>Data Analytics Team Leader</b> <span>tại MoMo</span></div></div>
+          <div class="exp-item"><div class="edot"></div><div><b>Former Business Intelligence Analyst</b> <span>tại Shopee</span></div></div>
+          <div class="exp-item"><div class="edot"></div><div><b>Former Business Intelligence Analyst</b> <span>tại ILA VietNam</span></div></div>
+          <div class="exp-item"><div class="edot"></div><div><b>Former Business Analyst</b> <span>tại Chợ Tốt</span></div></div>
+          <div style="margin-top:13px"><div style="font-size:.73rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Lĩnh vực kinh nghiệm</div><div class="dchips"><span class="dc">Fintech</span><span class="dc w">OTA</span><span class="dc t">Ecommerce</span><span class="dc">Food Delivery</span></div></div>
+        </div>
+        <div class="iblock">
+          <h3>🎓 Kinh nghiệm giảng dạy & chia sẻ</h3>
+          <div class="exp-item"><div class="edot"></div><div><span>Tốt nghiệp khoá đào tạo <b>nghiệp vụ sư phạm giảng dạy Đại Học</b> tại khoa Giáo Dục, ĐH KHXH-NV, ĐHQG TPHCM</span></div></div>
+          <div class="exp-item"><div class="edot"></div><div><b>Former Data Analytics mentor</b> <span> tại MindX Tech School</span></div></div>
+          <div class="exp-item"><div class="edot"></div><div><b>Speaker, Giám khảo & Advisors</b> <span>tại các cuộc thi Data Analytics & Business Intelligence</span></div></div>
+          <div class="exp-item"><div class="edot"></div><div><b>Content creator</b> <span>trong lĩnh vực data tại Thehaudata (Threads, Substack)</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHOM -->
+<section id="for-whom">
+  <div class="container reveal">
+    <span class="eyebrow">🎯 Dành cho ai</span>
+    <h2 class="sec-title">Nếu như <span class="gt">bạn...</span></h2>
+    <div class="fw-grid">
+      <div class="fw-card"><div class="fw-icon">🎓</div><h3>Sinh viên & người đi làm</h3><p>Là sinh viên, người đi làm và mong muốn <strong>học thêm kỹ năng phân tích dữ liệu</strong> để phát triển sự nghiệp.</p></div>
+      <div class="fw-card"><div class="fw-icon">🔍</div><h3>Đã tự học nhưng chưa áp dụng được</h3><p>Đã tìm hiểu và tự học nhưng lại <strong>chưa biết áp dụng thực tế</strong> — cần người hướng dẫn bài bản.</p></div>
+      <div class="fw-card"><div class="fw-icon">🤝</div><h3>Cần người đồng hành</h3><p><strong>Cần người đồng hành</strong> để hỗ trợ, hướng dẫn từ tổng thể đến chi tiết trong từng bài toán thực tế.</p></div>
+    </div>
+    <div class="fw-cta"><p>✦ Vậy thì chương trình này dành cho bạn ✦</p></div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="container reveal">
+    <span class="eyebrow">⭐ Điểm khác biệt</span>
+    <h2 class="sec-title">Tại sao chọn <span class="gt">TheHauData?</span></h2>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon">💰</div><div class="why-num">01</div><h3>Học phí phù hợp</h3><p>Học phí dễ tiếp cận cho nhiều đối tượng. Sinh viên được giảm trực tiếp 10%.</p></div>
+      <div class="why-card"><div class="why-icon">👥</div><div class="why-num">02</div><h3>Lớp nhỏ 25–30 người</h3><p>Giới hạn sĩ số để đảm bảo chất lượng và mentor chú ý từng học viên.</p></div>
+      <div class="why-card"><div class="why-icon">🏢</div><div class="why-num">03</div><h3>Thực chiến từ Big Tech</h3><p>Cách tiếp cận bài bản từ kinh nghiệm làm việc tại các công ty công nghệ lớn của mentor.</p></div>
+      <div class="why-card"><div class="why-icon">📚</div><div class="why-num">04</div><h3>Bài tập & case study cập nhật liên tục</h3><p>Datasets & case study sát với thực tế doanh nghiệp, chú trọng tư duy giải quyết vấn đề.</p></div>
+      <div class="why-card"><div class="why-icon">🕐</div><div class="why-num">05</div><h3>Hỗ trợ 24/7 & Community cho học viên</h3><p>Nhận sự hỗ trợ từ mentors bất cứ lúc nào. Coffee chat & tư vấn lộ trình miễn phí sau khoá.</p></div>
+      <div class="why-card"><div class="why-icon">🔗</div><div class="why-num">06</div><h3>Kết nối việc làm</h3><p>Học viên được ưu tiên giới thiệu công việc tới network của mentors (nếu CV phù hợp).</p></div>
+      <div class="why-card"><div class="why-icon">📋</div><div class="why-num">07</div><h3>Tài liệu đầy đủ</h3><p>Hệ thống bài giảng, giáo trình, tài liệu tham khảo & record buổi học đầy đủ.</p></div>
+      <div class="why-card"><div class="why-icon">🎯</div><div class="why-num">08</div><h3>Mục tiêu rõ ràng</h3><p>4 mục tiêu: kiến thức ngành, kỹ năng thiết yếu, case study thực tế, portfolio & phỏng vấn.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TRACKS -->
+<section id="tracks">
+  <div class="container">
+    <div class="tracks-hd reveal">
+      <span class="eyebrow">📖 Pro Analyst Track</span>
+      <h2 class="sec-title">Lộ trình <span class="gt">thống nhất</span> — Data Analyst chuyên sâu</h2>
+      <p class="sec-sub" style="margin:0 auto;text-align:center">28 bài học từ SQL Foundation đến Full-Stack Analytics Projects — tích hợp Agentic AI vào workflow phân tích</p>
+    </div>
+    <div class="reveal" style="margin-bottom:20px">
+      <div class="track-card">
+        <div class="tbign">DA</div>
+        <div class="tbadge tbv">Unified Track · 28 buổi</div>
+        <h3 class="track-title">Pro Analyst — Full Journey</h3>
+        <p class="track-sub">From SQL Foundation to Full-Stack Analytics Projects</p>
+
+        <p style="font-size:.76rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:20px 0 12px">🎥 Học Live · 21 buổi</p>
+        <div class="module-pills">
+          <div class="mpill"><div class="mi mi-v">📝</div>SQL & Application · 9 buổi</div>
+          <div class="mpill"><div class="mi mi-t">📊</div>Data Visualization & BI Tools · 5 buổi</div>
+          <div class="mpill"><div class="mi mi-v">🧠</div>Analytical Mindset · 3 buổi</div>
+          <div class="mpill"><div class="mi mi-w">📐</div>Business Statistics · 1 buổi</div>
+          <div class="mpill"><div class="mi mi-v">🏆</div>Portfolio Project · 3 buổi</div>
+        </div>
+
+        <p style="font-size:.76rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:20px 0 12px">🎬 Video bổ sung · 7 buổi</p>
+        <div class="module-pills">
+          <div class="mpill"><div class="mi mi-t">🐍</div>Data Preprocessing & EDA (Python) · 2 buổi</div>
+          <div class="mpill"><div class="mi mi-w">📐</div>Business Statistics – Inferential · 1 buổi</div>
+          <div class="mpill"><div class="mi mi-v">🏆</div>Portfolio Project – Customer Clustering · 1 buổi</div>
+          <div class="mpill"><div class="mi mi-t">💼</div>Job Application & Interview · 2 buổi</div>
+          <div class="mpill"><div class="mi mi-w">🤖</div>Knowledge Enrichment – Gen AI in DA · 3+ buổi</div>
+        </div>
+
+        <div class="track-meta" style="margin-top:22px"><span class="tmt">⏱ 28 buổi</span><span class="tmt">🎥 21 Live + 🎬 7 Video</span><span class="tmt">📅 2 buổi/tuần</span><span class="tmt">🏆 Capstone Project + Presentation</span></div>
+      </div>
+    </div>
+    <div class="sup-card reveal">
+      <div class="sup-head">🎯 Always-on Course Support · <span>Job Application & Career Consultation</span></div>
+      <div class="sup-item"><span class="scheck">✓</span>AI Applications in Data Analytics</div>
+      <div class="sup-item"><span class="scheck">✓</span>Expertise Webinar sharing</div>
+      <div class="sup-item"><span class="scheck">✓</span>Support review CV 1-1</div>
+      <div class="sup-item"><span class="scheck">✓</span>Connect to mentors' network</div>
+      <div class="sup-item"><span class="scheck">✓</span>Job application consultation</div>
+      <div class="sup-item"><span class="scheck">✓</span>Coffee chat & career roadmap (miễn phí)</div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="container reveal">
+    <span class="eyebrow">🚀 Mục tiêu chương trình</span>
+    <h2 class="sec-title">Bạn sẽ <span class="gt">đạt được gì?</span></h2>
+    <div class="oc-grid">
+      <div class="oc-card"><div class="oc-icon">🧠</div><h3>Tư duy Data-Driven</h3><p>Hiểu biết cơ bản về ngành Data và lĩnh vực Data Analytics, xây dựng tư duy phân tích từ tổng thể đến chi tiết.</p></div>
+      <div class="oc-card"><div class="oc-icon">⚡</div><h3>Kỹ năng thiết yếu</h3><p>Thành thạo Analytical Mindset, SQL, Python, BI Tools (Power BI / Looker Studio), Statistics.</p></div>
+      <div class="oc-card"><div class="oc-icon">🏗️</div><h3>Case Study thực tế</h3><p>Thực hành bài tập và case study sát công việc hàng ngày, giải quyết vấn đề thực tiễn doanh nghiệp.</p></div>
+      <div class="oc-card"><div class="oc-icon">💼</div><h3>Portfolio & Offer</h3><p>Chuẩn bị data project portfolio, sẵn sàng ứng tuyển và phỏng vấn các vị trí Data Analyst / BI Analyst.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="pricing-hd reveal">
+      <span class="eyebrow">💳 Học phí & Ưu đãi</span>
+      <h2 class="sec-title">Đầu tư cho <span class="gt">sự nghiệp Data</span></h2>
+      <p class="sec-sub" style="margin:0 auto;text-align:center">Học phí phù hợp, nhiều ưu đãi cho sinh viên và học viên cũ giới thiệu</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pcard feat">
+        <div class="pop-badge">⭐ Phổ biến nhất</div>
+        <div class="pt">🎥 Hình thức A</div>
+        <div class="pname">Khoá Pro Analyst with Agentic AI Support - Học Live Zoom</div>
+        <div class="p-old">8.000.000 VNĐ</div>
+        <div class="p-main">6.000.000 (có giảm & hỗ trợ đóng học phí sau cho sinh viên) </div>
+        <div class="p-per">VNĐ / 2 tracks · 24–26 buổi</div>
+        <div class="p-note">🎉 Sinh viên & học viên cũ giới thiệu: giảm trực tiếp 500K</div>
+        <ul class="pf">
+          <li><span class="pfchk">✓</span>Học trực tiếp 90% qua Zoom với mentor + 10% các buổi bổ sung kiến thức</li>
+          <li><span class="pfchk">✓</span>Chấm chữa từng bài tập, feedback loop liên tục</li>
+          <li><span class="pfchk">✓</span>Hỗ trợ giải đáp trực tiếp trong lúc học live</li>
+          <li><span class="pfchk">✓</span>Live feedbacks project khi presentation</li>
+          <li><span class="pfchk">✓</span>Discord Community</li>
+          <li><span class="pfchk">✓</span>Hỗ trợ sau khoá</li>
+          <li><span class="pfchk">✓</span>Tư vấn & Review CV 1-1</li>
+          <li><span class="pfchk">✓</span>AI Agent (Claude) như analytics co-pilot (webinar sharing bonus)</li>
+        </ul>
+
+        <a href="https://zalo.me/0362550761" target="_blank" class="pcta pcta-m">Đăng ký Khoá Live →</a>
+      </div>
+      <div class="pcard">
+        <div class="pop-badge">⭐ Tiết kiệm & linh hoạt nhất</div>
+        <div class="pt">💻 Hình thức B</div>
+        <div class="pname">Khoá Pro Analyst with Agentic AI Support - Online Hybrid</div>
+        <div class="p-old">6.000.000 VNĐ</div>
+        <div class="p-main">4.000.000 (giảm 300K cho sinh viên/các bạn đăng ký trong Q4 2026)</div>
+        <div class="p-per">VNĐ / 2 tracks · 30h video (24-26 lessons) </div>
+        <div class="p-note">💡 Linh hoạt thời gian, tự học theo lộ trình</div>
+        <ul class="pf">
+          <li><span class="pfchk">✓</span>Học qua video trên platform học tập</li>
+          <li><span class="pfchk">✓</span>Nội dung tương tự như khoá Live Zoom</li>
+          <li><span class="pfchk">✓</span>Live catch-up 1:1 nếu học viên cần hỗ trợ</li>
+          <li><span class="pfchk">✓</span>Tự học theo hướng dẫn & solution tham khảo</li>
+          <li><span class="pfchk">✓</span>Đặt câu hỏi qua nhóm Zalo / live catch-up</li>
+          <li><span class="pfchk">✓</span>Discord Community</li>
+          <li><span class="pfchk">✓</span>Hỗ trợ sau khoá</li>
+          <li><span class="pfchk">✓</span>Tư vấn & Review CV 1-1</li>
+          <li><span class="pfchk">✓</span>AI Agent (Claude) như analytics co-pilot (webinar sharing bonus)</li>
+        </ul>
+        <a href="https://zalo.me/0362550761" target="_blank" class="pcta pcta-o">Đăng ký Online Hybrid →</a>
+      </div>
+    </div>
+    <div class="cwrap reveal">
+      <div class="ctit">📊 So sánh chi tiết hai hình thức học</div>
+      <table class="ctable">
+        <thead><tr><th>Tiêu chí</th><th>🎥 Khoá Live Zoom</th><th>💻 Khoá Online Hybrid</th></tr></thead>
+        <tbody>
+          <tr><td>Hình thức học</td><td>Học trực tiếp 100% qua Zoom với mentor</td><td>Video + Live catch-up 1:1 qua call với mentor khi cần hỗ trợ</td></tr>
+          <tr><td>Hỗ trợ từ Mentors</td><td>Chấm chữa từng bài tập, live feedbacks project</td><td>Tự học theo hướng dẫn; hỏi qua Zalo/live catch-up</td></tr>
+          <tr><td>Giá (2 tracks)</td><td><span class="cy">6.000.000 VNĐ</span> (có giảm giá cho sinh viên)</td><td><span class="cy">4.000.000 VNĐ</span></td></tr>
+          <tr><td>Discord Community</td><td><span class="cy">✓ Có</span></td><td><span class="cy">✓ Có</span></td></tr>
+          <tr><td>Hỗ trợ sau khoá</td><td><span class="cy">✓ Có</span></td><td><span class="cy">✓ Có</span></td></tr>
+    
+        </tbody>
+      </table>
+      <div class="tip">💡 <strong>Lời khuyên:</strong> Nếu bạn là người cần được hướng dẫn sát sao và muốn được review bài tập chi tiết, hãy chọn <strong>Khoá Live</strong>. Nếu bạn tự tin tự học, có khả năng quản lý thời gian tốt và muốn tiết kiệm chi phí, <strong>Khoá Online Hybrid</strong> là lựa chọn phù hợp!</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container reveal">
+    <span class="eyebrow">🗺️ Lộ trình đăng ký</span>
+    <h2 class="sec-title">Bắt đầu chỉ trong <span class="gt">4 bước</span></h2>
+    <div class="steps-row">
+      <div class="step-card"><div class="snw">1</div><h3>Liên hệ mentor</h3><p>Nhắn Zalo hoặc email để được tư vấn khoá phù hợp với mục tiêu của bạn.</p></div>
+      <div class="step-card"><div class="snw">2</div><h3>Chọn track & format</h3><p>Quyết định Track 1, Track 2 hoặc cả 2, và chọn Live Zoom hoặc Online Hybrid.</p></div>
+      <div class="step-card"><div class="snw">3</div><h3>Đặt cọc & confirm</h3><p>Đặt cọc để giữ chỗ. Lớp full slot khá nhanh — hãy đăng ký sớm!</p></div>
+      <div class="step-card"><div class="snw">4</div><h3>Học & được hỗ trợ</h3><p>Tham gia khoá học và nhận sự đồng hành của mentor trong suốt hành trình.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section id="feedback">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">💬 Thành tích & Feedback</span>
+      <h2 class="sec-title">Học viên nói gì về <span class="gt">khoá học?</span></h2>
+       <a href="https://thehaudata.my.canva.site/mentee-s-achievements-flexing" target="_blank" class="btn-p" style="white-space:nowrap">Mentees nói gì về khoá học?</a>
+    </div>
+    <div class="reveal" style="margin:28px 0">
+      <p style="font-size:.75rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:13px">🎉 Học viên đã nhận offer tại</p>
+      <div class="off-row">
+        <div class="off-card"><div class="off-co">Colgate-Palmolive</div><div class="off-role">Data Analytics Engineer (DAE)</div><div class="off-who">Học viên Track 1</div></div>
+        <div class="off-card"><div class="off-co">VNG</div><div class="off-role">Data Analyst Fresher</div><div class="off-who">Học viên Track 1</div></div>
+        <div class="off-card"><div class="off-co">Yes4All</div><div class="off-role">Business Intelligence Analyst</div><div class="off-who">Học viên Track 2</div></div>
+        <div class="off-card"><div class="off-co">Ahamove</div><div class="off-role">Data Analyst</div><div class="off-who">Học viên Track 1 & 2</div></div>
+        <div class="off-card"><div class="off-co">Kamereo</div><div class="off-role">Data Analyst</div><div class="off-who">Học viên khoá</div></div>
+        <div class="off-card"><div class="off-co">Rocket Game Studio</div><div class="off-role">DA Intern</div><div class="off-who">Học viên khoá</div></div>
+      </div>
+    </div>
+    <div class="fb-grid reveal">
+      <div class="fb-card"><div class="fb-hd"><div class="fba">VN</div><div><div class="fb-name">Vinh Nguyen</div><div class="fb-role">University Student</div></div></div><div class="fb-stars">★★★★★</div><div class="fb-text">Mentor siêu nhiệt tình, giải đáp mọi thắc mắc của học viên và chấm chữa bài tập rất kỹ. Lượng kiến thức trong mỗi lesson rất đầy đủ và cách giảng dạy của mentor rất dễ tiếp thu.</div><div class="fb-tag"><span>Practical SQL K01</span></div></div>
+      <div class="fb-card"><div class="fb-hd"><div class="fba">TN</div><div><div class="fb-name">Thong Nguyen</div><div class="fb-role">University Student</div></div></div><div class="fb-stars">★★★★★</div><div class="fb-text">Khoá học giúp em hiểu quy trình sử dụng SQL trong case-study để mà đem vào trong PowerBI visualize. Bài tập khá khó nhưng cực kỳ có ích khi vào doanh nghiệp.</div><div class="fb-tag"><span>Practical SQL K01</span></div></div>
+      <div class="fb-card"><div class="fb-hd"><div class="fba">HT</div><div><div class="fb-name">Huyen Trang</div><div class="fb-role">Marketing Executive · 30Shine</div></div></div><div class="fb-stars">★★★★★</div><div class="fb-text">E so sánh mình học 1 tháng với anh vs các bạn học ở trung tâm khác 6 tháng thấy rõ sự khác biệt về tư duy giải quyết bài toán, không chỉ viết câu lệnh.</div><div class="fb-tag"><span>Practical SQL K01</span></div></div>
+      <div class="fb-card"><div class="fb-hd"><div class="fba">MT</div><div><div class="fb-name">Minh Thu</div><div class="fb-role">Học viên Track 1 & 2</div></div></div><div class="fb-stars">★★★★★</div><div class="fb-text">3 điều em thích nhất: khoá học chất lượng cao, không quá khó, cuối khoá có outcome rõ ràng (project capstone). Mentor tận tâm, giải đáp nhiều thắc mắc. Thank you anh!</div><div class="fb-tag"><span>Track 1 & 2</span></div></div>
+      <div class="fb-card"><div class="fb-hd"><div class="fba">PN</div><div><div class="fb-name">Phúc Nhân</div><div class="fb-role">Học viên</div></div></div><div class="fb-stars">★★★★★</div><div class="fb-text">Anh Hậu giảng siêu kỹ và siêu dễ hiểu. Chương trình học được thiết kế cẩn thận và chi tiết, giúp học viên nắm bắt được các kiến thức từ bao quát đến chi tiết nhất.</div><div class="fb-tag"><span>Track 1 & 2</span></div></div>
+      <div class="fb-card"><div class="fb-hd"><div class="fba">TĐ</div><div><div class="fb-name">Thành Đạt</div><div class="fb-role">Học viên</div></div></div><div class="fb-stars">★★★★★</div><div class="fb-text">Nói thật lòng — đây là khoá online đầu tiên em không tiếc tiền kể cả so với nhiều khoá tiếng Anh, học rất practical và sát thực tế.</div><div class="fb-tag"><span>Track 1</span></div></div>
+    </div>
+    <div class="wr-row reveal" style="margin-top:20px">
+      <div class="wr-card"><h4>💬 Điều thích nhất ở chương trình</h4><p>"Mình đã tham gia hai khoá của anh Hậu và cảm thấy mình đã học được rất nhiều cả về kỹ năng và những kiến thức chuyên môn cần thiết về ngành. Hoàn thành được hết capstone project thì mình tự tin có một portfolio siêu xịn luôn."</p></div>
+      <div class="wr-card"><h4>💬 Trước & sau chương trình</h4><p>"Em bắt đầu khoá từ con số 0, newbie hoàn toàn với SQL. Sau khi hoàn thành khoá em đã nắm vững các câu lệnh và cũng cảm nhận thấy sự tiến bộ trong mindset, cách lấy dữ liệu và rút ra insights từ chính các case study trong doanh nghiệp anh Hậu chia sẻ trong lúc học."</p></div>
+    </div>
+    <div class="sat-box reveal">
+      <div class="sat-num">100%</div>
+      <div class="sat-label">học viên sẵn sàng giới thiệu khoá học cho bạn bè, người thân</div>
+      <div class="sat-sub">Khảo sát từ học viên sau khoá Practical SQL K01</div>
+    </div>
+  </div>
+</section>
+
+<!-- MENTEE PROJECT SNAPSHOTS -->
+<section id="projects">
+  <div class="container reveal">
+    <span class="eyebrow">📁 Project chất lượng</span>
+    <h2 class="sec-title">Dự án thực tế của <span class="gt">học viên</span></h2>
+    <p class="sec-sub">Mỗi học viên hoàn thành capstone project chuyên nghiệp — phân tích dữ liệu thực, insight thực, sẵn sàng cho portfolio. Click vào ảnh để xem chi tiết.</p>
+
+    <div class="proj-grid">
+
+      <!-- Project 1 -->
+      <div class="proj-card" onclick="openLbox(0)">
+        <img src="images/proj-1.png" alt="Consumer Finance Rate Analysis">
+        <div class="proj-overlay"></div>
+        <div class="proj-zoom-btn">⛶</div>
+        <div class="proj-info">
+          <h4>Consumer Finance Rate Analysis</h4>
+          <p>Competitive benchmarking · Market positioning · Data visualization</p>
+          <span class="proj-tag">Capstone Project</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="proj-card" onclick="openLbox(1)">
+        <img src="images/proj-2.png" alt="Fraud Transaction Flow Analysis">
+        <div class="proj-overlay"></div>
+        <div class="proj-zoom-btn">⛶</div>
+        <div class="proj-info">
+          <h4>Fraud Transaction Flow Analysis</h4>
+          <p>SQL · MCC analysis · Behavioral analytics · Takeaways</p>
+          <span class="proj-tag">Track 1 Capstone</span>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="proj-card" onclick="openLbox(2)">
+        <img src="images/proj-3.png" alt="Customer & Revenue Analysis">
+        <div class="proj-overlay"></div>
+        <div class="proj-zoom-btn">⛶</div>
+        <div class="proj-info">
+          <h4>Customer & Revenue Traffic Analysis</h4>
+          <p>Power BI · Traffic source analysis · Age segmentation · Storytelling</p>
+          <span class="proj-tag">Track 2 Capstone</span>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="proj-card" onclick="openLbox(3)">
+        <img src="images/proj-4.png" alt="Cafe Rewards Offer Performance Analysis">
+        <div class="proj-overlay"></div>
+        <div class="proj-zoom-btn">⛶</div>
+        <div class="proj-info">
+          <h4>Cafe Rewards — Offer Performance Analysis</h4>
+          <p>Issue tree · Offer segmentation · Conversion analysis · Recommendations</p>
+          <span class="proj-tag">Track 1 & 2 Capstone</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:20px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div style="font-size:1.5rem">💡</div>
+      <div>
+        <div style="font-family:var(--font-display);font-weight:800;font-size:.93rem;color:var(--ink)">Project được mentor review & feedback trực tiếp</div>
+        <div style="font-size:.82rem;color:var(--muted);font-weight:500;margin-top:2px">Mỗi học viên nhận feedback chi tiết — dùng ngay cho CV và portfolio khi ứng tuyển</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX MODAL -->
+<div class="lbox" id="lightbox" onclick="closeLboxOutside(event)">
+  <div class="lbox-inner" id="lboxInner">
+    <button class="lbox-close" onclick="closeLbox()">✕</button>
+    <button class="lbox-nav lbox-prev" onclick="shiftLbox(-1)">‹</button>
+    <button class="lbox-nav lbox-next" onclick="shiftLbox(1)">›</button>
+    <img id="lboxImg" src="" alt="">
+    <div class="lbox-caption">
+      <h4 id="lboxTitle"></h4>
+      <p id="lboxDesc"></p>
+    </div>
+  </div>
+  <div class="lbox-dots" id="lboxDots"></div>
+</div>
+
+<!-- COMMUNITY -->
+<section id="community">
+  <div class="container reveal">
+    <span class="eyebrow">🤝 Cộng đồng học viên</span>
+    <h2 class="sec-title">Không chỉ học — còn <span class="gt">cùng nhau phát triển</span></h2>
+    <p class="sec-sub">Discord Forum riêng cho mentee và các buổi coffee chat, offline meetup thường xuyên giữa mentor và học viên.</p>
+    <!--
+      ═══ HƯỚNG DẪN CẬP NHẬT ẢNH COMMUNITY ═══
+      Upload: public_html/images/community-discord.png và community-coffee.png
+    -->
+    <div class="comm-grid">
+      <div class="comm-card">
+        <img src="images/community-discord.png" alt="TheHauData Discord Forum"
+          onerror="this.style.display='none';this.nextElementSibling.style.cssText='height:160px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:3rem'">
+        <div style="display:none">🎮</div>
+        <div class="comm-body">
+          <h3>🎮 Discord Forum — Mentee Connect</h3>
+          <p>Cộng đồng riêng trên Discord — kết nối, hỏi đáp, chia sẻ kinh nghiệm và cập nhật tài nguyên học tập từ mentor sau mỗi khoá học.</p>
+          <div class="comm-chs">
+            <span class="cch">#mentees-connection</span>
+            <span class="cch t">#expertise-sharing</span>
+            <span class="cch">#vn-jobs-opportunities</span>
+            <span class="cch w">#program-resources-updates</span>
+            <span class="cch t">#referral-program</span>
+            <span class="cch">#other-countries-jobs</span>
+          </div>
+        </div>
+      </div>
+      <div class="comm-card">
+        <img src="images/community-coffee.png" alt="Coffee Chat với Mentor"
+          onerror="this.style.display='none';this.nextElementSibling.style.cssText='height:160px;background:var(--grad-soft);display:flex;align-items:center;justify-content:center;font-size:3rem'">
+        <div style="display:none">☕</div>
+        <div class="comm-body">
+          <h3>☕ Coffee Chat & Offline Meetup</h3>
+          <p>Mentor thường xuyên tổ chức coffee chat 1-1 và meetup nhỏ — tư vấn lộ trình, review CV, chia sẻ kinh nghiệm thực tế, và nhận quà từ các mentee thân thiết 😄</p>
+          <div class="comm-chs">
+            <span class="cch w">Coffee chat 1-1</span>
+            <span class="cch">Offline meetup</span>
+            <span class="cch t">CV review session</span>
+            <span class="cch">Career coaching</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comm-cta-strip">
+      <div>
+        <h4>Tham gia cộng đồng TheHauData Academy</h4>
+        <span>Kết nối với mentor & học viên — nhận hỗ trợ, cơ hội việc làm và tài nguyên học tập miễn phí</span>
+      </div>
+      <a href="https://zalo.me/0362550761" target="_blank" class="btn-p" style="font-size:.88rem;padding:11px 24px;white-space:nowrap">💬 Liên hệ để tham gia →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+  <div class="ci reveal">
+    <span class="eyebrow" style="margin:0 auto 14px;display:inline-flex">🚀 Bắt đầu ngay hôm nay</span>
+    <h2>Sẵn sàng bắt đầu hành trình<br><span class="gt">Data Analytics</span> của bạn?</h2>
+    <p>Lớp học có sĩ số giới hạn. Liên hệ mentor ngay hôm nay để được tư vấn khoá phù hợp và giữ chỗ trước khi hết.</p>
+    <div class="cta-acts">
+      <a href="https://zalo.me/0362550761" target="_blank" class="btn-p">Nhắn Zalo cho mentor ✦</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfXfuxDSEK0-Ez_UuDpH04hGYL9kNM0cqVQ1HaL6ZkDoPW-NQ/viewform" class="btn-s">Đăng ký ngay</a>
+    </div>
+    <div class="cta-chips">
+      <span class="cchip">Tư vấn miễn phí</span>
+      <span class="cchip">Lớp giới hạn 25–30 người</span>
+      <span class="cchip">Hỗ trợ 24/7</span>
+      <span class="cchip">Sinh viên giảm 10%</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-brand">
+    <a class="fl" href="#hero">
+      <div class="fl-icon" style="background:none;padding:0;overflow:visible">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="display:block">
+          <defs>
+            <linearGradient id="flbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B21FF"/><stop offset="55%" stop-color="#9C27FF"/><stop offset="100%" stop-color="#E040FB"/></linearGradient>
+            <linearGradient id="flb1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#7C4DFF"/></linearGradient>
+            <linearGradient id="flb2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#C084FC"/><stop offset="100%" stop-color="#9C27FF"/></linearGradient>
+            <linearGradient id="flb3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E879F9"/><stop offset="100%" stop-color="#E040FB"/></linearGradient>
+          </defs>
+          <rect width="36" height="36" rx="8" fill="url(#flbg)"/>
+          <rect x="6" y="22" width="5" height="9" rx="1.5" fill="url(#flb1)" opacity="0.95"/>
+          <rect x="14" y="17" width="5" height="14" rx="1.5" fill="url(#flb2)" opacity="0.95"/>
+          <rect x="22" y="11" width="5" height="20" rx="1.5" fill="url(#flb3)" opacity="0.95"/>
+          <polyline points="8.5,20 16.5,15 24.5,9" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
+          <circle cx="24.5" cy="9" r="2" fill="white" opacity="0.95"/>
+        </svg>
+      </div>
+      <span>TheHauData Academy</span>
+    </a>
+    <p>Data Analytics Mentoring Programs — học trọn bộ core skills với mentor đến từ MoMo, Shopee và các công ty công nghệ hàng đầu.</p>
+    <div class="foot-contact">📞 Zalo: 0362 550 761<br>✉️ quochauec@gmail.com</div>
+  </div>
+  <div class="foot-col">
+    <h4>Chương trình</h4>
+    <ul>
+      <li><a href="#upcoming">🔥 Khoá sắp mở</a></li>
+      <li><a href="#tracks">Pro Analyst Track</a></li>
+      <li><a href="#pricing">Học phí & Ưu đãi</a></li>
+      <li><a href="#mentor">Mentor Profile</a></li>
+    </ul>
+  </div>
+  <div class="foot-col">
+    <h4>Kết nối</h4>
+    <ul>
+      <li><a href="https://zalo.me/0362550761" target="_blank">💬 Zalo Mentor</a></li>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfXfuxDSEK0-Ez_UuDpH04hGYL9kNM0cqVQ1HaL6ZkDoPW-NQ/viewform">✉️ Đăng Ký Ngay</a></li>
+      <li><a href="#community">Community & Discord</a></li>
+      <li><a href="#projects">Mentee Projects 📁</a></li>
+      <li><a href="#feedback">Feedback từ học viên</a></li>
+    </ul>
+  </div>
+  <div class="foot-btm">
+    <span>© 2025 TheHauData Academy. All rights reserved.</span>
+    <span>Made with ❤️ for Data Learners in Vietnam</span>
+  </div>
+</footer>
+
+<!-- BACK TO TOP BUTTON -->
+<button id="back-to-top" aria-label="Back to top" title="Về đầu trang">↑</button>
+
+<!-- MOBILE STICKY CTA BAR -->
+<div id="mobile-cta-bar">
+  <a href="https://zalo.me/0362550761" target="_blank" class="mob-bar-zalo">💬 Nhắn Zalo</a>
+  <a href="https://forms.gle/oWpGhwvcoZVH1M9H8" target="_blank" class="mob-bar-reg">✦ Đăng ký ngay</a>
+</div>
+
+<script>
+  const obs = new IntersectionObserver((e) => {
+    e.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  const secs = document.querySelectorAll('section[id]');
+  const navAs = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    secs.forEach(s => { if(scrollY >= s.offsetTop - 130) cur = s.id; });
+    navAs.forEach(a => {
+      a.style.color = ''; a.style.background = '';
+      if(a.getAttribute('href') === '#' + cur) {
+        a.style.color = 'var(--violet)'; a.style.background = 'var(--violet-pale)';
+      }
+    });
+  });
+  // ── LIGHTBOX ──
+  const lboxData = [
+    { src:'images/proj-1.png', title:'Consumer Finance Rate Analysis', desc:'Competitive benchmarking · Market positioning · Data visualization' },
+    { src:'images/proj-2.png', title:'Fraud Transaction Flow Analysis', desc:'SQL · MCC analysis · Behavioral analytics · Takeaways' },
+    { src:'images/proj-3.png', title:'Customer & Revenue Traffic Analysis', desc:'Power BI · Traffic source analysis · Age segmentation · Storytelling' },
+    { src:'images/proj-4.png', title:'Cafe Rewards — Offer Performance Analysis', desc:'Issue tree · Offer segmentation · Conversion analysis · Recommendations' }
+  ];
+  let lboxCur = 0;
+  const lbox = document.getElementById('lightbox');
+  const lboxImg = document.getElementById('lboxImg');
+  const lboxTitle = document.getElementById('lboxTitle');
+  const lboxDesc = document.getElementById('lboxDesc');
+  const lboxDots = document.getElementById('lboxDots');
+
+  function buildDots() {
+    lboxDots.innerHTML = lboxData.map((_,i) =>
+      `<div class="lbox-dot${i===lboxCur?' active':''}" onclick="goLbox(${i})"></div>`
+    ).join('');
+  }
+  function renderLbox() {
+    const d = lboxData[lboxCur];
+    lboxImg.src = d.src;
+    lboxTitle.textContent = d.title;
+    lboxDesc.textContent = d.desc;
+    buildDots();
+  }
+  function openLbox(i) {
+    lboxCur = i;
+    renderLbox();
+    lbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLbox() {
+    lbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeLboxOutside(e) { if(e.target === lbox) closeLbox(); }
+  function shiftLbox(dir) {
+    lboxCur = (lboxCur + dir + lboxData.length) % lboxData.length;
+    renderLbox();
+  }
+  function goLbox(i) { lboxCur = i; renderLbox(); }
+  document.addEventListener('keydown', e => {
+    if (!lbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLbox();
+    if (e.key === 'ArrowRight') shiftLbox(1);
+    if (e.key === 'ArrowLeft') shiftLbox(-1);
+  });
+
+  // ── MOBILE NAV TOGGLE ──
+  const hamburger = document.getElementById('navHamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('open');
+    if (isOpen) {
+      closeMobileMenu();
+    } else {
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      mobileMenu.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+  // Close menu when a link is clicked
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeMobileMenu);
+  });
+  // Close menu when clicking backdrop
+  mobileMenu.addEventListener('click', e => {
+    if (e.target === mobileMenu) closeMobileMenu();
+  });
+  // Close menu on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
+  });
+
+  // ── BACK TO TOP ──
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 420) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  }, { passive: true });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── AUTO-APPLY CTA HIGHLIGHT CLASSES ──
+  // Zalo buttons (btn-p & pcta variants) → Zalo brand blue + pulse
+  document.querySelectorAll('a[href*="zalo.me"]').forEach(btn => {
+    // Skip the mentor card mcbtn (different style) and nav-cta
+    if (!btn.classList.contains('mcbtn') && !btn.classList.contains('nav-cta')) {
+      btn.classList.add('btn-zalo', 'btn-zalo-pulse');
+    }
+  });
+  // Registration form buttons → shimmer highlight
+  document.querySelectorAll('a[href*="forms.gle"], a[href*="forms.google.com"]').forEach(btn => {
+    btn.classList.add('btn-register');
+  });
+</script>
+</body>
+</html>
