@@ -86,6 +86,38 @@
   .hero-logos p{font-size:.76rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:12px}
   .logo-row{display:flex;gap:9px;flex-wrap:wrap}
   .lchip{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:6px 15px;font-size:.82rem;font-weight:700;color:var(--ink2);box-shadow:var(--shadow-sm)}
+  .lchip{display:inline-flex;align-items:center;gap:8px}
+  .lchip img{display:block;height:26px;width:auto;border-radius:6px}
+  .lchip img.wide{height:32px;border-radius:0}
+  /* Hero journey */
+  .hero-journey{grid-column:1/-1;margin-top:6px;animation:fu .6s .5s ease both}
+  .hj-label{font-size:.76rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+  .hj-label::after{content:"";flex:1;height:1px;background:var(--border)}
+  .hj-steps{--gap:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);list-style:none;margin:0;padding:0}
+  .hj-step{position:relative;padding-top:58px;cursor:pointer;outline:none}
+  .hj-node{position:absolute;top:0;left:50%;width:46px;height:46px;margin-left:-23px;border-radius:50%;background:var(--surface);border:2px solid var(--border);display:grid;place-items:center;font-size:1.25rem;z-index:2;transition:background .4s,border-color .4s,transform .4s}
+  .hj-step:not(:last-child)::before,.hj-step:not(:last-child)::after{content:"";position:absolute;top:21px;left:50%;width:calc(100% + var(--gap));height:4px;border-radius:4px;z-index:1}
+  .hj-step:not(:last-child)::before{background:var(--border)}
+  .hj-step:not(:last-child)::after{background:var(--grad-hero);transform:scaleX(0);transform-origin:left;transition:transform .9s ease}
+  .hj-step.done::after{transform:scaleX(1)}
+  .hj-step.on .hj-node,.hj-step.done .hj-node{background:var(--grad-hero);border-color:transparent}
+  .hj-step.on .hj-node{transform:scale(1.12);animation:hjpulse 1.8s ease-out infinite}
+  @keyframes hjpulse{0%{box-shadow:0 0 0 0 rgba(91,33,255,.45)}100%{box-shadow:0 0 0 16px rgba(91,33,255,0)}}
+  .hj-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;transition:border-color .4s,box-shadow .4s,transform .4s;height:100%}
+  .hj-step.on .hj-card{border-color:var(--violet);box-shadow:var(--shadow-sm);transform:translateY(-3px)}
+  .hj-k{font-size:.68rem;font-weight:800;letter-spacing:.1em;color:var(--violet);margin-bottom:3px}
+  .hj-title{font-family:var(--font-display);font-weight:800;font-size:.98rem;line-height:1.25;color:var(--ink);margin-bottom:9px}
+  .hj-tags{display:flex;flex-wrap:wrap;gap:5px}
+  .hj-tags span{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--violet-pale);color:var(--violet);border:1px solid var(--border)}
+  @media(max-width:760px){
+    .hj-steps{grid-template-columns:1fr}
+    .hj-step{padding-top:0;padding-left:64px}
+    .hj-node{left:0;margin-left:0}
+    .hj-step:not(:last-child)::before,.hj-step:not(:last-child)::after{left:21px;top:46px;width:4px;height:calc(100% - 46px + var(--gap))}
+    .hj-step:not(:last-child)::after{transform:scaleY(0);transform-origin:top}
+    .hj-step.done::after{transform:scaleY(1)}
+  }
+  @media(prefers-reduced-motion:reduce){.hj-step.on .hj-node{animation:none}.hj-step::after,.hj-card,.hj-node{transition:none}}
   @keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
   /* Hero panel */
@@ -679,9 +711,9 @@
       <div class="hero-logos">
         <p>Học cùng mentor từng làm việc tại</p>
         <div class="logo-row">
-          <div class="lchip">🟣 MoMo</div>
-          <div class="lchip">🟠 Shopee</div>
-          <div class="lchip">🎓 MindX Tech School</div>
+          <div class="lchip"><img src="images/logo-momo.svg" alt="" width="26" height="26">MoMo</div>
+          <div class="lchip"><img src="images/logo-shopee.png" alt="" width="26" height="26">Shopee</div>
+          <div class="lchip"><img class="wide" src="images/logo-mindx.png" alt="MindX Tech School" height="32"></div>
         </div>
       </div>
     </div>
@@ -706,6 +738,15 @@
           <div class="hoc"><span>VPBank</span><span>VNG</span><span>Ahamove</span><span>Yes4All</span><span>ACB</span><span>Kamereo</span><span>Citek</span><span>Shopee Xpress</span><span>30Shine</span><span>Bizzi</span><span>Nhà thuốc An Khang</span><span>Colgate-Palmolive</span><span>VD.A</span><span>Lixibox</span><span>Kasatria</span><span>Napas</span><span>DAT.BIKE</span><span>Rocket Game Studio</span><span>MB Bank</span><span>Ocean Network Express (ONE)</span><span>Vexere</span><span>TPBank</span><span>AvePoint</span><span>Tyme</span><span>Zalo</span><span>ROKT</span><span>Whale Logistics</span></div>
         </div>
       </div>
+    </div>
+    <div class="hero-journey" id="heroJourney">
+      <div class="hj-label">Hành trình học</div>
+      <ol class="hj-steps">
+        <li class="hj-step" tabindex="0"><div class="hj-node">🧱</div><div class="hj-card"><div class="hj-k">01</div><div class="hj-title">Data Foundation</div><div class="hj-tags"><span>SQL nền tảng</span><span>Thống kê cơ bản</span><span>Tư duy dữ liệu</span></div></div></li>
+        <li class="hj-step" tabindex="0"><div class="hj-node">🛠️</div><div class="hj-card"><div class="hj-k">02</div><div class="hj-title">Tech Stacks</div><div class="hj-tags"><span>SQL</span><span>Python</span><span>Power BI</span><span>Looker Studio</span><span>Agentic AI</span></div></div></li>
+        <li class="hj-step" tabindex="0"><div class="hj-node">🧠</div><div class="hj-card"><div class="hj-k">03</div><div class="hj-title">Mindset &amp; Analytical Thinking</div><div class="hj-tags"><span>Issue tree</span><span>Giả thuyết</span><span>Storytelling</span></div></div></li>
+        <li class="hj-step" tabindex="0"><div class="hj-node">🚀</div><div class="hj-card"><div class="hj-k">04</div><div class="hj-title">Hands-on Case Studies &amp; Projects</div><div class="hj-tags"><span>Case study thực tế</span><span>Capstone</span><span>Portfolio</span></div></div></li>
+      </ol>
     </div>
   </div>
 </section>
@@ -1436,6 +1477,26 @@
   document.querySelectorAll('a[href*="forms.gle"], a[href*="forms.google.com"]').forEach(btn => {
     btn.classList.add('btn-register');
   });
+</script>
+<script>
+/* Hero journey: auto-play through the 4 stops, pause on hover/focus */
+(function(){
+  var steps=[].slice.call(document.querySelectorAll('#heroJourney .hj-step'));
+  if(!steps.length)return;
+  var i=0,timer=null,box=document.getElementById('heroJourney');
+  function set(n){i=n;steps.forEach(function(s,k){s.classList.toggle('on',k===n);s.classList.toggle('done',k<n);});}
+  function play(){stop();timer=setInterval(function(){set((i+1)%steps.length);},2600);}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  steps.forEach(function(s,k){
+    s.addEventListener('mouseenter',function(){stop();set(k);});
+    s.addEventListener('focus',function(){stop();set(k);});
+    s.addEventListener('click',function(){stop();set(k);});
+  });
+  box.addEventListener('mouseleave',play);
+  box.addEventListener('focusout',play);
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){set(steps.length-1);return;}
+  set(0);play();
+})();
 </script>
 </body>
 </html>
