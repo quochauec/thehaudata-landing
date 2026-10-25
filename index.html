@@ -93,6 +93,11 @@
   .hero-bullets{list-style:none;margin-bottom:32px;display:flex;flex-direction:column;gap:10px;animation:fu .6s .24s ease both}
   .hero-bullets li{display:flex;align-items:flex-start;gap:10px;font-size:.95rem;color:var(--ink2);font-weight:500}
   .bicon{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:2px;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;font-weight:900}
+  .hero-promo{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 20px;padding:10px 16px;border-radius:12px;background:var(--amber-lite);border:1.5px solid rgba(255,109,0,.28);color:var(--orange);font-size:.86rem;font-weight:700;line-height:1.4;text-decoration:none;animation:fu .6s .28s ease both;transition:box-shadow .2s,transform .2s}
+  .hero-promo:hover{box-shadow:0 4px 14px rgba(255,109,0,.2);transform:translateY(-1px)}
+  .hero-promo b{font-weight:900}
+  .hero-promo .hp-go{font-weight:800;white-space:nowrap;margin-left:4px}
+  .hero-promo[hidden]{display:none}
   .hero-actions{display:flex;gap:13px;flex-wrap:wrap;animation:fu .6s .32s ease both}
   .btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--grad-hero);color:#fff;font-weight:800;font-size:.95rem;font-family:var(--font-body);padding:13px 30px;border-radius:50px;text-decoration:none;border:none;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(91,33,255,.36);letter-spacing:-.01em}
   .btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(91,33,255,.5)}
@@ -718,6 +723,9 @@
         <li><span class="bicon">✓</span>Mentor đồng hành trong suốt lộ trình học và sau khoá học</li>
         <li><span class="bicon">✓</span>Tư vấn, kết nối và hỗ trợ ứng tuyển các vị trí Data Analyst sau khoá</li>
       </ul>
+      <a class="hero-promo" id="heroPromo" href="#pricing" data-until="2026-11-30">
+        <span>🎁 <b>Đăng ký trong tháng 11: giảm thêm 100K</b> · Ưu đãi sinh viên &amp; học viên cũ giới thiệu <span class="hp-go">Xem học phí →</span></span>
+      </a>
       <div class="hero-actions">
         <a href="https://forms.gle/oWpGhwvcoZVH1M9H8" target="_blank" class="btn-p">   Đăng ký ngay ✦   </a>
         <a href="#tracks" class="btn-s">Xem chương trình →</a>
@@ -1529,6 +1537,10 @@
     for(var i=0;i<kinds.length;i++){if(h.indexOf(kinds[i][0])>-1){gtag('event','cta_click',{cta:kinds[i][1],link_url:h});break;}}
   });
 })();
+</script>
+<script>
+/* Hero promo banner: hidden after its data-until date (end of the November offer) */
+(function(){var el=document.getElementById('heroPromo');if(!el)return;var u=new Date(el.getAttribute('data-until')+'T23:59:59+07:00');if(Date.now()>u.getTime())el.hidden=true;})();
 </script>
 </body>
 </html>
