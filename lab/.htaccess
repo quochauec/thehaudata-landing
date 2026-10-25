@@ -1,3 +1,6 @@
 # Hostinger serves .mjs as text/plain; module scripts need a JavaScript MIME type.
 AddType application/javascript .mjs
 AddType application/wasm .wasm
+
+# Not public yet: keep search engines out until access login is built.
+Header set X-Robots-Tag "noindex, nofollow"
