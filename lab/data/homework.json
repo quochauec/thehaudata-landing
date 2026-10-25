@@ -1,0 +1,1332 @@
+{
+ "lessons": {
+  "2": {
+   "title": "Get into SQL",
+   "sub": "SELECT, WHERE, ORDER BY, TOP, DISTINCT, operators",
+   "ds": "ADW"
+  },
+  "3": {
+   "title": "Combining data",
+   "sub": "JOINs and UNION",
+   "ds": "CRM + ADW"
+  },
+  "4": {
+   "title": "Business metrics",
+   "sub": "CASE WHEN, aggregation, order of execution",
+   "ds": "ADW"
+  },
+  "5": {
+   "title": "Subquery, CTE, window functions",
+   "sub": "Lessons 5 and 6 share one homework",
+   "ds": "ADW"
+  }
+ },
+ "questions": [
+  {
+   "id": "L2-01",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Dòng sản phẩm chủ lực",
+   "story": "Công ty AdventureWork bán những dòng sản phẩm chủ lực gì? (Subcategory, Category)",
+   "hint": null,
+   "approach": [
+    "Tên category nằm ở bảng ADW_Dim_ProductCategory, subcategory ở ADW_Dim_ProductSubCategory.",
+    "Categories: Bikes, Accessories, Clothing, Components."
+   ],
+   "steps": [
+    {
+     "title": "Các Category",
+     "sql": "SELECT DISTINCT ProductCategoryName\nFROM ADW_Dim_ProductCategory"
+    },
+    {
+     "title": "Các Subcategory",
+     "sql": "SELECT DISTINCT ProductSubCategoryName\nFROM ADW_Dim_ProductSubCategory"
+    }
+   ],
+   "check": "open",
+   "graded": 1,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L2-02",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Hoạt động ở đâu",
+   "story": "Công ty Adventurework đang hoạt động ở đâu? nước nào (Country, Territory)?",
+   "hint": null,
+   "approach": [
+    "Thông tin địa lý nằm trong bảng ADW_Dim_Territory."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT TerritoryName, CountryRegionCode, [Group]\nFROM ADW_Dim_Territory"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0,
+    1
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 10,
+     "cols": [
+      "41e7492f078e2b3c",
+      "38b77a3f3dce5783",
+      "a929d486409e38f8"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-03",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Lý do khách chọn AdventureWork",
+   "story": "Khách hàng có những lý do nào để tìm tới công ty AdventureWork?",
+   "hint": null,
+   "approach": [
+    "Lý do mua hàng nằm trong bảng ADW_Dim_Sales_Reason (cột ReasonName)."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT *\nFROM ADW_Dim_Sales_Reason"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    1
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 10,
+     "cols": [
+      "6d314c838ec230f4",
+      "a4e9800eede0bb6a",
+      "75f558398bbc44ef"
+     ],
+     "req": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-04",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Sản phẩm bị set sai giá",
+   "story": "Bạn nhân viên Peter đã set sai giá của một số sản phẩm đã bán ra. Sản phẩm có giá sai được định nghĩa là các sản phẩm giá trị hơn 3500$. Bạn hãy tìm giúp team sản phẩm tìm danh sách đơn hàng có những sản phẩm bị set giá sai?",
+   "hint": null,
+   "approach": [
+    "Sản phẩm đã bán ra: bảng ADW_Sales_orders_detail, chứa giao dịch ở level sản phẩm.",
+    "Giá sản phẩm: cột UnitPrice. Một đơn hàng có thể có nhiều dòng nên cần DISTINCT."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT SalesOrderID\nFROM ADW_Sales_orders_detail\nWHERE UnitPrice > 3500"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 1551,
+     "cols": [
+      "2eb7ef70e73da877"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-05",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Hoàn tiền cho khách 29641",
+   "story": "Khách hàng có ID 29641 mới gọi điện và muốn hoàn tiền lại đơn hàng giao ngày 2013-06-06, bạn kiểm tra giá trị đơn hàng (SubTotal) của khách hàng này để giúp team CS xử lý ticket này nhé?",
+   "hint": null,
+   "approach": [
+    "ID khách hàng: cột CustomerID. Ngày giao hàng: cột ShipDate, trong bảng ADW_Sales_orders.",
+    "Định dạng ngày: yyyy-MM-dd."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT CustomerID, SalesOrderID, OrderDate, SubTotal\nFROM ADW_Sales_orders\nWHERE CustomerID = 29641 AND ShipDate = '2013-06-06'"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    3
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "6a4acc71900ac8f9",
+      "9bb669259e495510",
+      "ca2593c2fba45ac0",
+      "8cf74107275ef6ac"
+     ],
+     "req": [
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-06",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Thẻ lừa đảo đuôi 9916",
+   "story": "Đối tác thẻ mới báo những thẻ có số đuôi 9916 là thẻ lừa đảo. Bạn hãy lấy ra danh sách đơn hàng của những khách hàng có đuôi thẻ này đã đặt hàng ở công ty?",
+   "hint": "Số đuôi thẻ nằm trong cột Card Number, học viên phải làm 2 bước để tìm ra các đơn hàng có số đuôi này.",
+   "approach": [
+    "Bước 1: pattern matching trên CardNumber để lấy ra CreditCardID.",
+    "Bước 2: đơn hàng nào thanh toán bằng thẻ thì có CreditCardID trong bảng Sales Order."
+   ],
+   "steps": [
+    {
+     "title": "Bước 1: tìm thẻ có đuôi 9916",
+     "sql": "SELECT *\nFROM ADW_Dim_CreditCard\nWHERE CardNumber LIKE '%9916'"
+    },
+    {
+     "title": "Bước 2: lấy đơn hàng của các CreditCardID tìm được",
+     "sql": "SELECT DISTINCT SalesOrderID, TotalDue, CreditCardID, CustomerID\nFROM ADW_Sales_orders\nWHERE CreditCardID IN ('166', '6177', '14469')"
+    }
+   ],
+   "check": "auto",
+   "graded": 1,
+   "req": [
+    0
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "0d9c05709107457e",
+      "f42fa86c313e6041",
+      "aded651eb922d670",
+      "e20b7108baa71e75"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-07",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Top 10 standard cost cao nhất",
+   "story": "Team Finance đang muốn rà soát lại chi phí sản xuất của các mặt hàng hiện tại, hãy lấy ra thông tin của top 10 sản phẩm đang có standard cost cao nhất? Tỉ lệ standard cost/list price của các sản phẩm này là bao nhiêu?",
+   "hint": null,
+   "approach": [
+    "Chi phí sản xuất (giá vốn) = StandardCost, nằm trong ADW_Dim_Product.",
+    "Thêm cột tỉ lệ StandardCost/ListPrice."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT TOP 10 *, StandardCost/ListPrice*100 AS Standard_cost_per_listprice_ratio\nFROM ADW_Dim_Product\nORDER BY StandardCost DESC"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    8
+   ],
+   "alts": [],
+   "note": "rows tie on StandardCost at the 10th place, so only the cost column is compared",
+   "specs": [
+    {
+     "n": 10,
+     "cols": [
+      "81b04bb11cc30546",
+      "421495ddcf5cc1a8",
+      "1218c745dcb15c22",
+      "37013d6441bceea6",
+      "37013d6441bceea6",
+      "aea3121b8cedcdaf",
+      "477138ef85bbbc14",
+      "93e053b8f540cf0b",
+      "abf21e6970fbe5bb",
+      "ba79239a588c1354",
+      "71bb642303447f1d",
+      "75806045f8029674",
+      "91921214eef2397b",
+      "6e872f15da069ea9",
+      "e5d06e85e667cf80",
+      "67a96462b5f61154",
+      "9fea06490ca4646a",
+      "08ebdf5db27ab011",
+      "c8c7339b7e4fadf8",
+      "a163cccbb91fcd57",
+      "ccae9c151ee981ff",
+      "ca8ce3b9d7bd9c30"
+     ],
+     "req": [
+      8
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-08",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Khuyến mãi cho Reseller",
+   "story": "Chúng ta đang có những chương trình khuyến mãi nào cho Resellers? (Special OfferID, Description)",
+   "hint": null,
+   "approach": [
+    "Chương trình khuyến mãi: bảng ADW_Dim_SpecialOffer. Chương trình dành cho Reseller: cột Category."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT SpecialOfferID, Description\nFROM ADW_Dim_SpecialOffer\nWHERE Category = 'Reseller'"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 13,
+     "cols": [
+      "6946aaad7462b9d0",
+      "2ba0426095d30db5"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-09",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Hai tệp khách hàng, một câu truy vấn",
+   "story": "Context: Team Customer Research đang muốn làm một nghiên cứu về khách hàng ở các khu vực khác nhau. Hãy giúp team lấy ra thông tin tập khách hàng mua hàng trong năm 2012 thoả 2 điều kiện sau:\n● Khách hàng mua hàng online và Location ở Canada hoặc Pháp và có order value >= 1000$ HOẶC\n● Khách hàng mua hàng offline và Location ở US hoặc Australia và có order value nằm trong khoảng 600$ và 1000$\n● Thông tin cần lấy: CustomerID, Territory ID, Thời gian nhận hàng, order value, Online/Offline Flag.",
+   "hint": "Lưu ý: học viên phải lấy 2 tệp khách hàng này trong 1 câu truy vấn.",
+   "approach": [
+    "Xem trước bảng ADW_Dim_Territory và ghi lại TerritoryID của Canada, France, US, Australia.",
+    "Điều kiện chung (năm 2012) nằm ngoài; hai tệp khách hàng nằm trong hai cụm điều kiện nối bằng OR.",
+    "Order value = TotalDue. OnlineOrderFlag: 1 = online, 0 = offline."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT CustomerID, TerritoryID, OnlineOrderFlag, TotalDue, ShipDate\nFROM ADW_Sales_orders\nWHERE (OrderDate BETWEEN '2012-01-01' AND '2012-12-31')\n  AND (\n        (TerritoryID IN (6,7) AND OnlineOrderFlag = 1 AND TotalDue >= 1000)\n        OR\n        (TerritoryID IN (1,2,3,4,5,9) AND OnlineOrderFlag = 0 AND TotalDue BETWEEN 600 AND 1000)\n      )"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0,
+    3
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 432,
+     "cols": [
+      "b8cd769f5505eaa4",
+      "0a7a6ea9606b0295",
+      "65dce4b36151894b",
+      "069aa5bdfc162ee0",
+      "d50027cfcfd487bf"
+     ],
+     "req": [
+      0,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2-10",
+   "lesson": 2,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Online quý 4 2013 hoặc offline quý 1 2012",
+   "story": "Context: Team Customer Research đang muốn làm một nghiên cứu so sánh giữa các khách hàng mua online và offline. Hãy giúp team lấy ra các tập khách hàng mua hàng trong năm 2012, 2013 thỏa các điều kiện sau:\n○ Khách mua offline trong quý 1 2012 HOẶC\n○ khách hàng mua online trong quý 4 2013\n○ Thông tin cần lấy: CustomerID, Order Year, Order Quarter, Online/Offline Flag",
+   "hint": null,
+   "approach": [
+    "Có nhiều cách lọc quý 1: khoảng ngày, MONTH IN (1,2,3) hoặc DATEPART(QUARTER, ...) = 1.",
+    "Chú ý các nhóm điều kiện lồng nhau khi ghép 2 tệp."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT CustomerID, YEAR(OrderDate) AS OrderYear, DATEPART(QUARTER, OrderDate) AS OrderQuarter, OnlineOrderFlag\nFROM ADW_Sales_orders\nWHERE (OnlineOrderFlag = 0 AND DATEPART(QUARTER, OrderDate) = 1 AND YEAR(OrderDate) = 2012)\n   OR (OnlineOrderFlag = 1 AND DATEPART(QUARTER, OrderDate) = 4 AND YEAR(OrderDate) = 2013)"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0,
+    1,
+    2
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 5445,
+     "cols": [
+      "e83a2b40a4a365cf",
+      "6545418926f47fe6",
+      "5869a5866ca4500a",
+      "a6790755df9674d6"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-01",
+   "lesson": 3,
+   "level": "Easy-Medium",
+   "ds": "crm",
+   "title": "Hợp đồng chốt cao hơn giá bán",
+   "story": "Lấy ra danh sách các hợp đồng có sản phẩm được chốt trong năm 2017 và có giá chốt hợp đồng CAO hơn giá bán của sản phẩm.",
+   "hint": null,
+   "approach": [
+    "Bảng gốc: CRM_sales_pipeline (hợp đồng). Cần thêm giá bán từ CRM_products, nên dùng LEFT JOIN để giữ nguyên thông tin hợp đồng.",
+    "Hợp đồng được chốt: deal_stage = 'Won'."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT t1.*, t2.sales_price\nFROM CRM_sales_pipeline t1\nLEFT JOIN CRM_products t2 ON t1.product = t2.product\nWHERE deal_stage = 'Won'\n  AND t1.close_value > t2.sales_price\n  AND YEAR(close_date) = 2017"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0
+   ],
+   "alts": [],
+   "note": "1674 rows",
+   "specs": [
+    {
+     "n": 1674,
+     "cols": [
+      "a77ea4bfdc344b36",
+      "9150058feb407689",
+      "4ba3739d34fd21ef",
+      "b0a425a8a5729a06",
+      "2280b0b48ac5327e",
+      "40745cf6173ce0e9",
+      "baf667128c23e5ce",
+      "98d81ee5a5167a62",
+      "78420e5f434fce16"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-02",
+   "lesson": 3,
+   "level": "Easy-Medium",
+   "ds": "crm",
+   "title": "Region có deal thất bại đầu năm 2017",
+   "story": "Lấy ra danh sách các region có nhân viên close deal thất bại trong 3 tháng đầu năm 2017.",
+   "hint": null,
+   "approach": [
+    "Bảng gốc: CRM_sales_pipeline. Tên region lấy từ CRM_sales_teams qua sales_agent.",
+    "Thất bại: deal_stage = 'Lost'."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT t2.regional_office\nFROM CRM_sales_pipeline t1\nLEFT JOIN CRM_sales_teams t2 ON t1.sales_agent = t2.sales_agent\nWHERE deal_stage = 'Lost'\n  AND close_date BETWEEN '2017-01-01' AND '2017-03-31'"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "3 rows",
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "09ca1ff1174036c8"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-03",
+   "lesson": 3,
+   "level": "Easy-Medium",
+   "ds": "crm",
+   "title": "Sản phẩm bán cho sector marketing",
+   "story": "Lấy ra danh sách các sản phẩm thuộc sector “marketing” có deal thành công trong năm 2017.",
+   "hint": null,
+   "approach": [
+    "Sector của khách hàng B2B nằm ở bảng CRM_Accounts, nối qua cột account."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT t1.product\nFROM CRM_sales_pipeline t1\nLEFT JOIN CRM_Accounts t2 ON t1.account = t2.account\nWHERE deal_stage = 'Won'\n  AND YEAR(close_date) = 2017\n  AND sector = 'marketing'"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "7 rows",
+   "specs": [
+    {
+     "n": 7,
+     "cols": [
+      "b8f6b088e1b27638"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-04",
+   "lesson": 3,
+   "level": "Easy-Medium",
+   "ds": "crm",
+   "title": "Top 10 hợp đồng thuộc sector nào",
+   "story": "Top 10 hợp đồng đem về doanh thu cao nhất từ trước tới giờ thuộc các sector nào?",
+   "hint": null,
+   "approach": [
+    "Doanh thu hợp đồng: cột close_value. Thông tin sector: tương tự câu 3.",
+    "Đáp án cuối cùng là danh sách sector (6 sector khác nhau)."
+   ],
+   "steps": [
+    {
+     "title": "Top 10 hợp đồng kèm sector",
+     "sql": "SELECT TOP 10 t1.*, t2.sector\nFROM CRM_sales_pipeline t1\nLEFT JOIN CRM_Accounts t2 ON t1.account = t2.account\nWHERE deal_stage = 'Won'\nORDER BY close_value DESC"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    8
+   ],
+   "alts": [
+    "SELECT DISTINCT t2.sector\nFROM (SELECT TOP 10 * FROM CRM_sales_pipeline WHERE deal_stage = 'Won' ORDER BY close_value DESC) t1\nLEFT JOIN CRM_Accounts t2 ON t1.account = t2.account"
+   ],
+   "note": "6 distinct sectors",
+   "specs": [
+    {
+     "n": 10,
+     "cols": [
+      "a0a5d44cda9431c3",
+      "8ed4ea9fe86a78e6",
+      "9614729d3d5dfaf5",
+      "ac32cb3a3410b406",
+      "b9f1f7d83019edfa",
+      "28e24b9fa848ea64",
+      "d8c427876a687f20",
+      "68887c397e67230b",
+      "075fc88e33656b49"
+     ],
+     "req": [
+      8
+     ]
+    },
+    {
+     "n": 6,
+     "cols": [
+      "229b2158ffadc326"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-05",
+   "lesson": 3,
+   "level": "Easy-Medium",
+   "ds": "crm",
+   "title": "Close deal ngắn nhất và dài nhất",
+   "story": "Top 10 hợp đồng có thời gian close deal ngắn nhất và dài nhất là các hợp đồng nào?",
+   "hint": null,
+   "approach": [
+    "Thời gian close deal = close_date - engage_date, dùng DATEDIFF.",
+    "Nhiều hợp đồng có cùng số ngày, nên danh sách top 10 có thể khác nhau giữa các cách viết. Hãy so sánh với kết quả mẫu."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT *, 'Shortest' AS type_\nFROM (\n    SELECT TOP 10 *, DATEDIFF(DAY, engage_date, close_date) AS close_deal_duration\n    FROM CRM_sales_pipeline\n    WHERE LOWER(deal_stage) IN ('won','lost')\n    ORDER BY close_deal_duration ASC\n) t1\nUNION ALL\nSELECT *, 'Longest' AS type_\nFROM (\n    SELECT TOP 10 *, DATEDIFF(DAY, engage_date, close_date) AS close_deal_duration\n    FROM CRM_sales_pipeline\n    WHERE LOWER(deal_stage) IN ('won','lost')\n    ORDER BY close_deal_duration DESC\n) t2"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L3-06",
+   "lesson": 3,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Khách Europe quý 3 2013 trả bằng Vista/SuperiorCard",
+   "story": "Team Payment đang làm survey các khách hàng cho khu vực Europe. Hãy lấy list các khách hàng mua hàng tại Europe trong quý 3 2013, có thanh toán qua thẻ Vista và SuperiorCard. Thông tin cần lấy: CustomerID và Card type.",
+   "hint": "Đối với những case chỉ liên quan đến level đơn hàng, chỉ cần dùng bảng Sales Order là đủ.",
+   "approach": [
+    "Bảng gốc: ADW_Sales_orders. Bổ sung CardType từ ADW_Dim_CreditCard và khu vực từ ADW_Dim_Territory.",
+    "Keys: CreditCardID và TerritoryID. Chú ý kiểu dữ liệu của hai CreditCardID khác nhau: đổi về cùng kiểu (CAST) trước khi JOIN."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT t1.CustomerID, t2.CardType\nFROM ADW_Sales_orders t1\nJOIN ADW_Dim_CreditCard t2\n    ON CAST(t2.CreditCardID AS NVARCHAR) = CAST(t1.CreditCardID AS NVARCHAR)\nJOIN ADW_Dim_Territory t3 ON t3.TerritoryID = t1.TerritoryID\nWHERE [Group] = 'EUROPE'\n  AND DATEPART(QUARTER, OrderDate) = 3\n  AND YEAR(OrderDate) = 2013\n  AND t2.CardType IN ('Vista', 'SuperiorCard')"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 646,
+     "cols": [
+      "f005b90017f0104d",
+      "e3a8576a90fd7735"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-07",
+   "lesson": 3,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Sản phẩm Bikes Black/Silver, giá vốn 1000-1500",
+   "story": "Bạn hãy giúp team Product tìm danh sách các sản phẩm cùng thuộc Category “Bikes\", Màu Black, Silver Và có giá vốn từ 1000$ đến 1500. Đồng thời hãy tính %Cost/List Price của các sản phẩm đó. Thông tin cần lấy: ProductID, ProductName, Standardcost, Standardcost/List Price.",
+   "hint": null,
+   "approach": [
+    "Category nằm ở bảng ADW_Dim_ProductCategory, cách xa bảng sản phẩm 1 bảng subcategory. ProductCategoryID = 1 là Bikes.",
+    "Chú ý unify datatype giữa các key khi JOIN."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT ProductID, ProductName, t2.ProductSubCategoryName, StandardCost, ListPrice,\n       StandardCost/ListPrice AS cost_ratio\nFROM ADW_Dim_Product t1\nLEFT JOIN ADW_Dim_ProductSubCategory t2\n    ON t1.ProductSubcategoryID = CAST(t2.ProductSubcategoryID AS VARCHAR)\nWHERE t2.ProductCategoryID = 1\n  AND Color IN ('Black', 'Silver')\n  AND StandardCost BETWEEN 1000 AND 1500"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0,
+    1
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 6,
+     "cols": [
+      "111c0b863c648c00",
+      "27017a268a9d60ea",
+      "6cd66bc33e61b7fe",
+      "af1a00a4221a9a53",
+      "8d653286b8268fd8",
+      "2072fa740c63e9ab"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-08",
+   "lesson": 3,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Đơn hàng của top 10 khách chi tiêu 2011 và 2012",
+   "story": "Công ty đang muốn tri ân các khách hàng chi tiêu nhiều nhất trong năm 2011 và 2012.\n3.1. Bạn hãy lấy ra tất cả thông tin đơn hàng (OrderID, OrderDate, OrderValue) của top 10 customers có tổng chi tiêu cao nhất của năm 2011 và 2012.",
+   "hint": "Gợi ý: Danh sách customer nằm trong 2 bảng Top_10_spending_cust_2011 và Top_10_spending_cust_2012.",
+   "approach": [
+    "Chỉ muốn lấy đơn hàng của top 10 khách này, nên dùng INNER JOIN theo CustomerID.",
+    "Ghép hai năm bằng UNION."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT SalesOrderID, t1.CustomerID, TotalDue\nFROM ADW_Top_10_spending_cust_2011 t1\nJOIN ADW_Sales_orders t2 ON t1.CustomerID = t2.CustomerID\nUNION\nSELECT SalesOrderID, t1.CustomerID, TotalDue\nFROM ADW_Top_10_spending_cust_2012 t1\nJOIN ADW_Sales_orders t2 ON t1.CustomerID = t2.CustomerID"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 160,
+     "cols": [
+      "70db46c4501ea77c",
+      "4894da99a993d96f",
+      "4fca586ef0f1e0c2"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-09",
+   "lesson": 3,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Khách nằm trong top 10 cả hai năm",
+   "story": "3.2. Có bao nhiêu khách hàng cùng nằm trong top 10 khách hàng có chi tiêu cao nhất ở cả 2 năm?",
+   "hint": null,
+   "approach": [
+    "INNER JOIN hai bảng top 10 theo CustomerID, rồi đếm số dòng."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT t1.*\nFROM ADW_Top_10_spending_cust_2011 t1\nJOIN ADW_Top_10_spending_cust_2012 t2 ON t1.CustomerID = t2.CustomerID"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "6af50503aaf025d2",
+      "a4f059cb115407d1"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-10",
+   "lesson": 3,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Đơn mua vì chất lượng và uy tín nhà cung cấp",
+   "story": "Công ty đang muốn tìm ra các đơn hàng được mua vì lý do \"chất lượng\" và \"uy tín nhà cung cấp\" trong 2 năm 2012, 2013 để phục vụ cho việc nghiên cứu về hành vi mua hàng, hãy giúp công ty lấy ra các đơn hàng thỏa mãn điều kiện này nhé.",
+   "hint": null,
+   "approach": [
+    "Xem ADW_Dim_Sales_Reason để biết tên hai lý do: Quality và Manufacturer.",
+    "Đường nối: Sales_orders → Sales_orders_reasons → Dim_Sales_Reason."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT t1.SalesOrderID, OrderDate, ReasonName\nFROM ADW_Sales_orders t1\nLEFT JOIN ADW_Sales_orders_reasons t2 ON t1.SalesOrderID = t2.SalesOrderID\nLEFT JOIN ADW_Dim_Sales_Reason t3 ON t2.SalesReasonID = t3.SalesReasonID\nWHERE YEAR(OrderDate) IN (2012, 2013)\n  AND ReasonName IN ('Quality', 'Manufacturer')"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    0,
+    2
+   ],
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 1479,
+     "cols": [
+      "fdace7bf1368f156",
+      "8a6261719f010375",
+      "847b5afadf317c8e"
+     ],
+     "req": [
+      0,
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-11",
+   "lesson": 3,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Sản phẩm đơn giá trên 2000$ có Special Offer",
+   "story": "Công ty đang muốn làm một chương trình promotion hướng tới các khách hàng mua đơn giá trị cao, hãy giúp team Business tìm thông tin các sản phẩm đã được bán ra từ trước đến nay và có đơn giá (unit price) trên 2000$ và đang được hưởng Special Offer để điều chỉnh lại scheme khuyến mãi? Thông tin cần lấy: ProductID, ProductName",
+   "hint": null,
+   "approach": [
+    "Bảng gốc: ADW_Sales_orders_detail (sản phẩm đã bán, UnitPrice, SpecialOfferID). Bổ sung ProductName từ ADW_Dim_Product.",
+    "SpecialOfferID = 1 nghĩa là 'No Discount', nên đang hưởng Special Offer là SpecialOfferID != 1."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT t1.ProductID, ProductName\nFROM ADW_Sales_orders_detail t1\nLEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\nWHERE SpecialOfferID != 1 AND UnitPrice > 2000"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 9,
+     "cols": [
+      "fa089c318df11a11",
+      "8b289e2e1016ae5a"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3-12",
+   "lesson": 3,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Bikes và Clothing có Volume Discount",
+   "story": "Category \"Bikes\" và \"Clothing\" là 2 category đang được planning để chạy cross sale cùng nhau. Bạn hãy giúp team Product tìm TÊN các sản phẩm thuộc Category \"Bikes\" và \"Clothing\" và đang được hưởng khuyến mãi “Volume Discount”.",
+   "hint": null,
+   "approach": [
+    "Cách làm tương tự câu 11. Category: 1 = Bikes, 3 = Clothing. Loại khuyến mãi nằm ở cột Type của ADW_Dim_SpecialOffer."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT DISTINCT t11.ProductName\nFROM ADW_Sales_orders_detail t1\nLEFT JOIN ADW_Dim_Product t11 ON t1.ProductID = t11.ProductID\nLEFT JOIN ADW_Dim_ProductSubCategory t2\n    ON CAST(t11.ProductSubcategoryID AS VARCHAR) = CAST(t2.ProductSubcategoryID AS VARCHAR)\nLEFT JOIN ADW_Dim_SpecialOffer t5 ON t1.SpecialOfferID = t5.SpecialOfferID\nWHERE t2.ProductCategoryID IN (1, 3)\n  AND t5.[Type] = 'Volume Discount'"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 72,
+     "cols": [
+      "6df3312795f9eb23"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L4-01",
+   "lesson": 4,
+   "level": "Easy-Medium",
+   "ds": "adw",
+   "title": "Report doanh thu, lợi nhuận theo tháng",
+   "story": "BOD đang muốn làm một report overall về doanh thu, lợi nhuận và biên lợi nhuận, số khách hàng theo monthly/yearly trong 4 năm công ty hoạt động. Hãy giúp BOD thực hiện view report này nhé.",
+   "hint": null,
+   "approach": [
+    "Metrics: Revenue, Profit, Profit Margin, Customers. Dimensions: Year, Month.",
+    "Revenue = LineTotal (đã trừ khuyến mãi). Profit = Revenue - Product Cost (OrderQty × StandardCost). Margin = Profit/Revenue.",
+    "Cách định nghĩa metric có thể khác nhau, nên hãy so sánh logic với kết quả mẫu."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT YEAR(OrderDate) AS OrderYear,\n       MONTH(OrderDate) AS OrderMonth,\n       SUM(LineTotal) AS Revenue,\n       SUM(t1.OrderQty*t3.StandardCost) AS Product_Cost,\n       SUM(LineTotal - t1.OrderQty*t3.StandardCost) AS Profit,\n       SUM(LineTotal - t1.OrderQty*t3.StandardCost)/SUM(LineTotal) AS Profit_margin,\n       COUNT(DISTINCT CustomerID) AS num_customers\nFROM ADW_Sales_orders_detail t1\nLEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\nLEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\nGROUP BY YEAR(OrderDate), MONTH(OrderDate)\nORDER BY OrderYear, OrderMonth"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L4-02",
+   "lesson": 4,
+   "level": "Easy-Medium",
+   "ds": "adw",
+   "title": "Performance theo country",
+   "story": "BOD đang muốn làm một report overall về doanh thu, lợi nhuận, số khách hàng theo country trong 4 năm công ty hoạt động. Đâu là country có performance tốt và ổn định nhất? Hãy giúp BOD thực hiện view report này nhé.",
+   "hint": null,
+   "approach": [
+    "Các bảng: sales order detail, sales order, dim product, dim territory.",
+    "Metrics: Revenue, Profit, Customers, Profit Margin. Dimensions: Year, Country."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT YEAR(t2.OrderDate) AS OrderYear,\n       t4.CountryRegionCode,\n       SUM(LineTotal) AS Revenue,\n       SUM(LineTotal - t1.OrderQty*t3.StandardCost) AS Profit,\n       SUM(LineTotal - t1.OrderQty*t3.StandardCost)/SUM(LineTotal) AS Profit_margin,\n       COUNT(DISTINCT CustomerID) AS num_customers\nFROM ADW_Sales_orders_detail t1\nLEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\nLEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\nLEFT JOIN ADW_Dim_Territory t4 ON t2.TerritoryID = t4.TerritoryID\nGROUP BY YEAR(t2.OrderDate), t4.CountryRegionCode\nORDER BY CountryRegionCode, OrderYear"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L4-03",
+   "lesson": 4,
+   "level": "Easy-Medium",
+   "ds": "adw",
+   "title": "Doanh thu theo phương thức thanh toán",
+   "story": "Doanh thu theo các phương thức thanh toán ở từng quốc gia hiện tại đang như thế nào?",
+   "hint": null,
+   "approach": [
+    "Metrics: Revenue. Dimensions: Payment Method, Country.",
+    "Đơn không có thẻ (CreditCardID là 'NULL' hoặc rỗng) được xem là thanh toán tiền mặt (Cash)."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT t2.CountryRegionCode AS Country,\n       CASE WHEN t1.CreditCardID = 'NULL' OR t1.CreditCardID = '' THEN 'Cash' ELSE CardType END AS PaymentMethod,\n       SUM(TotalDue) AS Revenue\nFROM ADW_Sales_orders t1\nLEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID\nLEFT JOIN ADW_Dim_CreditCard t3 ON CAST(t1.CreditCardID AS VARCHAR) = CAST(t3.CreditCardID AS VARCHAR)\nGROUP BY t2.CountryRegionCode,\n         CASE WHEN t1.CreditCardID = 'NULL' OR t1.CreditCardID = '' THEN 'Cash' ELSE CardType END\nORDER BY Country, Revenue DESC"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L4-04",
+   "lesson": 4,
+   "level": "Easy-Medium",
+   "ds": "adw",
+   "title": "Tỉ lệ doanh thu kênh Online 2013 và 2014",
+   "story": "Hãy so sánh tỉ lệ về doanh thu của channel Online ở các nước trong năm 2013 và 2014? Kênh online đang perform tốt nhất ở đâu?",
+   "hint": "Gợi ý: Học viên nên dùng conditional aggregation để tính tỷ lệ doanh thu online so với tổng đơn hàng.",
+   "approach": [
+    "Metrics: Online Revenue, Total Revenue, Online Revenue Ratio. Dimensions: Country, Year.",
+    "Conditional aggregation: SUM(CASE WHEN OnlineOrderFlag = 1 THEN ... END)."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT YEAR(t1.OrderDate) AS year,\n       t2.CountryRegionCode AS Country,\n       SUM(CASE WHEN t1.OnlineOrderFlag = 1 THEN TotalDue ELSE 0 END) AS Online_Revenue,\n       SUM(TotalDue) AS Total_Revenue,\n       SUM(CASE WHEN t1.OnlineOrderFlag = 1 THEN TotalDue ELSE 0 END)*100.00/SUM(TotalDue) AS Online_Revenue_Pct\nFROM ADW_Sales_orders t1\nLEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID\nWHERE YEAR(t1.OrderDate) IN (2013, 2014)\nGROUP BY t2.CountryRegionCode, YEAR(t1.OrderDate)\nORDER BY year, Online_Revenue_Pct DESC"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L4-05",
+   "lesson": 4,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Weekdays và weekend tại US",
+   "story": "Công ty đang muốn so sánh performance bán hàng giữa ngày trong tuần và ngày cuối tuần tại US. Bạn hãy so sánh số lượng sản phẩm bán ra (Quantity) trung bình/ngày và trung bình/từng khách hàng tại các Territory của US theo weekdays vs weekend.\nCâu hỏi phân tích: Bạn có nhận xét gì từ số liệu đã lấy ra?",
+   "hint": "Gợi ý: Dùng hàm Datepart + CASE WHEN để phân loại ngày thành weekdays & weekend.",
+   "approach": [
+    "Trong SQL Server, DATEPART(weekday, ...) trả về 1 cho Chủ nhật và 7 cho Thứ bảy, nên weekend là (1, 7).",
+    "Tử số: OrderQty. Mẫu số: số ngày và số khách hàng. Dimensions: TerritoryName và loại ngày."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT TerritoryName,\n       CASE WHEN DATEPART(weekday, OrderDate) IN (1,7) THEN 'Weekends' ELSE 'Weekdays' END AS DOW_type,\n       SUM(t0.OrderQty*1.00)/COUNT(DISTINCT CAST(OrderDate AS DATE)) AS avg_daily_quantity,\n       SUM(t0.OrderQty*1.00)/COUNT(DISTINCT CustomerID) AS avg_quantity_per_cust,\n       COUNT(DISTINCT OrderDate) AS num_days\nFROM ADW_Sales_orders_detail t0\nLEFT JOIN ADW_Sales_orders t1 ON t0.SalesOrderID = t1.SalesOrderID\nLEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID\nWHERE CountryRegionCode = 'US'\nGROUP BY t2.TerritoryName,\n         CASE WHEN DATEPART(weekday, OrderDate) IN (1,7) THEN 'Weekends' ELSE 'Weekdays' END\nORDER BY TerritoryName, DOW_type"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L4-06",
+   "lesson": 4,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Hành vi mua hàng US và EU",
+   "story": "Team Customer research muốn phân tích về hành vi mua hàng của khách hàng ở US vs EU. Hãy so sánh tần suất mua hàng và số lượng sản phẩm trung bình/đơn hàng của khách hàng tại 2 location này? Location nào đang có performance tốt hơn?",
+   "hint": null,
+   "approach": [
+    "Metrics: OrderFrequency (số đơn/khách hàng), AvgQtyPerOrder. Dimension: Region (EU hoặc US).",
+    "Nhân với 1.00 để tránh chia số nguyên."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT YEAR(OrderDate) AS OrderYear,\n       CASE WHEN [Group] = 'Europe' THEN 'EU' ELSE 'US' END AS Region,\n       COUNT(DISTINCT t1.SalesOrderID)*1.00/COUNT(DISTINCT CustomerID) AS OrderFrequency,\n       SUM(t1.OrderQty)*1.00/COUNT(DISTINCT t1.SalesOrderID) AS AvgQtyPerOrder\nFROM ADW_Sales_orders_detail t1\nLEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\nLEFT JOIN ADW_Dim_Territory t3 ON t2.TerritoryID = t3.TerritoryID\nWHERE [Group] = 'Europe' OR CountryRegionCode = 'US'\nGROUP BY YEAR(OrderDate), CASE WHEN [Group] = 'Europe' THEN 'EU' ELSE 'US' END\nORDER BY OrderYear, Region"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L4-07",
+   "lesson": 4,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Nên đẩy bán category nào ở EU",
+   "story": "Nếu công ty muốn tập trung đẩy bán 1 category ở EU thì nên tập trung bán Category nào?",
+   "hint": "Gợi ý: Đây là câu hỏi mở, học viên nên xem xét câu hỏi theo nhiều hơn 1 khía cạnh, ví dụ: xét theo đóng góp về doanh thu/lợi nhuận & %profit margin...",
+   "approach": [
+    "Khi đề bài không nêu rõ metric, hãy dựa vào business sense: Revenue, Profit, Profit Margin, Orders.",
+    "Dimension: ProductCategoryName, lọc khu vực Europe."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT ProductCategoryName,\n       SUM(LineTotal) AS Revenue,\n       SUM(LineTotal) - SUM(t3.StandardCost*t1.OrderQty) AS Profit,\n       (SUM(LineTotal) - SUM(t3.StandardCost*t1.OrderQty))/SUM(LineTotal) AS Profit_margin,\n       COUNT(DISTINCT t1.SalesOrderID) AS Orders,\n       SUM(LineTotal)/COUNT(DISTINCT t1.SalesOrderID) AS AOV\nFROM ADW_Sales_orders_detail t1\nLEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\nLEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\nLEFT JOIN ADW_Dim_ProductSubCategory t4 ON t3.ProductSubcategoryID = CAST(t4.ProductSubcategoryID AS VARCHAR)\nLEFT JOIN ADW_Dim_ProductCategory t5 ON CAST(t4.ProductCategoryID AS VARCHAR) = CAST(t5.ProductCategoryID AS VARCHAR)\nLEFT JOIN ADW_Dim_Territory t6 ON t2.TerritoryID = t6.TerritoryID\nWHERE [Group] = 'Europe'\nGROUP BY ProductCategoryName"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-01",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Khách có AOV cao hơn AOV của US",
+   "story": "Công ty đang muốn target vào những khách hàng có giá trị trung bình đơn hàng (Average Order Value - AOV) lớn hơn giá trị trung bình đơn hàng của khách hàng mua tại US. Mục đích để phân tích hành vi mua hàng nhằm mục đích tăng AOV trên mỗi đơn hàng. Hãy lấy ra các khách hàng thỏa mãn tiêu chí này?",
+   "hint": "Gợi ý: AOV = Total GMV (Sum Order Value of all orders)/Number of orders.",
+   "approach": [
+    "Bước 1: tính điều kiện AOV của khách US, ra một con số duy nhất (scalar).",
+    "Bước 2: ghép điều kiện đó vào truy vấn chính, bằng Subquery hoặc CTE.",
+    "'Order value' có thể là SubTotal hoặc TotalDue, nên danh sách khách có thể khác nhau một chút giữa các cách làm."
+   ],
+   "steps": [
+    {
+     "title": "CTE",
+     "sql": "WITH AOV_in_US AS (\n    SELECT SUM(SubTotal)*1.00/COUNT(SalesOrderID) AS AOV_US\n    FROM ADW_Sales_orders t1\n    LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID\n    WHERE CountryRegionCode = 'US'\n),\nAOV_all AS (\n    SELECT CustomerID, SUM(SubTotal)*1.00/COUNT(SalesOrderID) AS AOV\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n)\nSELECT *\nFROM AOV_all\nWHERE AOV > (SELECT * FROM AOV_in_US)\nORDER BY AOV DESC"
+    },
+    {
+     "title": "Subquery",
+     "sql": "SELECT CustomerID, SUM(SubTotal)*1.00/COUNT(SalesOrderID) AS AOV\nFROM ADW_Sales_orders\nGROUP BY CustomerID\nHAVING SUM(SubTotal)*1.00/COUNT(SalesOrderID) >\n(\n    SELECT SUM(SubTotal)*1.00/COUNT(SalesOrderID)\n    FROM ADW_Sales_orders t1\n    LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID\n    WHERE CountryRegionCode = 'US'\n)\nORDER BY AOV DESC"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-02",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Ba nhóm khách Bikes và Clothing",
+   "story": "Hãy lấy ra danh sách khách hàng theo 3 nhóm tiêu chí bên dưới và so sánh giá trị trung bình đơn hàng (AOV) khi mua 2 sản phẩm Bikes + Clothing của những khách hàng này.\n● Nhóm 1: chỉ mua các sản phẩm thuộc category Bikes.\n● Nhóm 2: mua các sản phẩm thuộc cả 2 category Bikes và category Clothing.\n● Nhóm 3: chỉ mua các sản phẩm thuộc category Clothing.",
+   "hint": null,
+   "approach": [
+    "Bước 1: conditional aggregation để đếm số đơn Bikes và Clothing của từng khách.",
+    "Bước 2: dùng CASE WHEN phân loại khách thành 3 nhóm.",
+    "Bước 3: tính AOV của từng nhóm. Nên tách thành các CTE có thể tái sử dụng."
+   ],
+   "steps": [
+    {
+     "sql": "WITH order_stats AS (\n    SELECT CustomerID,\n           SUM(LineTotal) AS TotalSpending,\n           COUNT(DISTINCT t1.SalesOrderID) AS Total_orders,\n           COUNT(DISTINCT CASE WHEN ProductCategoryName = 'Bikes' THEN t1.SalesOrderID END) AS Bikes_orders,\n           COUNT(DISTINCT CASE WHEN ProductCategoryName = 'Clothing' THEN t1.SalesOrderID END) AS Clothing_orders\n    FROM ADW_Sales_orders_detail t1\n    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\n    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON t3.ProductSubcategoryID = CAST(t4.ProductSubcategoryID AS NVARCHAR)\n    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID\n    WHERE ProductCategoryName IN ('Bikes', 'Clothing')\n    GROUP BY CustomerID\n),\ncustomer_group_tab AS (\n    SELECT *,\n           CASE WHEN Bikes_orders > 0 AND Clothing_orders = 0 THEN '1. Bikes Only'\n                WHEN Bikes_orders = 0 AND Clothing_orders > 0 THEN '2. Clothing Only'\n                WHEN Bikes_orders > 0 AND Clothing_orders > 0 THEN '3. Bikes & Clothing'\n           END AS customer_groups\n    FROM order_stats\n)\nSELECT customer_groups, CustomerID, SUM(TotalSpending)/SUM(Total_orders) AS AOV\nFROM customer_group_tab\nGROUP BY CustomerID, customer_groups"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-03",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Tăng trưởng doanh thu YoY theo country",
+   "story": "Hãy tính tỉ lệ tăng trưởng doanh thu hằng năm (%YOY growth) theo từng country trong giai đoạn 2012-2014, đâu là country có tốc độ tăng trưởng về doanh tốt nhất trong giai đoạn đang xét?",
+   "hint": null,
+   "approach": [
+    "Expected: year, country, current_year_rev, last_year_rev, yoy_rev.",
+    "Cách 1 (ít tối ưu hơn): CTE + self join với unequal join (OrderYear = OrderYear + 1). Cách 2: dùng window function LAG.",
+    "Hai cách trên dùng hai định nghĩa doanh thu khác nhau (SubTotal và LineTotal), nên con số hơi khác nhau."
+   ],
+   "steps": [
+    {
+     "title": "Cách 1: CTE + self join",
+     "sql": "WITH country_revenue_by_year AS (\n    SELECT YEAR(OrderDate) AS OrderYear, CountryRegionCode, SUM(SubTotal) AS Revenue\n    FROM ADW_Sales_orders t1\n    LEFT JOIN ADW_Dim_Territory t5 ON t1.TerritoryID = t5.TerritoryID\n    GROUP BY YEAR(OrderDate), CountryRegionCode\n)\nSELECT t1.*,\n       t2.Revenue AS previous_year_revenue,\n       CASE WHEN t2.Revenue IS NOT NULL THEN t1.Revenue/t2.Revenue - 1 ELSE 0 END AS YOY_growth\nFROM country_revenue_by_year t1\nLEFT JOIN country_revenue_by_year t2\n       ON t1.CountryRegionCode = t2.CountryRegionCode\n      AND t1.OrderYear = t2.OrderYear + 1\nWHERE t1.OrderYear BETWEEN 2012 AND 2014\nORDER BY CountryRegionCode DESC, OrderYear"
+    },
+    {
+     "title": "Cách 2: window function LAG",
+     "sql": "WITH Country_Revenue AS (\n    SELECT T3.CountryRegionCode AS Country, YEAR(T1.OrderDate) AS OrderYear, SUM(T2.LineTotal) AS CurentRevenue\n    FROM ADW_Sales_orders T1\n    LEFT JOIN ADW_Sales_orders_detail T2 ON T1.SalesOrderID = T2.SalesOrderID\n    INNER JOIN ADW_Dim_Territory T3 ON T1.TerritoryID = T3.TerritoryID\n    WHERE YEAR(T1.OrderDate) BETWEEN 2011 AND 2014\n    GROUP BY T3.CountryRegionCode, YEAR(T1.OrderDate)\n),\nCountry_Revenue_Add AS (\n    SELECT *, LAG(CurentRevenue) OVER (PARTITION BY Country ORDER BY OrderYear) AS PreviousRevenue\n    FROM Country_Revenue\n)\nSELECT Country, OrderYear, CurentRevenue, (CurentRevenue/PreviousRevenue) - 1 AS YOYGrowthPercentage\nFROM Country_Revenue_Add\nWHERE OrderYear BETWEEN 2012 AND 2014\nORDER BY Country, OrderYear"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-04",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Subcategory có promotion cost tăng 2 năm liên tiếp",
+   "story": "Công ty đang muốn review lại tổng chi phí khuyến mãi của các subcategory. Hãy lấy ra danh sách subcategory có tổng chi phí khuyến mãi tăng trong 2 năm liên tiếp? Gợi ý: Tương tự câu 3",
+   "hint": null,
+   "approach": [
+    "Metrics: promotion cost năm hiện tại, năm kế tiếp, 2 năm kế tiếp. Dimension: Year, Subcategory.",
+    "Promotion cost = UnitPriceDiscount × UnitPrice × OrderQty. Cách 1: CTE + self join. Cách 2: LEAD()."
+   ],
+   "steps": [
+    {
+     "title": "Cách 2: LEAD",
+     "sql": "WITH promotion_cost_by_year_sub_cate AS (\n    SELECT YEAR(OrderDate) AS OrderYear,\n           ProductSubCategoryName,\n           SUM(UnitPriceDiscount*UnitPrice*OrderQty) AS Total_promo_cost_current_year\n    FROM ADW_Sales_orders_detail t1\n    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\n    LEFT JOIN ADW_Dim_ProductSubCategory t4\n        ON CAST(T3.ProductSubcategoryID AS VARCHAR) = CAST(T4.ProductSubcategoryID AS VARCHAR)\n    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID\n    GROUP BY YEAR(OrderDate), ProductSubCategoryName\n    HAVING SUM(UnitPriceDiscount*UnitPrice*OrderQty) > 0\n),\nYearGrowth AS (\n    SELECT *,\n           LEAD(Total_promo_cost_current_year, 1) OVER (PARTITION BY ProductSubCategoryName ORDER BY OrderYear) AS Promo_cost_next_1_year,\n           LEAD(Total_promo_cost_current_year, 2) OVER (PARTITION BY ProductSubCategoryName ORDER BY OrderYear) AS Promo_cost_next_2_year\n    FROM promotion_cost_by_year_sub_cate\n)\nSELECT *\nFROM YearGrowth\nWHERE Total_promo_cost_current_year > 0\n  AND Promo_cost_next_1_year > Total_promo_cost_current_year\n  AND Promo_cost_next_2_year > Promo_cost_next_1_year"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": [
+    1
+   ],
+   "alts": [],
+   "note": "Caps, Helmets, Jerseys",
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "7edb6cbaf56945be",
+      "585f7cf35fe627de",
+      "4c2cdbe1c686dfd3",
+      "7710acd5d2d47b4b",
+      "d023b28094b64bf3"
+     ],
+     "req": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L5-05",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Doanh thu lũy tiến theo category",
+   "story": "Công ty đang muốn review lại doanh thu lũy tiến (accumulated revenue) của các category theo từng tháng trong mỗi năm? Bạn hãy giúp team tính toán và tổng hợp view báo cáo này.",
+   "hint": "Gợi ý: Học viên nên sử dụng nhóm aggregation window functions.",
+   "approach": [
+    "Expected output: Year, month, category, revenue, acc_revenue.",
+    "Window: PARTITION BY ProductCategoryName, OrderYear. Sắp xếp: ORDER BY OrderMonth. Hàm: SUM."
+   ],
+   "steps": [
+    {
+     "sql": "WITH monthly_rev_by_cate AS (\n    SELECT YEAR(OrderDate) AS OrderYear,\n           MONTH(OrderDate) AS OrderMonth,\n           ProductCategoryName AS Category,\n           SUM(LineTotal) AS Revenue\n    FROM ADW_Sales_orders_detail t1\n    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\n    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON CAST(t3.ProductSubcategoryID AS VARCHAR) = CAST(t4.ProductSubcategoryID AS VARCHAR)\n    LEFT JOIN ADW_Dim_ProductCategory AS t5 ON t4.ProductCategoryID = t5.ProductCategoryID\n    GROUP BY YEAR(OrderDate), MONTH(OrderDate), ProductCategoryName\n)\nSELECT OrderYear, OrderMonth, Category,\n       Revenue AS MonthlyRevenue,\n       SUM(Revenue) OVER (PARTITION BY OrderYear, Category ORDER BY OrderMonth) AS AccumulatedRevenue\nFROM monthly_rev_by_cate"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-06",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Sản phẩm bán chạy nhất theo country",
+   "story": "Hãy tìm ra các sản phẩm có số lượng sản phẩm bán ra cao nhất trong từng Country?",
+   "hint": null,
+   "approach": [
+    "Bước 1: CTE cơ sở gồm ProductName, Country, Product_sold.",
+    "Bước 2: window function RANK()/DENSE_RANK() với PARTITION BY Country, ORDER BY Product_sold DESC, rồi lấy hạng 1."
+   ],
+   "steps": [
+    {
+     "sql": "WITH product_sold_by_product_country AS (\n    SELECT ProductName, CountryRegionCode AS Country, SUM(OrderQty) AS Product_sold\n    FROM ADW_Sales_orders_detail T1\n    LEFT JOIN ADW_Sales_orders T2 ON T1.SalesOrderID = T2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product T3 ON T1.ProductID = T3.ProductID\n    LEFT JOIN ADW_Dim_Territory t4 ON t2.TerritoryID = t4.TerritoryID\n    GROUP BY ProductName, CountryRegionCode\n)\nSELECT ProductName, Country, Product_sold\nFROM (\n    SELECT *, RANK() OVER (PARTITION BY Country ORDER BY Product_sold DESC) AS Product_sold_ranking\n    FROM product_sold_by_product_country\n) t\nWHERE t.Product_sold_ranking = 1"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": [
+    {
+     "n": 6,
+     "cols": [
+      "7889f81638263b30",
+      "ba0316674a39f196",
+      "8dc9e8cdfd69bec8"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L5-07",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Tăng trưởng MoM theo category",
+   "story": "Hãy giúp team business tính tốc độ tăng trưởng doanh thu theo từng tháng (MoM) của từng category qua các năm. Lưu ý: Logic của câu này sẽ cover được trường hợp: Tháng 1 năm nay, phải so sánh với tháng 12 năm liền trước để tính tốc độ tăng trưởng MoM.",
+   "hint": null,
+   "approach": [
+    "Window: PARTITION BY ProductCategoryName. Sắp xếp: ORDER BY OrderYear, OrderMonth (để tháng 1 so với tháng 12 năm trước). Hàm: LAG.",
+    "MoM = Revenue / prev_month_revenue - 1."
+   ],
+   "steps": [
+    {
+     "sql": "WITH Revenue_by_cate_month AS (\n    SELECT ProductCategoryName, YEAR(OrderDate) AS OrderYear, MONTH(OrderDate) AS OrderMonth, SUM(LineTotal) AS Revenue\n    FROM ADW_Sales_orders_detail t1\n    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\n    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON TRY_CAST(t3.ProductSubcategoryID AS INT) = t4.ProductSubcategoryID\n    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID\n    GROUP BY ProductCategoryName, MONTH(OrderDate), YEAR(OrderDate)\n),\nRevenue_Prev_month AS (\n    SELECT *, LAG(Revenue) OVER (PARTITION BY ProductCategoryName ORDER BY OrderYear, OrderMonth) AS prev_month_revenue\n    FROM Revenue_by_cate_month\n)\nSELECT *,\n       CASE WHEN prev_month_revenue IS NULL THEN 0 ELSE Revenue/prev_month_revenue - 1 END AS MoM_growth\nFROM Revenue_Prev_month"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-08",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Khách chi tiêu trên median của Clothing",
+   "story": "Hãy tìm ra các khách hàng có tổng chi tiêu tại tất cả category cao hơn mốc 50th percentile về chi tiêu của khách hàng mua Category Clothing.",
+   "hint": "Gợi ý:\n● Bước 1: Tìm ra mốc 50th percentile về chi tiêu của các khách hàng trong category Clothing (expected output: 1 con số) => sử dụng hàm PERCENT_RANK()\n● Bước 2: Tính tổng chi tiêu tại tất cả category & kẹp thêm điều kiện từ step 1 để tìm ra list khách hàng thỏa mãn điều kiện đề bài.",
+   "approach": [
+    "Base CTE: CustomerID, CategoryName, Spending.",
+    "Window: PERCENT_RANK() OVER (ORDER BY Spending) chỉ trên category Clothing; mốc 50th là giá trị Spending nhỏ nhất có spending_pct >= 0.5."
+   ],
+   "steps": [
+    {
+     "sql": "WITH Customers_spending AS (\n    SELECT CustomerID, ProductCategoryName, SUM(LineTotal) AS Spending\n    FROM ADW_Sales_orders_detail t1\n    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\n    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON CAST(t3.ProductSubcategoryID AS VARCHAR) = CAST(t4.ProductSubcategoryID AS VARCHAR)\n    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID\n    GROUP BY CustomerID, ProductCategoryName\n),\nclothing_spending_pct_rank AS (\n    SELECT *, PERCENT_RANK() OVER (ORDER BY Spending) AS spending_pct\n    FROM Customers_spending\n    WHERE ProductCategoryName = 'Clothing'\n),\nspending_condition AS (\n    SELECT MIN(Spending) AS P50_clothing_spending\n    FROM clothing_spending_pct_rank\n    WHERE spending_pct >= 0.5\n)\nSELECT CustomerID, SUM(Spending) AS total_spending_all_cate\nFROM Customers_spending\nGROUP BY CustomerID\nHAVING SUM(Spending) > (SELECT * FROM spending_condition)\nORDER BY total_spending_all_cate"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-09",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Phương thức thanh toán phổ biến nhất",
+   "story": "Đâu là phương thức thanh toán phổ biến nhất xét theo tiêu chi số lượng đơn hàng trong từng country và từng năm? Nếu xét theo tiêu chí là tổng doanh thu thì thứ tự các phương thức thanh toán phổ biến nhất có thay đổi không?",
+   "hint": null,
+   "approach": [
+    "Base CTE: Year, Country, PaymentMethod, Orders, Revenue.",
+    "Window: PARTITION BY Country, OrderYear. DENSE_RANK() theo Orders và theo Revenue, rồi so sánh hai thứ hạng."
+   ],
+   "steps": [
+    {
+     "sql": "WITH payment_base AS (\n    SELECT YEAR(OrderDate) AS OrderYear,\n           CountryRegionCode AS Country,\n           CASE WHEN CardType IS NULL THEN 'Cash' ELSE CardType END AS PaymentMethod,\n           COUNT(DISTINCT SalesOrderID) AS Orders,\n           SUM(SubTotal) AS Revenue\n    FROM ADW_Sales_orders t1\n    LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID\n    LEFT JOIN ADW_Dim_CreditCard t3 ON t1.CreditCardID = CAST(t3.CreditCardID AS VARCHAR)\n    GROUP BY YEAR(OrderDate), CountryRegionCode, CASE WHEN CardType IS NULL THEN 'Cash' ELSE CardType END\n),\nranking_base AS (\n    SELECT *,\n           DENSE_RANK() OVER (PARTITION BY Country, OrderYear ORDER BY Orders DESC) AS RankByOrders,\n           DENSE_RANK() OVER (PARTITION BY Country, OrderYear ORDER BY Revenue DESC) AS RankByRevenue\n    FROM payment_base\n)\nSELECT *,\n       CASE WHEN RankByOrders = 1 AND RankByRevenue = 1 THEN '1. Top By BOTH'\n            WHEN RankByOrders = 1 AND RankByRevenue > 1 THEN '2. Top By Orders'\n            ELSE '3. Top By Revenue' END AS group_ranking\nFROM ranking_base\nWHERE RankByOrders = 1 OR RankByRevenue = 1"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  },
+  {
+   "id": "L5-10",
+   "lesson": 5,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Top 5 sản phẩm hưởng khuyến mãi theo Territory",
+   "story": "Công ty đang muốn review lại toàn bộ chương trình khuyến mãi của từng Territory, hãy cho team biết Top 5 sản phẩm có tỉ lệ số lượng sản phẩm bán ra được hưởng khuyến mãi cao nhất của từng Territory qua các năm.",
+   "hint": null,
+   "approach": [
+    "Base CTE: Territory, ProductName, ProductSold, ProductSold with promotion, % sold with promotion.",
+    "Window: PARTITION BY TerritoryName, ORDER BY % DESC, DENSE_RANK() rồi lấy hạng <= 5."
+   ],
+   "steps": [
+    {
+     "sql": "WITH quantity_by_product_territory AS (\n    SELECT TerritoryName,\n           ProductName,\n           SUM(OrderQty) AS product_sold,\n           SUM(CASE WHEN t1.UnitPriceDiscount > 0 THEN OrderQty ELSE 0 END) AS product_sold_with_promotion,\n           SUM(CASE WHEN t1.UnitPriceDiscount > 0 THEN OrderQty ELSE 0 END)*1.00/SUM(OrderQty) AS product_sold_with_promotion_pct\n    FROM ADW_Sales_orders_detail t1\n    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\n    LEFT JOIN ADW_Dim_Territory t6 ON t2.TerritoryID = t6.TerritoryID\n    GROUP BY TerritoryName, ProductName\n)\nSELECT *\nFROM (\n    SELECT *, DENSE_RANK() OVER (PARTITION BY TerritoryName ORDER BY product_sold_with_promotion_pct DESC) AS pct_promo_rank\n    FROM quantity_by_product_territory\n) t\nWHERE pct_promo_rank <= 5"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": null,
+   "specs": []
+  }
+ ]
+}

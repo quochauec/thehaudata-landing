@@ -1,0 +1,123 @@
+"""T-SQL -> DuckDB for the practice site. Shared by tools/dialect_test.py (CPython) and index.html (Pyodide).
+
+sqlglot does the dialect translation. On top of that we attach column types from the dataset schema so that
+T-SQL string concatenation with + can be rewritten as ||. Output column names keep the author's casing.
+"""
+import sqlglot
+from sqlglot import exp
+from sqlglot.optimizer.annotate_types import annotate_types
+
+_TEXT = exp.DataType.TEXT_TYPES
+
+
+def _scope_tables(select):
+    """alias(lower) -> table(lower) for the FROM/JOIN entries of one SELECT."""
+    out = {}
+    nodes = [select.args.get("from_") or select.args.get("from")] + list(select.args.get("joins") or [])
+    for n in nodes:
+        if n is None:
+            continue
+        for t in n.find_all(exp.Table):
+            if t.find_ancestor(exp.Select) is not select:
+                continue
+            out[(t.alias or t.name).lower()] = t.name.lower()
+    return out
+
+
+def _attach_types(tree, schema):
+    sch = {t.lower(): {c.lower(): ty for c, ty in cols.items()} for t, cols in schema.items()}
+    for select in tree.find_all(exp.Select):
+        tables = _scope_tables(select)
+        for col in select.find_all(exp.Column):
+            if col.find_ancestor(exp.Select) is not select:
+                continue
+            cname = col.name.lower()
+            cands = [tables.get(col.table.lower())] if col.table else list(tables.values())
+            for t in cands:
+                ty = sch.get(t, {}).get(cname) if t else None
+                if ty:
+                    col.type = exp.DataType.build(ty, dialect="duckdb")
+                    break
+
+
+def _sqlserver_semantics(tree):
+    """Make DuckDB behave like SQL Server where the difference shows up in student answers."""
+    for t in tree.find_all(exp.Table):  # dbo.Table, [dbo].[Table], Db.dbo.Table -> Table
+        if t.args.get("db") is not None and t.args["db"].name.lower() == "dbo":
+            t.set("db", None)
+            t.set("catalog", None)
+    for n in list(tree.find_all(exp.Extract)):  # DATEPART(weekday, d): Sunday = 1 in SQL Server, 0 in DuckDB
+        if n.this is not None and n.this.name.upper() == "DAYOFWEEK":
+            n.replace(exp.Paren(this=exp.Add(this=exp.Paren(this=n.copy()), expression=exp.Literal.number(1))))
+
+
+def _order_by_semantics(tree, schema):
+    """SQL Server resolves a bare ORDER BY name against the select list. After `SELECT t1.*`, DuckDB sees the name in
+    every joined table and calls it ambiguous, so qualify it with the starred table."""
+    sch = {t.lower(): {c.lower() for c in cols} for t, cols in schema.items()}
+    for cte in tree.find_all(exp.CTE):  # a CTE exposes the names in its own select list
+        body = cte.this
+        if isinstance(body, exp.Select):
+            sch[cte.alias.lower()] = {e.alias_or_name.lower() for e in body.expressions if e.alias_or_name and not isinstance(e, exp.Star)}
+    for sel in tree.find_all(exp.Select):
+        order = sel.args.get("order")
+        if order is None:
+            continue
+        tables = _scope_tables(sel)
+        stars = [e.table.lower() for e in sel.expressions if isinstance(e, exp.Column) and isinstance(e.this, exp.Star) and e.table]
+        named = {e.alias_or_name.lower() for e in sel.expressions if not isinstance(e, exp.Star) and not (isinstance(e, exp.Column) and isinstance(e.this, exp.Star))}
+        for col in order.find_all(exp.Column):
+            if col.table or col.name.lower() in named:
+                continue
+            for st in stars:
+                if col.name.lower() in sch.get(tables.get(st, ""), set()):
+                    col.set("table", exp.to_identifier(st))
+                    break
+
+
+def _like_semantics(tree):
+    """SQL Server LIKE is case-insensitive and also works on numbers: use ILIKE, and cast known non-text operands."""
+    for n in list(tree.find_all(exp.Like)):
+        ty, left = n.this.type, n.this.copy()
+        if ty is not None and ty.this != exp.DataType.Type.UNKNOWN and not ty.is_type(*_TEXT):
+            left = exp.Cast(this=left, to=exp.DataType.build("VARCHAR"))
+        new = exp.ILike(this=left, expression=n.expression.copy())
+        n.replace(exp.Not(this=exp.Paren(this=new)) if n.args.get("negate") else new)
+
+
+def _is_text(n):
+    return n.type is not None and n.type.is_type(*_TEXT)
+
+
+def to_duckdb(sql, schema, profile="hw"):
+    """schema: {table: {column: duckdb_type}}. Returns DuckDB SQL; raises on parse errors."""
+    try:
+        tree = sqlglot.parse_one(sql, read="tsql")
+    except sqlglot.errors.SqlglotError as e:
+        errs = getattr(e, "errors", None)
+        if errs:
+            d = errs[0]
+            near = str(d.get("highlight", "")).strip()
+            raise ValueError(f"T-SQL syntax error near '{near}' (line {d.get('line')}, col {d.get('col')}). {d.get('description', '')}")
+        raise ValueError(f"T-SQL syntax error. {str(e).splitlines()[0]}")
+    _sqlserver_semantics(tree)
+    if profile == "cs":
+        # The case studies were written and checked with float division (no integer truncation); keep their results.
+        for n in tree.find_all(exp.Div):
+            n.set("typed", False)
+    try:
+        _attach_types(tree, schema)
+        annotate_types(tree, dialect="tsql", overwrite_types=False)
+        # Innermost first, so a + ' / ' + b becomes a || ' / ' || b.
+        for n in reversed(list(tree.find_all(exp.Add))):
+            if _is_text(n.left) or _is_text(n.right):
+                n.replace(exp.DPipe(this=n.left.copy(), expression=n.right.copy()))
+                annotate_types(tree, dialect="tsql", overwrite_types=False)
+    except Exception:
+        pass  # the type-aware pass is best effort; the plain translation still runs
+    try:
+        _order_by_semantics(tree, schema)
+    except Exception:
+        pass
+    _like_semantics(tree)
+    return tree.sql(dialect="duckdb")

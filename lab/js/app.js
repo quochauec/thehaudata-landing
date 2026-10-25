@@ -1,0 +1,121 @@
+// TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
+import * as engine from "./engine.js";
+import { mountHomework } from "./homework.js";
+import { mountCases } from "./cases.js";
+import { mount as mountSql, esc } from "./sqlpanel.js";
+
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const hdr = $("#hdr"), main = $("#main");
+const ZONES = ["home", "guides", "homework", "cases", "dictionary", "playground"];
+const GUIDES = ["L02", "L03", "L04", "L05", "L06", "L07", "L08", "L09", "L10"];
+const store = {
+  get(k) { try { return localStorage.getItem("lab:" + k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem("lab:" + k, v); } catch (e) { } },
+};
+const json = async url => { const r = await fetch(url); if (!r.ok) throw new Error(url + ": HTTP " + r.status); return r.json(); };
+
+let hwData = null, casesApp = null, current = null;
+
+// ---- engine status pill ----------------------------------------------------------------------------
+engine.onStatus(s => {
+  const el = $("#eng"); if (!el) return;
+  el.dataset.phase = s.phase;
+  el.textContent = s.phase === "ready" ? "SQL ready" : s.phase === "error" ? "SQL engine error" : "Loading the SQL engine…";
+  el.title = s.message || "";
+});
+engine.start().catch(() => { });
+
+// ---- zones -----------------------------------------------------------------------------------------
+async function home() {
+  hwData ??= await json("data/homework.json");
+  const cs = await json("data/challenges.json");
+  const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
+  const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
+  hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Practice SQL on <span class="gt">real business questions</span></h1>
+    <p>Recap each lesson in the study guides, then write T-SQL on the class tables and run it right here. Homework follows the SQL lessons, and case studies walk you from a request to a conclusion.</p>`;
+  main.innerHTML = `<div class="hub"><div class="cards homecards">
+      <button class="cc big" data-go="guides"><span class="tag">Lessons 2 to 10</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
+        <span class="row"><span class="tm">${GUIDES.length} lessons</span></span></button>
+      <button class="cc big" data-go="homework"><span class="tag">Lessons 2 to 6</span><b>Homework</b><span class="sk">${hwData.questions.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
+        <span class="row"><span class="tm">${hwData.questions.filter(q => q.check === "auto").length} with auto-check</span>${done ? `<span class="dn">${done}/${hwData.questions.length} done</span>` : ""}</span></button>
+      <button class="cc big" data-go="cases"><span class="tag o">3 steps each</span><b>Case Studies</b><span class="sk">${cs.challenges.length} cases: read the request, plan your approach, then solve, chart and conclude.</span>
+        <span class="row"><span class="tm">${live} run live on the real tables</span></span></button>
+      <button class="cc big" data-go="dictionary"><span class="tag">Reference</span><b>Data Dictionary</b><span class="sk">Every class table: columns, types, keys, missing values and how the tables join, on a relationship map you can search.</span>
+        <span class="row"><span class="tm">ADW, CRM, GBE and more</span></span></button>
+      <button class="cc big" data-go="playground"><span class="tag g">Free practice</span><b>Playground</b><span class="sk">An open editor on the AdventureWorks, CRM and Global Electronics tables.</span>
+        <span class="row"><span class="tm">No exercise attached</span></span></button></div>
+    <div class="card"><h2><small>Good to know</small></h2><ul>
+      <li>Queries run in your browser. Nothing you type is sent anywhere.</li>
+      <li>Table names match the class SQL Server database (<code>ADW_</code>, <code>CRM_</code>, <code>GBE_</code>), so a query written here pastes into SQL Server unchanged.</li>
+      <li>The first load downloads the SQL engine, about 40 MB. After that it opens from the cache.</li></ul></div></div>`;
+  $$("[data-go]", main).forEach(b => b.onclick = () => setZone(b.dataset.go));
+}
+
+async function homework() {
+  hwData ??= await json("data/homework.json");
+  mountHomework({ data: hwData, hdr, main });
+}
+
+async function cases() {
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json"));
+  casesApp.draw();
+}
+
+function playground() {
+  const DS = { adw: "AdventureWorks (ADW_)", crm: "CRM Sales (CRM_)", gbe: "Global Electronics (GBE_)" };
+  const START = { adw: "SELECT TOP 10 *\nFROM ADW_Sales_orders\nORDER BY TotalDue DESC", crm: "SELECT TOP 10 *\nFROM CRM_sales_pipeline\nORDER BY close_value DESC", gbe: "SELECT TOP 10 *\nFROM GBE_Sales\nORDER BY Order_Date DESC" };
+  let ds = store.get("pg:ds") || "adw", panel = null, text = null;
+  hdr.innerHTML = `<div class="eyebrow">Playground</div><h1>Free practice</h1><p>An open editor on the class tables, with no exercise attached. Pick a dataset to see its tables.</p>`;
+  main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}</button>`).join("")}</div><div class="card"><div id="pg"></div></div></section>`;
+  const render = () => {
+    $$("[data-ds]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === ds));
+    panel = mountSql($("#pg", main), { profile: "hw", datasets: [ds], sql: text ?? START[ds] });
+  };
+  $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); text = START[ds]; render(); });
+  render();
+}
+
+// Study guides and the dictionary are standalone pages. Each runs in an iframe; build_dist.py gives them the Lab theme.
+async function pageFrame(file, title) {
+  const html = await (await fetch(file)).text();
+  const f = document.createElement("iframe");
+  f.className = "embed"; f.title = title; f.srcdoc = html;
+  return f;
+}
+
+async function guides() {
+  hdr.innerHTML = "";
+  let cur = store.get("guide"); if (!GUIDES.includes(cur)) cur = GUIDES[0];
+  main.innerHTML = `<div class="embedbar" role="group" aria-label="Lesson"><span class="lbl">Lesson</span>${GUIDES.map(k => `<button class="chip" data-g="${k}" aria-pressed="false">${parseInt(k.slice(1), 10)}</button>`).join("")}</div><div id="gframe"></div>`;
+  const show = async k => {
+    cur = k; store.set("guide", k);
+    $$("[data-g]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.g === k));
+    const host = $("#gframe", main); host.innerHTML = "";
+    host.append(await pageFrame(`guides/${k}.html`, `Lesson ${parseInt(k.slice(1), 10)} study guide`));
+  };
+  $$("[data-g]", main).forEach(b => b.onclick = () => show(b.dataset.g));
+  await show(cur);
+}
+
+async function dictionary() {
+  hdr.innerHTML = "";
+  main.innerHTML = `<div id="dframe"></div>`;
+  $("#dframe", main).append(await pageFrame("guides/dictionary.html", "Class data dictionary"));
+}
+
+const RENDER = { home, guides, homework, cases, dictionary, playground };
+async function setZone(z) {
+  if (!ZONES.includes(z)) z = "home";
+  current = z;
+  $$("#zones [data-zone]").forEach(b => b.setAttribute("aria-selected", b.dataset.zone === z));
+  store.set("zone", z);
+  try { history.replaceState(null, "", "#" + z); } catch (e) { try { location.hash = z; } catch (e2) { } }
+  main.innerHTML = `<p class="note" style="padding-top:20px">Loading…</p>`;
+  try { await RENDER[z](); } catch (e) { main.innerHTML = `<div class="card"><h2>Something went wrong</h2><p>${esc(e.message || e)}</p></div>`; }
+  window.scrollTo({ top: 0 });
+}
+$$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone));
+$$("[data-zone-link]").forEach(a => a.onclick = e => { e.preventDefault(); setZone(a.dataset.zoneLink); });
+const start = (location.hash || "").replace("#", "");
+setZone(ZONES.includes(start) ? start : (store.get("zone") && ZONES.includes(store.get("zone")) ? store.get("zone") : "home"));
+window.LabEngine = engine;   // used by the answer-key builder and tests
