@@ -4,3 +4,10 @@ AddType application/wasm .wasm
 
 # Not public yet: keep search engines out until access login is built.
 Header set X-Robots-Tag "noindex, nofollow"
+
+# Mentees only (shared password). Prompt text is ASCII on purpose; the friendly page is /lab-locked.html.
+AuthType Basic
+AuthName "TheHauData Lab - Space danh rieng cho mentees khoa hoc. Lien he TheHauData Zalo 0362 550 761 de tu van them"
+AuthUserFile /home/u539152802/domains/thehaudata.com/public_html/lab/.htpasswd
+Require valid-user
+ErrorDocument 401 /lab-locked.html
