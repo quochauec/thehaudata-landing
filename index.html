@@ -524,7 +524,11 @@
     /* Hero */
     #hero{padding:96px 20px 56px}
     .hero-inner{grid-template-columns:1fr}
-    .hero-visual{display:none}
+    /* Mobile: keep only the offers panel (company chips) from the Track Highlights card */
+    .hero-visual{display:block;margin-top:28px}
+    .hero-visual .hp-head,.hero-visual .hp-stats,.hero-visual .hp-tags{display:none}
+    .hp{box-shadow:var(--shadow-sm)}
+    .hp-offers{border-top:none}
     .hero-actions{flex-direction:column;gap:10px;align-items:stretch}
     .hero-actions a{text-align:center;justify-content:center;width:100%}
     /* Table overflow scroll */
