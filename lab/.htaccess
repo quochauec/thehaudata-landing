@@ -1,0 +1,3 @@
+# Hostinger serves .mjs as text/plain; module scripts need a JavaScript MIME type.
+AddType application/javascript .mjs
+AddType application/wasm .wasm
