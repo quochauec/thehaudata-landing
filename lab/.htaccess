@@ -11,3 +11,6 @@ AuthName "TheHauData Lab - Space danh rieng cho mentees khoa hoc. Lien he TheHau
 AuthUserFile /home/u539152802/domains/thehaudata.com/public_html/lab/.htpasswd
 Require valid-user
 ErrorDocument 401 /lab-locked.html
+
+# Without a charset, browsers guess Latin-1 and garble arrows, dots and dashes.
+AddDefaultCharset UTF-8
