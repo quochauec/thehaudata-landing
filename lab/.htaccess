@@ -2,21 +2,17 @@
 AddType application/javascript .mjs
 AddType application/wasm .wasm
 
-# Not public yet: keep search engines out until access login is built.
+# Not public: keep search engines out.
 Header set X-Robots-Tag "noindex, nofollow"
-
-# Mentees only (shared password). Prompt text is ASCII on purpose; the friendly page is /lab-locked.html.
-AuthType Basic
-AuthName "TheHauData Lab - Space danh rieng cho mentees khoa hoc. Lien he TheHauData Zalo 0362 550 761 de tu van them"
-AuthUserFile /home/u539152802/domains/thehaudata.com/public_html/lab/.htpasswd
-Require valid-user
-ErrorDocument 401 /lab-locked.html
 
 # Without a charset, browsers guess Latin-1 and garble arrows, dots and dashes.
 AddDefaultCharset UTF-8
 
-# Always revalidate pages, scripts and JSON so a new deploy shows up without a hard refresh (304 when unchanged).
-# Big data and vendor files keep normal caching.
-<FilesMatch "\.(html|js|mjs|json)$">
-  Header set Cache-Control "no-cache"
-</FilesMatch>
+# Mentee login (PHP). Every request goes through _gate.php, which checks the session and then serves the file.
+# /login, /admin and /logout are the three pages; everything else needs a signed-in mentee.
+# Accounts live outside public_html (../../lab-data), so a git deploy never touches them.
+Options -Indexes
+RewriteEngine On
+RewriteRule ^(login|admin|logout)/?$ $1.php [L]
+RewriteRule ^(login|admin|logout|_gate)\.php$ - [L]
+RewriteRule ^ _gate.php [L]
