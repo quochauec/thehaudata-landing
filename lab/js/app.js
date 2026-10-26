@@ -70,7 +70,7 @@ function playground() {
   main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}</button>`).join("")}</div><div class="card"><div id="pg"></div></div></section>`;
   const render = () => {
     $$("[data-ds]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === ds));
-    panel = mountSql($("#pg", main), { profile: "hw", datasets: [ds], sql: text ?? START[ds] });
+    panel = mountSql($("#pg", main), { profile: "hw", hintsKey: "pg", datasets: [ds], sql: text ?? START[ds] });
   };
   $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); text = START[ds]; render(); });
   render();

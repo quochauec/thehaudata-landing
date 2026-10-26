@@ -208,7 +208,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
     let modelOut = null;
     const getModel = async () => modelOut ??= await engine.run(mSql, "hw", [q.ds]);
     const panel = mount($(".panelhost", body), {
-      profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id,
+      profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id, hintsKey: "hw", hintsDefault: false,
       onAttempt: (kind, sql) => {
         if (!clean(sql).trim()) return;   // an untouched template is not an attempt
         if (kind === "check") LS.set("att:" + q.id, "c"); else if (att() !== "c") LS.set("att:" + q.id, "r");

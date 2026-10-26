@@ -1,5 +1,6 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
 import * as engine from "./engine.js";
+import { createEditor } from "../vendor/editor.js";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -19,14 +20,15 @@ export const hl = sql => esc(sql).replace(KWRE, (m, c, s, k) => c ? `<span class
 if (!document.getElementById("sqlpanel-css")) {
   const st = document.createElement("style"); st.id = "sqlpanel-css";
   st.textContent = `
-.edwrap{display:grid;grid-template-columns:auto minmax(0,1fr);border:1.5px solid var(--ink2);border-radius:16px;overflow:hidden;background:var(--code-bg);box-shadow:var(--shadow-sm)}
+.edwrap{border:1.5px solid var(--ink2);border-radius:16px;overflow:hidden;background:var(--code-bg);box-shadow:var(--shadow-sm)}
 .edwrap:focus-within{outline:3px solid var(--site-orange);outline-offset:1px}
-.edwrap .gut{overflow:hidden;contain:size layout;padding:12px 8px 12px 12px;text-align:right;white-space:pre;color:var(--cmt);font:13.5px/1.55 var(--mono);user-select:none;border-right:1px solid rgba(255,255,255,.14)}
-.edwrap .edstack{position:relative;min-width:0}
-.edwrap pre.hl,.edwrap textarea.sqled{margin:0;padding:12px 14px;border:0;font:13.5px/1.55 var(--mono);tab-size:4;white-space:pre;font-variant-ligatures:none;letter-spacing:normal;word-spacing:normal}
-.edwrap pre.hl{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:0;background:transparent;color:var(--code-fg)}
-.edwrap textarea.sqled{position:relative;display:block;width:100%;height:160px;min-height:120px;resize:vertical;overflow:auto;background:transparent;color:transparent;caret-color:var(--code-fg);border-radius:0;box-shadow:none}
-.edwrap textarea.sqled:focus-visible{outline:0}`;
+.edwrap .edstack{position:relative;height:160px;min-height:120px;resize:vertical;overflow:hidden}
+.edwrap .cm-editor{height:100%}
+.nextbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);min-height:28px}
+.nextbar:empty{display:none}
+.nextbar button{font:inherit;font-family:var(--mono);font-size:12px;font-weight:700;border:1.5px solid var(--line);background:var(--blue-soft);color:var(--blue);border-radius:99px;padding:1px 10px;cursor:pointer}
+.nextbar button:hover{border-color:var(--blue)}
+.hintsw{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;margin-left:4px}`;
   document.head.appendChild(st);
 }
 
@@ -69,11 +71,13 @@ export function mount(root, opts) {
   const id = "sp" + Math.random().toString(36).slice(2, 8);
   root.innerHTML = `<div class="sqlp">
     <details class="schema"><summary>Tables you can use</summary><div class="schemabody" id="${id}-sch">Loading…</div></details>
-    <div class="edwrap"><div class="gut" id="${id}-gut" aria-hidden="true"></div><div class="edstack"><pre class="sql hl" id="${id}-hl" aria-hidden="true"></pre><textarea class="sqled" id="${id}-ed" wrap="off" spellcheck="false" autocomplete="off" aria-label="T-SQL query"></textarea></div></div>
+    <div class="edwrap"><div class="edstack" id="${id}-ed"></div></div>
+    <div class="nextbar" id="${id}-nx"></div>
     <div class="sqlrow">
       <button class="btn primary" id="${id}-run" disabled>Run</button>
       ${opts.check ? `<button class="btn" id="${id}-chk" disabled>Check my answer</button>` : ""}
       ${opts.draftKey ? `<button class="btn" id="${id}-rst" type="button">Reset to blank</button>` : ""}
+      <label class="hintsw"><input type="checkbox" id="${id}-hint"> Syntax hints</label>
       <span class="verdict" id="${id}-vd" role="status" aria-live="polite"></span>
       <span class="eng" id="${id}-eng"></span>
     </div>
@@ -85,30 +89,32 @@ export function mount(root, opts) {
     <div class="tbl-wrap resgrid" id="${id}-grid"></div>
   </div>`;
   const $ = s => root.querySelector("#" + id + "-" + s);
-  const ed = $("ed"), runB = $("run"), chkB = $("chk");
+  const runB = $("run"), chkB = $("chk");
   const draft = {
     get() { try { return opts.draftKey ? localStorage.getItem(opts.draftKey) : null; } catch (e) { return null; } },
     set(v) { try { if (opts.draftKey) localStorage.setItem(opts.draftKey, v); } catch (e) { } },
     del() { try { if (opts.draftKey) localStorage.removeItem(opts.draftKey); } catch (e) { } },
   };
-  ed.value = draft.get() ?? (opts.sql || "");
-  // Highlight layer and line numbers sit behind a transparent textarea; scrolling is mirrored onto both.
-  const hlEl = $("hl"), gut = $("gut");
-  const sync = () => { hlEl.scrollTop = ed.scrollTop; hlEl.scrollLeft = ed.scrollLeft; gut.scrollTop = ed.scrollTop; };
-  const paint = () => {
-    const n = ed.value.split("\n").length;
-    hlEl.innerHTML = hl(ed.value) + "\n";
-    gut.style.width = (String(n).length + 2.4) + "ch";
-    gut.textContent = Array.from({ length: n }, (_, i) => i + 1).join("\n");
-    sync();
+  // Syntax hints: on by default, off in graded homework. The choice is remembered per zone (opts.hintsKey).
+  const hk = "lab:hints:" + (opts.hintsKey || opts.profile);
+  const hintPref = () => { try { const v = localStorage.getItem(hk); return v === null ? opts.hintsDefault !== false : v === "1"; } catch (e) { return opts.hintsDefault !== false; } };
+  const nx = $("nx"), hintBox = $("hint");
+  const showNext = info => {
+    if (!info) { nx.innerHTML = ""; return; }
+    nx.innerHTML = esc(info.say) + (info.chips ? ":" : "") + (info.chips || []).map(c => ` <button type="button" data-kw="${esc(c)}">${esc(c)}</button>`).join("") + (info.text ? " " + esc(info.text) : "");
   };
-  ed.addEventListener("input", paint); ed.addEventListener("scroll", sync);
-  paint();
-  if (opts.draftKey) {
-    // Save the draft only when it differs from the blank template, so an untouched editor leaves no entry.
-    ed.addEventListener("input", () => { if (ed.value === (opts.sql || "")) draft.del(); else draft.set(ed.value); });
-    $("rst").onclick = () => { draft.del(); ed.value = opts.sql || ""; paint(); $("vd").textContent = ""; $("err").textContent = ""; $("fb").innerHTML = ""; ed.focus(); };
-  }
+  nx.addEventListener("mousedown", e => { if (e.target.closest("button")) e.preventDefault(); });   // keep the cursor in the editor
+  nx.addEventListener("click", e => { const b = e.target.closest("button[data-kw]"); if (b) editor.insert(b.dataset.kw); });
+  const editor = createEditor({
+    parent: $("ed"), doc: draft.get() ?? (opts.sql || ""), hints: hintPref(), onNext: showNext,
+    onRun: () => go(false),
+    onChange: v => { if (opts.draftKey) { if (v === (opts.sql || "")) draft.del(); else draft.set(v); } },
+  });
+  // The rest of the panel reads and writes the query as ed.value.
+  const ed = { get value() { return editor.getValue(); }, set value(v) { editor.setValue(v); }, focus: () => editor.focus() };
+  hintBox.checked = hintPref();
+  hintBox.onchange = () => { try { localStorage.setItem(hk, hintBox.checked ? "1" : "0"); } catch (e) { } editor.setHints(hintBox.checked); if (!hintBox.checked) nx.innerHTML = ""; };
+  if (opts.draftKey) $("rst").onclick = () => { draft.del(); ed.value = opts.sql || ""; $("vd").textContent = ""; $("err").textContent = ""; $("fb").innerHTML = ""; ed.focus(); };
 
   const setBusy = b => { runB.disabled = b || !engine.getStatus().ready; if (chkB) chkB.disabled = runB.disabled; };
   const unsub = engine.onStatus(s => {
@@ -119,6 +125,7 @@ export function mount(root, opts) {
     try {
       await engine.use(opts.profile, opts.datasets);
       const ts = engine.tablesFor(opts.profile, opts.datasets);
+      editor.setTables(ts);
       $("sch").innerHTML = ts.map(t => `<details><summary><code>${esc(t.name)}</code></summary><ul class="cols">${Object.entries(t.cols).map(([c, ty]) => `<li><b>${esc(c)}</b> ${esc(ty.toLowerCase())}</li>`).join("")}</ul></details>`).join("");
     } catch (e) { $("err").textContent = friendlyError(e); }
   }).catch(() => {});
@@ -144,21 +151,7 @@ export function mount(root, opts) {
       $("err").textContent = friendlyError(e);
     } finally { setBusy(false); }
   }
-  let tabFree = false;
   runB.onclick = () => go(false);
   if (chkB) chkB.onclick = () => go(true);
-  ed.addEventListener("keydown", e => {
-    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); go(false); }
-    // Esc releases the Tab trap for one keypress so keyboard users can leave the editor.
-    if (e.key === "Escape") { tabFree = true; return; }
-    if (e.key === "Tab" && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
-      if (tabFree) { tabFree = false; return; }
-      e.preventDefault(); const s = ed.selectionStart; ed.setRangeText("    ", s, ed.selectionEnd, "end");
-      ed.dispatchEvent(new Event("input"));
-      return;
-    }
-    tabFree = false;
-  });
-  ed.addEventListener("blur", () => { tabFree = false; });
-  return { setSql(sql) { ed.value = sql; ed.dispatchEvent(new Event("input")); ed.focus(); }, run: () => go(false), destroy: unsub };
+  return { setSql(sql) { ed.value = sql; ed.focus(); }, run: () => go(false), destroy: unsub };
 }
