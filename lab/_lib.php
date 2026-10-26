@@ -9,6 +9,7 @@ const LOCK_SECS   = 900;    // a lock, and the window failures are counted in: 1
 const IDLE_SECS   = 43200;  // a mentee session ends after 12 hours without a request
 const ALPHABET    = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';  // no 0/O, 1/l/I look-alikes
 const ZALO        = '0362 550 761';
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 // The accounts live outside the public web folder, so a git deploy never overwrites or exposes them.
 // Hostinger layout: .../domains/thehaudata.com/public_html/lab -> .../domains/thehaudata.com/lab-data. LAB_DATA overrides it.
@@ -37,6 +38,8 @@ function store_read(string $name, $default = []) {
     $file = data_dir() . "/$name.json";
     return is_file($file) ? (json_decode(file_get_contents($file), true) ?? $default) : $default;
 }
+// An account may carry an 'expires' date (Y-m-d). It works through that whole day, then the login stops, with no action needed.
+function expired(?array $acc): bool { return !empty($acc['expires']) && date('Y-m-d') > $acc['expires']; }
 function accounts(): array { return store_read('accounts', ['admin' => null, 'users' => []]); }
 
 function audit(string $event, string $who = ''): void {
@@ -92,7 +95,7 @@ function current_user(): ?string {
     $u = $_SESSION['u'] ?? null; if (!$u) return null;
     if (time() - ($_SESSION['t'] ?? 0) > IDLE_SECS) { unset($_SESSION['u']); return null; }
     $acc = accounts()['users'][$u] ?? null;
-    if (!$acc || empty($acc['active']) || strtotime($acc['pw_changed'] ?? '') > ($_SESSION['login'] ?? 0)) { unset($_SESSION['u']); return null; }   // disabled, removed or password reset since sign-in
+    if (!$acc || empty($acc['active']) || expired($acc) || strtotime($acc['pw_changed'] ?? '') > ($_SESSION['login'] ?? 0)) { unset($_SESSION['u']); return null; }   // disabled, removed or password reset since sign-in
     $_SESSION['t'] = time();
     return $u;
 }

@@ -111,7 +111,15 @@ export async function prefetch(keys) {
   }
 }
 
-export async function use(profile, keys) {
+// Calls run one at a time: two overlapping calls would both register the same file buffer, and the second would fail
+// with "ArrayBuffer is already detached" (registerFileBuffer transfers the buffer to the worker).
+let useChain = Promise.resolve();
+export function use(profile, keys) {
+  const p = useChain.then(() => useNow(profile, keys));
+  useChain = p.catch(() => { });
+  return p;
+}
+async function useNow(profile, keys) {
   await ready();
   await conn.query(`CREATE SCHEMA IF NOT EXISTS ${profile}`);
   for (const t of manifest.tables) {

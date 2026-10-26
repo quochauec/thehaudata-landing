@@ -39,12 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $do = (string)($_POST['do'] ?? ''); $u = strtolower(trim((string)($_POST['user'] ?? '')));
         $cohort = ($_POST['cohort'] ?? '') !== '' ? max(1, min(999, (int)$_POST['cohort'])) : null;
         $now = date('c');
-        $make = function (string $name, ?int $c, string $note) use (&$issued, $now) {   // create or replace one account with a fresh password
+        $exp = preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)($_POST['expires'] ?? '')) ? $_POST['expires'] : null;
+        $make = function (string $name, ?int $c, string $note, ?string $exp = null) use (&$issued, $now) {   // create or replace one account with a fresh password
             $pw = gen_password($c);
-            store_update('accounts', function (&$a) use ($name, $c, $note, $pw, $now) {
+            store_update('accounts', function (&$a) use ($name, $c, $note, $pw, $now, $exp) {
                 $old = $a['users'][$name] ?? [];
                 $a['users'][$name] = ['hash' => password_hash($pw, PASSWORD_DEFAULT), 'cohort' => $c ?? ($old['cohort'] ?? null), 'note' => $note !== '' ? $note : ($old['note'] ?? ''),
-                    'active' => true, 'created' => $old['created'] ?? $now, 'last_login' => $old['last_login'] ?? null, 'pw_changed' => $now];
+                    'active' => true, 'expires' => $exp ?? ($old['expires'] ?? null), 'created' => $old['created'] ?? $now, 'last_login' => $old['last_login'] ?? null, 'pw_changed' => $now];
             }, ['admin' => null, 'users' => []]);
             $issued[] = [$name, $pw];
         };
@@ -53,18 +54,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'add':
                 if (!valid_user($u)) $err = 'Username: 2 to 32 characters, lowercase letters, digits, dot, dash or underscore.';
                 elseif ($exists($u)) $err = "$u already exists. Use Reset password to issue a new one.";
-                else { $make($u, $cohort, trim((string)($_POST['note'] ?? ''))); audit('admin-add', $u); }
+                else { $make($u, $cohort, trim((string)($_POST['note'] ?? '')), $exp); audit('admin-add', $u); }
                 break;
             case 'bulk':   // one login per cohort, c<N>, for a range of cohorts
                 $from = max(1, (int)($_POST['from'] ?? 0)); $to = min(999, (int)($_POST['to'] ?? 0));
                 if ($from < 1 || $to < $from || $to - $from > 49) $err = 'Enter a range of up to 50 cohorts, for example 15 to 24.';
-                else { $n = 0; for ($c = $from; $c <= $to; $c++) if (!$exists("c$c")) { $make("c$c", $c, ''); $n++; } audit("admin-bulk $from-$to", ''); $flash[] = "$n new login(s) created. Cohorts that already had one were skipped."; }
+                else { $n = 0; for ($c = $from; $c <= $to; $c++) if (!$exists("c$c")) { $make("c$c", $c, '', $exp); $n++; } audit("admin-bulk $from-$to", ''); $flash[] = "$n new login(s) created. Cohorts that already had one were skipped."; }
                 break;
             case 'reset':
                 if ($exists($u)) { $make($u, accounts()['users'][$u]['cohort'] ?? null, ''); audit('admin-reset', $u); } else $err = 'No such account.';
                 break;
             case 'edit':
-                if ($exists($u)) { store_update('accounts', function (&$a) use ($u, $cohort) { $a['users'][$u]['cohort'] = $cohort; $a['users'][$u]['note'] = trim((string)($_POST['note'] ?? '')); }); audit('admin-edit', $u); $flash[] = "$u updated."; }
+                if ($exists($u)) { store_update('accounts', function (&$a) use ($u, $cohort, $exp) { $a['users'][$u]['cohort'] = $cohort; $a['users'][$u]['note'] = trim((string)($_POST['note'] ?? '')); $a['users'][$u]['expires'] = $exp; }); audit('admin-edit', $u); $flash[] = "$u updated."; }
                 break;
             case 'toggle':
                 if ($exists($u)) { store_update('accounts', function (&$a) use ($u) { $a['users'][$u]['active'] = empty($a['users'][$u]['active']); }); audit('admin-toggle', $u); $flash[] = "$u switched."; }
@@ -116,27 +117,31 @@ page_start('Lab admin', true);
   <div><label for="au">Username</label><input id="au" type="text" name="user" placeholder="c25" autocapitalize="none" required></div>
   <div><label for="ac">Cohort</label><input id="ac" type="number" name="cohort" min="1" placeholder="25"></div>
   <div><label for="an">Note</label><input id="an" type="text" name="note" placeholder="optional"></div>
+  <div><label for="ae">Access until</label><input id="ae" type="date" name="expires"></div>
   <div style="flex:0 0 auto"><button class="btn" type="submit">Add</button></div></form>
 <form method="post" class="row" style="margin-top:10px"><input type="hidden" name="csrf" value="<?= h($tok) ?>"><input type="hidden" name="do" value="bulk">
   <div><label for="bf">Cohorts from</label><input id="bf" type="number" name="from" min="1" placeholder="25" required></div>
   <div><label for="bt">to</label><input id="bt" type="number" name="to" min="1" placeholder="34" required></div>
+  <div><label for="be">Access until</label><input id="be" type="date" name="expires"></div>
   <div style="flex:0 0 auto"><button class="btn o" type="submit">Create c&lt;N&gt; for each cohort</button></div></form>
 
 <h2>Logins (<?= count($users) ?>)</h2>
-<div class="tw"><table><thead><tr><th>Username</th><th>Cohort</th><th>Status</th><th>Last login</th><th>Note</th><th></th></tr></thead><tbody>
+<div class="tw"><table><thead><tr><th>Username</th><th>Cohort</th><th>Status</th><th>Access until</th><th>Last login</th><th>Note</th><th></th></tr></thead><tbody>
 <?php foreach ($users as $n => $r): ?>
 <tr><td><code><?= h($n) ?></code></td><td><?= h($r['cohort'] ?? '') ?></td>
-  <td><span class="tag<?= empty($r['active']) ? ' off' : '' ?>"><?= empty($r['active']) ? 'disabled' : 'active' ?></span></td>
+  <td><?php $ex = expired($r); ?><span class="tag<?= (empty($r['active']) || $ex) ? ' off' : '' ?>"><?= empty($r['active']) ? 'disabled' : ($ex ? 'expired' : 'active') ?></span></td>
+  <td class="sm"><?= h($r['expires'] ?? '') ?: 'no end' ?></td>
   <td class="sm"><?= h($r['last_login'] ? date('d M Y H:i', strtotime($r['last_login'])) : 'never') ?></td>
   <td class="sm"><?= h($r['note'] ?? '') ?></td>
   <td style="white-space:nowrap"><?= $form('reset', $n, 'Reset password', 'o', '', "Issue a new password for $n? The old one stops working.") ?>
     <?= $form('toggle', $n, empty($r['active']) ? 'Enable' : 'Disable') ?>
     <?= $form('remove', $n, 'Remove', 'd', '', "Remove $n for good?") ?></td></tr>
-<tr><td colspan="6" style="padding-top:0"><form method="post" class="row" style="margin-bottom:4px"><input type="hidden" name="csrf" value="<?= h($tok) ?>"><input type="hidden" name="do" value="edit"><input type="hidden" name="user" value="<?= h($n) ?>">
+<tr><td colspan="7" style="padding-top:0"><form method="post" class="row" style="margin-bottom:4px"><input type="hidden" name="csrf" value="<?= h($tok) ?>"><input type="hidden" name="do" value="edit"><input type="hidden" name="user" value="<?= h($n) ?>">
   <div style="flex:0 0 90px"><input type="number" name="cohort" min="1" value="<?= h($r['cohort'] ?? '') ?>" aria-label="Cohort of <?= h($n) ?>"></div>
   <div><input type="text" name="note" value="<?= h($r['note'] ?? '') ?>" aria-label="Note for <?= h($n) ?>" placeholder="note"></div>
+  <div style="flex:0 0 170px"><input type="date" name="expires" value="<?= h($r['expires'] ?? '') ?>" aria-label="Access until for <?= h($n) ?>"></div>
   <div style="flex:0 0 auto"><button class="btn s o" type="submit">Save</button></div></form></td></tr>
-<?php endforeach; if (!$users): ?><tr><td colspan="6" class="sm">No logins yet.</td></tr><?php endif; ?>
+<?php endforeach; if (!$users): ?><tr><td colspan="7" class="sm">No logins yet.</td></tr><?php endif; ?>
 </tbody></table></div>
 
 <h2>Remove a whole cohort</h2>
@@ -150,6 +155,12 @@ page_start('Lab admin', true);
   <td><?= $form('unlock', '', 'Unlock', 'o', '<input type="hidden" name="key" value="' . h($k) . '">') ?></td></tr><?php endforeach; ?></tbody></table></div>
 <?php else: ?><p class="sm">No locks. A wrong password counts per login and IP: <?= MAX_TRIES ?> wrong tries lock that pair for <?= LOCK_SECS / 60 ?> minutes.</p><?php endif; ?>
 <p class="sm">Your IP as the server sees it: <code><?= h(client_ip()) ?></code>. If every visitor shows the same address, the host sits behind a proxy and the lock would hit everyone at once.</p>
+
+<?php $rev = array_filter(array_map(fn($m) => count(array_filter($m, fn($t) => time() - $t < 86400)), store_read('reveals')), fn($n) => $n > 0); arsort($rev); ?>
+<h2>Model answers opened, last 24 hours</h2>
+<?php if ($rev): ?><div class="tw"><table><thead><tr><th>Login</th><th>Answers opened</th></tr></thead><tbody>
+<?php foreach ($rev as $n => $c): ?><tr><td><code><?= h($n) ?></code></td><td><?= $c ?> of <?= 25 ?></td></tr><?php endforeach; ?></tbody></table></div>
+<?php else: ?><p class="sm">None yet. Each login can open up to 25 different answers a day.</p><?php endif; ?>
 
 <h2>Change the admin password</h2>
 <form method="post" class="row"><input type="hidden" name="csrf" value="<?= h($tok) ?>"><input type="hidden" name="do" value="adminpw">

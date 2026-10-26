@@ -52,8 +52,9 @@ const totalGap = (a, b) => {
   if (!a.nums.length) return null;
   return Math.max(...b.nums.map(bt => Math.min(...a.nums.map(at => Math.abs(at - bt) / (Math.abs(bt) || 1)))));
 };
-function diagnose(a, b, sSql, mSql) {
-  const s = clean(sSql), m = clean(mSql), lines = [], nudge = [];
+// b = model output stats and mf = model query features, both precomputed at build time (the model SQL itself is not shipped to the page).
+function diagnose(a, b, sSql, mf) {
+  const s = clean(sSql), lines = [], nudge = [];
   if (a.cols < b.cols) lines.push(`The model answer has ${b.cols} columns (${b.kinds.join(", ")}). You returned ${a.cols}.`);
   if (a.dups > 0 && b.dups === 0) lines.push(`${a.dups.toLocaleString()} of your rows are exact repeats of another row.`);
   if (a.nulls !== b.nulls) lines.push(`Your result has ${a.nulls.toLocaleString()} NULL cells. The model answer has a different number.`);
@@ -61,18 +62,18 @@ function diagnose(a, b, sSql, mSql) {
   if (gap === null) lines.push("The model answer has a numeric column and yours has none.");
   else if (gap > 0.005) lines.push(gap >= 1 ? "At least one total is far off, more than 100%." : `At least one total is about ${Math.max(1, Math.round(gap * 100))}% off.`);
   const T = (x, re) => re.test(x);
-  const sLeft = T(s, /\bLEFT\s+(OUTER\s+)?JOIN\b/i), mLeft = T(m, /\bLEFT\s+(OUTER\s+)?JOIN\b/i), sJoin = T(s, /\bJOIN\b/i);
+  const sLeft = T(s, /\bLEFT\s+(OUTER\s+)?JOIN\b/i), mLeft = mf.left, sJoin = T(s, /\bJOIN\b/i);
   if (a.rows < b.rows && !sLeft && mLeft) nudge.push("Rows are missing. Should every row of the first table stay in the result, even with no match? Think about LEFT JOIN against INNER JOIN.");
   if (a.rows < b.rows && sLeft && T(s, /\bWHERE\b/i)) nudge.push("A WHERE condition on the right-hand table of a LEFT JOIN drops the unmatched rows again. Would it work in the ON clause?");
   if (a.rows > b.rows && sJoin && !T(s, /\bDISTINCT\b|\bGROUP\s+BY\b/i)) nudge.push("More rows than expected. A join repeats rows when the key is not unique. Do you need DISTINCT, a GROUP BY, or to aggregate before joining?");
   const cd = x => T(x, /COUNT\s*\(\s*DISTINCT/i);
-  if (cd(m) !== cd(s)) nudge.push("Are you counting rows or counting different things? Compare COUNT(*) with COUNT(DISTINCT ...).");
+  if (mf.cd !== cd(s)) nudge.push("Are you counting rows or counting different things? Compare COUNT(*) with COUNT(DISTINCT ...).");
   const fn = x => ["SUM", "AVG", "COUNT"].map(f => T(x, new RegExp("\\b" + f + "\\s*\\(", "i"))).join();
-  if (fn(m) !== fn(s)) nudge.push("Check the aggregate. Is the question asking for a total, an average, or a count?");
-  if (T(m, /\bGROUP\s+BY\b/i) && !T(s, /\bGROUP\s+BY\b/i)) nudge.push("The question wants one row per group. What should you group by?");
-  if (T(m, /\bWHERE\b/i) && !T(s, /\bWHERE\b/i)) nudge.push("Does the question limit the rows, by period, status or category? Check your filter.");
-  if (T(m, /\b(YEAR|MONTH|DATEPART)\s*\(/i) && !T(s, /\b(YEAR|MONTH|DATEPART|DATEDIFF)\s*\(/i)) nudge.push("Check the period. Does the question ask about one year or month?");
-  if (a.nulls !== b.nulls && T(m, /COALESCE|ISNULL|IS\s+(NOT\s+)?NULL/i) && !T(s, /COALESCE|ISNULL|IS\s+(NOT\s+)?NULL/i)) nudge.push("NULLs may need handling here. Should they be replaced, excluded or counted?");
+  if (mf.fn !== fn(s)) nudge.push("Check the aggregate. Is the question asking for a total, an average, or a count?");
+  if (mf.group && !T(s, /\bGROUP\s+BY\b/i)) nudge.push("The question wants one row per group. What should you group by?");
+  if (mf.where && !T(s, /\bWHERE\b/i)) nudge.push("Does the question limit the rows, by period, status or category? Check your filter.");
+  if (mf.period && !T(s, /\b(YEAR|MONTH|DATEPART|DATEDIFF)\s*\(/i)) nudge.push("Check the period. Does the question ask about one year or month?");
+  if (a.nulls !== b.nulls && mf.nullfn && !T(s, /COALESCE|ISNULL|IS\s+(NOT\s+)?NULL/i)) nudge.push("NULLs may need handling here. Should they be replaced, excluded or counted?");
   return lines.concat(nudge.slice(0, 3));
 }
 
@@ -204,9 +205,6 @@ export function mountHomework({ data, hdr, main, goHome }) {
     $$("[data-gate]", body).forEach(g => g.addEventListener("toggle", () => { if (g.open && !unlocked(g.dataset.gate)) { g.open = false; showLock(g.dataset.gate); } }));
     refreshLocks();
 
-    const mSql = q.steps[q.graded ?? q.steps.length - 1].sql;
-    let modelOut = null;
-    const getModel = async () => modelOut ??= await engine.run(mSql, "hw", [q.ds]);
     const panel = mount($(".panelhost", body), {
       profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id, hintsKey: "hw", hintsDefault: false,
       onAttempt: (kind, sql) => {
@@ -221,7 +219,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
         if (ok) return { ok: true, text: "Correct. Your result matches the model answer." };
         const best = rs.slice().sort((a, b) => (b.rowsOk - a.rowsOk) || (b.found - a.found))[0];
         let lines = [];
-        try { lines = diagnose(stats(out), stats(await getModel()), sql, mSql); } catch (e) { }
+        try { if (q.profile) lines = diagnose(stats(out), q.profile.s, sql, q.profile.f); } catch (e) { }
         return { ok: false, lines, text: best.rowsOk
           ? `The row count is right (${best.got}), but ${best.need - best.found} of ${best.need} key columns do not match.`
           : `You returned ${best.got.toLocaleString()} rows. The model answer returns ${best.want.toLocaleString()}.` };
@@ -231,21 +229,39 @@ export function mountHomework({ data, hdr, main, goHome }) {
     const nt = $(`[data-note="${q.id}"]`, body);
     if (nt) { nt.value = LS.get("note:" + q.id) || ""; nt.oninput = () => nt.value ? LS.set("note:" + q.id, nt.value) : LS.del("note:" + q.id); }
     const ans = $(".ansbody", body);
-    ans.innerHTML = (q.approach.length ? `<ul>${q.approach.map(a => `<li>${esc(a)}</li>`).join("")}</ul>` : "") +
-      q.steps.map((s, i) => `<div class="mstep"><p><b>${s.title ? esc(s.title) : (q.steps.length > 1 ? "Step " + (i + 1) : "Model query")}</b>${q.note && i === (q.graded ?? q.steps.length - 1) ? ` <span class="note">(expected: ${esc(q.note)})</span>` : ""}</p>
-        <pre class="sql">${hl(s.sql)}</pre>
-        <div class="row2"><button class="btn" data-load="${i}">Copy into the editor</button><button class="btn" data-runm="${i}">Run the model query</button></div>
-        <div class="tbl-wrap mout" data-mout="${i}"></div></div>`).join("") +
-      (q.check === "open" ? `<label class="check" style="margin-top:8px"><span><input type="checkbox" data-self="${q.id}"> I compared my logic and numbers with the model answer</span></label>` : "");
-    $$("[data-load]", ans).forEach(b => b.onclick = () => panel.setSql(q.steps[+b.dataset.load].sql));
-    $$("[data-runm]", ans).forEach(b => b.onclick = async () => {
-      const i = +b.dataset.runm, host = $(`[data-mout="${i}"]`, ans); b.disabled = true; host.textContent = "Running…";
-      try { const out = await engine.run(q.steps[i].sql, "hw", [q.ds]); host.innerHTML = `<p class="note">${resultMeta(out)}</p>` + resultTable(out, 50); }
-      catch (e) { host.innerHTML = `<p class="reserr">${esc(e.message || e)}</p>`; }
-      b.disabled = false;
-    });
-    const self = $(`[data-self="${q.id}"]`, ans);
-    if (self) { self.checked = isDone(q.id); self.onchange = () => { if (self.checked) markDone(q); else { LS.del("done:" + q.id); $(`[data-dn="${q.id}"]`).textContent = ""; } }; }
+    // The model answer is not in homework.json. It comes from the server one question at a time (answer.php), capped per login.
+    let steps = null, loading = false;
+    const renderAnswer = a => {
+      steps = a.steps;
+      ans.innerHTML = (a.approach.length ? `<ul>${a.approach.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : "") +
+        a.steps.map((st, i) => `<div class="mstep"><p><b>${st.title ? esc(st.title) : (a.steps.length > 1 ? "Step " + (i + 1) : "Model query")}</b>${q.note && i === (q.graded ?? a.steps.length - 1) ? ` <span class="note">(expected: ${esc(q.note)})</span>` : ""}</p>
+          <pre class="sql">${hl(st.sql)}</pre>
+          <div class="row2"><button class="btn" data-load="${i}">Copy into the editor</button><button class="btn" data-runm="${i}">Run the model query</button></div>
+          <div class="tbl-wrap mout" data-mout="${i}"></div></div>`).join("") +
+        (q.check === "open" ? `<label class="check" style="margin-top:8px"><span><input type="checkbox" data-self="${q.id}"> I compared my logic and numbers with the model answer</span></label>` : "");
+      $$("[data-load]", ans).forEach(b => b.onclick = () => panel.setSql(steps[+b.dataset.load].sql));
+      $$("[data-runm]", ans).forEach(b => b.onclick = async () => {
+        const i = +b.dataset.runm, host = $(`[data-mout="${i}"]`, ans); b.disabled = true; host.textContent = "Running…";
+        try { const out = await engine.run(steps[i].sql, "hw", [q.ds]); host.innerHTML = `<p class="note">${resultMeta(out)}</p>` + resultTable(out, 50); }
+        catch (e) { host.innerHTML = `<p class="reserr">${esc(e.message || e)}</p>`; }
+        b.disabled = false;
+      });
+      const self = $(`[data-self="${q.id}"]`, ans);
+      if (self) { self.checked = isDone(q.id); self.onchange = () => { if (self.checked) markDone(q); else { LS.del("done:" + q.id); $(`[data-dn="${q.id}"]`).textContent = ""; } }; }
+    };
+    const loadAnswer = async () => {
+      if (steps || loading) return;
+      loading = true; ans.innerHTML = `<p class="note">Loading the model answer…</p>`;
+      try {
+        const r = await fetch("answer?id=" + encodeURIComponent(q.id), { credentials: "same-origin" });
+        if (r.status === 429) throw new Error((await r.json()).error);
+        if (r.status === 401) throw new Error("Your session ended. Reload the page and sign in again.");
+        if (!r.ok) throw new Error("The model answer is only available on thehaudata.com/lab.");
+        renderAnswer(await r.json());
+      } catch (e) { ans.innerHTML = `<p class="reserr">${esc(e.message || e)}</p>`; }
+      loading = false;
+    };
+    $$("[data-gate='ans']", body).forEach(g => g.addEventListener("toggle", () => { if (g.open && unlocked("ans")) loadAnswer(); }));
   }
 
   function draw() { if (view.lesson) lessonView(view.lesson); else hub(); }

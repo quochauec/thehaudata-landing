@@ -19,7 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         audit('login-locked', $user);
     } else {
         $acc = valid_user($user) ? (accounts()['users'][$user] ?? null) : null;
-        $ok = password_verify($pass, $acc['hash'] ?? dummy_hash()) && $acc && !empty($acc['active']);
+        $pwOk = password_verify($pass, $acc['hash'] ?? dummy_hash()) && $acc && !empty($acc['active']);
+        $ok = $pwOk && !expired($acc);
+        if ($pwOk && !$ok) {   // right password, but the cohort's access has ended: say so instead of counting a wrong try
+            audit('login-expired', $user);
+            $err = 'Access for this login ended on ' . date('d M Y', strtotime($acc['expires'])) . '. Message TheHauData on Zalo ' . ZALO . ' to extend it.';
+        }
         if ($ok) {
             throttle_clear($user);
             session_regenerate_id(true);
@@ -28,10 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             audit('login-ok', $user);
             header('Location: ' . $next); exit;
         }
-        throttle_fail($user);
-        audit('login-fail', $user);
+        if (!$err) { throttle_fail($user); audit('login-fail', $user); }
         $st = throttle_state($user);
-        $err = $st['locked'] > 0
+        if (!$err) $err = $st['locked'] > 0
             ? 'Too many wrong tries. Locked for ' . ceil($st['locked'] / 60) . ' minutes. Message TheHauData on Zalo ' . ZALO . ' if you need help.'
             : 'Wrong username or password. ' . $st['left'] . ' ' . ($st['left'] === 1 ? 'try' : 'tries') . ' left.';
     }
