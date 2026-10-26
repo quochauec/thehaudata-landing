@@ -8,9 +8,12 @@ import * as duckdb from "../vendor/duckdb-browser.mjs";
 
 let db, conn, py, manifest;
 const listeners = new Set();
-const status = { phase: "idle", message: "", ready: false, error: null };
+const status = { phase: "idle", message: "", ready: false, error: null, pct: 0 };
 const emit = () => listeners.forEach(f => f({ ...status }));
 const setStatus = (p, m) => { Object.assign(status, { phase: p, message: m }); emit(); };
+// Boot is six stages (wasm download, DuckDB start, stdlib download, Pyodide start, sqlglot, schema); status.pct counts them.
+const STAGES = 6; let stagesDone = 0;
+const tick = () => { stagesDone++; status.pct = Math.min(100, Math.round(100 * stagesDone / STAGES)); emit(); };
 
 async function bytes(url) {
   const r = await fetch(url);
@@ -27,6 +30,7 @@ async function gunzip(u8) {
 
 async function bootDuck() {
   const wasm = await gunzip(await bytes("vendor/duckdb-eh.wasm.gz.txt"));
+  tick();
   const WASM_URL = "https://duckdb.invalid/duckdb-eh.wasm";
   const real = new URL("vendor/duckdb-browser-eh.worker.js", document.baseURI).href;
   const src = `(function () {
@@ -45,6 +49,7 @@ async function bootDuck() {
   await ready;
   db = new duckdb.AsyncDuckDB(new duckdb.VoidLogger(), worker);
   await db.instantiate(WASM_URL);
+  tick();
   conn = await db.connect();
   await conn.query("SET default_collation = 'NOCASE'");   // SQL Server compares text case-insensitively
 }
@@ -53,13 +58,16 @@ async function bootPy() {
   const realFetch = window.fetch;
   try {
     const stdlib = await bytes("vendor/python_stdlib.zip.txt");
+    tick();
     window.fetch = (u, o) => String(u).endsWith("python_stdlib.zip")
       ? Promise.resolve(new Response(stdlib, { status: 200, headers: { "Content-Type": "application/zip" } })) : realFetch(u, o);
     py = await loadPyodide({ indexURL: new URL("vendor/", document.baseURI).href });
   } finally { window.fetch = realFetch; }
+  tick();
   py.unpackArchive(await bytes("vendor/sqlglot.zip.txt"), "zip", { extractDir: "/home/pyodide/lib" });
   py.runPython("import sys; sys.path.insert(0, '/home/pyodide/lib')");
   py.runPython(await (await fetch("py/transpile.py.txt")).text());
+  tick();
 }
 
 let startPromise = null;
@@ -71,6 +79,7 @@ export function start() {
       setStatus("loading", "Loading the SQL engine");
       await Promise.all([bootDuck(), bootPy()]);
       manifest = await (await fetch("data/schema.json")).json();
+      tick();
       status.ready = true;
       setStatus("ready", `SQL engine ready (${((performance.now() - t0) / 1000).toFixed(1)}s)`);
     } catch (e) {
@@ -91,13 +100,24 @@ const files = new Set(), created = new Set();
 let currentProfile = null;
 export const tablesFor = (profile, keys) => manifest.tables.filter(t => keys.includes(t.ds)).map(t => ({ name: t.name, ds: t.ds, cols: t["cols_" + profile] }));
 
+// Table files are downloaded ahead of time (prefetch) so the first query on a dataset does not wait on the network.
+const dataCache = new Map();
+const dataBytes = url => { if (!dataCache.has(url)) dataCache.set(url, bytes(url)); return dataCache.get(url); };
+export async function prefetch(keys) {
+  await ready();
+  for (const t of manifest.tables) {
+    if (!keys.includes(t.ds) || files.has(`f_${t.name}.csv`)) continue;
+    try { await dataBytes(t.file); } catch (e) { dataCache.delete(t.file); }
+  }
+}
+
 export async function use(profile, keys) {
   await ready();
   await conn.query(`CREATE SCHEMA IF NOT EXISTS ${profile}`);
   for (const t of manifest.tables) {
     if (!keys.includes(t.ds) || created.has(profile + ":" + t.name)) continue;
     const f = `f_${t.name}.csv`;
-    if (!files.has(f)) { await db.registerFileBuffer(f, await bytes(t.file)); files.add(f); }
+    if (!files.has(f)) { await db.registerFileBuffer(f, await dataBytes(t.file)); files.add(f); dataCache.delete(t.file); }
     await conn.query(t[profile].replace("{S}", profile).replace("{F}", f));
     created.add(profile + ":" + t.name);
   }

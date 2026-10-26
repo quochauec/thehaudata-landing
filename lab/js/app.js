@@ -20,10 +20,11 @@ let hwData = null, casesApp = null, current = null;
 engine.onStatus(s => {
   const el = $("#eng"); if (!el) return;
   el.dataset.phase = s.phase;
-  el.textContent = s.phase === "ready" ? "SQL ready" : s.phase === "error" ? "SQL engine error" : "Loading the SQL engine…";
+  el.textContent = s.phase === "ready" ? "SQL ready" : s.phase === "error" ? "SQL engine error" : `Loading the SQL engine… ${s.pct || 0}%`;
   el.title = s.message || "";
 });
-engine.start().catch(() => { });
+// Start the engine as soon as the page opens, then pull the ADW and CRM tables in the background.
+engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { });
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
@@ -36,7 +37,7 @@ async function home() {
   main.innerHTML = `<div class="hub"><div class="cards homecards">
       <button class="cc big" data-go="guides"><span class="tag">Lessons 2 to 10</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
         <span class="row"><span class="tm">${GUIDES.length} lessons</span></span></button>
-      <button class="cc big" data-go="homework"><span class="tag">Lessons 2 to 6</span><b>Homework</b><span class="sk">${hwData.questions.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
+      <button class="cc big" data-go="homework"><span class="tag">Lessons 2 to 10</span><b>Homework</b><span class="sk">${hwData.questions.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
         <span class="row"><span class="tm">${hwData.questions.filter(q => q.check === "auto").length} with auto-check</span>${done ? `<span class="dn">${done}/${hwData.questions.length} done</span>` : ""}</span></button>
       <button class="cc big" data-go="cases"><span class="tag o">3 steps each</span><b>Case Studies</b><span class="sk">${cs.challenges.length} cases: read the request, plan your approach, then solve, chart and conclude.</span>
         <span class="row"><span class="tm">${live} run live on the real tables</span></span></button>
@@ -48,7 +49,7 @@ async function home() {
       <li>Queries run in your browser. Nothing you type is sent anywhere.</li>
       <li>Table names match the class SQL Server database (<code>ADW_</code>, <code>CRM_</code>, <code>GBE_</code>), so a query written here pastes into SQL Server unchanged.</li>
       <li>The first load downloads the SQL engine, about 40 MB. After that it opens from the cache.</li></ul></div></div>`;
-  $$("[data-go]", main).forEach(b => b.onclick = () => setZone(b.dataset.go));
+  $$("[data-go]", main).forEach(b => b.onclick = () => setZone(b.dataset.go, true));
 }
 
 async function homework() {
@@ -104,18 +105,21 @@ async function dictionary() {
 }
 
 const RENDER = { home, guides, homework, cases, dictionary, playground };
-async function setZone(z) {
+async function setZone(z, reset = false) {
   if (!ZONES.includes(z)) z = "home";
   current = z;
   $$("#zones [data-zone]").forEach(b => b.setAttribute("aria-selected", b.dataset.zone === z));
   store.set("zone", z);
-  try { history.replaceState(null, "", "#" + z); } catch (e) { try { location.hash = z; } catch (e2) { } }
+  // Keep a deep link such as #homework/3/<question> on first load; a nav click always resets to the zone root.
+  if (reset || (location.hash || "").replace("#", "").split("/")[0] !== z) {
+    try { history.replaceState(null, "", "#" + z); } catch (e) { try { location.hash = z; } catch (e2) { } }
+  }
   main.innerHTML = `<p class="note" style="padding-top:20px">Loading…</p>`;
   try { await RENDER[z](); } catch (e) { main.innerHTML = `<div class="card"><h2>Something went wrong</h2><p>${esc(e.message || e)}</p></div>`; }
   window.scrollTo({ top: 0 });
 }
-$$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone));
-$$("[data-zone-link]").forEach(a => a.onclick = e => { e.preventDefault(); setZone(a.dataset.zoneLink); });
-const start = (location.hash || "").replace("#", "");
+$$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone, true));
+$$("[data-zone-link]").forEach(a => a.onclick = e => { e.preventDefault(); setZone(a.dataset.zoneLink, true); });
+const start = (location.hash || "").replace("#", "").split("/")[0];
 setZone(ZONES.includes(start) ? start : (store.get("zone") && ZONES.includes(store.get("zone")) ? store.get("zone") : "home"));
 window.LabEngine = engine;   // used by the answer-key builder and tests

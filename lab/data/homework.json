@@ -19,6 +19,21 @@
    "title": "Subquery, CTE, window functions",
    "sub": "Lessons 5 and 6 share one homework",
    "ds": "ADW"
+  },
+  "8": {
+   "title": "Cleaning data",
+   "sub": "Missing values, typos, duplicates, outliers and date conversion",
+   "ds": "ADW + CRM + GBE"
+  },
+  "9": {
+   "title": "Customer segmentation with RFM",
+   "sub": "Recency, frequency, monetary, percentile scores and segments",
+   "ds": "ADW"
+  },
+  "10": {
+   "title": "Cohort retention",
+   "sub": "First purchase month, months since first order, retention table",
+   "ds": "ADW"
   }
  },
  "questions": [
@@ -27,20 +42,21 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Dòng sản phẩm chủ lực",
-   "story": "Công ty AdventureWork bán những dòng sản phẩm chủ lực gì? (Subcategory, Category)",
+   "title": "Main product lines",
+   "story": "What product lines does AdventureWorks sell? List the categories and the sub-categories.",
    "hint": null,
    "approach": [
-    "Tên category nằm ở bảng ADW_Dim_ProductCategory, subcategory ở ADW_Dim_ProductSubCategory.",
-    "Categories: Bikes, Accessories, Clothing, Components."
+    "Category names are in ADW_Dim_ProductCategory and sub-category names are in ADW_Dim_ProductSubCategory.",
+    "There are 4 categories (Bikes, Accessories, Clothing and Components) and 37 sub-categories.",
+    "This is an exploration query with no condition. To see which sub-category belongs to which category, you need a JOIN (Lesson 3)."
    ],
    "steps": [
     {
-     "title": "Các Category",
+     "title": "Categories",
      "sql": "SELECT DISTINCT ProductCategoryName\nFROM ADW_Dim_ProductCategory"
     },
     {
-     "title": "Các Subcategory",
+     "title": "Sub-categories",
      "sql": "SELECT DISTINCT ProductSubCategoryName\nFROM ADW_Dim_ProductSubCategory"
     }
    ],
@@ -56,11 +72,13 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Hoạt động ở đâu",
-   "story": "Công ty Adventurework đang hoạt động ở đâu? nước nào (Country, Territory)?",
+   "title": "Where the company operates",
+   "story": "Where does AdventureWorks operate? Return the territory, the country and the region group.",
    "hint": null,
    "approach": [
-    "Thông tin địa lý nằm trong bảng ADW_Dim_Territory."
+    "Geography is in ADW_Dim_Territory.",
+    "There are 10 territories in 6 countries: US (5 territories), CA, FR, DE, AU and GB.",
+    "Group is a reserved word in T-SQL, so write it as [Group]. Note the territory IDs, because HW 9 uses them."
    ],
    "steps": [
     {
@@ -95,11 +113,12 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Lý do khách chọn AdventureWork",
-   "story": "Khách hàng có những lý do nào để tìm tới công ty AdventureWork?",
+   "title": "Why customers buy",
+   "story": "Why do customers buy from AdventureWorks? List the purchase reasons.",
    "hint": null,
    "approach": [
-    "Lý do mua hàng nằm trong bảng ADW_Dim_Sales_Reason (cột ReasonName)."
+    "Purchase reasons are in ADW_Dim_Sales_Reason (column ReasonName).",
+    "There are 10 reasons, grouped into types such as Promotion, Marketing and Other."
    ],
    "steps": [
     {
@@ -132,12 +151,13 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Sản phẩm bị set sai giá",
-   "story": "Bạn nhân viên Peter đã set sai giá của một số sản phẩm đã bán ra. Sản phẩm có giá sai được định nghĩa là các sản phẩm giá trị hơn 3500$. Bạn hãy tìm giúp team sản phẩm tìm danh sách đơn hàng có những sản phẩm bị set giá sai?",
+   "title": "Wrongly priced products",
+   "story": "A colleague named Peter set the wrong price on some products that have already been sold. A wrong price means a unit price above 3,500. List the orders that contain these products, so the product team can review them.",
    "hint": null,
    "approach": [
-    "Sản phẩm đã bán ra: bảng ADW_Sales_orders_detail, chứa giao dịch ở level sản phẩm.",
-    "Giá sản phẩm: cột UnitPrice. Một đơn hàng có thể có nhiều dòng nên cần DISTINCT."
+    "Sold products are in ADW_Sales_orders_detail, which has one row per product line.",
+    "The price is the UnitPrice column. It is on the detail table, not on the order header.",
+    "One order can have several expensive lines, so use DISTINCT."
    ],
    "steps": [
     {
@@ -166,12 +186,14 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Hoàn tiền cho khách 29641",
-   "story": "Khách hàng có ID 29641 mới gọi điện và muốn hoàn tiền lại đơn hàng giao ngày 2013-06-06, bạn kiểm tra giá trị đơn hàng (SubTotal) của khách hàng này để giúp team CS xử lý ticket này nhé?",
+   "title": "Refund for customer 29641",
+   "story": "Customer 29641 called and wants a refund for the order shipped on 2013-06-06. Check the order value (SubTotal) so the customer service team can handle the ticket.",
    "hint": null,
    "approach": [
-    "ID khách hàng: cột CustomerID. Ngày giao hàng: cột ShipDate, trong bảng ADW_Sales_orders.",
-    "Định dạng ngày: yyyy-MM-dd."
+    "The customer ID (CustomerID) and the ship date (ShipDate) are both in ADW_Sales_orders.",
+    "Write dates as yyyy-MM-dd.",
+    "Filter on the ship date, not the order date. This order was placed on 2013-05-30 and shipped on 2013-06-06.",
+    "Exactly one order should match."
    ],
    "steps": [
     {
@@ -205,20 +227,21 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Thẻ lừa đảo đuôi 9916",
-   "story": "Đối tác thẻ mới báo những thẻ có số đuôi 9916 là thẻ lừa đảo. Bạn hãy lấy ra danh sách đơn hàng của những khách hàng có đuôi thẻ này đã đặt hàng ở công ty?",
-   "hint": "Số đuôi thẻ nằm trong cột Card Number, học viên phải làm 2 bước để tìm ra các đơn hàng có số đuôi này.",
+   "title": "Cards ending in 9916",
+   "story": "The card partner reports that cards ending in 9916 are fraudulent. List the orders paid with these cards, so the risk team can review them.",
+   "hint": "The card number is in the CardNumber column of ADW_Dim_CreditCard. Work in two steps.",
    "approach": [
-    "Bước 1: pattern matching trên CardNumber để lấy ra CreditCardID.",
-    "Bước 2: đơn hàng nào thanh toán bằng thẻ thì có CreditCardID trong bảng Sales Order."
+    "Step 1: use pattern matching on CardNumber to find the CreditCardID of the cards ending in 9916 (3 cards).",
+    "Step 2: orders paid by card carry a CreditCardID in ADW_Sales_orders. Filter on the IDs from step 1 (4 orders).",
+    "Hard-coded IDs go stale. A subquery with IN does both steps in one query (Lesson 5)."
    ],
    "steps": [
     {
-     "title": "Bước 1: tìm thẻ có đuôi 9916",
+     "title": "Step 1: find the cards ending in 9916",
      "sql": "SELECT *\nFROM ADW_Dim_CreditCard\nWHERE CardNumber LIKE '%9916'"
     },
     {
-     "title": "Bước 2: lấy đơn hàng của các CreditCardID tìm được",
+     "title": "Step 2: find the orders paid with those cards",
      "sql": "SELECT DISTINCT SalesOrderID, TotalDue, CreditCardID, CustomerID\nFROM ADW_Sales_orders\nWHERE CreditCardID IN ('166', '6177', '14469')"
     }
    ],
@@ -249,12 +272,13 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Top 10 standard cost cao nhất",
-   "story": "Team Finance đang muốn rà soát lại chi phí sản xuất của các mặt hàng hiện tại, hãy lấy ra thông tin của top 10 sản phẩm đang có standard cost cao nhất? Tỉ lệ standard cost/list price của các sản phẩm này là bao nhiêu?",
+   "title": "Highest standard costs",
+   "story": "The Finance team is reviewing production costs. List the 10 products with the highest standard cost, and show the ratio of standard cost to list price for each.",
    "hint": null,
    "approach": [
-    "Chi phí sản xuất (giá vốn) = StandardCost, nằm trong ADW_Dim_Product.",
-    "Thêm cột tỉ lệ StandardCost/ListPrice."
+    "Standard cost (StandardCost) and list price (ListPrice) are both in ADW_Dim_Product.",
+    "Sort StandardCost from high to low and keep 10 rows. Add a ratio column: StandardCost / ListPrice.",
+    "Several products tie on cost at the 10th place, so only the cost column is checked. Add a second sort column to make the list stable."
    ],
    "steps": [
     {
@@ -306,11 +330,13 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Khuyến mãi cho Reseller",
-   "story": "Chúng ta đang có những chương trình khuyến mãi nào cho Resellers? (Special OfferID, Description)",
+   "title": "Promotions for resellers",
+   "story": "Which promotions do we run for resellers? Return the special offer ID and its description.",
    "hint": null,
    "approach": [
-    "Chương trình khuyến mãi: bảng ADW_Dim_SpecialOffer. Chương trình dành cho Reseller: cột Category."
+    "Promotions are in ADW_Dim_SpecialOffer. The Category column says who each offer is for.",
+    "Run SELECT DISTINCT Category first to see the exact values, then filter on Reseller.",
+    "There are 13 reseller offers."
    ],
    "steps": [
     {
@@ -341,13 +367,14 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Hai tệp khách hàng, một câu truy vấn",
-   "story": "Context: Team Customer Research đang muốn làm một nghiên cứu về khách hàng ở các khu vực khác nhau. Hãy giúp team lấy ra thông tin tập khách hàng mua hàng trong năm 2012 thoả 2 điều kiện sau:\n● Khách hàng mua hàng online và Location ở Canada hoặc Pháp và có order value >= 1000$ HOẶC\n● Khách hàng mua hàng offline và Location ở US hoặc Australia và có order value nằm trong khoảng 600$ và 1000$\n● Thông tin cần lấy: CustomerID, Territory ID, Thời gian nhận hàng, order value, Online/Offline Flag.",
-   "hint": "Lưu ý: học viên phải lấy 2 tệp khách hàng này trong 1 câu truy vấn.",
+   "title": "Two customer groups in one query",
+   "story": "The Customer Research team is studying customers in different regions. Find the customers who bought in 2012 and fit one of these two groups:\n- Online buyers in Canada or France, with an order value of at least 1,000.\n- Offline buyers in the US or Australia, with an order value between 600 and 1,000.\nReturn CustomerID, TerritoryID, ship date, order value and the online/offline flag.",
+   "hint": "Both groups must come back from one query.",
    "approach": [
-    "Xem trước bảng ADW_Dim_Territory và ghi lại TerritoryID của Canada, France, US, Australia.",
-    "Điều kiện chung (năm 2012) nằm ngoài; hai tệp khách hàng nằm trong hai cụm điều kiện nối bằng OR.",
-    "Order value = TotalDue. OnlineOrderFlag: 1 = online, 0 = offline."
+    "Look at ADW_Dim_Territory first and note the TerritoryID of Canada, France, the US (five territories) and Australia.",
+    "The 2012 filter applies to both groups, so it goes outside. Each group is its own bracket of AND conditions, and the two brackets are joined with OR.",
+    "Order value is TotalDue. OnlineOrderFlag is 1 for online and 0 for offline.",
+    "Test each group alone first. Without the outer brackets, AND binds before OR and the 2012 filter would apply to only one group."
    ],
    "steps": [
     {
@@ -384,12 +411,13 @@
    "lesson": 2,
    "level": "Basic",
    "ds": "adw",
-   "title": "Online quý 4 2013 hoặc offline quý 1 2012",
-   "story": "Context: Team Customer Research đang muốn làm một nghiên cứu so sánh giữa các khách hàng mua online và offline. Hãy giúp team lấy ra các tập khách hàng mua hàng trong năm 2012, 2013 thỏa các điều kiện sau:\n○ Khách mua offline trong quý 1 2012 HOẶC\n○ khách hàng mua online trong quý 4 2013\n○ Thông tin cần lấy: CustomerID, Order Year, Order Quarter, Online/Offline Flag",
+   "title": "Online in Q4 2013 or offline in Q1 2012",
+   "story": "The Customer Research team wants to compare online and offline buyers. Find the customers who bought offline in Q1 2012, or online in Q4 2013. Return CustomerID, order year, order quarter and the online/offline flag.",
    "hint": null,
    "approach": [
-    "Có nhiều cách lọc quý 1: khoảng ngày, MONTH IN (1,2,3) hoặc DATEPART(QUARTER, ...) = 1.",
-    "Chú ý các nhóm điều kiện lồng nhau khi ghép 2 tệp."
+    "There are three ways to filter Q1: a date range, MONTH IN (1, 2, 3), or DATEPART(QUARTER, ...) = 1.",
+    "Watch the nested conditions when you join the two groups with OR.",
+    "A quarter number alone is not enough, because Q1 exists in every year. Always pair it with the year."
    ],
    "steps": [
     {
@@ -427,12 +455,13 @@
    "lesson": 3,
    "level": "Easy-Medium",
    "ds": "crm",
-   "title": "Hợp đồng chốt cao hơn giá bán",
-   "story": "Lấy ra danh sách các hợp đồng có sản phẩm được chốt trong năm 2017 và có giá chốt hợp đồng CAO hơn giá bán của sản phẩm.",
+   "title": "Won deals above list price",
+   "story": "List the deals won in 2017 whose closing value is higher than the list price of the product.",
    "hint": null,
    "approach": [
-    "Bảng gốc: CRM_sales_pipeline (hợp đồng). Cần thêm giá bán từ CRM_products, nên dùng LEFT JOIN để giữ nguyên thông tin hợp đồng.",
-    "Hợp đồng được chốt: deal_stage = 'Won'."
+    "Deals are in CRM_sales_pipeline. The list price is in CRM_products, so use a LEFT JOIN to keep every deal.",
+    "A won deal has deal_stage = 'Won'. Filter the close date on 2017.",
+    "Check the join. The pipeline writes one product as GTXPro and the product list writes GTX Pro. Those deals get a NULL price and drop out of the comparison without any error. Lesson 8 comes back to this."
    ],
    "steps": [
     {
@@ -471,12 +500,13 @@
    "lesson": 3,
    "level": "Easy-Medium",
    "ds": "crm",
-   "title": "Region có deal thất bại đầu năm 2017",
-   "story": "Lấy ra danh sách các region có nhân viên close deal thất bại trong 3 tháng đầu năm 2017.",
+   "title": "Regions that lost deals in Q1 2017",
+   "story": "Which regions had agents who lost deals in the first three months of 2017?",
    "hint": null,
    "approach": [
-    "Bảng gốc: CRM_sales_pipeline. Tên region lấy từ CRM_sales_teams qua sales_agent.",
-    "Thất bại: deal_stage = 'Lost'."
+    "Deals are in CRM_sales_pipeline. The region is in CRM_sales_teams, joined on sales_agent.",
+    "A lost deal has deal_stage = 'Lost', with a close date from 2017-01-01 to 2017-03-31.",
+    "Many deals share a region, so use DISTINCT."
    ],
    "steps": [
     {
@@ -505,11 +535,13 @@
    "lesson": 3,
    "level": "Easy-Medium",
    "ds": "crm",
-   "title": "Sản phẩm bán cho sector marketing",
-   "story": "Lấy ra danh sách các sản phẩm thuộc sector “marketing” có deal thành công trong năm 2017.",
+   "title": "Products sold to the marketing sector",
+   "story": "Which products were sold to companies in the marketing sector in won deals in 2017?",
    "hint": null,
    "approach": [
-    "Sector của khách hàng B2B nằm ở bảng CRM_Accounts, nối qua cột account."
+    "The sector of each customer company is in CRM_Accounts, joined on account.",
+    "Run SELECT DISTINCT sector FROM CRM_Accounts first to see the exact spelling before you filter.",
+    "Filter on won deals closed in 2017 with sector = 'marketing'. Use DISTINCT on the product."
    ],
    "steps": [
     {
@@ -538,16 +570,17 @@
    "lesson": 3,
    "level": "Easy-Medium",
    "ds": "crm",
-   "title": "Top 10 hợp đồng thuộc sector nào",
-   "story": "Top 10 hợp đồng đem về doanh thu cao nhất từ trước tới giờ thuộc các sector nào?",
+   "title": "Sectors of the top 10 deals",
+   "story": "Which sectors do the 10 highest-value deals of all time belong to?",
    "hint": null,
    "approach": [
-    "Doanh thu hợp đồng: cột close_value. Thông tin sector: tương tự câu 3.",
-    "Đáp án cuối cùng là danh sách sector (6 sector khác nhau)."
+    "Deal value is close_value in CRM_sales_pipeline. The sector comes from CRM_Accounts, as in the last question.",
+    "Take the won deals, sort by close_value from high to low and keep the top 10.",
+    "The answer is the list of distinct sectors in those 10 deals (6 sectors)."
    ],
    "steps": [
     {
-     "title": "Top 10 hợp đồng kèm sector",
+     "title": "Top 10 deals with their sector",
      "sql": "SELECT TOP 10 t1.*, t2.sector\nFROM CRM_sales_pipeline t1\nLEFT JOIN CRM_Accounts t2 ON t1.account = t2.account\nWHERE deal_stage = 'Won'\nORDER BY close_value DESC"
     }
    ],
@@ -594,12 +627,13 @@
    "lesson": 3,
    "level": "Easy-Medium",
    "ds": "crm",
-   "title": "Close deal ngắn nhất và dài nhất",
-   "story": "Top 10 hợp đồng có thời gian close deal ngắn nhất và dài nhất là các hợp đồng nào?",
+   "title": "Fastest and slowest deals",
+   "story": "Which 10 deals closed fastest and which 10 closed slowest?",
    "hint": null,
    "approach": [
-    "Thời gian close deal = close_date - engage_date, dùng DATEDIFF.",
-    "Nhiều hợp đồng có cùng số ngày, nên danh sách top 10 có thể khác nhau giữa các cách viết. Hãy so sánh với kết quả mẫu."
+    "Closing time = close_date minus engage_date. Use DATEDIFF in days.",
+    "Many deals share the same number of days, so the top 10 can differ between valid answers. Compare with the model output.",
+    "Only Won and Lost deals have a close date, so open deals are left out. Putting ORDER BY inside a UNION branch needs a wrapper query (Lesson 5 material)."
    ],
    "steps": [
     {
@@ -618,12 +652,14 @@
    "lesson": 3,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Khách Europe quý 3 2013 trả bằng Vista/SuperiorCard",
-   "story": "Team Payment đang làm survey các khách hàng cho khu vực Europe. Hãy lấy list các khách hàng mua hàng tại Europe trong quý 3 2013, có thanh toán qua thẻ Vista và SuperiorCard. Thông tin cần lấy: CustomerID và Card type.",
-   "hint": "Đối với những case chỉ liên quan đến level đơn hàng, chỉ cần dùng bảng Sales Order là đủ.",
+   "title": "Europe customers on Vista or SuperiorCard",
+   "story": "The Payment team is running a survey in Europe. List the customers who bought in Europe in Q3 2013 and paid with a Vista or SuperiorCard. Return the CustomerID and the card type.",
+   "hint": "When a question is only about orders, ADW_Sales_orders is the base table.",
    "approach": [
-    "Bảng gốc: ADW_Sales_orders. Bổ sung CardType từ ADW_Dim_CreditCard và khu vực từ ADW_Dim_Territory.",
-    "Keys: CreditCardID và TerritoryID. Chú ý kiểu dữ liệu của hai CreditCardID khác nhau: đổi về cùng kiểu (CAST) trước khi JOIN."
+    "Start from ADW_Sales_orders. Add the card type from ADW_Dim_CreditCard and the region group from ADW_Dim_Territory.",
+    "The join keys are CreditCardID and TerritoryID. The two CreditCardID columns have different data types, so CAST them to the same type before the JOIN.",
+    "INNER JOIN is fine here, because orders without a card should drop out.",
+    "Group is a reserved word, so write [Group] in brackets."
    ],
    "steps": [
     {
@@ -654,16 +690,18 @@
    "lesson": 3,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Sản phẩm Bikes Black/Silver, giá vốn 1000-1500",
-   "story": "Bạn hãy giúp team Product tìm danh sách các sản phẩm cùng thuộc Category “Bikes\", Màu Black, Silver Và có giá vốn từ 1000$ đến 1500. Đồng thời hãy tính %Cost/List Price của các sản phẩm đó. Thông tin cần lấy: ProductID, ProductName, Standardcost, Standardcost/List Price.",
+   "title": "Black or Silver Mountain Bikes with cost 1,000 to 1,500",
+   "story": "The Product team wants a list of Mountain Bikes that are Black or Silver and have a standard cost between 1,000 and 1,500. Also show the ratio of standard cost to list price for each product.",
    "hint": null,
    "approach": [
-    "Category nằm ở bảng ADW_Dim_ProductCategory, cách xa bảng sản phẩm 1 bảng subcategory. ProductCategoryID = 1 là Bikes.",
-    "Chú ý unify datatype giữa các key khi JOIN."
+    "Products are in ADW_Dim_Product. The sub-category name is in ADW_Dim_ProductSubCategory, one table away.",
+    "Filter the sub-category on 'Mountain Bikes', the colour on Black or Silver, and StandardCost with BETWEEN 1000 AND 1500.",
+    "The join keys have different data types, so CAST them to the same type.",
+    "There are 6 products. Their cost is about 54.6% of list price."
    ],
    "steps": [
     {
-     "sql": "SELECT DISTINCT ProductID, ProductName, t2.ProductSubCategoryName, StandardCost, ListPrice,\n       StandardCost/ListPrice AS cost_ratio\nFROM ADW_Dim_Product t1\nLEFT JOIN ADW_Dim_ProductSubCategory t2\n    ON t1.ProductSubcategoryID = CAST(t2.ProductSubcategoryID AS VARCHAR)\nWHERE t2.ProductCategoryID = 1\n  AND Color IN ('Black', 'Silver')\n  AND StandardCost BETWEEN 1000 AND 1500"
+     "sql": "SELECT DISTINCT ProductID, ProductName, t2.ProductSubCategoryName, StandardCost, ListPrice,\n       StandardCost/ListPrice AS cost_ratio\nFROM ADW_Dim_Product t1\nLEFT JOIN ADW_Dim_ProductSubCategory t2\n    ON t1.ProductSubcategoryID = CAST(t2.ProductSubcategoryID AS VARCHAR)\nWHERE t2.ProductSubCategoryName = 'Mountain Bikes'\n  AND Color IN ('Black', 'Silver')\n  AND StandardCost BETWEEN 1000 AND 1500"
     }
    ],
    "check": "auto",
@@ -697,12 +735,13 @@
    "lesson": 3,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Đơn hàng của top 10 khách chi tiêu 2011 và 2012",
-   "story": "Công ty đang muốn tri ân các khách hàng chi tiêu nhiều nhất trong năm 2011 và 2012.\n3.1. Bạn hãy lấy ra tất cả thông tin đơn hàng (OrderID, OrderDate, OrderValue) của top 10 customers có tổng chi tiêu cao nhất của năm 2011 và 2012.",
-   "hint": "Gợi ý: Danh sách customer nằm trong 2 bảng Top_10_spending_cust_2011 và Top_10_spending_cust_2012.",
+   "title": "Orders of the top 10 customers of 2011 and 2012",
+   "story": "The company wants to thank its biggest spenders of 2011 and 2012. Get every order (order ID, customer ID and total due) of the top 10 customers of each year.",
+   "hint": "The customer lists are in the tables ADW_Top_10_spending_cust_2011 and ADW_Top_10_spending_cust_2012.",
    "approach": [
-    "Chỉ muốn lấy đơn hàng của top 10 khách này, nên dùng INNER JOIN theo CustomerID.",
-    "Ghép hai năm bằng UNION."
+    "You only want the orders of these customers, so use INNER JOIN on CustomerID, once per year.",
+    "Combine the two years with UNION.",
+    "Extra: you can get the same rows with a LEFT JOIN and WHERE ... IS NOT NULL on the joined key, without swapping the tables."
    ],
    "steps": [
     {
@@ -735,11 +774,12 @@
    "lesson": 3,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Khách nằm trong top 10 cả hai năm",
-   "story": "3.2. Có bao nhiêu khách hàng cùng nằm trong top 10 khách hàng có chi tiêu cao nhất ở cả 2 năm?",
+   "title": "Customers in the top 10 in both years",
+   "story": "How many customers are in the top 10 spenders of both 2011 and 2012?",
    "hint": null,
    "approach": [
-    "INNER JOIN hai bảng top 10 theo CustomerID, rồi đếm số dòng."
+    "INNER JOIN the two top 10 tables on CustomerID. The rows that remain are the customers in both lists.",
+    "Count the rows (2 customers)."
    ],
    "steps": [
     {
@@ -771,12 +811,13 @@
    "lesson": 3,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Đơn mua vì chất lượng và uy tín nhà cung cấp",
-   "story": "Công ty đang muốn tìm ra các đơn hàng được mua vì lý do \"chất lượng\" và \"uy tín nhà cung cấp\" trong 2 năm 2012, 2013 để phục vụ cho việc nghiên cứu về hành vi mua hàng, hãy giúp công ty lấy ra các đơn hàng thỏa mãn điều kiện này nhé.",
+   "title": "Orders bought for quality or supplier reputation",
+   "story": "The company wants to study buying behaviour. Find the orders placed for the reasons Quality or Manufacturer (supplier reputation) in 2012 and 2013.",
    "hint": null,
    "approach": [
-    "Xem ADW_Dim_Sales_Reason để biết tên hai lý do: Quality và Manufacturer.",
-    "Đường nối: Sales_orders → Sales_orders_reasons → Dim_Sales_Reason."
+    "Look at ADW_Dim_Sales_Reason to find the two reasons: Quality and Manufacturer.",
+    "The path is ADW_Sales_orders, then ADW_Sales_orders_reasons, then ADW_Dim_Sales_Reason.",
+    "An order with both reasons appears twice, once per reason, so the result has more rows than orders. Drop ReasonName if you need one row per order."
    ],
    "steps": [
     {
@@ -811,12 +852,13 @@
    "lesson": 3,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Sản phẩm đơn giá trên 2000$ có Special Offer",
-   "story": "Công ty đang muốn làm một chương trình promotion hướng tới các khách hàng mua đơn giá trị cao, hãy giúp team Business tìm thông tin các sản phẩm đã được bán ra từ trước đến nay và có đơn giá (unit price) trên 2000$ và đang được hưởng Special Offer để điều chỉnh lại scheme khuyến mãi? Thông tin cần lấy: ProductID, ProductName",
+   "title": "Sold above 2,000 with a special offer",
+   "story": "The Business team wants to design a promotion for high-value purchases. Find the products that have been sold at a unit price above 2,000 and carried a special offer. Return ProductID and ProductName.",
    "hint": null,
    "approach": [
-    "Bảng gốc: ADW_Sales_orders_detail (sản phẩm đã bán, UnitPrice, SpecialOfferID). Bổ sung ProductName từ ADW_Dim_Product.",
-    "SpecialOfferID = 1 nghĩa là 'No Discount', nên đang hưởng Special Offer là SpecialOfferID != 1."
+    "The base table is ADW_Sales_orders_detail (sold products, UnitPrice, SpecialOfferID). Add ProductName from ADW_Dim_Product.",
+    "SpecialOfferID = 1 means 'No Discount', so a product with a special offer has SpecialOfferID <> 1. Check ADW_Dim_SpecialOffer to confirm.",
+    "You do not need to join ADW_Dim_SpecialOffer, because the ID is already in the detail table."
    ],
    "steps": [
     {
@@ -847,11 +889,12 @@
    "lesson": 3,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Bikes và Clothing có Volume Discount",
-   "story": "Category \"Bikes\" và \"Clothing\" là 2 category đang được planning để chạy cross sale cùng nhau. Bạn hãy giúp team Product tìm TÊN các sản phẩm thuộc Category \"Bikes\" và \"Clothing\" và đang được hưởng khuyến mãi “Volume Discount”.",
+   "title": "Bikes and Clothing sold under a Volume Discount",
+   "story": "The Bikes and Clothing categories are planned for a cross-sell campaign. Find the names of the products in these two categories that sold under a Volume Discount offer.",
    "hint": null,
    "approach": [
-    "Cách làm tương tự câu 11. Category: 1 = Bikes, 3 = Clothing. Loại khuyến mãi nằm ở cột Type của ADW_Dim_SpecialOffer."
+    "Same approach as the last question. The category IDs are 1 = Bikes and 3 = Clothing. The offer type is in the Type column of ADW_Dim_SpecialOffer.",
+    "Hard-coded IDs are quick but fragile. Look them up in ADW_Dim_ProductCategory first and say so in a comment."
    ],
    "steps": [
     {
@@ -880,13 +923,14 @@
    "lesson": 4,
    "level": "Easy-Medium",
    "ds": "adw",
-   "title": "Report doanh thu, lợi nhuận theo tháng",
-   "story": "BOD đang muốn làm một report overall về doanh thu, lợi nhuận và biên lợi nhuận, số khách hàng theo monthly/yearly trong 4 năm công ty hoạt động. Hãy giúp BOD thực hiện view report này nhé.",
+   "title": "Monthly revenue and profit report",
+   "story": "The board wants an overview of revenue, profit, profit margin and number of customers by month and year, across the four years the company has operated. Build the report.",
    "hint": null,
    "approach": [
-    "Metrics: Revenue, Profit, Profit Margin, Customers. Dimensions: Year, Month.",
-    "Revenue = LineTotal (đã trừ khuyến mãi). Profit = Revenue - Product Cost (OrderQty × StandardCost). Margin = Profit/Revenue.",
-    "Cách định nghĩa metric có thể khác nhau, nên hãy so sánh logic với kết quả mẫu."
+    "Metrics: revenue, profit, profit margin and customers. Dimensions: year and month.",
+    "Revenue = LineTotal (after discounts). Profit = revenue minus product cost (OrderQty x StandardCost). Margin = profit / revenue.",
+    "Customers per month cannot be added into a yearly total, because one customer buys in several months. Count the yearly figure with its own query.",
+    "Metric definitions can differ, so compare your logic with the model answer."
    ],
    "steps": [
     {
@@ -905,12 +949,14 @@
    "lesson": 4,
    "level": "Easy-Medium",
    "ds": "adw",
-   "title": "Performance theo country",
-   "story": "BOD đang muốn làm một report overall về doanh thu, lợi nhuận, số khách hàng theo country trong 4 năm công ty hoạt động. Đâu là country có performance tốt và ổn định nhất? Hãy giúp BOD thực hiện view report này nhé.",
+   "title": "Performance by country",
+   "story": "Build the same report by country and year: revenue, profit, customers and profit margin. Which country performs best and most steadily?",
    "hint": null,
    "approach": [
-    "Các bảng: sales order detail, sales order, dim product, dim territory.",
-    "Metrics: Revenue, Profit, Customers, Profit Margin. Dimensions: Year, Country."
+    "Tables: sales order detail, sales order, product and territory.",
+    "Metrics: revenue, profit, customers and profit margin. Dimensions: year and country.",
+    "The query only produces the table. The answer to 'best and steadiest' is your reading of it. In this data Australia leads on margin every year, and the US has the most revenue but a thin margin.",
+    "2014 covers six months, so it is not comparable with full years."
    ],
    "steps": [
     {
@@ -929,12 +975,13 @@
    "lesson": 4,
    "level": "Easy-Medium",
    "ds": "adw",
-   "title": "Doanh thu theo phương thức thanh toán",
-   "story": "Doanh thu theo các phương thức thanh toán ở từng quốc gia hiện tại đang như thế nào?",
+   "title": "Revenue by payment method",
+   "story": "How much revenue does each payment method bring in, in each country?",
    "hint": null,
    "approach": [
-    "Metrics: Revenue. Dimensions: Payment Method, Country.",
-    "Đơn không có thẻ (CreditCardID là 'NULL' hoặc rỗng) được xem là thanh toán tiền mặt (Cash)."
+    "Metric: revenue. Dimensions: payment method and country.",
+    "Orders without a card (CreditCardID is the text 'NULL') count as cash payments.",
+    "In T-SQL the GROUP BY repeats the full CASE expression, because SELECT aliases are not available in GROUP BY."
    ],
    "steps": [
     {
@@ -953,12 +1000,14 @@
    "lesson": 4,
    "level": "Easy-Medium",
    "ds": "adw",
-   "title": "Tỉ lệ doanh thu kênh Online 2013 và 2014",
-   "story": "Hãy so sánh tỉ lệ về doanh thu của channel Online ở các nước trong năm 2013 và 2014? Kênh online đang perform tốt nhất ở đâu?",
-   "hint": "Gợi ý: Học viên nên dùng conditional aggregation để tính tỷ lệ doanh thu online so với tổng đơn hàng.",
+   "title": "Online share of revenue, 2013 vs 2014",
+   "story": "Compare the share of revenue that comes from the online channel in each country in 2013 and 2014. Where does online do best?",
+   "hint": "Use conditional aggregation to calculate online revenue as a share of total revenue.",
    "approach": [
-    "Metrics: Online Revenue, Total Revenue, Online Revenue Ratio. Dimensions: Country, Year.",
-    "Conditional aggregation: SUM(CASE WHEN OnlineOrderFlag = 1 THEN ... END)."
+    "Metrics: online revenue, total revenue and online share. Dimensions: country and year.",
+    "Conditional aggregation: SUM(CASE WHEN OnlineOrderFlag = 1 THEN ... END).",
+    "Use the same revenue column (TotalDue) for the numerator and the denominator.",
+    "2014 covers six months, so call it 'H1 2014' in the report."
    ],
    "steps": [
     {
@@ -977,12 +1026,14 @@
    "lesson": 4,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Weekdays và weekend tại US",
-   "story": "Công ty đang muốn so sánh performance bán hàng giữa ngày trong tuần và ngày cuối tuần tại US. Bạn hãy so sánh số lượng sản phẩm bán ra (Quantity) trung bình/ngày và trung bình/từng khách hàng tại các Territory của US theo weekdays vs weekend.\nCâu hỏi phân tích: Bạn có nhận xét gì từ số liệu đã lấy ra?",
-   "hint": "Gợi ý: Dùng hàm Datepart + CASE WHEN để phân loại ngày thành weekdays & weekend.",
+   "title": "Weekdays vs weekends in the US",
+   "story": "The company wants to compare sales on weekdays and weekends in the US. For each US territory, compare the average quantity sold (OrderQty) per day and per customer on weekdays versus weekends. What do you notice in the numbers?",
+   "hint": "Use DATEPART together with CASE WHEN to label each day as a weekday or a weekend.",
    "approach": [
-    "Trong SQL Server, DATEPART(weekday, ...) trả về 1 cho Chủ nhật và 7 cho Thứ bảy, nên weekend là (1, 7).",
-    "Tử số: OrderQty. Mẫu số: số ngày và số khách hàng. Dimensions: TerritoryName và loại ngày."
+    "In SQL Server, DATEPART(weekday, ...) returns 1 for Sunday and 7 for Saturday, so the weekend is (1, 7). Confirm it with SELECT DATEPART(weekday, '2026-09-15').",
+    "Numerator: OrderQty. Denominators: the number of days and the number of customers. Dimensions: territory and day type.",
+    "Divide by the number of days that actually had orders, not by 5 or 2.",
+    "Compare like with like. Some territories sell on only a few days, so their per-day figures describe a different business."
    ],
    "steps": [
     {
@@ -1001,12 +1052,14 @@
    "lesson": 4,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Hành vi mua hàng US và EU",
-   "story": "Team Customer research muốn phân tích về hành vi mua hàng của khách hàng ở US vs EU. Hãy so sánh tần suất mua hàng và số lượng sản phẩm trung bình/đơn hàng của khách hàng tại 2 location này? Location nào đang có performance tốt hơn?",
+   "title": "Buying behaviour, US vs EU",
+   "story": "The Customer Research team wants to compare buying behaviour in the US and the EU. Compare purchase frequency (orders per customer) and average quantity per order. Which region does better?",
    "hint": null,
    "approach": [
-    "Metrics: OrderFrequency (số đơn/khách hàng), AvgQtyPerOrder. Dimension: Region (EU hoặc US).",
-    "Nhân với 1.00 để tránh chia số nguyên."
+    "Metrics: order frequency (orders per customer) and average quantity per order. Dimension: region (EU or US).",
+    "Multiply by 1.00 to avoid integer division.",
+    "Use DISTINCT when you count orders, or each order is counted once per product line.",
+    "'Better' is not one number. Say which metric you rank by."
    ],
    "steps": [
     {
@@ -1025,12 +1078,14 @@
    "lesson": 4,
    "level": "Medium-Hard",
    "ds": "adw",
-   "title": "Nên đẩy bán category nào ở EU",
-   "story": "Nếu công ty muốn tập trung đẩy bán 1 category ở EU thì nên tập trung bán Category nào?",
-   "hint": "Gợi ý: Đây là câu hỏi mở, học viên nên xem xét câu hỏi theo nhiều hơn 1 khía cạnh, ví dụ: xét theo đóng góp về doanh thu/lợi nhuận & %profit margin...",
+   "title": "Which category to push in Europe",
+   "story": "If the company wants to push one category in Europe, which one should it be?",
+   "hint": "This is an open question. Look at it from more than one angle, for example revenue, profit and profit margin.",
    "approach": [
-    "Khi đề bài không nêu rõ metric, hãy dựa vào business sense: Revenue, Profit, Profit Margin, Orders.",
-    "Dimension: ProductCategoryName, lọc khu vực Europe."
+    "When the question does not name the metric, use business sense: revenue, profit, profit margin and orders.",
+    "Dimension: product category, filtered to Europe.",
+    "Back your recommendation with two views. Bikes carry almost all of the profit. Accessories have the best margin and the most orders, but a small order value. 'Bikes for profit, Accessories as the high-margin add-on' is a reasonable answer.",
+    "Add the year to the GROUP BY to see whether the picture is stable."
    ],
    "steps": [
     {
@@ -1049,13 +1104,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Khách có AOV cao hơn AOV của US",
-   "story": "Công ty đang muốn target vào những khách hàng có giá trị trung bình đơn hàng (Average Order Value - AOV) lớn hơn giá trị trung bình đơn hàng của khách hàng mua tại US. Mục đích để phân tích hành vi mua hàng nhằm mục đích tăng AOV trên mỗi đơn hàng. Hãy lấy ra các khách hàng thỏa mãn tiêu chí này?",
-   "hint": "Gợi ý: AOV = Total GMV (Sum Order Value of all orders)/Number of orders.",
+   "title": "Customers with AOV above the US AOV",
+   "story": "The company wants to target customers whose average order value (AOV) is higher than the AOV of customers who buy in the US, to study how to raise AOV. List these customers.",
+   "hint": "AOV = total value of all orders divided by the number of orders.",
    "approach": [
-    "Bước 1: tính điều kiện AOV của khách US, ra một con số duy nhất (scalar).",
-    "Bước 2: ghép điều kiện đó vào truy vấn chính, bằng Subquery hoặc CTE.",
-    "'Order value' có thể là SubTotal hoặc TotalDue, nên danh sách khách có thể khác nhau một chút giữa các cách làm."
+    "Step 1: calculate the AOV of US customers. It is one number (a scalar).",
+    "Step 2: use it as the condition in the main query, through a subquery or a CTE.",
+    "Order value can be SubTotal or TotalDue, and the choice moves the threshold. Pick one and state it.",
+    "Multiply by 1.00 so the division is not an integer division."
    ],
    "steps": [
     {
@@ -1079,13 +1135,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Ba nhóm khách Bikes và Clothing",
-   "story": "Hãy lấy ra danh sách khách hàng theo 3 nhóm tiêu chí bên dưới và so sánh giá trị trung bình đơn hàng (AOV) khi mua 2 sản phẩm Bikes + Clothing của những khách hàng này.\n● Nhóm 1: chỉ mua các sản phẩm thuộc category Bikes.\n● Nhóm 2: mua các sản phẩm thuộc cả 2 category Bikes và category Clothing.\n● Nhóm 3: chỉ mua các sản phẩm thuộc category Clothing.",
+   "title": "Bikes only, Clothing only, or both",
+   "story": "Split customers into three groups and compare the average order value (AOV) of their Bikes and Clothing purchases.\n- Group 1: bought only Bikes.\n- Group 2: bought both Bikes and Clothing.\n- Group 3: bought only Clothing.",
    "hint": null,
    "approach": [
-    "Bước 1: conditional aggregation để đếm số đơn Bikes và Clothing của từng khách.",
-    "Bước 2: dùng CASE WHEN phân loại khách thành 3 nhóm.",
-    "Bước 3: tính AOV của từng nhóm. Nên tách thành các CTE có thể tái sử dụng."
+    "Step 1: use conditional aggregation to count each customer's Bikes orders and Clothing orders.",
+    "Step 2: use CASE WHEN to put each customer in one of the three groups.",
+    "Step 3: calculate the AOV for each group. Split the steps into CTEs you can reuse.",
+    "Spending and orders count only Bikes and Clothing lines, not the whole basket. Count DISTINCT SalesOrderID, so an order is not counted once per product line."
    ],
    "steps": [
     {
@@ -1104,21 +1161,23 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Tăng trưởng doanh thu YoY theo country",
-   "story": "Hãy tính tỉ lệ tăng trưởng doanh thu hằng năm (%YOY growth) theo từng country trong giai đoạn 2012-2014, đâu là country có tốc độ tăng trưởng về doanh tốt nhất trong giai đoạn đang xét?",
+   "title": "Year-over-year growth by country",
+   "story": "Calculate year-over-year revenue growth (% YoY) by country for 2012 to 2014. Which country grows fastest?",
    "hint": null,
    "approach": [
-    "Expected: year, country, current_year_rev, last_year_rev, yoy_rev.",
-    "Cách 1 (ít tối ưu hơn): CTE + self join với unequal join (OrderYear = OrderYear + 1). Cách 2: dùng window function LAG.",
-    "Hai cách trên dùng hai định nghĩa doanh thu khác nhau (SubTotal và LineTotal), nên con số hơi khác nhau."
+    "Expected columns: year, country, current-year revenue, last-year revenue and YoY growth.",
+    "Method 1 (less efficient): CTE and self join with an unequal join (OrderYear = OrderYear + 1). Method 2: the window function LAG.",
+    "The two methods use different revenue definitions (SubTotal and LineTotal), so the numbers differ slightly.",
+    "2014 is a half year, so its growth compares six months with twelve. Compare 2012 and 2013, or the same months.",
+    "Small bases inflate percentages, so show the absolute revenue too."
    ],
    "steps": [
     {
-     "title": "Cách 1: CTE + self join",
+     "title": "Method 1: CTE + self join",
      "sql": "WITH country_revenue_by_year AS (\n    SELECT YEAR(OrderDate) AS OrderYear, CountryRegionCode, SUM(SubTotal) AS Revenue\n    FROM ADW_Sales_orders t1\n    LEFT JOIN ADW_Dim_Territory t5 ON t1.TerritoryID = t5.TerritoryID\n    GROUP BY YEAR(OrderDate), CountryRegionCode\n)\nSELECT t1.*,\n       t2.Revenue AS previous_year_revenue,\n       CASE WHEN t2.Revenue IS NOT NULL THEN t1.Revenue/t2.Revenue - 1 ELSE 0 END AS YOY_growth\nFROM country_revenue_by_year t1\nLEFT JOIN country_revenue_by_year t2\n       ON t1.CountryRegionCode = t2.CountryRegionCode\n      AND t1.OrderYear = t2.OrderYear + 1\nWHERE t1.OrderYear BETWEEN 2012 AND 2014\nORDER BY CountryRegionCode DESC, OrderYear"
     },
     {
-     "title": "Cách 2: window function LAG",
+     "title": "Method 2: window function LAG",
      "sql": "WITH Country_Revenue AS (\n    SELECT T3.CountryRegionCode AS Country, YEAR(T1.OrderDate) AS OrderYear, SUM(T2.LineTotal) AS CurentRevenue\n    FROM ADW_Sales_orders T1\n    LEFT JOIN ADW_Sales_orders_detail T2 ON T1.SalesOrderID = T2.SalesOrderID\n    INNER JOIN ADW_Dim_Territory T3 ON T1.TerritoryID = T3.TerritoryID\n    WHERE YEAR(T1.OrderDate) BETWEEN 2011 AND 2014\n    GROUP BY T3.CountryRegionCode, YEAR(T1.OrderDate)\n),\nCountry_Revenue_Add AS (\n    SELECT *, LAG(CurentRevenue) OVER (PARTITION BY Country ORDER BY OrderYear) AS PreviousRevenue\n    FROM Country_Revenue\n)\nSELECT Country, OrderYear, CurentRevenue, (CurentRevenue/PreviousRevenue) - 1 AS YOYGrowthPercentage\nFROM Country_Revenue_Add\nWHERE OrderYear BETWEEN 2012 AND 2014\nORDER BY Country, OrderYear"
     }
    ],
@@ -1134,16 +1193,18 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Subcategory có promotion cost tăng 2 năm liên tiếp",
-   "story": "Công ty đang muốn review lại tổng chi phí khuyến mãi của các subcategory. Hãy lấy ra danh sách subcategory có tổng chi phí khuyến mãi tăng trong 2 năm liên tiếp? Gợi ý: Tương tự câu 3",
-   "hint": null,
+   "title": "Sub-categories with rising promotion cost",
+   "story": "The company is reviewing the total promotion cost of its sub-categories. List the sub-categories whose total promotion cost rose two years in a row.",
+   "hint": "It works like the year-over-year question (HW 3).",
    "approach": [
-    "Metrics: promotion cost năm hiện tại, năm kế tiếp, 2 năm kế tiếp. Dimension: Year, Subcategory.",
-    "Promotion cost = UnitPriceDiscount × UnitPrice × OrderQty. Cách 1: CTE + self join. Cách 2: LEAD()."
+    "Metrics: promotion cost in the current year, the next year and the year after. Dimensions: year and sub-category.",
+    "Promotion cost = UnitPriceDiscount x UnitPrice x OrderQty.",
+    "Method 1: CTE and self join. Method 2: LEAD().",
+    "Gap risk: HAVING removes years with zero promotion, so the next row may not be the next year. Check that the years are consecutive."
    ],
    "steps": [
     {
-     "title": "Cách 2: LEAD",
+     "title": "Method 2: LEAD",
      "sql": "WITH promotion_cost_by_year_sub_cate AS (\n    SELECT YEAR(OrderDate) AS OrderYear,\n           ProductSubCategoryName,\n           SUM(UnitPriceDiscount*UnitPrice*OrderQty) AS Total_promo_cost_current_year\n    FROM ADW_Sales_orders_detail t1\n    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID\n    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID\n    LEFT JOIN ADW_Dim_ProductSubCategory t4\n        ON CAST(T3.ProductSubcategoryID AS VARCHAR) = CAST(T4.ProductSubcategoryID AS VARCHAR)\n    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID\n    GROUP BY YEAR(OrderDate), ProductSubCategoryName\n    HAVING SUM(UnitPriceDiscount*UnitPrice*OrderQty) > 0\n),\nYearGrowth AS (\n    SELECT *,\n           LEAD(Total_promo_cost_current_year, 1) OVER (PARTITION BY ProductSubCategoryName ORDER BY OrderYear) AS Promo_cost_next_1_year,\n           LEAD(Total_promo_cost_current_year, 2) OVER (PARTITION BY ProductSubCategoryName ORDER BY OrderYear) AS Promo_cost_next_2_year\n    FROM promotion_cost_by_year_sub_cate\n)\nSELECT *\nFROM YearGrowth\nWHERE Total_promo_cost_current_year > 0\n  AND Promo_cost_next_1_year > Total_promo_cost_current_year\n  AND Promo_cost_next_2_year > Promo_cost_next_1_year"
     }
    ],
@@ -1175,12 +1236,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Doanh thu lũy tiến theo category",
-   "story": "Công ty đang muốn review lại doanh thu lũy tiến (accumulated revenue) của các category theo từng tháng trong mỗi năm? Bạn hãy giúp team tính toán và tổng hợp view báo cáo này.",
-   "hint": "Gợi ý: Học viên nên sử dụng nhóm aggregation window functions.",
+   "title": "Running revenue by category",
+   "story": "Review the accumulated (running) revenue of each category, month by month within each year. Build the report.",
+   "hint": "Use an aggregate window function.",
    "approach": [
-    "Expected output: Year, month, category, revenue, acc_revenue.",
-    "Window: PARTITION BY ProductCategoryName, OrderYear. Sắp xếp: ORDER BY OrderMonth. Hàm: SUM."
+    "Expected columns: year, month, category, revenue and accumulated revenue.",
+    "Window: PARTITION BY category and year, ORDER BY month. Function: SUM.",
+    "With ORDER BY, the default frame runs from the first row to the current row. That is what makes it a running total.",
+    "Months with no sales do not appear, and the running total simply skips them."
    ],
    "steps": [
     {
@@ -1199,12 +1262,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Sản phẩm bán chạy nhất theo country",
-   "story": "Hãy tìm ra các sản phẩm có số lượng sản phẩm bán ra cao nhất trong từng Country?",
+   "title": "Best-selling product by country",
+   "story": "Which product sold the most units in each country?",
    "hint": null,
    "approach": [
-    "Bước 1: CTE cơ sở gồm ProductName, Country, Product_sold.",
-    "Bước 2: window function RANK()/DENSE_RANK() với PARTITION BY Country, ORDER BY Product_sold DESC, rồi lấy hạng 1."
+    "Step 1: a base CTE with product name, country and units sold.",
+    "Step 2: RANK() or DENSE_RANK() with PARTITION BY country and ORDER BY units sold descending, then keep rank 1.",
+    "Use RANK or DENSE_RANK so that ties all appear. ROW_NUMBER would hide a tie for first place.",
+    "Put the rank filter outside the window query, because WHERE runs before window functions."
    ],
    "steps": [
     {
@@ -1237,12 +1302,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Tăng trưởng MoM theo category",
-   "story": "Hãy giúp team business tính tốc độ tăng trưởng doanh thu theo từng tháng (MoM) của từng category qua các năm. Lưu ý: Logic của câu này sẽ cover được trường hợp: Tháng 1 năm nay, phải so sánh với tháng 12 năm liền trước để tính tốc độ tăng trưởng MoM.",
+   "title": "Month-over-month growth by category",
+   "story": "Calculate month-over-month (MoM) revenue growth for each category across the years. January must be compared with the previous December.",
    "hint": null,
    "approach": [
-    "Window: PARTITION BY ProductCategoryName. Sắp xếp: ORDER BY OrderYear, OrderMonth (để tháng 1 so với tháng 12 năm trước). Hàm: LAG.",
-    "MoM = Revenue / prev_month_revenue - 1."
+    "Window: PARTITION BY category, ORDER BY year and month, so January looks back to December. Function: LAG.",
+    "MoM = revenue / previous month revenue - 1.",
+    "Partitioning by year as well would leave every January without a previous month.",
+    "LAG compares neighbouring rows, not neighbouring calendar months, so a month with no sales is skipped. Use NULL, not 0, when there is no previous month."
    ],
    "steps": [
     {
@@ -1261,12 +1328,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Khách chi tiêu trên median của Clothing",
-   "story": "Hãy tìm ra các khách hàng có tổng chi tiêu tại tất cả category cao hơn mốc 50th percentile về chi tiêu của khách hàng mua Category Clothing.",
-   "hint": "Gợi ý:\n● Bước 1: Tìm ra mốc 50th percentile về chi tiêu của các khách hàng trong category Clothing (expected output: 1 con số) => sử dụng hàm PERCENT_RANK()\n● Bước 2: Tính tổng chi tiêu tại tất cả category & kẹp thêm điều kiện từ step 1 để tìm ra list khách hàng thỏa mãn điều kiện đề bài.",
+   "title": "Spending above the Clothing median",
+   "story": "Find the customers whose total spending across all categories is above the 50th percentile of spending among Clothing customers.",
+   "hint": "Step 1: find the 50th percentile of spending among Clothing customers (expected output: one number) with PERCENT_RANK().\nStep 2: calculate each customer's total spending in all categories and keep the customers above the number from step 1.",
    "approach": [
-    "Base CTE: CustomerID, CategoryName, Spending.",
-    "Window: PERCENT_RANK() OVER (ORDER BY Spending) chỉ trên category Clothing; mốc 50th là giá trị Spending nhỏ nhất có spending_pct >= 0.5."
+    "Base CTE: customer, category and spending.",
+    "PERCENT_RANK() OVER (ORDER BY spending) on the Clothing rows only. The 50th percentile is the smallest spending with a percent rank of 0.5 or more.",
+    "The median Clothing spend is small, so most customers pass. Say so when you report the number.",
+    "The window runs on Clothing only because the WHERE sits inside that CTE. Move it out and the percentile covers every category."
    ],
    "steps": [
     {
@@ -1285,12 +1354,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Phương thức thanh toán phổ biến nhất",
-   "story": "Đâu là phương thức thanh toán phổ biến nhất xét theo tiêu chi số lượng đơn hàng trong từng country và từng năm? Nếu xét theo tiêu chí là tổng doanh thu thì thứ tự các phương thức thanh toán phổ biến nhất có thay đổi không?",
+   "title": "Most popular payment method",
+   "story": "Which payment method is the most popular by number of orders in each country and year? If you rank by total revenue instead, does the order change?",
    "hint": null,
    "approach": [
-    "Base CTE: Year, Country, PaymentMethod, Orders, Revenue.",
-    "Window: PARTITION BY Country, OrderYear. DENSE_RANK() theo Orders và theo Revenue, rồi so sánh hai thứ hạng."
+    "Base CTE: year, country, payment method, orders and revenue.",
+    "Window: PARTITION BY country and year. DENSE_RANK() by orders and by revenue, then compare the two ranks.",
+    "Two windows in one SELECT can have different ORDER BY clauses.",
+    "Ties appear when two methods have the same order count. DENSE_RANK keeps both at rank 1."
    ],
    "steps": [
     {
@@ -1309,12 +1380,14 @@
    "lesson": 5,
    "level": "Hard",
    "ds": "adw",
-   "title": "Top 5 sản phẩm hưởng khuyến mãi theo Territory",
-   "story": "Công ty đang muốn review lại toàn bộ chương trình khuyến mãi của từng Territory, hãy cho team biết Top 5 sản phẩm có tỉ lệ số lượng sản phẩm bán ra được hưởng khuyến mãi cao nhất của từng Territory qua các năm.",
+   "title": "Top 5 promoted products by territory",
+   "story": "Review the promotion programme of each territory. For each territory, list the 5 products with the highest share of units sold with a promotion.",
    "hint": null,
    "approach": [
-    "Base CTE: Territory, ProductName, ProductSold, ProductSold with promotion, % sold with promotion.",
-    "Window: PARTITION BY TerritoryName, ORDER BY % DESC, DENSE_RANK() rồi lấy hạng <= 5."
+    "Base CTE: territory, product, units sold, units sold with a promotion, and the share sold with a promotion.",
+    "Window: PARTITION BY territory, ORDER BY share descending, DENSE_RANK(), then keep rank 5 or lower.",
+    "The model answer combines all years. To see each year, add YEAR(OrderDate) to the GROUP BY and to the PARTITION BY.",
+    "A product sold once with a discount has a 100% share. Consider a minimum quantity before ranking."
    ],
    "steps": [
     {
@@ -1326,6 +1399,712 @@
    "req": null,
    "alts": [],
    "note": null,
+   "specs": []
+  },
+  {
+   "id": "L8-01",
+   "lesson": 8,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "Orders with no salesperson",
+   "story": "Finance wants to know how many orders were placed without a salesperson, to see how much revenue comes from direct sales. Return the number of orders with no salesperson and the total number of orders.",
+   "hint": "Run SELECT DISTINCT SalesPersonID FROM ADW_Sales_orders first and read the values. In this database a missing salesperson is stored as the text 'NULL', so IS NULL finds nothing.",
+   "approach": [
+    "The column is SalesPersonID in ADW_Sales_orders.",
+    "A missing value here is the text 'NULL', not a real NULL. Compare with = 'NULL'.",
+    "Get both numbers in one query: SUM(CASE WHEN ... THEN 1 ELSE 0 END) for the missing ones and COUNT(*) for the total.",
+    "All 27,659 online orders have no salesperson, and every reseller order has one."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT SUM(CASE WHEN SalesPersonID = 'NULL' THEN 1 ELSE 0 END) AS orders_without_salesperson,\n       COUNT(*) AS total_orders\nFROM ADW_Sales_orders"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "27,659 of 31,465 orders",
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "a1d25331315d5e43",
+      "91aae1203860db58"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L8-02",
+   "lesson": 8,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "Products with no colour",
+   "story": "The product team wants to see how many products there are in each colour. Products with a missing colour should show as 'Unknown'. Return the colour and the number of products.",
+   "hint": "As in the last question, a missing colour is the text 'NULL'. Replace it with CASE WHEN, then group by the new column.",
+   "approach": [
+    "The column is Color in ADW_Dim_Product.",
+    "CASE WHEN Color = 'NULL' THEN 'Unknown' ELSE Color END gives a clean colour.",
+    "T-SQL does not allow a SELECT alias in GROUP BY. Build the clean column in a CTE or subquery first, then group by it.",
+    "There are 10 rows. 248 products have no colour."
+   ],
+   "steps": [
+    {
+     "sql": "WITH products AS (\n    SELECT CASE WHEN Color = 'NULL' THEN 'Unknown' ELSE Color END AS color_clean\n    FROM ADW_Dim_Product\n)\nSELECT color_clean, COUNT(*) AS products\nFROM products\nGROUP BY color_clean"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "10 rows, Unknown = 248 products",
+   "specs": [
+    {
+     "n": 10,
+     "cols": [
+      "1314c8b002a39508",
+      "2093af74744fbfc3"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L8-03",
+   "lesson": 8,
+   "level": "Easy-Medium",
+   "ds": "crm",
+   "title": "Fix the typos in the account list",
+   "story": "Sales Ops found spelling mistakes in the account list. Return every account with a clean sector and a clean office location. Change 'technolgy' to 'technology' and 'Philipines' to 'Philippines', and keep every other value as it is.",
+   "hint": "Run SELECT DISTINCT sector FROM CRM_Accounts and SELECT DISTINCT office_location FROM CRM_Accounts first, and read each list slowly.",
+   "approach": [
+    "Both columns are in CRM_Accounts.",
+    "Use CASE WHEN to remap only the wrong value and leave the rest unchanged. REPLACE also works.",
+    "Return all 85 accounts. 12 have the sector typo and 1 has the location typo.",
+    "Do not drop rows because of a typo. Fix the value instead."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT account,\n       CASE WHEN sector = 'technolgy' THEN 'technology' ELSE sector END AS sector_clean,\n       CASE WHEN office_location = 'Philipines' THEN 'Philippines' ELSE office_location END AS office_location_clean\nFROM CRM_Accounts"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "85 rows",
+   "specs": [
+    {
+     "n": 85,
+     "cols": [
+      "90cf57017e5728a3",
+      "ed83c6d5c6443f7d",
+      "1080ce2440fc242a"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L8-04",
+   "lesson": 8,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Deals lost in a join",
+   "story": "In Lesson 3 you listed the 2017 won deals priced above the list price and got 1,674. That count missed deals, because the pipeline writes one product as 'GTXPro' and the product list writes 'GTX Pro'. Fix the name and join again. For won deals closed in 2017, return three numbers: how many deals there are, how many found a list price, and how many closed above the list price.",
+   "hint": "Use REPLACE(product, 'GTXPro', 'GTX Pro') in the join condition. After the fix, the number of deals that found a price should equal the number of won deals.",
+   "approach": [
+    "Deals are in CRM_sales_pipeline and list prices are in CRM_products.",
+    "A LEFT JOIN keeps every deal, so unmatched deals show up as a NULL price. That is how you find the problem.",
+    "Count the matches before and after the fix. A join that silently drops rows is a data quality issue, not a result.",
+    "After the fix, all 4,238 deals find a price and 2,040 closed above it."
+   ],
+   "steps": [
+    {
+     "title": "Fix the name and join",
+     "sql": "SELECT COUNT(*) AS won_deals_2017,\n       SUM(CASE WHEN t2.product IS NOT NULL THEN 1 ELSE 0 END) AS deals_with_price,\n       SUM(CASE WHEN t1.close_value > t2.sales_price THEN 1 ELSE 0 END) AS above_list_price\nFROM CRM_sales_pipeline t1\nLEFT JOIN CRM_products t2\n    ON REPLACE(t1.product, 'GTXPro', 'GTX Pro') = t2.product\nWHERE t1.deal_stage = 'Won'\n  AND YEAR(t1.close_date) = 2017"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "4,238 deals, 4,238 with a price, 2,040 above list price",
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "61691f4ba1f5cac1",
+      "61691f4ba1f5cac1",
+      "68a2a5f5107be8a7"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L8-05",
+   "lesson": 8,
+   "level": "Medium",
+   "ds": "gbe",
+   "title": "Customers by age group",
+   "story": "Marketing plans an age-based campaign. In GBE_Customers the birthday is stored as text, for example 7/3/1939. Convert it to a date and work out each customer's age on 2020-01-01. Then count customers in four groups: Under 30, 30-49, 50-69 and 70+. Return the group name and the number of customers.",
+   "hint": "CONVERT(date, Birthday, 101) turns text like 7/3/1939 into a date. CAST(Birthday AS DATE) does not work on this format here.",
+   "approach": [
+    "The column is Birthday in GBE_Customers. It is text in month/day/year order.",
+    "Age = DATEDIFF(year, birth date, '2020-01-01').",
+    "Groups: Under 30 means age below 30, 30-49 means 30 to 49, 50-69 means 50 to 69, 70+ means 70 and over. Use these labels exactly.",
+    "Calculate the age in a CTE, label the groups in a second step, then count.",
+    "The four groups add up to 15,266 customers."
+   ],
+   "steps": [
+    {
+     "sql": "WITH ages AS (\n    SELECT DATEDIFF(year, CONVERT(date, Birthday, 101), '2020-01-01') AS age\n    FROM GBE_Customers\n),\ngrouped AS (\n    SELECT CASE WHEN age < 30 THEN 'Under 30'\n                WHEN age < 50 THEN '30-49'\n                WHEN age < 70 THEN '50-69'\n                ELSE '70+' END AS age_group\n    FROM ages\n)\nSELECT age_group, COUNT(*) AS customers\nFROM grouped\nGROUP BY age_group"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "4 groups, 15,266 customers in total",
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "19e1034cac7380ad",
+      "57683c0e94517ffa"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L8-06",
+   "lesson": 8,
+   "level": "Medium",
+   "ds": "gbe",
+   "title": "Repeated customer names",
+   "story": "The data team thinks GBE_Customers contains duplicate customers, because 15,266 customers have only 15,118 different names. Check it. For each name that appears more than once, return the name, how many times it is listed, and how many different birthdays it has.",
+   "hint": "GROUP BY Name with HAVING COUNT(*) > 1. COUNT(DISTINCT Birthday) counts the different birthdays.",
+   "approach": [
+    "The table is GBE_Customers. Each customer already has a unique CustomerKey.",
+    "A repeated name is not enough to call two rows duplicates. Compare another field, here the birthday.",
+    "137 names appear more than once, and every repeat has a different birthday. These are different people, so nothing should be deleted.",
+    "Count before you delete."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT Name,\n       COUNT(*) AS times_listed,\n       COUNT(DISTINCT Birthday) AS different_birthdays\nFROM GBE_Customers\nGROUP BY Name\nHAVING COUNT(*) > 1"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "137 names, each repeat has a different birthday",
+   "specs": [
+    {
+     "n": 137,
+     "cols": [
+      "49b6996f3e1e828b",
+      "a04f724f9a2dc65c",
+      "a04f724f9a2dc65c"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L8-07",
+   "lesson": 8,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Orders far above average",
+   "story": "Finance wants to review unusually large orders before the monthly report. Flag an order as an outlier when its TotalDue is more than 2 standard deviations above the average TotalDue of all orders. Return how many orders are flagged and how many orders there are in total.",
+   "hint": "STDEV(TotalDue) gives the standard deviation. Calculate the average and STDEV in a CTE or subquery, then compare each order with average + 2 x STDEV.",
+   "approach": [
+    "The column is TotalDue in ADW_Sales_orders.",
+    "Upper limit = AVG(TotalDue) + 2 * STDEV(TotalDue). Use STDEV, the sample standard deviation.",
+    "Compare every order with that one number. A CTE with the limit, cross joined to the orders, keeps the query readable.",
+    "1,323 of 31,465 orders (4.2%) are flagged."
+   ],
+   "steps": [
+    {
+     "sql": "WITH limits AS (\n    SELECT AVG(TotalDue) + 2 * STDEV(TotalDue) AS upper_limit\n    FROM ADW_Sales_orders\n)\nSELECT SUM(CASE WHEN o.TotalDue > l.upper_limit THEN 1 ELSE 0 END) AS outlier_orders,\n       COUNT(*) AS total_orders\nFROM ADW_Sales_orders o\nCROSS JOIN limits l"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "1,323 of 31,465 orders",
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "0176171511ba33d3",
+      "91aae1203860db58"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L8-08",
+   "lesson": 8,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Two ways to find outliers",
+   "story": "Repeat the outlier check with the IQR rule. An order is an outlier when TotalDue is above Q3 + 1.5 x IQR, where IQR = Q3 - Q1. Compare the number of flagged orders with the standard deviation method from the last question. Which method flags more orders, and why? Would you remove these orders? Write your conclusion below.",
+   "hint": "PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY TotalDue) OVER () gives Q1. Use 0.75 for Q3.",
+   "approach": [
+    "Q1 and Q3 are the 25th and 75th percentiles of TotalDue. Calculate them in a CTE.",
+    "The lower limit (Q1 - 1.5 x IQR) is below zero, so no order can be flagged on the low side.",
+    "IQR flags 2,127 orders and the standard deviation method flags 1,323. TotalDue is skewed, and a few very large orders inflate the standard deviation, so the SD limit sits higher.",
+    "Every flagged order is a reseller order, so these are real large sales and not errors. Investigate before you remove anything."
+   ],
+   "steps": [
+    {
+     "title": "Compare the two methods",
+     "sql": "WITH sd_limit AS (\n    SELECT AVG(TotalDue) + 2 * STDEV(TotalDue) AS upper_limit\n    FROM ADW_Sales_orders\n),\nquartiles AS (\n    SELECT DISTINCT\n           PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY TotalDue) OVER () AS q1,\n           PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY TotalDue) OVER () AS q3\n    FROM ADW_Sales_orders\n)\nSELECT 'Standard deviation' AS method, COUNT(*) AS flagged_orders\nFROM ADW_Sales_orders o\nCROSS JOIN sd_limit l\nWHERE o.TotalDue > l.upper_limit\nUNION ALL\nSELECT 'IQR', COUNT(*)\nFROM ADW_Sales_orders o\nCROSS JOIN quartiles q\nWHERE o.TotalDue > q.q3 + 1.5 * (q.q3 - q.q1)"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "Standard deviation 1,323 orders, IQR 2,127 orders",
+   "specs": []
+  },
+  {
+   "id": "L8-09",
+   "lesson": 8,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Validate the cleaned accounts",
+   "story": "Before you share the cleaned account list from the typo question, validate it. Return one row with four numbers: the total number of rows, the number of different accounts, the rows where the sector is still 'technolgy', and the rows where the office location is still 'Philipines'.",
+   "hint": "Rebuild the cleaned list in a CTE, then count on top of it. The validation must run on the cleaned data, not on CRM_Accounts.",
+   "approach": [
+    "Validation answers one question: did the cleaning do what you meant, and did it break anything else?",
+    "Check the row count (still 85), duplicates (85 different accounts) and the bad values that should be gone (0 and 0).",
+    "If you run the same checks on the raw table, you get 12 sector typos and 1 location typo. That is the before and after."
+   ],
+   "steps": [
+    {
+     "sql": "WITH accounts_clean AS (\n    SELECT account,\n           CASE WHEN sector = 'technolgy' THEN 'technology' ELSE sector END AS sector_clean,\n           CASE WHEN office_location = 'Philipines' THEN 'Philippines' ELSE office_location END AS location_clean\n    FROM CRM_Accounts\n)\nSELECT COUNT(*) AS total_rows,\n       COUNT(DISTINCT account) AS distinct_accounts,\n       SUM(CASE WHEN sector_clean = 'technolgy' THEN 1 ELSE 0 END) AS sector_typos_left,\n       SUM(CASE WHEN location_clean = 'Philipines' THEN 1 ELSE 0 END) AS location_typos_left\nFROM accounts_clean"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "85 rows, 85 accounts, 0 typos left",
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "249d7b629435b4c3",
+      "249d7b629435b4c3",
+      "561b2814d3c09e62",
+      "561b2814d3c09e62"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L9-01",
+   "lesson": 9,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "R, F and M for every customer",
+   "story": "Marketing wants to segment customers by how recently, how often and how much they buy. Start with the raw numbers. For every customer in ADW_Sales_orders, return Recency (days between the customer's last order and 2014-07-01), Frequency (number of orders) and Monetary (total TotalDue).",
+   "hint": "DATEDIFF(day, MAX(OrderDate), '2014-07-01'), COUNT(DISTINCT SalesOrderID) and SUM(TotalDue), all grouped by CustomerID.",
+   "approach": [
+    "Everything is in ADW_Sales_orders. Group by CustomerID.",
+    "2014-07-01 is the snapshot date, the day after the last order in the data. Recency is smaller for customers who bought recently.",
+    "Frequency counts orders, not product lines. Monetary adds up TotalDue.",
+    "There are 19,119 customers. 11,649 of them (61%) bought only once."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT CustomerID,\n       DATEDIFF(day, MAX(OrderDate), '2014-07-01') AS Recency,\n       COUNT(DISTINCT SalesOrderID) AS Frequency,\n       SUM(TotalDue) AS Monetary\nFROM ADW_Sales_orders\nGROUP BY CustomerID"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "19,119 customers",
+   "specs": [
+    {
+     "n": 19119,
+     "cols": [
+      "35d43c74557a6f91",
+      "0f9bf2b50f27541a",
+      "d1552f862ea4a5d3",
+      "642311c72177ea0e"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L9-02",
+   "lesson": 9,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Score each customer from 1 to 5",
+   "story": "Turn the three numbers into scores. For each customer, calculate PERCENT_RANK for Recency, Frequency and Monetary, then cut each percentile into five bands: up to 0.2 is 1, up to 0.4 is 2, up to 0.6 is 3, up to 0.8 is 4, and above 0.8 is 5. A recent customer must get a high Recency score, so rank Recency from the most days to the fewest (ORDER BY Recency DESC). Return CustomerID, R_score, F_score and M_score.",
+   "hint": "Put the R, F and M calculation from the last question in a CTE. Then use three PERCENT_RANK() OVER (ORDER BY ...) columns and a CASE WHEN for each band.",
+   "approach": [
+    "Step 1: R, F and M per customer (the last question) as a CTE.",
+    "Step 2: PERCENT_RANK() OVER (ORDER BY Recency DESC), (ORDER BY Frequency) and (ORDER BY Monetary), in a second CTE.",
+    "Step 3: a CASE WHEN for each percentile with the bands 0.2, 0.4, 0.6 and 0.8.",
+    "Ties land in the same band, so the bands are not equal in size. 61% of customers bought once, so the Frequency score only takes the values 1, 4 and 5."
+   ],
+   "steps": [
+    {
+     "sql": "WITH rfm AS (\n    SELECT CustomerID,\n           DATEDIFF(day, MAX(OrderDate), '2014-07-01') AS Recency,\n           COUNT(DISTINCT SalesOrderID) AS Frequency,\n           SUM(TotalDue) AS Monetary\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n),\npercentiles AS (\n    SELECT *,\n           PERCENT_RANK() OVER (ORDER BY Recency DESC) AS r_pct,\n           PERCENT_RANK() OVER (ORDER BY Frequency) AS f_pct,\n           PERCENT_RANK() OVER (ORDER BY Monetary) AS m_pct\n    FROM rfm\n),\nscores AS (\n    SELECT CustomerID,\n           CASE WHEN r_pct <= 0.2 THEN 1 WHEN r_pct <= 0.4 THEN 2 WHEN r_pct <= 0.6 THEN 3 WHEN r_pct <= 0.8 THEN 4 ELSE 5 END AS R_score,\n           CASE WHEN f_pct <= 0.2 THEN 1 WHEN f_pct <= 0.4 THEN 2 WHEN f_pct <= 0.6 THEN 3 WHEN f_pct <= 0.8 THEN 4 ELSE 5 END AS F_score,\n           CASE WHEN m_pct <= 0.2 THEN 1 WHEN m_pct <= 0.4 THEN 2 WHEN m_pct <= 0.6 THEN 3 WHEN m_pct <= 0.8 THEN 4 ELSE 5 END AS M_score\n    FROM percentiles\n)\nSELECT CustomerID, R_score, F_score, M_score\nFROM scores"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "19,119 customers",
+   "specs": [
+    {
+     "n": 19119,
+     "cols": [
+      "35d43c74557a6f91",
+      "e536ea3e5969ea28",
+      "20097e2a4a1f84fe",
+      "0f8e2c9615031434"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L9-03",
+   "lesson": 9,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Size and value of each segment",
+   "story": "Marketing needs a simple segment list. Using the scores from the last question, put each customer in the first segment they match:\n- Champions: R, F and M scores are all 4 or 5.\n- Loyal: F score is 4 or 5.\n- Promising: R score is 4 or 5.\n- At Risk: M score is 4 or 5.\n- Hibernating: everyone else.\nFor each segment, return the number of customers, the number of orders and the total revenue (TotalDue).",
+   "hint": "A CASE WHEN checks the conditions from top to bottom, and the first true one wins. Join the segments back to ADW_Sales_orders on CustomerID to count orders and add up revenue.",
+   "approach": [
+    "Build the scores as in the last question, then add a segment with CASE WHEN in the order above.",
+    "Join back to ADW_Sales_orders on CustomerID. Customers are counted with COUNT(DISTINCT CustomerID), orders with COUNT of SalesOrderID.",
+    "The 2,426 Champions are 13% of customers and bring about 69% of the revenue.",
+    "Hibernating is the biggest segment (6,266 customers) and the smallest in revenue."
+   ],
+   "steps": [
+    {
+     "sql": "WITH rfm AS (\n    SELECT CustomerID,\n           DATEDIFF(day, MAX(OrderDate), '2014-07-01') AS Recency,\n           COUNT(DISTINCT SalesOrderID) AS Frequency,\n           SUM(TotalDue) AS Monetary\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n),\npercentiles AS (\n    SELECT *,\n           PERCENT_RANK() OVER (ORDER BY Recency DESC) AS r_pct,\n           PERCENT_RANK() OVER (ORDER BY Frequency) AS f_pct,\n           PERCENT_RANK() OVER (ORDER BY Monetary) AS m_pct\n    FROM rfm\n),\nscores AS (\n    SELECT CustomerID,\n           CASE WHEN r_pct <= 0.2 THEN 1 WHEN r_pct <= 0.4 THEN 2 WHEN r_pct <= 0.6 THEN 3 WHEN r_pct <= 0.8 THEN 4 ELSE 5 END AS R_score,\n           CASE WHEN f_pct <= 0.2 THEN 1 WHEN f_pct <= 0.4 THEN 2 WHEN f_pct <= 0.6 THEN 3 WHEN f_pct <= 0.8 THEN 4 ELSE 5 END AS F_score,\n           CASE WHEN m_pct <= 0.2 THEN 1 WHEN m_pct <= 0.4 THEN 2 WHEN m_pct <= 0.6 THEN 3 WHEN m_pct <= 0.8 THEN 4 ELSE 5 END AS M_score\n    FROM percentiles\n),\nsegments AS (\n    SELECT CustomerID,\n           CASE WHEN R_score >= 4 AND F_score >= 4 AND M_score >= 4 THEN 'Champions'\n                WHEN F_score >= 4 THEN 'Loyal'\n                WHEN R_score >= 4 THEN 'Promising'\n                WHEN M_score >= 4 THEN 'At Risk'\n                ELSE 'Hibernating' END AS segment\n    FROM scores\n)\nSELECT s.segment,\n       COUNT(DISTINCT s.CustomerID) AS customers,\n       COUNT(o.SalesOrderID) AS orders,\n       SUM(o.TotalDue) AS revenue\nFROM segments s\nJOIN ADW_Sales_orders o ON s.CustomerID = o.CustomerID\nGROUP BY s.segment"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "5 segments",
+   "specs": [
+    {
+     "n": 5,
+     "cols": [
+      "08fe0fd29a96b827",
+      "f7c321a759509b93",
+      "b9e171d9c09a8cc5",
+      "56af9906232f98ae"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L9-04",
+   "lesson": 9,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "How each segment buys",
+   "story": "The CRM team asks if there is any notable buying behaviour in each segment. For each segment from the last question, return the average order value (AOV), the number of orders per customer and the share of orders placed online. Then write two findings and one action for the team.",
+   "hint": "AOV = total TotalDue divided by the number of orders. The online share uses OnlineOrderFlag, which is 1 for online orders.",
+   "approach": [
+    "Reuse the segment CTEs and join to ADW_Sales_orders.",
+    "Multiply by 1.0 so the divisions are not integer divisions.",
+    "Champions have the highest AOV (about 11,000) and the most orders per customer (3.2), and 39% of their orders are offline, so many of them are resellers.",
+    "Hibernating, Promising and At Risk customers have exactly one order each and are 99% online. At Risk customers spend about 2,650 per order, four times the Promising average. They are the first win-back target."
+   ],
+   "steps": [
+    {
+     "sql": "WITH rfm AS (\n    SELECT CustomerID,\n           DATEDIFF(day, MAX(OrderDate), '2014-07-01') AS Recency,\n           COUNT(DISTINCT SalesOrderID) AS Frequency,\n           SUM(TotalDue) AS Monetary\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n),\npercentiles AS (\n    SELECT *,\n           PERCENT_RANK() OVER (ORDER BY Recency DESC) AS r_pct,\n           PERCENT_RANK() OVER (ORDER BY Frequency) AS f_pct,\n           PERCENT_RANK() OVER (ORDER BY Monetary) AS m_pct\n    FROM rfm\n),\nscores AS (\n    SELECT CustomerID,\n           CASE WHEN r_pct <= 0.2 THEN 1 WHEN r_pct <= 0.4 THEN 2 WHEN r_pct <= 0.6 THEN 3 WHEN r_pct <= 0.8 THEN 4 ELSE 5 END AS R_score,\n           CASE WHEN f_pct <= 0.2 THEN 1 WHEN f_pct <= 0.4 THEN 2 WHEN f_pct <= 0.6 THEN 3 WHEN f_pct <= 0.8 THEN 4 ELSE 5 END AS F_score,\n           CASE WHEN m_pct <= 0.2 THEN 1 WHEN m_pct <= 0.4 THEN 2 WHEN m_pct <= 0.6 THEN 3 WHEN m_pct <= 0.8 THEN 4 ELSE 5 END AS M_score\n    FROM percentiles\n),\nsegments AS (\n    SELECT CustomerID,\n           CASE WHEN R_score >= 4 AND F_score >= 4 AND M_score >= 4 THEN 'Champions'\n                WHEN F_score >= 4 THEN 'Loyal'\n                WHEN R_score >= 4 THEN 'Promising'\n                WHEN M_score >= 4 THEN 'At Risk'\n                ELSE 'Hibernating' END AS segment\n    FROM scores\n)\nSELECT s.segment,\n       COUNT(DISTINCT s.CustomerID) AS customers,\n       ROUND(SUM(o.TotalDue) / COUNT(o.SalesOrderID), 0) AS aov,\n       ROUND(1.0 * COUNT(o.SalesOrderID) / COUNT(DISTINCT s.CustomerID), 2) AS orders_per_customer,\n       ROUND(100.0 * SUM(o.OnlineOrderFlag) / COUNT(o.SalesOrderID), 1) AS online_share_pct\nFROM segments s\nJOIN ADW_Sales_orders o ON s.CustomerID = o.CustomerID\nGROUP BY s.segment"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "Champions AOV 11,035; At Risk 2,652; Loyal 2,509; Promising 606; Hibernating 230",
+   "specs": []
+  },
+  {
+   "id": "L9-05",
+   "lesson": 9,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Favourite category of each segment",
+   "story": "Which product category brings the most revenue in each segment? Return the segment, the category, the revenue (LineTotal) and the category's share of the segment's revenue, ranked within each segment. Does any segment buy differently from the others?",
+   "hint": "Join the segments to the orders, the order lines, the products, the sub-categories and the categories. Use SUM(LineTotal) OVER (PARTITION BY segment) for the share.",
+   "approach": [
+    "The path is segments, ADW_Sales_orders, ADW_Sales_orders_detail, ADW_Dim_Product, ADW_Dim_ProductSubCategory and ADW_Dim_ProductCategory.",
+    "The product and sub-category ID columns have different data types, so CAST them to the same type before the JOIN.",
+    "Bikes are the top category in every segment (77% to 99% of revenue), so the ranking alone says little.",
+    "Look at the second place. Champions and Loyal customers buy Components (13.5% and 5.7%), and Hibernating customers buy Accessories (14.9%)."
+   ],
+   "steps": [
+    {
+     "sql": "WITH rfm AS (\n    SELECT CustomerID,\n           DATEDIFF(day, MAX(OrderDate), '2014-07-01') AS Recency,\n           COUNT(DISTINCT SalesOrderID) AS Frequency,\n           SUM(TotalDue) AS Monetary\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n),\npercentiles AS (\n    SELECT *,\n           PERCENT_RANK() OVER (ORDER BY Recency DESC) AS r_pct,\n           PERCENT_RANK() OVER (ORDER BY Frequency) AS f_pct,\n           PERCENT_RANK() OVER (ORDER BY Monetary) AS m_pct\n    FROM rfm\n),\nscores AS (\n    SELECT CustomerID,\n           CASE WHEN r_pct <= 0.2 THEN 1 WHEN r_pct <= 0.4 THEN 2 WHEN r_pct <= 0.6 THEN 3 WHEN r_pct <= 0.8 THEN 4 ELSE 5 END AS R_score,\n           CASE WHEN f_pct <= 0.2 THEN 1 WHEN f_pct <= 0.4 THEN 2 WHEN f_pct <= 0.6 THEN 3 WHEN f_pct <= 0.8 THEN 4 ELSE 5 END AS F_score,\n           CASE WHEN m_pct <= 0.2 THEN 1 WHEN m_pct <= 0.4 THEN 2 WHEN m_pct <= 0.6 THEN 3 WHEN m_pct <= 0.8 THEN 4 ELSE 5 END AS M_score\n    FROM percentiles\n),\nsegments AS (\n    SELECT CustomerID,\n           CASE WHEN R_score >= 4 AND F_score >= 4 AND M_score >= 4 THEN 'Champions'\n                WHEN F_score >= 4 THEN 'Loyal'\n                WHEN R_score >= 4 THEN 'Promising'\n                WHEN M_score >= 4 THEN 'At Risk'\n                ELSE 'Hibernating' END AS segment\n    FROM scores\n),\ncategory_revenue AS (\n    SELECT s.segment, pc.ProductCategoryName AS category, SUM(d.LineTotal) AS revenue\n    FROM segments s\n    JOIN ADW_Sales_orders o ON s.CustomerID = o.CustomerID\n    JOIN ADW_Sales_orders_detail d ON o.SalesOrderID = d.SalesOrderID\n    JOIN ADW_Dim_Product p ON d.ProductID = p.ProductID\n    JOIN ADW_Dim_ProductSubCategory sc ON CAST(p.ProductSubcategoryID AS VARCHAR) = CAST(sc.ProductSubcategoryID AS VARCHAR)\n    JOIN ADW_Dim_ProductCategory pc ON sc.ProductCategoryID = pc.ProductCategoryID\n    GROUP BY s.segment, pc.ProductCategoryName\n)\nSELECT segment, category, ROUND(revenue, 0) AS revenue,\n       ROUND(100.0 * revenue / SUM(revenue) OVER (PARTITION BY segment), 1) AS share_pct,\n       RANK() OVER (PARTITION BY segment ORDER BY revenue DESC) AS category_rank\nFROM category_revenue\nORDER BY segment, category_rank"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "19 rows",
+   "specs": []
+  },
+  {
+   "id": "L10-01",
+   "lesson": 10,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "First purchase month",
+   "story": "Retention analysis starts by putting each customer in a cohort, which is the month of their first order. For every customer in ADW_Sales_orders, return the CustomerID and the CohortMonth: the first day of the month of the customer's first OrderDate.",
+   "hint": "MIN(OrderDate) per customer gives the first order. DATEFROMPARTS(YEAR(x), MONTH(x), 1) turns a date into the first day of its month.",
+   "approach": [
+    "Everything is in ADW_Sales_orders. Group by CustomerID.",
+    "Take MIN(OrderDate), then cut it to the first day of the month.",
+    "A cohort is a group that shares a starting point. Here it is the month of the first purchase.",
+    "There are 19,119 customers."
+   ],
+   "steps": [
+    {
+     "sql": "SELECT CustomerID,\n       DATEFROMPARTS(YEAR(MIN(OrderDate)), MONTH(MIN(OrderDate)), 1) AS CohortMonth\nFROM ADW_Sales_orders\nGROUP BY CustomerID"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "19,119 customers",
+   "specs": [
+    {
+     "n": 19119,
+     "cols": [
+      "35d43c74557a6f91",
+      "89887a4bf45125a0"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L10-02",
+   "lesson": 10,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Cohort sizes",
+   "story": "How many new customers does each monthly cohort have? Return the CohortMonth and the number of customers.",
+   "hint": "Use the query from the last question as a CTE, then COUNT(*) grouped by CohortMonth.",
+   "approach": [
+    "Step 1: first order month per customer (the last question) as a CTE.",
+    "Step 2: count customers per cohort month.",
+    "There are 38 cohorts. Cohorts have about 150 to 350 new customers a month until June 2013, then jump to around 1,000 a month from July 2013 (1,284 in July)."
+   ],
+   "steps": [
+    {
+     "sql": "WITH first_order AS (\n    SELECT CustomerID,\n           DATEFROMPARTS(YEAR(MIN(OrderDate)), MONTH(MIN(OrderDate)), 1) AS CohortMonth\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n)\nSELECT CohortMonth, COUNT(*) AS customers\nFROM first_order\nGROUP BY CohortMonth"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "38 cohorts",
+   "specs": [
+    {
+     "n": 38,
+     "cols": [
+      "bcd6bd0af9518bfd",
+      "ae74f3f722c57360"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L10-03",
+   "lesson": 10,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Active customers by month since first order",
+   "story": "For each cohort, count the customers who ordered in each month after their first. Return the CohortMonth, MonthsSinceFirst (0 for the first month) and the number of different active customers.",
+   "hint": "List the months in which each customer ordered (DISTINCT customer and month), join it to the first order month, and use DATEDIFF(month, cohort month, order month).",
+   "approach": [
+    "Step 1: first order month per customer.",
+    "Step 2: the distinct months in which each customer ordered.",
+    "Step 3: join steps 1 and 2 and calculate DATEDIFF(month, CohortMonth, OrderMonth). Period 0 is the first month.",
+    "Step 4: COUNT(DISTINCT CustomerID) grouped by cohort and period. Count customers, not orders: a customer with three orders in a month is one retained customer.",
+    "485 rows. Only months with at least one active customer appear."
+   ],
+   "steps": [
+    {
+     "sql": "WITH first_order AS (\n    SELECT CustomerID,\n           DATEFROMPARTS(YEAR(MIN(OrderDate)), MONTH(MIN(OrderDate)), 1) AS CohortMonth\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n),\nactivity AS (\n    SELECT DISTINCT CustomerID,\n           DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS OrderMonth\n    FROM ADW_Sales_orders\n),\ncohort_activity AS (\n    SELECT f.CohortMonth,\n           DATEDIFF(month, f.CohortMonth, a.OrderMonth) AS MonthsSinceFirst,\n           a.CustomerID\n    FROM first_order f\n    JOIN activity a ON f.CustomerID = a.CustomerID\n)\nSELECT CohortMonth, MonthsSinceFirst, COUNT(DISTINCT CustomerID) AS active_customers\nFROM cohort_activity\nGROUP BY CohortMonth, MonthsSinceFirst"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "485 rows",
+   "specs": [
+    {
+     "n": 485,
+     "cols": [
+      "657e51f39743f5c7",
+      "226a578a63c40a4d",
+      "66e7013bba5d37bf"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L10-04",
+   "lesson": 10,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Cohort table, months 0 to 3",
+   "story": "Reshape the last result into a cohort table: one row per cohort with four columns, month0, month1, month2 and month3. Each column holds the number of different customers who ordered that many months after their first order.",
+   "hint": "Conditional aggregation: COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 1 THEN CustomerID END) for each column.",
+   "approach": [
+    "Reuse the cohort_activity CTE from the last question.",
+    "One COUNT(DISTINCT CASE WHEN ... END) per month column, grouped by CohortMonth.",
+    "A month that has no active customers shows 0 here. For months that have not happened yet, that is misleading, and the next question deals with it.",
+    "38 rows, one per cohort."
+   ],
+   "steps": [
+    {
+     "sql": "WITH first_order AS (\n    SELECT CustomerID,\n           DATEFROMPARTS(YEAR(MIN(OrderDate)), MONTH(MIN(OrderDate)), 1) AS CohortMonth\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n),\nactivity AS (\n    SELECT DISTINCT CustomerID,\n           DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS OrderMonth\n    FROM ADW_Sales_orders\n),\ncohort_activity AS (\n    SELECT f.CohortMonth,\n           DATEDIFF(month, f.CohortMonth, a.OrderMonth) AS MonthsSinceFirst,\n           a.CustomerID\n    FROM first_order f\n    JOIN activity a ON f.CustomerID = a.CustomerID\n)\nSELECT CohortMonth,\n       COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 0 THEN CustomerID END) AS month0,\n       COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 1 THEN CustomerID END) AS month1,\n       COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 2 THEN CustomerID END) AS month2,\n       COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 3 THEN CustomerID END) AS month3\nFROM cohort_activity\nGROUP BY CohortMonth"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "38 rows",
+   "specs": [
+    {
+     "n": 38,
+     "cols": [
+      "bcd6bd0af9518bfd",
+      "ae74f3f722c57360",
+      "71515be9579c43b7",
+      "b096e489b1f7322d",
+      "b8bed7fdb09641a7"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L10-05",
+   "lesson": 10,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Retention rates and what they show",
+   "story": "Add the retention rate to the cohort table. Return the CohortMonth, the cohort size and the retention rate for months 1, 2 and 3 as a percent of the cohort size, rounded to 1 decimal. The data ends on 2014-06-30, so a month that has not happened yet must show NULL, not 0. Then answer: for each cohort, is there anything special?",
+   "hint": "Retention rate = active customers in that month / cohort size (month0). Show a rate only when the cohort month plus the number of months is on or before 2014-06-01, otherwise leave the CASE without an ELSE.",
+   "approach": [
+    "Reuse the counts from the last question and divide by month0. Multiply by 100.0 to avoid integer division.",
+    "An incomplete month looks like zero retention. The 2014-05 cohort cannot have a month 2 yet, so its month 2 must be NULL.",
+    "Read across a row to see how one cohort decays, and down a column to see whether newer cohorts retain better.",
+    "Findings in this data: the cohort jumps from about 300 to 1,284 customers in July 2013. Newer cohorts return at about 2% to 3% a month. The oldest cohorts rarely return in month 1 or 2 but come back in month 3, which points to a quarterly buying rhythm (for example 83.7% for May 2011)."
+   ],
+   "steps": [
+    {
+     "sql": "WITH first_order AS (\n    SELECT CustomerID,\n           DATEFROMPARTS(YEAR(MIN(OrderDate)), MONTH(MIN(OrderDate)), 1) AS CohortMonth\n    FROM ADW_Sales_orders\n    GROUP BY CustomerID\n),\nactivity AS (\n    SELECT DISTINCT CustomerID,\n           DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS OrderMonth\n    FROM ADW_Sales_orders\n),\ncohort_activity AS (\n    SELECT f.CohortMonth,\n           DATEDIFF(month, f.CohortMonth, a.OrderMonth) AS MonthsSinceFirst,\n           a.CustomerID\n    FROM first_order f\n    JOIN activity a ON f.CustomerID = a.CustomerID\n),\ncounts AS (\n    SELECT CohortMonth,\n           COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 0 THEN CustomerID END) AS month0,\n           COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 1 THEN CustomerID END) AS month1,\n           COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 2 THEN CustomerID END) AS month2,\n           COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 3 THEN CustomerID END) AS month3\n    FROM cohort_activity\n    GROUP BY CohortMonth\n)\nSELECT CohortMonth,\n       month0 AS cohort_size,\n       CASE WHEN DATEADD(month, 1, CohortMonth) <= '2014-06-01' THEN ROUND(100.0 * month1 / month0, 1) END AS month1_pct,\n       CASE WHEN DATEADD(month, 2, CohortMonth) <= '2014-06-01' THEN ROUND(100.0 * month2 / month0, 1) END AS month2_pct,\n       CASE WHEN DATEADD(month, 3, CohortMonth) <= '2014-06-01' THEN ROUND(100.0 * month3 / month0, 1) END AS month3_pct\nFROM counts\nORDER BY CohortMonth"
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "alts": [],
+   "note": "38 rows",
    "specs": []
   }
  ]
