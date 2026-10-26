@@ -14,3 +14,9 @@ ErrorDocument 401 /lab-locked.html
 
 # Without a charset, browsers guess Latin-1 and garble arrows, dots and dashes.
 AddDefaultCharset UTF-8
+
+# Always revalidate pages, scripts and JSON so a new deploy shows up without a hard refresh (304 when unchanged).
+# Big data and vendor files keep normal caching.
+<FilesMatch "\.(html|js|mjs|json)$">
+  Header set Cache-Control "no-cache"
+</FilesMatch>
