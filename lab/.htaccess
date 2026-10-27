@@ -13,6 +13,6 @@ AddDefaultCharset UTF-8
 # Accounts live outside public_html (../../lab-data), so a git deploy never touches them.
 Options -Indexes
 RewriteEngine On
-RewriteRule ^(login|admin|logout|answer)/?$ $1.php [L]
-RewriteRule ^(login|admin|logout|answer|_gate)\.php$ - [L]
+RewriteRule ^(login|admin|logout|answer|progress)/?$ $1.php [L]
+RewriteRule ^(login|admin|logout|answer|progress|_gate)\.php$ - [L]
 RewriteRule ^ _gate.php [L]

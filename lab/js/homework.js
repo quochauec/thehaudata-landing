@@ -1,7 +1,7 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=2ff7cc23eb";
-import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=2ff7cc23eb";
+import * as engine from "./engine.js?v=632baa441e";
+import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=632baa441e";
 
 
 const LS = {

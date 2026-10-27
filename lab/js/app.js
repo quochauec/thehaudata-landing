@@ -1,8 +1,9 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=2ff7cc23eb";
-import { mountHomework } from "./homework.js?v=2ff7cc23eb";
-import { mountCases } from "./cases.js?v=2ff7cc23eb";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=2ff7cc23eb";
+import * as engine from "./engine.js?v=632baa441e";
+import { mountHomework } from "./homework.js?v=632baa441e";
+import { mountCases } from "./cases.js?v=632baa441e";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=632baa441e";
+import * as sync from "./sync.js?v=632baa441e";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -16,6 +17,9 @@ const json = async url => { const r = await fetch(url); if (!r.ok) throw new Err
 
 let hwData = null, casesApp = null, current = null;
 
+// Pull the signed-in login's saved progress into this browser before anything draws. Does nothing without a login.
+await sync.init();
+
 // ---- engine status pill ----------------------------------------------------------------------------
 engine.onStatus(s => {
   const el = $("#eng"); if (!el) return;
@@ -28,8 +32,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=2ff7cc23eb");
-  const cs = await json("data/challenges.json?v=2ff7cc23eb");
+  hwData ??= await json("data/homework.json?v=632baa441e");
+  const cs = await json("data/challenges.json?v=632baa441e");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Practice SQL on <span class="gt">real business questions</span></h1>
@@ -53,12 +57,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=2ff7cc23eb");
+  hwData ??= await json("data/homework.json?v=632baa441e");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=2ff7cc23eb"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=632baa441e"));
   casesApp.draw();
 }
 
