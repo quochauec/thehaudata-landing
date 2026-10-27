@@ -1,4 +1,4 @@
-import { mount as mountSql } from "./sqlpanel.js?v=632baa441e";
+import { mount as mountSql } from "./sqlpanel.js?v=f9ef3b64f3";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -51,6 +51,20 @@ function hub(){
 function openCh(id){state={view:id,step:1};LS.set('view',id);LS.set('step',1);draw();window.scrollTo({top:0});}
 function toHub(){state={view:'hub',step:1};LS.set('view','hub');draw();window.scrollTo({top:0});}
 
+/* ---------- step popup: a short thank-you when a mentee finishes a step, once per step per case ---------- */
+const CELE={1:['Context done','You know the ask. Next, plan how you would answer it.'],2:['Plan written','You planned before touching the data. Now test it with SQL.']};
+let celeHost=null,celeTimer=0;
+function celebrate(c,step){
+  const key='cele:'+c.id+':'+step; if(LS.get(key)==='1')return; LS.set(key,'1');
+  const live=CH.filter(x=>['adw','crm','gbe'].includes(x.dataset)), n=live.filter(x=>isDone(x.id)).length;
+  const m=step===3?['Case complete',c.title+'. '+n+' of '+live.length+' cases done.']:CELE[step];
+  if(!celeHost){celeHost=document.createElement('div');celeHost.className='cele-host';celeHost.setAttribute('role','status');celeHost.setAttribute('aria-live','polite');document.body.appendChild(celeHost);}
+  clearTimeout(celeTimer);
+  celeHost.innerHTML='<div class="cele'+(step===3?' big':'')+'"><div class="ic" aria-hidden="true">'+(step===3?'★':'✓')+'</div><div><b>'+esc(m[0])+'</b><span>'+esc(m[1])+'</span></div></div>';
+  celeHost.firstChild.onclick=()=>{celeHost.innerHTML='';};
+  celeTimer=setTimeout(()=>{celeHost.innerHTML='';},step===3?6500:4500);
+}
+
 /* ---------- challenge shell ---------- */
 function challenge(c){
   const d=DATA.datasets[c.dataset];
@@ -62,9 +76,9 @@ function challenge(c){
   const body=[context,approach,solveAll][state.step-1](c);
   $('#main').innerHTML=`<section class="stack" style="padding-top:20px">${body}</section><div class="nav2">${state.step>1?'<button class="btn" id="pv">← Back</button>':'<span></span>'}${state.step<3?`<button class="btn primary" id="nx">${['Plan the approach →','Solve it →'][state.step-1]}</button>`:'<button class="btn" id="rs">Reset this challenge</button>'}</div>`;
   const go=n=>{state.step=n;LS.set('step',n);draw();window.scrollTo({top:0});};
-  if($('#pv'))$('#pv').onclick=()=>go(state.step-1); if($('#nx'))$('#nx').onclick=()=>go(state.step+1);
+  if($('#pv'))$('#pv').onclick=()=>go(state.step-1); if($('#nx'))$('#nx').onclick=()=>{if(state.step===1)celebrate(c,1);else if(state.step===2&&(LS.get('n:'+c.id+':f')||'').trim().length>=20)celebrate(c,2);go(state.step+1);};
   if($('#rs'))$('#rs').onclick=e=>{const b=e.currentTarget; if(!b.dataset.a){b.dataset.a=1;b.textContent='Click again to clear notes and progress';setTimeout(()=>{delete b.dataset.a;b.textContent='Reset this challenge'},4000);return;}
-    ['done:'+c.id,'n:'+c.id+':f','n:'+c.id+':a'].forEach(LS.del);LS.del('chk:'+c.id);draw();};
+    ['done:'+c.id,'n:'+c.id+':f','n:'+c.id+':a','cele:'+c.id+':1','cele:'+c.id+':2','cele:'+c.id+':3'].forEach(k=>LS.del(k));LS.del('chk:'+c.id);draw();};
   after(c);
 }
 let afterFns=[];const after=c=>{afterFns.forEach(f=>f(c));afterFns=[];};
@@ -104,9 +118,9 @@ function solveAll(c){
   afterFns.push(()=>{setupQuiz(c);drawCharts(c);$$('[data-tbl]').forEach(b=>b.onclick=()=>{const t=$('#'+b.dataset.tbl),on=t.hidden;t.hidden=!on;b.setAttribute('aria-pressed',on);b.textContent=on?'Hide table':'Show table';});
     const t=$('#anote');t.value=LS.get(k)||'';t.oninput=()=>LS.set(k,t.value);
     let saved=[];try{saved=JSON.parse(LS.get(ck)||'[]')}catch(e){}
-    $$('#rub input').forEach((x,i)=>{x.checked=!!saved[i];x.onchange=upd;});upd();
-    function upd(){const all=$$('#rub input'),m=all.filter(x=>x.checked).length;LS.set(ck,JSON.stringify(all.map(x=>x.checked)));
-      if(m===all.length){LS.set('done:'+c.id,'1');}else LS.del('done:'+c.id);$('#closed').classList.toggle('on',m===all.length);}
+    $$('#rub input').forEach((x,i)=>{x.checked=!!saved[i];x.onchange=()=>upd(true);});upd();
+    function upd(user){const all=$$('#rub input'),m=all.filter(x=>x.checked).length,was=isDone(c.id);LS.set(ck,JSON.stringify(all.map(x=>x.checked)));
+      if(m===all.length){LS.set('done:'+c.id,'1');if(user&&!was)celebrate(c,3);}else LS.del('done:'+c.id);$('#closed').classList.toggle('on',m===all.length);}
     if(c.whatif)whatif(c);});
   const pre=d.pre?`<p><b>${d.pre.title}</b></p>${sqlBlock(d.pre.sql)}${table(R[d.pre.result])}`:'';
   const b1=`<details class="blk" open><summary><span class="n">${++n}</span> Solve it</summary><div class="bd">

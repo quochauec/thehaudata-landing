@@ -283,6 +283,13 @@ table.r th{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-s
 .check{display:grid;gap:6px}.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px}
 .closed{display:none;margin-top:12px;border:2px solid var(--ok);background:var(--ok-soft);border-radius:12px;padding:12px 16px;font-weight:700}
 .closed.on{display:block}
+.cele-host{position:fixed;left:0;right:0;bottom:24px;z-index:60;display:flex;justify-content:center;padding:0 16px;pointer-events:none}
+.cele{pointer-events:auto;cursor:pointer;display:flex;gap:12px;align-items:flex-start;max-width:420px;background:var(--surface);color:var(--fg);border:1.5px solid var(--violet-lite);border-radius:18px;padding:14px 18px 14px 14px;box-shadow:var(--shadow-lg)}
+.cele .ic{flex:none;width:34px;height:34px;border-radius:50%;background:var(--grad-hero);color:#fff;display:grid;place-items:center;font-weight:900}
+.cele b{display:block;font-family:var(--font-display);font-weight:900;line-height:1.25}
+.cele span{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+.cele.big{border-color:var(--ok);border-width:2px}
+@media (prefers-reduced-motion:no-preference){.cele{animation:cele-in .35s ease-out}@keyframes cele-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}}
 .mt td,.mt th{vertical-align:top}
 .kq{margin:6px 0 0;padding-left:22px;display:grid;gap:6px}.kq li{padding-left:2px}
 details.reveal{margin:4px 0}
@@ -607,6 +614,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=632baa441e"></script>
+<script type="module" src="js/app.js?v=f9ef3b64f3"></script>
 
 </body></html>
