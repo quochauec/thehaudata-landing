@@ -1,8 +1,8 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=c26777ca37";
-import { mountHomework } from "./homework.js?v=c26777ca37";
-import { mountCases } from "./cases.js?v=c26777ca37";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=c26777ca37";
+import * as engine from "./engine.js?v=2ff7cc23eb";
+import { mountHomework } from "./homework.js?v=2ff7cc23eb";
+import { mountCases } from "./cases.js?v=2ff7cc23eb";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=2ff7cc23eb";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -28,8 +28,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=c26777ca37");
-  const cs = await json("data/challenges.json?v=c26777ca37");
+  hwData ??= await json("data/homework.json?v=2ff7cc23eb");
+  const cs = await json("data/challenges.json?v=2ff7cc23eb");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Practice SQL on <span class="gt">real business questions</span></h1>
@@ -53,12 +53,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=c26777ca37");
+  hwData ??= await json("data/homework.json?v=2ff7cc23eb");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=c26777ca37"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=2ff7cc23eb"));
   casesApp.draw();
 }
 
@@ -70,7 +70,7 @@ function playground() {
   main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}</button>`).join("")}</div><div class="card"><div id="pg"></div></div></section>`;
   const render = () => {
     $$("[data-ds]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === ds));
-    panel = mountSql($("#pg", main), { profile: "hw", hintsKey: "pg", datasets: [ds], sql: text ?? START[ds] });
+    panel = mountSql($("#pg", main), { profile: "hw", datasets: [ds], sql: text ?? START[ds] });
   };
   $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); text = START[ds]; render(); });
   render();

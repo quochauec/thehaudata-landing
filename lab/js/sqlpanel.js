@@ -1,6 +1,6 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=c26777ca37";
-import { createEditor } from "../vendor/editor.js?v=c26777ca37";
+import * as engine from "./engine.js?v=2ff7cc23eb";
+import { createEditor } from "../vendor/editor.js?v=2ff7cc23eb";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -28,7 +28,7 @@ if (!document.getElementById("sqlpanel-css")) {
 .nextbar:empty{display:none}
 .nextbar button{font:inherit;font-family:var(--mono);font-size:12px;font-weight:700;border:1.5px solid var(--line);background:var(--blue-soft);color:var(--blue);border-radius:99px;padding:1px 10px;cursor:pointer}
 .nextbar button:hover{border-color:var(--blue)}
-.hintsw{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;margin-left:4px}`;
+`;
   document.head.appendChild(st);
 }
 
@@ -77,7 +77,6 @@ export function mount(root, opts) {
       <button class="btn primary" id="${id}-run" disabled>Run</button>
       ${opts.check ? `<button class="btn" id="${id}-chk" disabled>Check my answer</button>` : ""}
       ${opts.draftKey ? `<button class="btn" id="${id}-rst" type="button">Reset to blank</button>` : ""}
-      <label class="hintsw"><input type="checkbox" id="${id}-hint"> Syntax hints</label>
       <span class="verdict" id="${id}-vd" role="status" aria-live="polite"></span>
       <span class="eng" id="${id}-eng"></span>
     </div>
@@ -95,10 +94,8 @@ export function mount(root, opts) {
     set(v) { try { if (opts.draftKey) localStorage.setItem(opts.draftKey, v); } catch (e) { } },
     del() { try { if (opts.draftKey) localStorage.removeItem(opts.draftKey); } catch (e) { } },
   };
-  // Syntax hints: on by default in every zone. The choice is remembered per zone (opts.hintsKey).
-  const hk = "lab:hints:" + (opts.hintsKey || opts.profile);
-  const hintPref = () => { try { const v = localStorage.getItem(hk); return v === null ? opts.hintsDefault !== false : v === "1"; } catch (e) { return opts.hintsDefault !== false; } };
-  const nx = $("nx"), hintBox = $("hint");
+  // Syntax hints are always on, in every zone, as soon as the editor mounts. There is no switch and no saved preference.
+  const nx = $("nx");
   const showNext = info => {
     if (!info) { nx.innerHTML = ""; return; }
     nx.innerHTML = esc(info.say) + (info.chips ? ":" : "") + (info.chips || []).map(c => ` <button type="button" data-kw="${esc(c)}">${esc(c)}</button>`).join("") + (info.text ? " " + esc(info.text) : "");
@@ -106,14 +103,12 @@ export function mount(root, opts) {
   nx.addEventListener("mousedown", e => { if (e.target.closest("button")) e.preventDefault(); });   // keep the cursor in the editor
   nx.addEventListener("click", e => { const b = e.target.closest("button[data-kw]"); if (b) editor.insert(b.dataset.kw); });
   const editor = createEditor({
-    parent: $("ed"), doc: draft.get() ?? (opts.sql || ""), hints: hintPref(), onNext: showNext,
+    parent: $("ed"), doc: draft.get() ?? (opts.sql || ""), hints: true, onNext: showNext,
     onRun: () => go(false),
     onChange: v => { if (opts.draftKey) { if (v === (opts.sql || "")) draft.del(); else draft.set(v); } },
   });
   // The rest of the panel reads and writes the query as ed.value.
   const ed = { get value() { return editor.getValue(); }, set value(v) { editor.setValue(v); }, focus: () => editor.focus() };
-  hintBox.checked = hintPref();
-  hintBox.onchange = () => { try { localStorage.setItem(hk, hintBox.checked ? "1" : "0"); } catch (e) { } editor.setHints(hintBox.checked); if (!hintBox.checked) nx.innerHTML = ""; };
   if (opts.draftKey) $("rst").onclick = () => { draft.del(); ed.value = opts.sql || ""; $("vd").textContent = ""; $("err").textContent = ""; $("fb").innerHTML = ""; ed.focus(); };
 
   const setBusy = b => { runB.disabled = b || !engine.getStatus().ready; if (chkB) chkB.disabled = runB.disabled; };
