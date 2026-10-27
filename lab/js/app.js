@@ -1,8 +1,8 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=3e9432a114";
-import { mountHomework } from "./homework.js?v=3e9432a114";
-import { mountCases } from "./cases.js?v=3e9432a114";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=3e9432a114";
+import * as engine from "./engine.js?v=c26777ca37";
+import { mountHomework } from "./homework.js?v=c26777ca37";
+import { mountCases } from "./cases.js?v=c26777ca37";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=c26777ca37";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -28,8 +28,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=3e9432a114");
-  const cs = await json("data/challenges.json?v=3e9432a114");
+  hwData ??= await json("data/homework.json?v=c26777ca37");
+  const cs = await json("data/challenges.json?v=c26777ca37");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Practice SQL on <span class="gt">real business questions</span></h1>
@@ -53,12 +53,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=3e9432a114");
+  hwData ??= await json("data/homework.json?v=c26777ca37");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=3e9432a114"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=c26777ca37"));
   casesApp.draw();
 }
 

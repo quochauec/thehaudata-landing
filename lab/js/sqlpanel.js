@@ -1,6 +1,6 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=3e9432a114";
-import { createEditor } from "../vendor/editor.js?v=3e9432a114";
+import * as engine from "./engine.js?v=c26777ca37";
+import { createEditor } from "../vendor/editor.js?v=c26777ca37";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -95,7 +95,7 @@ export function mount(root, opts) {
     set(v) { try { if (opts.draftKey) localStorage.setItem(opts.draftKey, v); } catch (e) { } },
     del() { try { if (opts.draftKey) localStorage.removeItem(opts.draftKey); } catch (e) { } },
   };
-  // Syntax hints: on by default, off in graded homework. The choice is remembered per zone (opts.hintsKey).
+  // Syntax hints: on by default in every zone. The choice is remembered per zone (opts.hintsKey).
   const hk = "lab:hints:" + (opts.hintsKey || opts.profile);
   const hintPref = () => { try { const v = localStorage.getItem(hk); return v === null ? opts.hintsDefault !== false : v === "1"; } catch (e) { return opts.hintsDefault !== false; } };
   const nx = $("nx"), hintBox = $("hint");

@@ -1,7 +1,7 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=3e9432a114";
-import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=3e9432a114";
+import * as engine from "./engine.js?v=c26777ca37";
+import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=c26777ca37";
 
 
 const LS = {
@@ -206,7 +206,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
     refreshLocks();
 
     const panel = mount($(".panelhost", body), {
-      profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id, hintsKey: "hw", hintsDefault: false,
+      profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id, hintsKey: "hw",
       onAttempt: (kind, sql) => {
         if (!clean(sql).trim()) return;   // an untouched template is not an attempt
         if (kind === "check") LS.set("att:" + q.id, "c"); else if (att() !== "c") LS.set("att:" + q.id, "r");
