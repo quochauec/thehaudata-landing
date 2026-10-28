@@ -554,6 +554,19 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 .sitefoot a:hover{color:#fff;text-decoration:underline}
 .sitefoot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .sitefoot .legal{max-width:1200px;margin:28px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:.8rem;color:rgba(255,255,255,.5)}
+
+/* footer: brand link must not inherit the guide's white ".fl" pill; CTA band above the link columns */
+.sitefoot .fl{background:none;border:0;border-radius:0;padding:0;flex:none;position:static}
+.sitefoot .footcta{grid-template-columns:1fr auto;align-items:center;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.14)}
+.sitefoot .footcta .eyebrow{color:#C084FC}
+.sitefoot .footcta h3{margin:6px 0 0;font-family:var(--font-display);font-size:1.5rem;line-height:1.25;color:#fff}
+.sitefoot .footcta p{max-width:620px;margin-top:8px}
+.sitefoot .ctabtns{display:flex;gap:10px;flex-wrap:wrap}
+.sitefoot .ctabtns .btn{text-decoration:none;white-space:nowrap}
+.sitefoot .ctabtns .btn:not(.primary){background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+.sitefoot .ctabtns .btn:not(.primary):hover{background:rgba(255,255,255,.1);text-decoration:none}
+.sitefoot .ctabtns .btn.primary,.sitefoot .ctabtns .btn.primary:hover{color:#fff;text-decoration:none}
+@media (max-width:760px){.sitefoot .footcta{grid-template-columns:1fr}}
 </style>
 
 <nav class="topnav" aria-label="TheHauData Lab">
@@ -596,6 +609,17 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 <main class="wrap" id="main"></main>
 
 <footer class="sitefoot">
+  <div class="inner footcta">
+    <div>
+      <div class="eyebrow">Next step</div>
+      <h3>Want to learn the full data-analytics workflow?</h3>
+      <p>This Lab is one part of the TheHauData course: real-life case studies, a data-driven mindset, and the right tech stack (SQL, Power BI, Python, statistics), with a mentor beside you.</p>
+    </div>
+    <div class="ctabtns">
+      <a class="btn primary" href="https://thehaudata.com/?utm_source=lab&amp;utm_medium=footer&amp;utm_campaign=upcoming-course" target="_blank" rel="noopener">See the upcoming course ↗</a>
+      <a class="btn" href="https://zalo.me/0362550761" target="_blank" rel="noopener">Ask the mentor on Zalo</a>
+    </div>
+  </div>
   <div class="inner">
     <div>
       <a class="fl" href="https://thehaudata.com/" target="_blank" rel="noopener">
@@ -621,7 +645,7 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
       <li><a href="#dictionary" data-zone-link="dictionary">Data Dictionary</a></li>
       <li><a href="#playground" data-zone-link="playground">Playground</a></li></ul></div>
     <div><h4>TheHauData</h4><ul>
-      <li><a href="https://thehaudata.com/" target="_blank" rel="noopener">Courses and mentoring</a></li>
+      <li><a href="https://thehaudata.com/?utm_source=lab&amp;utm_medium=footer&amp;utm_campaign=courses" target="_blank" rel="noopener">Courses and mentoring</a></li>
       <li><a href="https://thehaudata.com/" target="_blank" rel="noopener">About the mentor</a></li></ul></div>
   </div>
   <div class="legal">© 2026 TheHauData Academy · Quoc-Hau Le · All rights reserved</div>
