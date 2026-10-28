@@ -1,0 +1,9 @@
+{
+ "_note": "Newest first. tag: Case study | Lesson | Homework | Update. go: guides, homework, cases, dictionary, playground (optional). The Home page shows the first 4.",
+ "items": [
+  {"date": "2026-10-28", "tag": "Homework", "title": "Homework answers now live in one place", "text": "The Study Guides keep the classwork. Every homework question for Lessons 2 to 5 is in the Homework tab: try it first, run your query, then open the model answer.", "go": "homework"},
+  {"date": "2026-10-27", "tag": "Update", "title": "Your progress follows your login", "text": "Questions you finished and queries you wrote are saved to your account, so you can pick up on another laptop or phone."},
+  {"date": "2026-10-25", "tag": "Lesson", "title": "Study guides for Lessons 2 to 10", "text": "A one-page recap per lesson, the classwork solved step by step, and small labs to try. The data dictionary sits next to them.", "go": "guides"},
+  {"date": "2026-10-25", "tag": "Case study", "title": "14 case studies on real business questions", "text": "Each one starts from a request, lets you plan the approach first, then solves, charts and concludes. 11 run live on the class tables.", "go": "cases"}
+ ]
+}
