@@ -1,9 +1,9 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=f9ef3b64f3";
-import { mountHomework } from "./homework.js?v=f9ef3b64f3";
-import { mountCases } from "./cases.js?v=f9ef3b64f3";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=f9ef3b64f3";
-import * as sync from "./sync.js?v=f9ef3b64f3";
+import * as engine from "./engine.js?v=3a62192249";
+import { mountHomework } from "./homework.js?v=3a62192249";
+import { mountCases } from "./cases.js?v=3a62192249";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=3a62192249";
+import * as sync from "./sync.js?v=3a62192249";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -32,13 +32,20 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=f9ef3b64f3");
-  const cs = await json("data/challenges.json?v=f9ef3b64f3");
+  hwData ??= await json("data/homework.json?v=3a62192249");
+  const cs = await json("data/challenges.json?v=3a62192249");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
-  hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Practice SQL on <span class="gt">real business questions</span></h1>
-    <p>Recap each lesson in the study guides, then write T-SQL on the class tables and run it right here. Homework follows the SQL lessons, and case studies walk you from a request to a conclusion.</p>`;
-  main.innerHTML = `<div class="hub"><div class="cards homecards">
+  const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
+  hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Think like an analyst. <span class="gt">Solve real business cases</span> with SQL.</h1>
+    <p>Every exercise starts from a question a business would really ask. You decide what to measure and why, write the T-SQL on the class tables, and finish with a conclusion you can defend.</p>
+    <ul class="usps">
+      <li><b>Real-life case studies</b><span>Requests that come from real companies, solved from brief to recommendation.</span></li>
+      <li><b>Analytical mindset</b><span>Plan the approach and the metrics first. Syntax comes second.</span></li>
+      <li><b>Practical, hands-on</b><span>Run SQL in the browser on the same tables used in class.</span></li>
+      <li><b>Try first, then compare</b><span>Hints along the way. The model answer opens after your attempt.</span></li></ul>`;
+  const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>What's new</small> Latest from the course</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(n.tag)}</span><div><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">Open</button>` : ""}</li>`).join("")}</ul></section>` : "";
+  main.innerHTML = `<div class="hub">${newsHtml}<div class="cards homecards">
       <button class="cc big" data-go="guides"><span class="tag">Lessons 2 to 10</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
         <span class="row"><span class="tm">${GUIDES.length} lessons</span></span></button>
       <button class="cc big" data-go="homework"><span class="tag">Lessons 2 to 10</span><b>Homework</b><span class="sk">${hwData.questions.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
@@ -57,12 +64,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=f9ef3b64f3");
+  hwData ??= await json("data/homework.json?v=3a62192249");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=f9ef3b64f3"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=3a62192249"));
   casesApp.draw();
 }
 
@@ -123,6 +130,13 @@ async function setZone(z, reset = false) {
   window.scrollTo({ top: 0 });
 }
 $$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone, true));
+// A study guide (iframe) can send the mentee to a lesson's homework.
+window.addEventListener("message", e => {
+  const d = e.data;
+  if (!d || d.labGo !== "homework" || !$$("iframe.embed").some(f => f.contentWindow === e.source)) return;
+  try { history.replaceState(null, "", "#homework" + (+d.lesson ? "/" + +d.lesson : "")); } catch (err) { }
+  setZone("homework");
+});
 $$("[data-zone-link]").forEach(a => a.onclick = e => { e.preventDefault(); setZone(a.dataset.zoneLink, true); });
 const start = (location.hash || "").replace("#", "").split("/")[0];
 setZone(ZONES.includes(start) ? start : (store.get("zone") && ZONES.includes(store.get("zone")) ? store.get("zone") : "home"));

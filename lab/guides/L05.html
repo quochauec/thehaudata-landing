@@ -210,7 +210,7 @@ body{margin:0}
 <header class="top"><div class="wrap">
   <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Lesson 5</div>
   <h1>Subquery, CTE and Window Functions</h1>
-  <p>One-page recap, then all 10 homework questions (shared with Lesson 6) solved step by step with a CTE map, plus a window-function lab.</p>
+  <p>One-page recap, then a window-function lab. The homework (shared with Lesson 6) is in the Homework tab.</p>
   <nav class="tabs" role="tablist" aria-label="Study guide sections">
     <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
     <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Homework</button>
@@ -286,23 +286,14 @@ SELECT * FROM step2</pre>
       </ol>
     </div>
 
-    <div class="card c12 pit"><h2><small>Watch out</small> Mistakes seen in this homework key</h2>
-      <ul>
-        <li><b>2014 is a half year</b> (orders end 2014-06-30). The YoY growth for 2014 in Q3 compares six months with twelve, so every country looks like it collapsed.</li>
-        <li><b>Gaps break LAG and LEAD.</b> They look at the neighbouring <i>row</i>, not the neighbouring year or month. If a year is missing for a group, you compare the wrong pair. Q4 removes zero-promotion years, so check the years are consecutive.</li>
-        <li><b>The default frame matters.</b> <code>SUM() OVER (ORDER BY ...)</code> is a running total because the default frame ends at the current row. The key writes "frame: all", which would give the grand total.</li>
-        <li><b>First period growth is NULL, not 0.</b> Q7 sets it to 0, which reads as "no growth".</li>
-        <li><b>Ties in Top N.</b> RANK or DENSE_RANK keeps every tie, so "top 5" can return more than 5 rows (Q10 returns 53 rows for 10 territories).</li>
-        <li><b>Revenue and AOV have more than one base.</b> The key's variants use SubTotal, TotalDue or LineTotal. Pick one and say so.</li>
-      </ul>
-    </div>
+    
   </div>
 
   <footer>Source: Lesson 5.pdf (Quoc-Hau Le, TheHauData).</footer>
 </section>
 <section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
 
-  <div class="bar" id="filters"></div>
+  <div class="card" id="hwmoved" style="margin:0 0 14px"><h2><small>Homework</small> Homework lives in its own tab</h2><p>Try each question yourself first. The model answer unlocks in the Homework tab after you have run a query.</p><p style="margin-top:10px"><button class="btn primary" type="button" onclick="parent.postMessage({labGo:'homework',lesson:5},'*')">Open Lesson 5 homework</button></p></div><div class="bar" id="filters"></div>
   <div id="exlist"></div>
   <footer>Source: HW_Ref_solution_L056.sql and the Homework Collection (Lesson 5-6). The homework covers both lessons. SQL shown is T-SQL as in the answer key. Result tables come from running equivalent queries on the CSV files; money is rounded. No class-practice file exists for this lesson.</footer>
 </section>
@@ -619,303 +610,10 @@ G.chartInit=function(){
 
 </script>
 <script>
-const RES = {"l5h1": {"n": 351, "cols": ["CustomerID", "AOV"], "sample": [[29641, 133739.07], [29923, 109230.41], [29624, 107997.89], [29861, 102120.86], [29940, 97760.15]]}, "l5h1u": {"n": 1, "cols": ["AOV_US"], "sample": [[5231.92]]}, "l5h2": {"n": 3, "cols": ["customer_groups", "customers", "group_AOV"], "sample": [["1. Bikes Only", 6093, 2212.0], ["2. Clothing Only", 3701, 51.0], ["3. Bikes & Clothing", 3626, 8662.0]]}, "l5h2c": {"n": 13420, "cols": ["customer_groups", "CustomerID", "AOV"], "sample": [["1. Bikes Only", 11002, 2693.0], ["1. Bikes Only", 11004, 2701.0], ["1. Bikes Only", 11005, 2693.0], ["1. Bikes Only", 11006, 2701.0], ["1. Bikes Only", 11007, 2693.0]]}, "l5h3": {"n": 18, "cols": ["Country", "OrderYear", "CurrentRevenue", "PreviousRevenue", "YOYGrowth"], "sample": [["AU", 2012, 2124783.0, 1532156.0, 0.387], ["AU", 2013, 4230664.0, 2124783.0, 0.991], ["AU", 2014, 2767732.0, 4230664.0, -0.346], ["CA", 2012, 5861057.0, 1874382.0, 2.127], ["CA", 2013, 6229518.0, 5861057.0, 0.063]]}, "l5h3r": {"n": 1, "cols": ["first_order", "last_order"], "sample": [["2011-05-31", "2014-06-30"]]}, "l5h4": {"n": 3, "cols": ["OrderYear", "ProductSubCategoryName", "cost_Y", "cost_Y1", "cost_Y2"], "sample": [[2011, "Caps", 4.0, 79.0, 161.0], [2011, "Helmets", 4.0, 1027.0, 2290.0], [2011, "Jerseys", 34.0, 602.0, 3026.0]]}, "l5h5": {"n": 141, "cols": ["OrderYear", "OrderMonth", "Category", "MonthlyRevenue", "AccumulatedRevenue"], "sample": [[2011, 5, "Accessories", 1696.0, 1696.0], [2011, 7, "Accessories", 3593.0, 5289.0], [2011, 8, "Accessories", 5188.0, 10477.0], [2011, 10, "Accessories", 9759.0, 20235.0], [2011, 12, "Accessories", 585.0, 20821.0]]}, "l5h6": {"n": 6, "cols": ["ProductName", "Country", "Product_sold"], "sample": [["Water Bottle - 30 oz.", "AU", 913], ["AWC Logo Cap", "CA", 1638], ["Water Bottle - 30 oz.", "DE", 677], ["AWC Logo Cap", "FR", 587], ["AWC Logo Cap", "GB", 688]]}, "l5h7": {"n": 141, "cols": ["ProductCategoryName", "OrderYear", "OrderMonth", "Revenue", "prev_month_revenue", "MoM_growth"], "sample": [["Accessories", 2011, 5, 1696.0, null, 0.0], ["Accessories", 2011, 7, 3593.0, 1696.0, 1.119], ["Accessories", 2011, 8, 5188.0, 3593.0, 0.444], ["Accessories", 2011, 10, 9759.0, 5188.0, 0.881], ["Accessories", 2011, 12, 585.0, 9759.0, -0.94]]}, "l5h8": {"n": 14353, "cols": ["CustomerID", "total_spending_all_cate"], "sample": [[22744, 54.0], [25950, 54.0], [15611, 54.0], [11230, 54.0], [16930, 54.0]]}, "l5h8p": {"n": 1, "cols": ["P50_clothing_spending", "clothing_customers_in_upper_half"], "sample": [[53.99, 2900]]}, "l5h9": {"n": 38, "cols": ["OrderYear", "Country", "PaymentMethod", "Orders", "Revenue", "RankByOrders", "RankByRevenue", "group_ranking"], "sample": [[2011, "AU", "ColonialVoice", 118, 379568.0, 1, 2, "2. Top By Orders"], [2011, "AU", "Distinguish", 118, 388434.0, 1, 1, "1. Top By BOTH"], [2012, "AU", "Vista", 228, 524789.0, 1, 1, "1. Top By BOTH"], [2013, "AU", "Vista", 735, 1083936.0, 1, 1, "1. Top By BOTH"], [2014, "AU", "SuperiorCard", 602, 769286.0, 2, 1, "3. Top By Revenue"]]}, "l5h10": {"n": 53, "cols": ["TerritoryName", "ProductName", "product_sold", "sold_promo", "promo_pct", "pct_promo_rank"], "sample": [["Australia", "Classic Vest, S", 292, 104, 0.356, 1], ["Australia", "Classic Vest, M", 155, 46, 0.297, 2], ["Australia", "Long-Sleeve Logo Jersey, L", 253, 68, 0.269, 3], ["Australia", "Touring-3000 Yellow, 54", 67, 18, 0.269, 3], ["Australia", "Touring-3000 Blue, 50", 97, 24, 0.247, 4]]}};
+const RES = {};
 
 const EX=[
-{id:'q1',grp:'Subquery & CTE',tag:'HW 1',lvl:'Medium',
- vi:'Công ty muốn target vào những khách hàng có giá trị trung bình đơn hàng (AOV) lớn hơn AOV của khách hàng mua tại US. Hãy lấy ra các khách hàng thỏa mãn tiêu chí này. Gợi ý: AOV = Total GMV / Number of orders.',
- en:'List customers whose average order value is above the average order value of US customers.',
- out:['CustomerID','AOV'],flt:['AOV > AOV of US'],
- ctes:[{n:'AOV_in_US',d:'one number: US average order value'},{n:'AOV_all',d:'AOV per customer'},{n:'main query',d:'customers where AOV > the US number',fin:1}],
- st:['One row per customer with AOV, filtered by a single threshold X (the US AOV).','AOV = total order value ÷ orders, from Sales_orders. The US figure needs Dim_Territory.','Step 1: compute X as a scalar. Step 2: compute AOV per customer and keep those above X. Two ways: a subquery in HAVING, or two CTEs (reusable).','US AOV = 5,231.92 (SubTotal basis); 351 customers are above it.'],
- sql:`-- Way 1: subquery in HAVING
-SELECT CustomerId, SUM(SubTotal) * 1.00 / COUNT(SalesOrderID) AS AOV
-FROM ADW_Sales_orders
-GROUP BY CustomerID
-HAVING SUM(SubTotal) * 1.00 / COUNT(SalesOrderID) >
-(
-    SELECT SUM(SubTotal) * 1.00 / COUNT(SalesOrderID) AS AOV_US
-    FROM ADW_Sales_orders t1
-    LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID
-    WHERE CountryRegionCode = 'US'
-)
-ORDER BY AOV DESC;
 
--- Way 2: CTEs
-WITH AOV_in_US AS (
-    SELECT SUM(SubTotal) * 1.00 / COUNT(SalesOrderID) AS AOV_US
-    FROM ADW_Sales_orders t1
-    LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID
-    WHERE CountryRegionCode = 'US'
-)
-, AOV_all AS (
-    SELECT CustomerID, SUM(SubTotal) * 1.00 / COUNT(SalesOrderID) AS AOV
-    FROM ADW_Sales_orders
-    GROUP BY CustomerID
-)
-SELECT *
-FROM AOV_all
-WHERE AOV > (SELECT * FROM AOV_in_US)
-ORDER BY AOV DESC`,
- res:['l5h1u','l5h1'],resLabel:['The US threshold X','Customers above X'],
- watch:['The key gives several versions. Two use <code>SubTotal</code> and one uses <code>TotalDue</code>, which would move the threshold. Pick one and state it.','Multiply by <code>1.00</code> so the division is not an integer division.','The CTE version lets you <code>SELECT * FROM AOV_all</code> alone to debug the customer step.']},
-{id:'q2',grp:'Subquery & CTE',tag:'HW 2',lvl:'Hard',
- vi:'Lấy ra danh sách khách hàng theo 3 nhóm tiêu chí và so sánh AOV khi mua 2 sản phẩm Bikes + Clothing: Nhóm 1 chỉ mua Bikes; Nhóm 2 mua cả Bikes và Clothing; Nhóm 3 chỉ mua Clothing.',
- en:'Split customers into Bikes only, Clothing only, and both. Compare their AOV.',
- out:['customer_groups','CustomerID','AOV'],flt:["category IN ('Bikes','Clothing')"],
- ctes:[{n:'order_stats',d:'per customer: spending, orders, Bikes orders, Clothing orders'},{n:'customer_group_tab',d:'CASE WHEN assigns the group'},{n:'final',d:'AOV = spending ÷ orders',fin:1}],
- st:['Customer, group, AOV. A customer belongs to exactly one group.','Six tables: detail, orders, product, sub-category, category (to know each line\'s category).','Step 1: per customer count orders containing Bikes and orders containing Clothing, using <code>COUNT(DISTINCT CASE WHEN ...)</code>. Step 2: CASE WHEN on those two counts gives the group. Step 3: AOV.','Group AOV: Bikes only 2,212 (6,093 customers), Clothing only 51 (3,701), both 8,662 (3,626).'],
- sql:`WITH order_stats AS (
-    SELECT CustomerID
-         , SUM(LineTotal) AS TotalSpending
-         , COUNT(DISTINCT t1.SalesOrderID) AS Total_orders
-         , COUNT(DISTINCT CASE WHEN ProductCategoryName = 'Bikes' THEN t1.SalesOrderID END) AS Bikes_orders
-         , COUNT(DISTINCT CASE WHEN ProductCategoryName = 'Clothing' THEN t1.SalesOrderID END) AS Clothing_orders
-    FROM ADW_Sales_orders_detail t1
-    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON t3.ProductSubcategoryID = CAST(t4.ProductSubcategoryID AS nvarchar)
-    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID
-    WHERE ProductCategoryName IN ('Bikes', 'Clothing')
-    GROUP BY CustomerID
-)
-, customer_group_tab AS (
-    SELECT *
-         , CASE WHEN Bikes_orders > 0 AND Clothing_orders = 0 THEN '1. Bikes Only'
-                WHEN Bikes_orders = 0 AND Clothing_orders > 0 THEN '2. Clothing Only'
-                WHEN Bikes_orders > 0 AND Clothing_orders > 0 THEN '3. Bikes & Clothing'
-           END AS customer_groups
-    FROM order_stats
-)
-SELECT customer_groups, CustomerID, SUM(TotalSpending) / SUM(Total_orders) AS AOV
-FROM customer_group_tab
-GROUP BY CustomerID, customer_groups`,
- res:['l5h2','l5h2c'],
- chart:{type:'bar',cat:'customer_groups',val:'group_AOV',valLabel:'Group AOV',fmt:'usd0',hi:['3. Bikes & Clothing'],title:'Customers who buy both Bikes and Clothing spend the most per order',sub:'Group AOV: Bikes only $2,212, Clothing only $51, both $8,662.'},resLabel:['Group summary (customers, group AOV)','Key output (one row per customer)'],
- watch:['The key lists one row per customer. To compare the groups, add a final query: <code>SUM(TotalSpending) / SUM(Total_orders) ... GROUP BY customer_groups</code>. The first table above is that summary.','The WHERE keeps only Bikes and Clothing lines, so spending and orders count only those two categories, not the customer\'s whole basket.','Counting <code>DISTINCT SalesOrderID</code> avoids counting an order once per product line.']},
-{id:'q3',grp:'Window functions',tag:'HW 3',lvl:'Hard',
- vi:'Hãy tính tỉ lệ tăng trưởng doanh thu hằng năm (%YOY growth) theo từng country trong giai đoạn 2012-2014, đâu là country có tốc độ tăng trưởng về doanh thu tốt nhất?',
- en:'Year-over-year revenue growth by country for 2012–2014. Which country grows fastest?',
- out:['Country','OrderYear','CurentRevenue','PreviousRevenue','YOYGrowth'],flt:['2012–2014'],
- ctes:[{n:'Country_Revenue',d:'revenue per country per year (2011–2014)'},{n:'Country_Revenue_Add',d:'adds previous year',w:'LAG(Revenue) OVER (PARTITION BY Country ORDER BY OrderYear)'},{n:'final',d:'growth = current ÷ previous − 1, years 2012–2014',fin:1}],
- st:['Country, year, revenue, previous-year revenue, growth %.','Revenue per country and year: detail, orders, territory.','Window: <b>partition by country</b> (compare a country only with itself), <b>order by year</b>, function <b>LAG</b>. Growth = current ÷ previous − 1.','Include 2011 in the base CTE so 2012 has a previous year, then filter to 2012–2014 at the end. The key\'s other approach does the same with a self-join: the year on one side equals the year on the other + 1.'],
- sql:`WITH Country_Revenue AS (
-    SELECT T3.CountryRegionCode AS Country
-         , YEAR(T1.OrderDate) AS OrderYear
-         , SUM(T2.LineTotal) AS CurentRevenue
-    FROM ADW_Sales_orders T1
-    LEFT JOIN ADW_Sales_orders_detail T2 ON T1.SalesOrderID = T2.SalesOrderID
-    INNER JOIN ADW_Dim_Territory T3 ON T1.TerritoryID = T3.TerritoryID
-    WHERE YEAR(T1.OrderDate) BETWEEN 2011 AND 2014        -- 2011 is needed for 2012's previous year
-    GROUP BY T3.CountryRegionCode, YEAR(T1.OrderDate)
-)
-, Country_Revenue_Add AS (
-    SELECT *
-         , LAG(CurentRevenue) OVER (PARTITION BY Country ORDER BY OrderYear) AS PreviousRevenue
-    FROM Country_Revenue
-)
-SELECT Country, OrderYear, CurentRevenue
-     , (CurentRevenue / PreviousRevenue) - 1 AS YOYGrowthPercentage
-FROM Country_Revenue_Add
-WHERE OrderYear BETWEEN 2012 AND 2014
-ORDER BY Country, OrderYear`,
- res:['l5h3','l5h3r'],resLabel:['YoY by country and year','Date range of the data'],
- watch:['<b>2014 is a half year</b> (orders end 2014-06-30), so every 2014 growth figure compares six months with twelve (AU −34.6%, CA −61.6%). Compare 2012 and 2013 only, or compare the same months.','Over 2012–2013 the fastest are Germany (+122.8% then +366.3%) and Canada in 2012 (+212.7%). Small bases inflate percentages, so also show the absolute revenue.','The key\'s first approach uses SubTotal and a self-join, the second uses LineTotal and LAG. The two revenue bases give different numbers.']},
-{id:'q4',grp:'Window functions',tag:'HW 4',lvl:'Hard',
- vi:'Công ty muốn review lại promotion cost của các Product SubCategory. Lấy ra danh sách SubCategory có promotion cost tăng trong 2 năm liên tiếp.',
- en:'Which sub-categories had promotion cost rising two years in a row?',
- out:['OrderYear','ProductSubCategoryName','cost_Y','cost_Y+1','cost_Y+2'],flt:['cost rises twice'],
- ctes:[{n:'promotion_cost_by_year_sub_cate',d:'promo cost = discount × price × qty, per year and sub-category',w:'HAVING cost > 0'},{n:'YearGrowth',d:'cost of the next 1 and 2 years',w:'LEAD(cost,1/2) OVER (PARTITION BY subcategory ORDER BY year)'},{n:'final',d:'Y+1 > Y and Y+2 > Y+1',fin:1}],
- st:['Sub-categories where cost(Y) &lt; cost(Y+1) &lt; cost(Y+2).','Detail (discount, price, qty), orders (year), product, sub-category.','Base CTE: promotion cost per sub-category per year. Window: partition by sub-category, order by year, <b>LEAD</b> with offsets 1 and 2. Filter both comparisons.','Result: Caps, Helmets, Jerseys, starting in 2011 (2011 → 2012 → 2013).'],
- sql:`WITH promotion_cost_by_year_sub_cate AS (
-    SELECT YEAR(OrderDate) AS OrderYear
-         , ProductSubCategoryName
-         , SUM(UnitPriceDiscount * UnitPrice * OrderQty) AS Total_promo_cost_current_year
-    FROM ADW_Sales_orders_detail t1
-    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-    LEFT JOIN ADW_Dim_ProductSubCategory t4
-           ON CAST(T3.ProductSubcategoryID AS varchar) = CAST(T4.ProductSubcategoryID AS VARCHAR)
-    GROUP BY YEAR(OrderDate), ProductSubCategoryName
-    HAVING SUM(UnitPriceDiscount * UnitPrice * OrderQty) > 0
-)
-, YearGrowth AS (
-    SELECT *
-         , LEAD(Total_promo_cost_current_year, 1) OVER (PARTITION BY ProductSubCategoryName ORDER BY OrderYear) AS Promo_cost_next_1_year
-         , LEAD(Total_promo_cost_current_year, 2) OVER (PARTITION BY ProductSubCategoryName ORDER BY OrderYear) AS Promo_cost_next_2_year
-    FROM promotion_cost_by_year_sub_cate
-)
-SELECT *
-FROM YearGrowth
-WHERE Total_promo_cost_current_year > 0
-  AND Promo_cost_next_1_year > Total_promo_cost_current_year
-  AND Promo_cost_next_2_year > Promo_cost_next_1_year`,
- res:'l5h4',
- watch:['The key shows four equivalent versions: CTE with self-joins on <code>OrderYear + 1</code>, LEAD, and LAG. LEAD and LAG give the same rows.','<b>Gap risk.</b> HAVING removes years with zero promotion, so the "next row" may not be the next year. The year columns in the result confirm here they are consecutive; always check.']},
-{id:'q5',grp:'Window functions',tag:'HW 5',lvl:'Medium',
- vi:'Review lại Revenue lũy tiến (accumulated revenue) của các category theo từng tháng trong từng năm. Gợi ý: nhóm aggregation window functions.',
- en:'Accumulated (running) revenue by category, month by month within each year.',
- out:['OrderYear','OrderMonth','Category','MonthlyRevenue','AccumulatedRevenue'],flt:[],
- ctes:[{n:'monthly_rev_by_cate',d:'revenue per year, month, category'},{n:'final',d:'running total of the monthly revenue',w:'SUM(Revenue) OVER (PARTITION BY OrderYear, Category ORDER BY OrderMonth)',fin:1}],
- st:['Monthly revenue and its running total, per category and year.','Detail, orders, product, sub-category, category.','Aggregate monthly revenue first. Window: partition by <b>year and category</b> (restart each year), order by <b>month</b>, function <b>SUM</b>.','141 rows. Each category\'s running total ends the year at its yearly revenue.'],
- sql:`WITH monthly_rev_by_cate AS (
-    SELECT YEAR(OrderDate) AS OrderYear
-         , MONTH(OrderDate) AS OrderMonth
-         , ProductCategoryName AS Category
-         , SUM(LineTotal) AS Revenue
-    FROM ADW_Sales_orders_detail t1
-    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON CAST(t3.ProductSubcategoryID AS VARCHAR) = CAST(t4.ProductSubcategoryID AS VARCHAR)
-    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID
-    GROUP BY YEAR(OrderDate), MONTH(OrderDate), ProductCategoryName
-)
-SELECT OrderYear, OrderMonth, Category
-     , Revenue AS MonthlyRevenue
-     , SUM(Revenue) OVER (PARTITION BY OrderYear, Category ORDER BY OrderMonth) AS AccumulatedRevenue
-FROM monthly_rev_by_cate`,
- res:'l5h5',
- watch:['The key\'s note says "window frame: all". With ORDER BY, the default frame runs from the first row <b>to the current row</b>, and that is exactly what makes it a running total. "All rows" would repeat the yearly total on every month.','Months with no sales do not appear, so the running total simply skips them. That is fine for a running sum.']},
-{id:'q6',grp:'Window functions',tag:'HW 6',lvl:'Medium',
- vi:'Hãy tìm ra các sản phẩm có số lượng sản phẩm bán ra cao nhất trong từng Country.',
- en:'Which product sold the most units in each country?',
- out:['ProductName','Country','Product_sold'],flt:['rank = 1'],
- ctes:[{n:'product_sold_by_product_country',d:'units sold per product and country'},{n:'ranked subquery',d:'rank within country',w:'RANK() OVER (PARTITION BY Country ORDER BY Product_sold DESC)'},{n:'final',d:'keep rank 1',fin:1}],
- st:['One product per country (ties allowed).','Detail, orders, product, territory.','Base CTE with units per product and country. Window: partition by <b>country</b>, order by units <b>descending</b>, function <b>RANK</b>. A window result cannot be used in WHERE of the same query, so wrap it and filter outside.','6 rows: bottle 30 oz in AU and DE, AWC Logo Cap in CA, FR, GB and US.'],
- sql:`WITH product_sold_by_product_country AS (
-    SELECT ProductName
-         , CountryRegionCode AS Country
-         , SUM(OrderQty) AS Product_sold
-    FROM ADW_Sales_orders_detail T1
-    LEFT JOIN ADW_Sales_orders T2 ON T1.SalesOrderID = T2.SalesOrderID
-    LEFT JOIN ADW_Dim_Product T3 ON T1.ProductID = T3.ProductID
-    LEFT JOIN ADW_Dim_Territory t4 ON t2.TerritoryID = t4.TerritoryID
-    GROUP BY ProductName, CountryRegionCode
-)
-SELECT ProductName, Country, Product_sold
-FROM (
-    SELECT *, RANK() OVER (PARTITION BY Country ORDER BY Product_sold DESC) AS Product_sold_ranking
-    FROM product_sold_by_product_country
-) t
-WHERE t.Product_sold_ranking = 1`,
- res:'l5h6',
- watch:['Use RANK or DENSE_RANK when ties should all appear. ROW_NUMBER would hide a tie for first place.','The filter <code>WHERE Product_sold_ranking = 1</code> must sit outside, because WHERE runs before window functions.']},
-{id:'q7',grp:'Window functions',tag:'HW 7',lvl:'Hard',
- vi:'Tính tốc độ tăng trưởng doanh thu theo từng tháng (MoM) của từng category qua các năm. Lưu ý: tháng 1 năm nay phải so sánh với tháng 12 năm liền trước.',
- en:'Month-over-month revenue growth per category across years (January compares with the previous December).',
- out:['ProductCategoryName','OrderYear','OrderMonth','Revenue','prev_month_revenue','MoM_growth'],flt:[],
- ctes:[{n:'Revenue_by_cate_month',d:'revenue per category, year, month'},{n:'Revenue_Prev_month',d:'previous month revenue',w:'LAG(Revenue) OVER (PARTITION BY category ORDER BY OrderYear, OrderMonth)'},{n:'final',d:'growth = revenue ÷ previous − 1',fin:1}],
- st:['Monthly revenue, previous month, growth %.','Same base as HW 5.','Window: partition by <b>category only</b> (not by year, otherwise January has no previous), order by <b>year and month</b>, function <b>LAG</b>.','141 rows, one first row per category without a previous month.'],
- sql:`WITH Revenue_by_cate_month AS (
-    SELECT ProductCategoryName, YEAR(OrderDate) AS OrderYear, MONTH(OrderDate) AS OrderMonth
-         , SUM(LineTotal) AS Revenue
-    FROM ADW_Sales_orders_detail t1
-    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON TRY_CAST(t3.ProductSubcategoryID AS INT) = t4.ProductSubcategoryID
-    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID
-    GROUP BY ProductCategoryName, MONTH(OrderDate), YEAR(OrderDate)
-)
-, Revenue_Prev_month AS (
-    SELECT *
-         , LAG(Revenue) OVER (PARTITION BY ProductCategoryName ORDER BY OrderYear, OrderMonth) AS prev_month_revenue
-    FROM Revenue_by_cate_month
-)
-SELECT *
-     , CASE WHEN prev_month_revenue IS NULL THEN 0 ELSE Revenue / prev_month_revenue - 1 END AS MoM_growth
-FROM Revenue_Prev_month`,
- res:'l5h7',
- watch:['Partitioning by year as well would leave every January without a previous month. Sorting by year then month is what makes January look back to December.','The key sets the first period to 0. <code>NULL</code> is more honest: there is no previous month, not zero growth. Accessories start in 2011-05, so the sample shows 2011-07 compared with 2011-05, because June had no sales: LAG compares neighbouring rows, not neighbouring months.']},
-{id:'q8',grp:'Window functions',tag:'HW 8',lvl:'Hard',
- vi:'Tìm các khách hàng có tổng chi tiêu tại tất cả category cao hơn mốc 50th percentile về chi tiêu của khách hàng mua Category Clothing. Gợi ý: Bước 1 tìm mốc 50th percentile (1 con số) bằng PERCENT_RANK(). Bước 2 tính tổng chi tiêu và lọc.',
- en:'Customers whose total spending (all categories) is above the 50th percentile of Clothing customers\' spending.',
- out:['CustomerID','total_spending_all_cate'],flt:['total > P50 of Clothing'],
- ctes:[{n:'Customers_spending',d:'spending per customer and category'},{n:'clothing_spending_pct_rank',d:'Clothing only, with percentile',w:'PERCENT_RANK() OVER (ORDER BY Spending)'},{n:'spending_condition',d:'one number: smallest spending with percentile ≥ 0.5'},{n:'final',d:'customers above that number',fin:1}],
- st:['Customer and total spending. Condition = one number X (the median Clothing spend).','Spending per customer and category: detail, orders, product, sub-category, category.','Base CTE for reuse. Clothing-only CTE with PERCENT_RANK. Condition CTE takes the minimum spending where the percentile is at least 0.5. Main query sums all categories and compares with X in HAVING.','X = 53.99. 14,353 customers spend more than that in total.'],
- sql:`WITH Customers_spending AS (
-    SELECT CustomerID, ProductCategoryName, SUM(LineTotal) AS Spending
-    FROM ADW_Sales_orders_detail t1
-    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-    LEFT JOIN ADW_Dim_ProductSubCategory t4 ON CAST(t3.ProductSubcategoryID AS VARCHAR) = CAST(t4.ProductSubcategoryID AS VARCHAR)
-    LEFT JOIN ADW_Dim_ProductCategory t5 ON t4.ProductCategoryID = t5.ProductCategoryID
-    GROUP BY CustomerID, ProductCategoryName
-)
-, clothing_spending_pct_rank AS (
-    SELECT *, PERCENT_RANK() OVER (ORDER BY Spending) AS spending_pct
-    FROM Customers_spending
-    WHERE ProductCategoryName = 'Clothing'
-)
-, spending_condition AS (
-    SELECT MIN(Spending) AS P50_clothing_spending
-    FROM clothing_spending_pct_rank
-    WHERE spending_pct >= 0.5
-)
-SELECT CustomerID, SUM(Spending) AS total_spending_all_cate
-FROM Customers_spending
-GROUP BY CustomerID
-HAVING SUM(Spending) > (SELECT * FROM spending_condition)
-ORDER BY total_spending_all_cate`,
- res:['l5h8p','l5h8'],resLabel:['The threshold X','Customers above X'],
- watch:['PERCENT_RANK = (rank − 1) ÷ (rows − 1), so the first row is 0 and the last is 1. The 50th percentile is the first row at 0.5 or above.','The median Clothing spend is small (54), so most customers pass. The condition is easy to meet; mention that when you report the number.','The window runs only on the Clothing rows because the WHERE sits inside that CTE. Move it out and the percentile covers every category.']},
-{id:'q9',grp:'Window functions',tag:'HW 9',lvl:'Hard',
- vi:'Đâu là phương thức thanh toán phổ biến nhất xét theo số lượng đơn hàng trong từng country và từng năm? Nếu xét theo tổng doanh thu thì thứ tự có thay đổi không?',
- en:'Most popular payment method per country and year by orders, and does the ranking change by revenue?',
- out:['OrderYear','Country','PaymentMethod','Orders','Revenue','RankByOrders','RankByRevenue','group_ranking'],flt:['rank 1 by orders or by revenue'],
- ctes:[{n:'payment_base',d:'orders and revenue per year, country, payment method'},{n:'ranking_base',d:'two ranks in the same partition',w:'DENSE_RANK() OVER (PARTITION BY Country, OrderYear ORDER BY Orders DESC) · ... ORDER BY Revenue DESC'},{n:'final',d:'label: top by both, by orders only, by revenue only',fin:1}],
- st:['Per country and year: top method by orders and by revenue.','Orders, territory, credit card (card type, NULL = Cash).','Base CTE with both metrics. Two DENSE_RANK columns over the same partition with different ORDER BY. A CASE WHEN labels where the two rankings agree.','38 rows. Wherever the label says "Top By Orders" or "Top By Revenue" (not "Both"), the ranking changed.'],
- sql:`WITH payment_base AS (
-    SELECT YEAR(OrderDate) AS OrderYear
-         , CountryRegionCode AS Country
-         , CASE WHEN CardType IS NULL THEN 'Cash' ELSE CardType END AS PaymentMethod
-         , COUNT(DISTINCT SalesOrderID) AS Orders
-         , SUM(SubTotal) AS Revenue
-    FROM ADW_Sales_orders t1
-    LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID
-    LEFT JOIN ADW_Dim_CreditCard t3 ON t1.CreditCardID = CAST(t3.CreditCardID AS VARCHAR)
-    GROUP BY YEAR(OrderDate), CountryRegionCode
-           , CASE WHEN CardType IS NULL THEN 'Cash' ELSE CardType END
-)
-, ranking_base AS (
-    SELECT *
-         , DENSE_RANK() OVER (PARTITION BY Country, OrderYear ORDER BY Orders DESC) AS RankByOrders
-         , DENSE_RANK() OVER (PARTITION BY Country, OrderYear ORDER BY Revenue DESC) AS RankByRevenue
-    FROM payment_base
-)
-SELECT *
-     , CASE WHEN RankByOrders = 1 AND RankByRevenue = 1 THEN '1. Top By BOTH'
-            WHEN RankByOrders = 1 AND RankByRevenue > 1 THEN '2. Top By Orders'
-            ELSE '3. Top By Revenue' END AS group_ranking
-FROM ranking_base
-WHERE RankByOrders = 1 OR RankByRevenue = 1`,
- res:'l5h9',
- watch:['Two windows in one SELECT can have different ORDER BY clauses.','Ties appear when two methods have the same order count (see AU 2011, both with 118 orders). DENSE_RANK keeps both at rank 1.']},
-{id:'q10',grp:'Window functions',tag:'HW 10',lvl:'Hard',
- vi:'Review lại toàn bộ chương trình khuyến mãi của từng Territory: Top 5 sản phẩm có % số lượng sản phẩm bán ra được hưởng Special Offer cao nhất của từng Territory.',
- en:'For each territory, the top 5 products by share of units sold with a promotion.',
- out:['TerritoryName','ProductName','product_sold','promo_pct','pct_promo_rank'],flt:['rank <= 5'],
- ctes:[{n:'quantity_by_product_territory',d:'units sold, units sold with discount, share'},{n:'ranked subquery',d:'rank within territory',w:'DENSE_RANK() OVER (PARTITION BY TerritoryName ORDER BY promo share DESC)'},{n:'final',d:'rank ≤ 5',fin:1}],
- st:['Per territory: five products with the highest promo share.','Detail (quantity, discount), orders, product, territory.','Base CTE: promo share = quantity with <code>UnitPriceDiscount &gt; 0</code> ÷ total quantity, using conditional SUM. Window: partition by territory, order by share descending, RANK or DENSE_RANK. Filter rank ≤ 5 outside.','53 rows for 10 territories, more than 50, because ties share a rank.'],
- sql:`WITH quantity_by_product_territory AS (
-    SELECT TerritoryName, ProductName
-         , SUM(OrderQty) AS product_sold
-         , SUM(CASE WHEN t1.UnitPriceDiscount > 0 THEN OrderQty ELSE 0 END) AS product_sold_with_promotion
-         , SUM(CASE WHEN t1.UnitPriceDiscount > 0 THEN OrderQty ELSE 0 END) * 1.00 / SUM(OrderQty) AS product_sold_with_promotion_pct
-    FROM ADW_Sales_orders_detail t1
-    LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-    LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-    LEFT JOIN ADW_Dim_Territory t6 ON t2.TerritoryID = t6.TerritoryID
-    GROUP BY TerritoryName, ProductName
-)
-SELECT *
-FROM (
-    SELECT *
-         , DENSE_RANK() OVER (PARTITION BY TerritoryName ORDER BY product_sold_with_promotion_pct DESC) AS pct_promo_rank
-    FROM quantity_by_product_territory
-) t
-WHERE pct_promo_rank <= 5`,
- res:'l5h10',
- watch:['The question says "qua các năm" (across the years), but the key groups by territory only, with all years combined. To see each year, add <code>YEAR(OrderDate)</code> to both the GROUP BY and the PARTITION BY.','Use ROW_NUMBER if you need exactly 5 rows per territory, and add a second sort column to break ties.','A product sold once with a discount has a 100% share. Consider a minimum quantity before ranking.']}
 ];
 
 G.render(Object.assign({EX, RES}, {stepNames:['Expected output','Base CTE','Window or subquery logic','Final select &amp; validate'], open:'q1'}));

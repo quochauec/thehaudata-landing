@@ -158,10 +158,10 @@ footer{margin-top:28px;font-size:12px;color:var(--muted)}
 <header class="top"><div class="wrap">
   <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Lesson 3</div>
   <h1>Combining Data in SQL</h1>
-  <p>One-page recap of the slides, then every classwork and homework solved step by step with a table map. Data: AdventureWorksLight and CRM Sales.</p>
+  <p>One-page recap of the slides, then every classwork solved step by step with a table map. Data: AdventureWorksLight and CRM Sales.</p>
   <nav class="tabs" role="tablist" aria-label="Study guide sections">
     <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
-    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Classwork &amp; homework</button>
+    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Classwork</button>
     <button role="tab" id="t-lab" aria-selected="false" aria-controls="v-lab">3 · JOIN lab</button>
   </nav>
 </div></header>
@@ -248,7 +248,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted)}
     <div class="er" id="er2" style="margin-top:6px"></div>
   </div>
 
-  <div class="bar" id="filters"></div>
+  <div class="card" id="hwmoved" style="margin:0 0 14px"><h2><small>Homework</small> Homework lives in its own tab</h2><p>Try each question yourself first. The model answer unlocks in the Homework tab after you have run a query.</p><p style="margin-top:10px"><button class="btn primary" type="button" onclick="parent.postMessage({labGo:'homework',lesson:3},'*')">Open Lesson 3 homework</button></p></div><div class="bar" id="filters"></div>
   <div id="exlist"></div>
   <footer>Source: Class Practice_L03.sql and HW_Ref_solution_L03.sql. SQL shown is T-SQL as in the answer key. Result tables come from running equivalent queries on the CSV files.</footer>
 </section>
@@ -283,7 +283,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted)}
 
 <script>
 /* ---------- results verified on CSV data (DuckDB) ---------- */
-const RES = {"c1": {"n": 18884, "cols": ["SalesOrderID", "OrderDate", "Country"], "sample": [[43659, "2011-05-31", "US"], [43660, "2011-05-31", "US"], [43663, "2011-05-31", "US"], [43664, "2011-05-31", "US"]]}, "c2": {"n": 3146, "cols": ["SalesOrderID", "ProductID"], "sample": [[45266, 772], [45266, 774], [45266, 775], [45266, 777]]}, "c3": {"n": 2733, "cols": ["SalesOrderID", "OrderDate", "CardType", "CreditCardID"], "sample": [[63372, "2014-01-01", "Vista", 9615], [63377, "2014-01-01", "Vista", 5630], [63378, "2014-01-01", "Vista", 5969], [63379, "2014-01-01", "Vista", 16001]]}, "c4": {"n": 646, "cols": ["SalesOrderID", "OrderDate", "CreditCardID", "CardType"], "sample": [[45370, "2012-01-04", null, null], [45399, "2012-01-09", null, null], [45412, "2012-01-11", null, null], [45433, "2012-01-14", null, null]]}, "c5a": {"n": 2, "cols": ["CustomerID"], "sample": [[29722], [29562]]}, "c5b": {"n": 160, "cols": ["SalesOrderID", "CustomerID"], "sample": [[43668, 29614], [43675, 29827], [43849, 29818], [43857, 30074]]}, "c5c": {"n": 180, "cols": ["SalesOrderID", "CustomerID"], "sample": [[43875, 29624], [43881, 30111], [43884, 29861], [43890, 29515]]}, "h1": {"n": 1674, "cols": ["opportunity_id", "product", "close_value", "sales_price"], "sample": [["00KY25OA", "GTX Basic", 564, 550], ["019I751P", "GTX Plus Basic", 1180, 1096], ["02EC1993", "MG Special", 57, 55], ["02G0NJCN", "MG Special", 68, 55]]}, "h1x": {"n": 1, "cols": ["product", "n"], "sample": [["GTXPro", 729]]}, "h2": {"n": 3, "cols": ["regional_office"], "sample": [["Central"], ["East"], ["West"]]}, "h3": {"n": 7, "cols": ["product"], "sample": [["GTK 500"], ["GTX Basic"], ["GTX Plus Basic"], ["GTX Plus Pro"]]}, "h4": {"n": 6, "cols": ["sector"], "sample": [["entertainment"], ["finance"], ["marketing"], ["medical"]]}, "h4t": {"n": 10, "cols": ["opportunity_id", "close_value", "sector"], "sample": [["60UOBOEM", 30288, "retail"], ["4V0S4BA3", 29617, "marketing"], ["GB6C2UK5", 29220, "finance"], ["LSJ2A8ZX", 29166, "entertainment"]]}, "h5": {"n": 20, "cols": ["opportunity_id", "sales_agent", "product", "account", "deal_stage", "engage_date", "close_date", "close_value", "d"], "sample": [["08KE6ZQN", "Boris Faz", "MG Advanced", "Vehement Capital Partners", "Won", "2017-03-31", "2017-04-01", 2819, 1], ["9LZICBEV", "Kary Hendrixson", "MG Advanced", "Hottechi", "Lost", "2017-03-31", "2017-04-01", 0, 1], ["W7F056RK", "Kami Bicknell", "GTXPro", "Sunnamplex", "Won", "2017-03-31", "2017-04-01", 5073, 1], ["FHU2WQ2K", "Kary Hendrixson", "MG Special", "Goodsilron", "Won", "2017-03-31", "2017-04-01", 55, 1]]}, "a1": {"n": 646, "cols": ["CustomerID", "CardType"], "sample": [[11241, "Vista"], [11243, "SuperiorCard"], [11244, "Vista"], [11247, "SuperiorCard"]]}, "a2": {"n": 6, "cols": ["ProductID", "ProductName", "ProductSubCategoryName", "StandardCost", "ListPrice", "cost_ratio"], "sample": [[779, "Mountain-200 Silver, 38", "Mountain Bikes", 1265.62, 2319.99, 0.55], [780, "Mountain-200 Silver, 42", "Mountain Bikes", 1265.62, 2319.99, 0.55], [781, "Mountain-200 Silver, 46", "Mountain Bikes", 1265.62, 2319.99, 0.55], [782, "Mountain-200 Black, 38", "Mountain Bikes", 1251.98, 2294.99, 0.55]]}, "a2k": {"n": 6, "cols": ["ProductID"], "sample": [[780], [784], [781], [779]]}, "a3": {"n": 160, "cols": ["SalesOrderID", "CustomerID", "TotalDue"], "sample": [[43668, 29614, 40487.72], [43675, 29827, 6434.08], [43849, 29818, 23130.3], [43857, 30074, 8090.92]]}, "a4": {"n": 1479, "cols": ["SalesOrderID", "OrderDate", "ReasonName"], "sample": [[45345, "2012-01-01", "Manufacturer"], [45345, "2012-01-01", "Quality"], [45346, "2012-01-01", "Quality"], [45346, "2012-01-01", "Manufacturer"]]}, "a5": {"n": 9, "cols": ["ProductID", "ProductName"], "sample": [[779, "Mountain-200 Silver, 38"], [781, "Mountain-200 Silver, 46"], [784, "Mountain-200 Black, 46"], [790, "Road-250 Red, 48"]]}, "a6": {"n": 72, "cols": ["ProductName"], "sample": [["AWC Logo Cap"], ["Classic Vest, M"], ["Classic Vest, S"], ["Full-Finger Gloves, L"]]}};
+const RES = {"c1": {"n": 18884, "cols": ["SalesOrderID", "OrderDate", "Country"], "sample": [[43659, "2011-05-31", "US"], [43660, "2011-05-31", "US"], [43663, "2011-05-31", "US"], [43664, "2011-05-31", "US"]]}, "c2": {"n": 3146, "cols": ["SalesOrderID", "ProductID"], "sample": [[45266, 772], [45266, 774], [45266, 775], [45266, 777]]}, "c3": {"n": 2733, "cols": ["SalesOrderID", "OrderDate", "CardType", "CreditCardID"], "sample": [[63372, "2014-01-01", "Vista", 9615], [63377, "2014-01-01", "Vista", 5630], [63378, "2014-01-01", "Vista", 5969], [63379, "2014-01-01", "Vista", 16001]]}, "c4": {"n": 646, "cols": ["SalesOrderID", "OrderDate", "CreditCardID", "CardType"], "sample": [[45370, "2012-01-04", null, null], [45399, "2012-01-09", null, null], [45412, "2012-01-11", null, null], [45433, "2012-01-14", null, null]]}, "c5a": {"n": 2, "cols": ["CustomerID"], "sample": [[29722], [29562]]}, "c5b": {"n": 160, "cols": ["SalesOrderID", "CustomerID"], "sample": [[43668, 29614], [43675, 29827], [43849, 29818], [43857, 30074]]}, "c5c": {"n": 180, "cols": ["SalesOrderID", "CustomerID"], "sample": [[43875, 29624], [43881, 30111], [43884, 29861], [43890, 29515]]}};
 
 const $ = (s, r=document) => r.querySelector(s);
 const el = (t, a={}, h='') => { const e=document.createElement(t); for(const k in a){ if(k==='class') e.className=a[k]; else e.setAttribute(k,a[k]); } if(h) e.innerHTML=h; return e; };
@@ -464,185 +464,7 @@ SELECT t1.SalesOrderID, t2.CustomerID
 FROM ADW_Sales_orders t1
 JOIN ADW_Top_10_spending_cust_2012 t2 ON t1.CustomerID = t2.CustomerID`,
  res:['c5a','c5b','c5c'],resLabel:['Part 1 · customers in both','Part 2 · UNION','Part 2 · UNION ALL (for comparison)'],
- watch:['Both SELECTs have the same columns in the same order, which is what UNION requires.']},
-
-{id:'h1',grp:'Homework CRM',tag:'HW CRM 1',lvl:'Easy–Medium',
- vi:'Lấy ra danh sách các hợp đồng có sản phẩm được chốt trong năm 2017 và có giá chốt hợp đồng CAO hơn giá bán của sản phẩm.',
- en:'List deals won in 2017 whose closing value is higher than the product\'s list price.',
- out:['deal columns','sales_price'],flt:["deal_stage = 'Won'","close_value > sales_price","year(close_date) = 2017"],
- blocks:[{base:{t:'CRM_sales_pipeline',role:'fact',use:'one row per deal'},joins:[{type:'LEFT JOIN',t:'CRM_products',key:'product',adds:'sales_price'}]}],
- st:['The deal rows, plus the product\'s list price to compare against.','Deals = sales_pipeline (start). List price = products.sales_price.','LEFT JOIN on product keeps every deal even if a product is missing from the products table.','Won, closed in 2017, and close_value above list price.'],
- sql:`SELECT t1.*, t2.sales_price
-FROM CRM_sales_pipeline t1
-LEFT JOIN CRM_products t2 ON t1.product = t2.product
-WHERE deal_stage = 'Won'
-  AND t1.close_value > t2.sales_price
-  AND YEAR(close_date) = 2017`,
- res:'h1',expect:'Answer key: 1674 rows. Matches.',
- watch:['<b>Hidden data issue.</b> The pipeline spells one product <code>GTXPro</code>, the products table <code>GTX Pro</code>. Those deals get a NULL price, the comparison is NULL, and WHERE drops them: <b>729</b> won-2017 deals vanish without an error.','Validate the join: <code>SELECT ... WHERE t2.product IS NULL</code> shows rows that found no match. Fix the spelling or add a mapping before trusting the result.']},
-{id:'h2',grp:'Homework CRM',tag:'HW CRM 2',lvl:'Easy',
- vi:'Lấy ra danh sách các region có nhân viên close deal thất bại trong 3 tháng đầu năm 2017.',
- en:'Which regions had agents lose deals in Q1 2017?',
- out:['regional_office'],flt:["deal_stage = 'Lost'","close_date in Jan–Mar 2017"],
- blocks:[{base:{t:'CRM_sales_pipeline',role:'fact',use:'deals'},joins:[{type:'LEFT JOIN',t:'CRM_sales_teams',key:'sales_agent',adds:'regional_office'}]}],
- st:['A list of region names.','Deals in sales_pipeline. Region is in sales_teams.','Join on sales_agent. LEFT JOIN keeps all deals.','Lost deals closed 2017-01-01 to 2017-03-31. DISTINCT, since many deals share a region.'],
- sql:`SELECT DISTINCT t2.regional_office
-FROM CRM_sales_pipeline t1
-LEFT JOIN CRM_sales_teams t2 ON t1.sales_agent = t2.sales_agent
-WHERE deal_stage = 'Lost'
-  AND close_date BETWEEN '2017-01-01' AND '2017-03-31'`,
- res:'h2',expect:'Answer key: 3 rows. Matches.',watch:[]},
-{id:'h3',grp:'Homework CRM',tag:'HW CRM 3',lvl:'Easy',
- vi:'Lấy ra danh sách các sản phẩm bán được cho các công ty thuộc sector "marketing" có deal thành công trong năm 2017.',
- en:'Which products were sold to marketing-sector companies in won deals in 2017?',
- out:['product'],flt:["deal_stage = 'Won'","year = 2017","sector = 'marketing'"],
- blocks:[{base:{t:'CRM_sales_pipeline',role:'fact',use:'deals'},joins:[{type:'LEFT JOIN',t:'CRM_accounts',key:'account',adds:'sector'}]}],
- st:['A list of product names.','Deals in sales_pipeline. The customer\'s sector is in accounts.','Join on account, LEFT JOIN to keep all deals.','Won, 2017, sector = marketing. DISTINCT product.'],
- sql:`SELECT DISTINCT t1.product
-FROM CRM_sales_pipeline t1
-LEFT JOIN CRM_accounts t2 ON t1.account = t2.account
-WHERE deal_stage = 'Won'
-  AND YEAR(close_date) = 2017
-  AND sector = 'marketing'`,
- res:'h3',expect:'Answer key: 7 rows. Matches.',
- watch:['Tip from the key: run <code>SELECT DISTINCT sector FROM CRM_accounts</code> first to see the exact spelling before filtering.']},
-{id:'h4',grp:'Homework CRM',tag:'HW CRM 4',lvl:'Medium',
- vi:'Top 10 hợp đồng đem về doanh thu cao nhất từ trước tới giờ thuộc các sector nào?',
- en:'Which sectors do the 10 highest-revenue deals of all time belong to?',
- out:['sector'],flt:["deal_stage = 'Won'","top 10 by close_value"],
- blocks:[{base:{t:'CRM_sales_pipeline',role:'fact',use:'deals'},joins:[{type:'LEFT JOIN',t:'CRM_accounts',key:'account',adds:'sector'}]}],
- st:['The sector of each of the top 10 deals.','Deal revenue = close_value in the pipeline. Sector = accounts, as in Q3.','Same join as Q3.','Won deals sorted by close_value descending, TOP 10. Read off the distinct sectors.'],
- sql:`SELECT TOP 10 t1.*, t2.sector
-FROM CRM_sales_pipeline t1
-LEFT JOIN CRM_accounts t2 ON t1.account = t2.account
-WHERE deal_stage = 'Won'
-ORDER BY close_value DESC`,
- res:'h4t',expect:'Answer key: 6 sectors among the 10 deals. Matches.',
- watch:['The query returns 10 deals. The answer is the <b>distinct</b> sectors in them (6), so count them, or wrap the query and apply DISTINCT.']},
-{id:'h5',grp:'Homework CRM',tag:'HW CRM 5',lvl:'Medium',
- vi:'Top 10 hợp đồng có thời gian close deal ngắn nhất và dài nhất là các hợp đồng nào?',
- en:'Which 10 deals closed fastest and which 10 slowest?',
- out:['all columns','close_deal_duration','type_'],flt:["deal_stage in Won, Lost"],
- blocks:[{label:'Shortest',base:{t:'CRM_sales_pipeline',role:'fact',use:'TOP 10 ORDER BY duration ASC'},joins:[]},{label:'Longest',base:{t:'CRM_sales_pipeline',role:'fact',use:'TOP 10 ORDER BY duration DESC'},joins:[]}],
- combine:'UNION ALL',
- st:['Two lists of 10 deals, each tagged "Shortest" or "Longest".','Only sales_pipeline. No JOIN: this one is a UNION.','Duration = <code>DATEDIFF(DAY, engage_date, close_date)</code>. Each list needs its own ORDER BY, so put each in a subquery.','UNION ALL (no duplicates expected between shortest and longest), add a label column.'],
- sql:`SELECT *, 'Shortest' AS type_
-FROM (
-    SELECT TOP 10 *, DATEDIFF(DAY, engage_date, close_date) AS close_deal_duration
-    FROM CRM_sales_pipeline
-    WHERE LOWER(deal_stage) IN ('won','lost')
-    ORDER BY close_deal_duration ASC
-) t1
-UNION ALL
-SELECT *, 'Longest' AS type_
-FROM (
-    SELECT TOP 10 *, DATEDIFF(DAY, engage_date, close_date) AS close_deal_duration
-    FROM CRM_sales_pipeline
-    WHERE LOWER(deal_stage) IN ('won','lost')
-    ORDER BY close_deal_duration DESC
-) t2`,
- res:'h5',watch:['Subqueries are Lesson 5 material. Preview only; ORDER BY inside a UNION branch needs the wrapper.','Won/Lost only: deals still open have no close date, so no duration.']},
-
-{id:'a1',grp:'Homework AdventureWorks',tag:'HW ADW 1',lvl:'Medium',
- vi:'Team Payment đang làm survey khách hàng khu vực Europe. Lấy list khách hàng mua hàng tại Europe trong quý 3 năm 2013, thanh toán qua Vista và SuperiorCard. Cần: CustomerID và Card type.',
- en:'List Europe customers who bought in Q3 2013 and paid with a Vista or SuperiorCard.',
- out:['CustomerID','CardType'],flt:["Group = 'Europe'","quarter 3 of 2013","CardType IN (Vista, SuperiorCard)"],
- blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'orders'},joins:[{type:'JOIN (INNER)',t:'ADW_Dim_CreditCard',key:'CreditCardID',adds:'CardType',cast:1},{type:'JOIN (INNER)',t:'ADW_Dim_Territory',key:'TerritoryID',adds:'Group'}]}],
- st:['CustomerID and CardType. Conditions: region, order date, card type.','Orders (start), CreditCard for the card type, Territory for the region.','Orders → CreditCard on CreditCardID (CAST to the wider type). Orders → Territory on TerritoryID.','Europe, Q3 2013, two card types. DISTINCT, since a customer may have several qualifying orders.'],
- sql:`SELECT DISTINCT t1.CustomerID, t2.CardType
-FROM ADW_Sales_orders t1
-JOIN ADW_Dim_CreditCard t2
-    ON CAST(t2.CreditCardID AS NVARCHAR) = CAST(t1.CreditCardID AS NVARCHAR)  -- wider data type
-JOIN ADW_Dim_Territory t3 ON t3.TerritoryID = t1.TerritoryID
-WHERE [Group] = 'EUROPE'
-  AND DATEPART(QUARTER, OrderDate) = 3
-  AND YEAR(OrderDate) = 2013
-  AND t2.CardType IN ('Vista', 'SuperiorCard')`,
- res:'a1',
- watch:['INNER JOIN is fine here: we only want orders that have a card, so unmatched orders should disappear.','<code>[Group]</code> needs brackets because GROUP is a reserved word.']},
-{id:'a2',grp:'Homework AdventureWorks',tag:'HW ADW 2',lvl:'Medium',
- vi:'Tìm danh sách sản phẩm thuộc SubCategory "Mountain Bikes", màu Black hoặc Silver, giá vốn từ 1000$ đến 1500$. Đồng thời tính %Cost/List Price của các sản phẩm đó.',
- en:'Find Mountain Bikes that are Black or Silver with a standard cost of 1,000–1,500, and compute cost ÷ list price.',
- out:['ProductID','ProductName','cost_ratio'],flt:["SubCategory = 'Mountain Bikes'","Color IN (Black, Silver)","StandardCost BETWEEN 1000 AND 1500"],
- blocks:[{base:{t:'ADW_Dim_Product',role:'dim',use:'products'},joins:[{type:'LEFT JOIN',t:'ADW_Dim_ProductSubCategory',key:'ProductSubcategoryID',adds:'ProductSubCategoryName',cast:1}]}],
- st:['ProductID, ProductName and cost ÷ list price.','Everything is in Dim_Product except the sub-category name (Dim_ProductSubCategory).','Join on ProductSubcategoryID (CAST for the type difference).','Apply the three filters. Ratio = StandardCost / ListPrice, multiply by 100 for a percentage.'],
- sql:`SELECT DISTINCT ProductID, ProductName, t2.ProductSubCategoryName,
-       StandardCost, ListPrice, StandardCost / ListPrice AS cost_ratio
-FROM ADW_Dim_Product t1
-LEFT JOIN ADW_Dim_ProductSubCategory t2
-       ON t1.ProductSubcategoryID = CAST(t2.ProductSubcategoryID AS VARCHAR)
-WHERE t2.ProductSubCategoryName = 'Mountain Bikes'
-  AND Color IN ('Black', 'Silver')
-  AND StandardCost BETWEEN 1000 AND 1500`,
- res:'a2',
- watch:['The answer key\'s live code filters <code>ProductCategoryID = 1</code> (all Bikes) and comments out the sub-category line. In this data both return the same 6 products, but the question says Mountain Bikes, so filter by sub-category.','Ratio is about 0.546, i.e. cost is 54.6% of list price.']},
-{id:'a3',grp:'Homework AdventureWorks',tag:'HW ADW 3',lvl:'Medium',
- vi:'Lấy ra tất cả thông tin đơn hàng (OrderID, CustomerID, Total Due) của top 10 customers chi tiêu cao nhất năm 2011 và 2012. Extra: viết lại bằng LEFT JOIN mà kết quả giống INNER JOIN, không đảo thứ tự bảng.',
- en:'Get every order (ID, customer, total due) of the top-10 customers of 2011 and 2012. Extra: reproduce the INNER JOIN result with a LEFT JOIN, without swapping the tables.',
- out:['SalesOrderID','CustomerID','TotalDue'],flt:[],
- blocks:[{label:'2011 group',base:{t:'ADW_Top_10_spending_cust_2011',role:'list',use:'10 customers'},joins:[{type:'JOIN (INNER)',t:'ADW_Sales_orders',key:'CustomerID',adds:'SalesOrderID, TotalDue'}]},
-  {label:'2012 group',base:{t:'ADW_Top_10_spending_cust_2012',role:'list',use:'10 customers'},joins:[{type:'JOIN (INNER)',t:'ADW_Sales_orders',key:'CustomerID',adds:'SalesOrderID, TotalDue'}]}],
- combine:'UNION',
- st:['SalesOrderID, CustomerID, TotalDue.','The two top-10 lists and the orders table.','INNER JOIN, because we want only orders that belong to these customers. Join key CustomerID. Do it once per list.','UNION the two results (drops duplicates for customers in both years).'],
- sql:`SELECT SalesOrderID, t1.CustomerID, TotalDue
-FROM ADW_Top_10_spending_cust_2011 t1
-JOIN ADW_Sales_orders t2 ON t1.CustomerID = t2.CustomerID
-UNION
-SELECT SalesOrderID, t1.CustomerID, TotalDue
-FROM ADW_Top_10_spending_cust_2012 t1
-JOIN ADW_Sales_orders t2 ON t1.CustomerID = t2.CustomerID
-
--- Extra (suggested answer): keep the list on the left, LEFT JOIN, then drop unmatched rows
--- FROM ADW_Top_10_spending_cust_2011 t1
--- LEFT JOIN ADW_Sales_orders t2 ON t1.CustomerID = t2.CustomerID
--- WHERE t2.SalesOrderID IS NOT NULL`,
- res:'a3',
- watch:['The answer key does not include the Extra solution. The one above follows the "INNER = LEFT + IS NOT NULL" idea from the Summary.']},
-{id:'a4',grp:'Homework AdventureWorks',tag:'HW ADW 4',lvl:'Medium',
- vi:'Tìm các đơn hàng được mua vì lý do "chất lượng" và "uy tín nhà cung cấp" trong 2 năm 2012, 2013.',
- en:'Find orders placed for the reasons Quality or Manufacturer (supplier reputation) in 2012–2013.',
- out:['SalesOrderID','OrderDate','ReasonName'],flt:["ReasonName IN (Quality, Manufacturer)","year IN (2012, 2013)"],
- blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'orders'},joins:[{type:'LEFT JOIN',t:'ADW_Sales_orders_reasons',key:'SalesOrderID',adds:'SalesReasonID'},{type:'LEFT JOIN',t:'ADW_Dim_Sales_Reason',key:'SalesReasonID',adds:'ReasonName',from:'Sales_orders_reasons'}]}],
- st:['SalesOrderID, OrderDate, ReasonName.','Orders (start). The reason of each order is in the bridge table Sales_orders_reasons. Its name is in Dim_Sales_Reason.','Orders → reasons on SalesOrderID, reasons → Dim_Sales_Reason on SalesReasonID. The bridge table is why this is many-to-many.','Look up the exact reason names first (<code>SELECT * FROM ADW_Dim_Sales_Reason</code>), then filter names and years. DISTINCT.'],
- sql:`SELECT DISTINCT t1.SalesOrderID, OrderDate, ReasonName
-FROM ADW_Sales_Orders t1
-LEFT JOIN ADW_Sales_orders_reasons t2 ON t1.SalesOrderID = t2.SalesOrderID
-LEFT JOIN ADW_Dim_Sales_Reason t3 ON t2.SalesReasonID = t3.SalesReasonID
-WHERE YEAR(OrderDate) IN (2012, 2013)
-  AND ReasonName IN ('Quality', 'Manufacturer')`,
- res:'a4',
- watch:['An order with both reasons appears twice, once per reason (for example order 45345). That is why the result has more rows than orders. If you need one row per order, drop ReasonName.']},
-{id:'a5',grp:'Homework AdventureWorks',tag:'HW ADW 5',lvl:'Medium',
- vi:'Tìm thông tin các sản phẩm đã được bán ra có đơn giá (unit price) trên 2000$ và đang được hưởng Special Offer.',
- en:'Find products sold at a unit price above 2,000 that carry a special offer.',
- out:['ProductID','ProductName'],flt:["UnitPrice > 2000","SpecialOfferID != 1"],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'products sold'},joins:[{type:'LEFT JOIN',t:'ADW_Dim_Product',key:'ProductID',adds:'ProductName'}]}],
- st:['ProductID and ProductName.','Unit price and SpecialOfferID are already in Sales_orders_detail. Only the name is missing: Dim_Product.','Join on ProductID.','SpecialOfferID 1 means "No Discount", so any other ID is a special offer. UnitPrice above 2000. DISTINCT.'],
- sql:`SELECT DISTINCT t1.ProductID, ProductName
-FROM ADW_Sales_orders_detail t1
-LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-WHERE SpecialOfferID != 1 AND UnitPrice > 2000`,
- res:'a5',
- watch:['Do not join a table you do not need. Here Dim_SpecialOffer is not required because the ID is already in the detail table.','Check <code>SELECT * FROM ADW_Dim_SpecialOffer</code> to confirm that ID 1 is "No Discount" before relying on it.']},
-{id:'a6',grp:'Homework AdventureWorks',tag:'HW ADW 6',lvl:'Hard',
- vi:'Tìm TÊN các sản phẩm thuộc Category "Bikes" và "Clothing" và đang được hưởng khuyến mãi "Volume Discount".',
- en:'Names of products in the Bikes and Clothing categories that sold under a Volume Discount offer.',
- out:['ProductName'],flt:["ProductCategoryID IN (1, 3)","Type = 'Volume Discount'"],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'products sold + offer ID'},joins:[
-   {type:'LEFT JOIN',t:'ADW_Dim_Product',key:'ProductID',adds:'ProductName, SubcategoryID'},
-   {type:'LEFT JOIN',t:'ADW_Dim_ProductSubCategory',key:'ProductSubcategoryID',adds:'ProductCategoryID',cast:1,from:'Dim_Product'},
-   {type:'LEFT JOIN',t:'ADW_Dim_SpecialOffer',key:'SpecialOfferID',adds:'Type'}]}],
- st:['One column: ProductName.','Offer ID is in Sales_orders_detail. Name is in Dim_Product. Category is two hops away (Product → SubCategory, which holds ProductCategoryID). Offer type is in Dim_SpecialOffer.','Detail → Product (ProductID). Product → SubCategory (ProductSubcategoryID, CAST). Detail → SpecialOffer (SpecialOfferID). Category names are in Dim_ProductCategory: 1 = Bikes, 3 = Clothing.','Filter the two category IDs and the offer type. DISTINCT.'],
- sql:`SELECT DISTINCT t11.ProductName
-FROM ADW_Sales_orders_detail t1
-LEFT JOIN ADW_Dim_Product t11 ON t1.ProductID = t11.ProductID
-LEFT JOIN ADW_Dim_ProductSubCategory t2
-       ON CAST(t11.ProductSubcategoryID AS VARCHAR) = CAST(t2.ProductSubcategoryID AS VARCHAR)
-LEFT JOIN ADW_Dim_SpecialOffer t5 ON t1.SpecialOfferID = t5.SpecialOfferID
-WHERE t2.ProductCategoryID IN (1, 3)
-  AND t5.[Type] = 'Volume Discount'`,
- res:'a6',
- watch:['Hard-coding category IDs (1, 3) is quick but fragile. Look up the IDs in Dim_ProductCategory first, and say so in a comment.']}
+ watch:['Both SELECTs have the same columns in the same order, which is what UNION requires.']}
 ];
 
 /* ---------- renderers ---------- */

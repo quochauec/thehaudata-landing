@@ -1,4 +1,4 @@
-import { mount as mountSql } from "./sqlpanel.js?v=f9ef3b64f3";
+import { mount as mountSql } from "./sqlpanel.js?v=3a62192249";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){

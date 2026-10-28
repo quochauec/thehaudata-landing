@@ -364,6 +364,20 @@ iframe.embed{display:block;width:100%;height:calc(100vh - 150px);min-height:560p
 
 .hero:has(#hdr:empty){display:none}
 
+/* Home: course USPs in the hero, What's new card */
+.usps{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.usps li{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.usps b{font-size:.95rem;color:var(--violet)}
+.usps span{font-size:.85rem;color:var(--muted)}
+.whatsnew{margin-bottom:18px}
+.whatsnew ul{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column}
+.whatsnew li{display:grid;grid-template-columns:auto auto 1fr auto;gap:6px 12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.whatsnew li:first-child{border-top:0}
+.whatsnew .nd{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}
+.whatsnew li div{display:flex;flex-direction:column;gap:2px}
+.whatsnew li div span{font-size:.88rem;color:var(--muted)}
+@media(max-width:620px){.whatsnew li{grid-template-columns:auto 1fr}.whatsnew li div{grid-column:1/-1}.whatsnew li .btn{grid-column:1/-1;justify-self:start}}
+
 /* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
    Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
    Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
@@ -598,7 +612,7 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
         </svg>
         TheHauData Academy
       </a>
-      <p>Practice SQL on real business questions. Built for the mentees of the TheHauData Mentoring Program by Quoc-Hau Le.</p>
+      <p>Real-life case studies and an analytical mindset, practised in SQL. Built for the mentees of the TheHauData Mentoring Program by Quoc-Hau Le.</p>
     </div>
     <div><h4>Practice</h4><ul>
       <li><a href="#guides" data-zone-link="guides">Study Guides</a></li>
@@ -614,6 +628,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=f9ef3b64f3"></script>
+<script type="module" src="js/app.js?v=3a62192249"></script>
 
 </body></html>

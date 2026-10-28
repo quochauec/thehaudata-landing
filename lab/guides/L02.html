@@ -210,10 +210,10 @@ body{margin:0}
 <header class="top"><div class="wrap">
   <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Lesson 2</div>
   <h1>Get Into SQL World</h1>
-  <p>One-page recap of the slides, then the NULL mini challenge and all 10 AdventureWorks homework questions solved step by step.</p>
+  <p>One-page recap of the slides, then the NULL mini challenge solved step by step. The homework questions are in the Homework tab.</p>
   <nav class="tabs" role="tablist" aria-label="Study guide sections">
     <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
-    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Classwork &amp; homework</button>
+    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Classwork</button>
     <button role="tab" id="t-lab" aria-selected="false" aria-controls="v-lab">3 · NULL lab</button>
   </nav>
 </div></header>
@@ -306,7 +306,7 @@ body{margin:0}
 </section>
 <section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
 
-  <div class="bar" id="filters"></div>
+  <div class="card" id="hwmoved" style="margin:0 0 14px"><h2><small>Homework</small> Homework lives in its own tab</h2><p>Try each question yourself first. The model answer unlocks in the Homework tab after you have run a query.</p><p style="margin-top:10px"><button class="btn primary" type="button" onclick="parent.postMessage({labGo:'homework',lesson:2},'*')">Open Lesson 2 homework</button></p></div><div class="bar" id="filters"></div>
   <div id="exlist"></div>
   <footer>Source: HW_Ref_solution_L02.sql and the Homework Collection (Lesson 2). SQL shown is T-SQL as in the answer key. Result tables come from running equivalent queries on the CSV files.</footer>
 </section>
@@ -621,7 +621,7 @@ G.chartInit=function(){
 
 </script>
 <script>
-const RES = {"l2m1": {"n": 2, "cols": ["Student_id"], "sample": [["S02"], ["S03"]]}, "l2m2": {"n": 3, "cols": ["Student_id"], "sample": [["S02"], ["S04"], ["S05"]]}, "l2m3": {"n": 3, "cols": ["Student_id"], "sample": [["S02"], ["S03"], ["S05"]]}, "l2q1a": {"n": 4, "cols": ["ProductCategoryName"], "sample": [["Accessories"], ["Bikes"], ["Clothing"], ["Components"]]}, "l2q1b": {"n": 37, "cols": ["ProductSubCategoryName"], "sample": [["Bib-Shorts"], ["Bike Racks"], ["Bike Stands"], ["Bottles and Cages"], ["Bottom Brackets"]]}, "l2q2": {"n": 10, "cols": ["TerritoryName", "CountryRegionCode", "Group"], "sample": [["Germany", "DE", "Europe"], ["France", "FR", "Europe"], ["United Kingdom", "GB", "Europe"], ["Canada", "CA", "North America"], ["Central", "US", "North America"]]}, "l2q3": {"n": 10, "cols": ["SalesReasonID", "ReasonName", "ReasonType"], "sample": [[1, "Price", "Other"], [2, "On Promotion", "Promotion"], [3, "Magazine Advertisement", "Marketing"], [4, "Television  Advertisement", "Marketing"], [5, "Manufacturer", "Other"]]}, "l2q4": {"n": 1551, "cols": ["SalesOrderID"], "sample": [[43697], [43702], [43703], [43706], [43707]]}, "l2q5": {"n": 1, "cols": ["CustomerID", "SalesOrderID", "OrderDate", "SubTotal"], "sample": [[29641, 51131, "2013-05-30", 163930.394]]}, "l2q6a": {"n": 3, "cols": ["CreditCardID", "CardType", "CardNumber"], "sample": [[166, "Vista", 11117354769916], [6177, "SuperiorCard", 33333439589916], [14469, "Distinguish", 55559409799916]]}, "l2q6b": {"n": 4, "cols": ["SalesOrderID", "TotalDue", "CreditCardID", "CustomerID"], "sample": [[49327, 2699.902, 6177, 17790], [57703, 658.536, 6177, 17790], [57816, 43.073, 166, 27940], [62821, 44.178, 14469, 25110]]}, "l2q7": {"n": 10, "cols": ["ProductID", "ProductName", "StandardCost", "ListPrice", "Standard_cost_per_listprice_ratio"], "sample": [[751, "Road-150 Red, 48", 2171.294, 3578.27, 60.7], [753, "Road-150 Red, 56", 2171.294, 3578.27, 60.7], [752, "Road-150 Red, 52", 2171.294, 3578.27, 60.7], [750, "Road-150 Red, 44", 2171.294, 3578.27, 60.7], [749, "Road-150 Red, 62", 2171.294, 3578.27, 60.7]]}, "l2q8": {"n": 13, "cols": ["SpecialOfferID", "Description", "Category"], "sample": [[2, "Volume Discount 11 to 14", "Reseller"], [3, "Volume Discount 15 to 24", "Reseller"], [4, "Volume Discount 25 to 40", "Reseller"], [5, "Volume Discount 41 to 60", "Reseller"], [6, "Volume Discount over 60", "Reseller"]]}, "l2q9": {"n": 432, "cols": ["CustomerID", "TerritoryID", "OnlineOrderFlag", "TotalDue", "ShipDate"], "sample": [[12510, 7, 1, 3953.99, "2012-02-03"], [12520, 7, 1, 3953.99, "2012-01-09"], [12522, 7, 1, 3953.99, "2012-01-31"], [12523, 7, 1, 3953.99, "2012-02-04"], [12547, 7, 1, 3953.99, "2012-01-21"]]}, "l2q10": {"n": 5445, "cols": ["CustomerID", "OrderYear", "OrderQuarter", "OnlineOrderFlag"], "sample": [[11000, 2013, 4, 1], [11003, 2013, 4, 1], [11004, 2013, 4, 1], [11005, 2013, 4, 1], [11006, 2013, 4, 1]]}};
+const RES = {"l2m1": {"n": 2, "cols": ["Student_id"], "sample": [["S02"], ["S03"]]}, "l2m2": {"n": 3, "cols": ["Student_id"], "sample": [["S02"], ["S04"], ["S05"]]}, "l2m3": {"n": 3, "cols": ["Student_id"], "sample": [["S02"], ["S03"], ["S05"]]}};
 
 const SO='ADW_Sales_orders', SD='ADW_Sales_orders_detail';
 const EX=[
@@ -655,129 +655,7 @@ WHERE class <> 'C001' OR class IS NULL`,
 FROM Students
 WHERE activities_joined IS NULL
    OR activities_joined = 0`,
- res:'l2m3',watch:[]},
-
-{id:'q1',grp:'Homework',tag:'HW 1',lvl:'Easy',
- vi:'Công ty AdventureWork bán những dòng sản phẩm chủ lực gì? (Subcategory, Category)',
- en:'What product lines does AdventureWorks sell (category and sub-category)?',
- out:['ProductCategoryName','ProductSubCategoryName'],flt:[],
- blocks:[{base:{t:'ADW_Dim_ProductCategory',role:'dim',use:'4 categories'},joins:[]},{base:{t:'ADW_Dim_ProductSubCategory',role:'dim',use:'37 sub-categories'},joins:[]}],
- st:['Two lists: categories and sub-categories.','Each lives in its own dimension table.','No condition. DISTINCT gives the unique names.','Bikes, Accessories, Clothing, Components; 37 sub-categories.'],
- sql:`SELECT DISTINCT ProductCategoryName
-FROM ADW_Dim_ProductCategory
-;
-SELECT DISTINCT ProductSubCategoryName
-FROM ADW_Dim_ProductSubCategory`,
- res:['l2q1a','l2q1b'],resLabel:['Categories','Sub-categories'],
- watch:['This is a pure exploration query. To see which sub-category belongs to which category you need a JOIN (Lesson 3).']},
-{id:'q2',grp:'Homework',tag:'HW 2',lvl:'Easy',
- vi:'Công ty AdventureWorks đang hoạt động ở đâu? Nước nào (Country, Territory)?',
- en:'Where does the company operate (territory, country, group)?',
- out:['TerritoryName','CountryRegionCode','Group'],flt:[],
- blocks:[{base:{t:'ADW_Dim_Territory',role:'dim',use:'10 rows'},joins:[]}],
- st:['Territory, country code and region group.','Dim_Territory.','No condition.','10 territories in 6 countries: US (5 territories), CA, FR, DE, AU, GB.'],
- sql:`SELECT DISTINCT TerritoryName, CountryRegionCode, [Group]
-FROM ADW_Dim_Territory`,
- res:'l2q2',watch:['<code>[Group]</code> needs brackets in T-SQL because GROUP is a reserved word. Save these territory IDs: they come back in HW 9.']},
-{id:'q3',grp:'Homework',tag:'HW 3',lvl:'Easy',
- vi:'Khách hàng có những lý do nào để tìm tới công ty AdventureWorks?',
- en:'Why do customers buy from the company?',
- out:['all columns'],flt:[],
- blocks:[{base:{t:'ADW_Dim_Sales_Reason',role:'dim',use:'10 reasons'},joins:[]}],
- st:['The list of purchase reasons.','Dim_Sales_Reason.','No condition.','10 reasons, grouped into types such as Promotion, Marketing, Other.'],
- sql:`SELECT *
-FROM ADW_Dim_Sales_Reason`,
- res:'l2q3',watch:[]},
-{id:'q4',grp:'Homework',tag:'HW 4',lvl:'Easy',
- vi:'Bạn nhân viên Peter đã set sai giá của một số sản phẩm đã bán ra. Sản phẩm có giá sai là sản phẩm giá trị hơn 3500$. Hãy tìm giúp team sản phẩm danh sách đơn hàng có những sản phẩm bị set giá sai.',
- en:'Peter mis-priced some sold products. A wrong price means a unit price above 3,500. List the orders containing them.',
- out:['SalesOrderID'],flt:['UnitPrice > 3500'],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'one row per product line'},joins:[]}],
- st:['A list of order IDs.','"Sold products" and their price are transaction-level data: Sales_orders_detail.','Condition: UnitPrice > 3500.','One order can have several expensive lines, so DISTINCT.'],
- sql:`SELECT DISTINCT SalesOrderID
-FROM ADW_Sales_orders_detail
-WHERE UnitPrice > 3500`,
- res:'l2q4',watch:['<code>UnitPrice</code> is on the detail table, not on the order header.']},
-{id:'q5',grp:'Homework',tag:'HW 5',lvl:'Easy',
- vi:'Khách hàng có ID 29641 mới gọi điện và muốn hoàn tiền lại đơn hàng giao ngày 2013-06-06. Kiểm tra giá trị đơn hàng (SubTotal) giúp team CS.',
- en:'Customer 29641 wants a refund for the order shipped on 2013-06-06. What is the order value (SubTotal)?',
- out:['CustomerID','SalesOrderID','OrderDate','SubTotal'],flt:['CustomerID = 29641',"ShipDate = '2013-06-06'"],
- blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'order header'},joins:[]}],
- st:['Customer, order, SubTotal.','Customer ID and ship date are both on the order header: Sales_orders.','Two conditions joined with AND. Dates use the format yyyy-MM-dd.','Exactly one order should match.'],
- sql:`SELECT customerID, SalesOrderID, OrderDate, SubTotal
-FROM ADW_Sales_orders
-WHERE CustomerID = 29641 AND ShipDate = '2013-06-06'  -- yyyy-MM-dd`,
- res:'l2q5',watch:['The order was placed on 2013-05-30 and shipped 2013-06-06: the question filters on <b>ship</b> date, not order date.']},
-{id:'q6',grp:'Homework',tag:'HW 6',lvl:'Medium',
- vi:'Đối tác thẻ báo những thẻ có số đuôi 9916 là thẻ lừa đảo. Lấy ra danh sách đơn hàng của những khách hàng có đuôi thẻ này. Gợi ý: làm 2 bước.',
- en:'The card partner flags cards ending in 9916 as fraud. List the orders paid with them (two steps).',
- out:['SalesOrderID','TotalDue','CreditCardID','CustomerID'],flt:["CardNumber LIKE '%9916'"],
- blocks:[{label:'Step 1',base:{t:'ADW_Dim_CreditCard',role:'dim',use:'CardNumber'},joins:[]},{label:'Step 2',base:{t:'ADW_Sales_orders',role:'fact',use:'orders'},joins:[]}],
- st:['Orders paid with a card ending in 9916.','Card numbers: Dim_CreditCard. Orders carry only the CreditCardID.','Step 1: LIKE \'%9916\' on CardNumber returns 3 card IDs. Step 2: filter orders whose CreditCardID is one of them.','4 orders from 3 cards.'],
- sql:`-- Step 1: find the cards
-SELECT *
-FROM ADW_Dim_CreditCard
-WHERE CardNumber LIKE '%9916'
-;
--- Step 2: find the orders (key hard-codes the IDs)
-SELECT DISTINCT SalesOrderID, TotalDue, CreditCardID, CustomerID
-FROM ADW_Sales_orders
-WHERE CreditCardID IN ('166', '6177', '14469')`,
- res:['l2q6a','l2q6b'],resLabel:['Step 1 · cards','Step 2 · orders'],
- watch:['Hard-coded IDs go stale. Better: <code>WHERE CreditCardID IN (SELECT CreditCardID FROM ADW_Dim_CreditCard WHERE CardNumber LIKE \'%9916\')</code>. It returns the same 4 orders here.','In the course database the card ID is stored as text, hence the quotes. A subquery avoids that and Lesson 5 teaches it.']},
-{id:'q7',grp:'Homework',tag:'HW 7',lvl:'Easy',
- vi:'Team Finance muốn rà soát lại chi phí sản xuất của các mặt hàng, hãy lấy ra top 10 sản phẩm có standard cost cao nhất. Tỉ lệ standard cost/list price của các sản phẩm này là bao nhiêu?',
- en:'Top 10 products by standard cost, and their cost ÷ list price.',
- out:['ProductName','StandardCost','ListPrice','ratio %'],flt:['top 10 by StandardCost'],
- blocks:[{base:{t:'ADW_Dim_Product',role:'dim',use:'505 products'},joins:[]}],
- st:['10 products with cost and a ratio column.','Cost and price are both on Dim_Product.','Sort StandardCost descending, keep TOP 10. Ratio = StandardCost / ListPrice × 100.','All ten are Road-150 bikes at about 60.7%.'],
- sql:`SELECT TOP 10 *,
-       StandardCost / ListPrice * 100 AS Standard_cost_per_listprice_ratio
-FROM ADW_Dim_Product
-ORDER BY StandardCost DESC`,
- res:'l2q7',watch:['Rows tie on cost, so the exact ten can differ between runs when more than ten share the same value. Add a second sort column to make it stable.']},
-{id:'q8',grp:'Homework',tag:'HW 8',lvl:'Easy',
- vi:'Chúng ta đang có những chương trình khuyến mãi nào cho Resellers? (Special OfferID, Description)',
- en:'Which promotions exist for resellers?',
- out:['SpecialOfferID','Description'],flt:["Category = 'Reseller'"],
- blocks:[{base:{t:'ADW_Dim_SpecialOffer',role:'dim',use:'promotion list'},joins:[]}],
- st:['Offer ID and description.','Dim_SpecialOffer.','Filter the Category column on Reseller. Look at the distinct values first.','13 reseller offers.'],
- sql:`SELECT *
-FROM ADW_Dim_SpecialOffer
-WHERE Category = 'Reseller'`,
- res:'l2q8',watch:[]},
-{id:'q9',grp:'Homework',tag:'HW 9',lvl:'Hard',
- vi:'Team Customer Research muốn nghiên cứu khách hàng ở các khu vực khác nhau. Lấy ra tập khách hàng mua trong năm 2012 thoả: (online, ở Canada hoặc Pháp, order value >= 1000$) HOẶC (offline, ở US hoặc Australia, order value từ 600$ đến 1000$). Lấy: CustomerID, TerritoryID, thời gian nhận hàng, order value, Online/Offline Flag. Phải lấy 2 tệp trong 1 câu truy vấn.',
- en:'Customers in 2012 who are either (online, Canada or France, order ≥ 1,000) or (offline, US or Australia, order 600–1,000). One query.',
- out:['CustomerID','TerritoryID','OnlineOrderFlag','TotalDue','ShipDate'],flt:['year 2012','group A OR group B'],
- blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'all conditions are on this table'},joins:[]}],
- flow:[['Common','OrderDate in 2012','',1],['Group A','TerritoryID IN (6,7) AND Online = 1 AND TotalDue >= 1000','',2],['OR','','',3],['Group B','TerritoryID IN (1,2,3,4,5,9) AND Online = 0 AND TotalDue BETWEEN 600 AND 1000','',4]],
- st:['Five columns. Two customer groups that must come back in one result.','Everything is in Sales_orders. Territory IDs come from HW 2: CA = 6, FR = 7, US = 1–5, AU = 9.','Common condition first (2012). Each group is its own bracket of AND conditions, then the two brackets are joined with OR.','432 rows. Test each bracket alone first and check that the two counts add up.'],
- sql:`SELECT DISTINCT CustomerID, TerritoryID, OnlineOrderFlag, TotalDue, ShipDate
-FROM ADW_Sales_orders
-WHERE (OrderDate BETWEEN '2012-01-01' AND '2012-12-31')   -- group condition 1
-  AND (
-        (TerritoryID IN (6,7) AND OnlineOrderFlag = 1 AND TotalDue >= 1000)                  -- 2.1
-     OR (TerritoryID IN (1,2,3,4,5,9) AND OnlineOrderFlag = 0 AND TotalDue BETWEEN 600 AND 1000)  -- 2.2
-      )`,
- res:'l2q9',
- watch:['Without the outer brackets, AND binds tighter than OR and the 2012 filter would apply to only one group.','BETWEEN is inclusive, so a 1,000.00 order offline would be in group B (and an online 1,000.00 order in group A).']},
-{id:'q10',grp:'Homework',tag:'HW 10',lvl:'Hard',
- vi:'So sánh khách hàng mua online và offline. Lấy các tập khách hàng mua trong năm 2012, 2013 thỏa: khách mua offline trong quý 1 2012 HOẶC khách mua online trong quý 4 2013. Lấy: CustomerID, Order Year, Order Quarter, Online/Offline Flag.',
- en:'Customers who bought offline in Q1 2012 or online in Q4 2013.',
- out:['CustomerID','OrderYear','OrderQuarter','OnlineOrderFlag'],flt:['offline & 2012 Q1','online & 2013 Q4'],
- blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'order header'},joins:[]}],
- flow:[['Group A','OnlineOrderFlag = 0 AND quarter = 1 AND year = 2012','',1],['OR','','',2],['Group B','OnlineOrderFlag = 1 AND quarter = 4 AND year = 2013','',3]],
- st:['Customer, year, quarter, channel flag.','Sales_orders again.','Two nested groups joined with OR. Quarter 1 can be written three ways: a date range, <code>MONTH IN (1,2,3)</code>, or <code>DATEPART(QUARTER, ...) = 1</code>.','5,445 rows.'],
- sql:`SELECT DISTINCT CustomerID,
-       YEAR(OrderDate) AS OrderYear,
-       DATEPART(QUARTER, OrderDate) AS OrderQuarter,
-       OnlineOrderFlag
-FROM ADW_Sales_orders
-WHERE (OnlineOrderFlag = 0 AND DATEPART(QUARTER, OrderDate) = 1 AND YEAR(OrderDate) = 2012)
-   OR (OnlineOrderFlag = 1 AND DATEPART(QUARTER, OrderDate) = 4 AND YEAR(OrderDate) = 2013)`,
- res:'l2q10',
- watch:['A quarter number alone is not enough: Q1 exists in every year, so always pair it with the year.']}
+ res:'l2m3',watch:[]}
 ];
 
 G.render(Object.assign({EX, RES}, {stepNames:['Business need','Which table?','Conditions','Validate'], open:'m1'}));

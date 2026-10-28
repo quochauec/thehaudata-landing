@@ -213,7 +213,7 @@ body{margin:0}
   <p>One-page recap, then the classwork and all 7 homework questions solved step by step. Includes a GROUP BY lab that shows the order SQL runs your query.</p>
   <nav class="tabs" role="tablist" aria-label="Study guide sections">
     <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
-    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Classwork &amp; homework</button>
+    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Classwork</button>
     <button role="tab" id="t-lab" aria-selected="false" aria-controls="v-lab">3 · Execution lab</button>
   </nav>
 </div></header>
@@ -292,7 +292,7 @@ ORDER BY dim_column</pre>
 </section>
 <section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
 
-  <div class="bar" id="filters"></div>
+  <div class="card" id="hwmoved" style="margin:0 0 14px"><h2><small>Homework</small> Homework lives in its own tab</h2><p>Try each question yourself first. The model answer unlocks in the Homework tab after you have run a query.</p><p style="margin-top:10px"><button class="btn primary" type="button" onclick="parent.postMessage({labGo:'homework',lesson:4},'*')">Open Lesson 4 homework</button></p></div><div class="bar" id="filters"></div>
   <div id="exlist"></div>
   <footer>Source: Class Practice_L04.sql, HW_Ref_solution_L04.sql and the Homework Collection (Lesson 4). SQL shown is T-SQL as in the answer key. Result tables come from running equivalent queries on the CSV files; money is rounded.</footer>
 </section>
@@ -610,7 +610,7 @@ G.chartInit=function(){
 
 </script>
 <script>
-const RES = {"l4c1": {"n": 24, "cols": ["Year", "CountryRegionCode", "Revenue", "Orders", "Customers", "AOV", "Frequency"], "sample": [[2011, "AU", 1693033.0, 463, 463, 3309.19, 1.0], [2011, "CA", 2106906.0, 149, 106, 12579.75, 1.41], [2011, "DE", 272781.0, 81, 81, 3047.66, 1.0], [2011, "FR", 236269.0, 70, 70, 3054.54, 1.0], [2011, "GB", 400992.0, 117, 117, 3101.61, 1.0]]}, "l4c1h": {"n": 13, "cols": ["Year", "CountryRegionCode", "Orders"], "sample": [[2012, "US", 1701], [2013, "AU", 3015], [2013, "CA", 1884], [2013, "DE", 1235], [2013, "FR", 1273]]}, "l4c2": {"n": 3, "cols": ["order_value_segment", "orders"], "sample": [["High-value", 18496], ["Low-value", 11480], ["Mid-value", 1489]]}, "l4c3": {"n": 4, "cols": ["OrderYear", "Online_Orders", "TotalOrders", "OnlineOrdersPct"], "sample": [[2011, 1201, 1607, 74.74], [2012, 2743, 3915, 70.06], [2013, 12584, 14182, 88.73], [2014, 11131, 11761, 94.64]]}, "l4c4": {"n": 4, "cols": ["OrderYear", "US_Orders", "Total_Orders", "US_order_ratio"], "sample": [[2011, 727, 1607, 45.24], [2012, 1701, 3915, 43.45], [2013, 5247, 14182, 37.0], [2014, 4366, 11761, 37.12]]}, "l4c5": {"n": 10, "cols": ["ProductName", "Profit", "Profit_Margin"], "sample": [["Road Bottle Cage", 9635.0, 0.626], ["ML Road Tire", 14486.0, 0.626], ["ML Mountain Tire", 21796.0, 0.626], ["LL Mountain Tire", 13485.0, 0.626], ["Mountain Tire Tube", 9668.0, 0.626]]}, "l4ex": {"n": 10, "cols": ["Year", "Month", "Revenue", "Profit", "Margin"], "sample": [[2012, 6, 4099354.0, 10155.0, 0.002], [2012, 1, 3970627.0, 278910.0, 0.07], [2012, 9, 3454152.0, 20303.0, 0.006], [2012, 7, 3417954.0, 88624.0, 0.026], [2012, 5, 3074603.0, 148563.0, 0.048]]}, "l4h1": {"n": 38, "cols": ["OrderYear", "OrderMonth", "Revenue", "Product_Cost", "Profit", "Profit_margin", "num_customers"], "sample": [[2011, 5, 503806.0, 500100.0, 3706.0, 0.007, 43], [2011, 6, 458911.0, 275130.0, 183781.0, 0.4, 141], [2011, 7, 2044600.0, 1815651.0, 228949.0, 0.112, 231], [2011, 8, 2495817.0, 2282762.0, 213054.0, 0.085, 250], [2011, 9, 502074.0, 301937.0, 200136.0, 0.399, 157]]}, "l4h2": {"n": 24, "cols": ["OrderYear", "CountryRegionCode", "Revenue", "Profit", "Profit_margin", "num_customers"], "sample": [[2011, "AU", 1532156.0, 616582.0, 0.402, 463], [2011, "CA", 1874382.0, 65953.0, 0.035, 106], [2011, "DE", 246861.0, 98296.0, 0.398, 81], [2011, "FR", 213818.0, 84977.0, 0.397, 70], [2011, "GB", 362889.0, 144724.0, 0.399, 117]]}, "l4h3": {"n": 30, "cols": ["Country", "PaymentMethod", "Revenue"], "sample": [["AU", "Vista", 2973200.0], ["AU", "Distinguish", 2910099.0], ["AU", "SuperiorCard", 2894232.0], ["AU", "ColonialVoice", 2612346.0], ["AU", "Cash", 424500.0]]}, "l4h4": {"n": 12, "cols": ["Year", "Country", "Online_Revenue", "Total_Revenue_SubTotal", "Total_Revenue_TotalDue", "Online_Revenue_Pct"], "sample": [[2013, "AU", 3583904.0, 4230664.0, 4702404.0, 76.21], [2013, "DE", 1305778.0, 2565221.0, 2869492.0, 45.51], [2013, "GB", 1546690.0, 3633423.0, 4068179.0, 38.02], [2013, "FR", 1216845.0, 3806506.0, 4271019.0, 28.49], [2013, "US", 3506252.0, 23157147.0, 26044344.0, 13.46]]}, "l4h5": {"n": 10, "cols": ["TerritoryName", "DOW_type", "avg_daily_quantity", "avg_quantity_per_cust", "num_days"], "sample": [["Central", "Weekdays", 420.3, 213.3, 34], ["Central", "Weekends", 472.9, 120.98, 11], ["Northeast", "Weekdays", 404.6, 254.78, 34], ["Northeast", "Weekends", 507.1, 156.03, 12], ["Northwest", "Weekdays", 42.1, 9.45, 588]]}, "l4h6": {"n": 8, "cols": ["OrderYear", "Region", "OrderFrequency", "AvgQtyPerOrder"], "sample": [[2011, "EU", 1.0, 1.0], [2011, "US", 1.278, 13.0], [2012, "EU", 1.067, 7.95], [2012, "US", 1.466, 27.29], [2013, "EU", 1.251, 7.44]]}, "l4h7": {"n": 4, "cols": ["ProductCategoryName", "Revenue", "Profit", "Profit_margin", "Orders", "AOV"], "sample": [["Bikes", 17185008.0, 2857436.0, 0.166, 5307, 3238.0], ["Components", 1920375.0, 88265.0, 0.046, 361, 5320.0], ["Clothing", 404310.0, 52662.0, 0.13, 2486, 163.0], ["Accessories", 327992.0, 169658.0, 0.517, 5588, 59.0]]}};
+const RES = {"l4c1": {"n": 24, "cols": ["Year", "CountryRegionCode", "Revenue", "Orders", "Customers", "AOV", "Frequency"], "sample": [[2011, "AU", 1693033.0, 463, 463, 3309.19, 1.0], [2011, "CA", 2106906.0, 149, 106, 12579.75, 1.41], [2011, "DE", 272781.0, 81, 81, 3047.66, 1.0], [2011, "FR", 236269.0, 70, 70, 3054.54, 1.0], [2011, "GB", 400992.0, 117, 117, 3101.61, 1.0]]}, "l4c1h": {"n": 13, "cols": ["Year", "CountryRegionCode", "Orders"], "sample": [[2012, "US", 1701], [2013, "AU", 3015], [2013, "CA", 1884], [2013, "DE", 1235], [2013, "FR", 1273]]}, "l4c2": {"n": 3, "cols": ["order_value_segment", "orders"], "sample": [["High-value", 18496], ["Low-value", 11480], ["Mid-value", 1489]]}, "l4c3": {"n": 4, "cols": ["OrderYear", "Online_Orders", "TotalOrders", "OnlineOrdersPct"], "sample": [[2011, 1201, 1607, 74.74], [2012, 2743, 3915, 70.06], [2013, 12584, 14182, 88.73], [2014, 11131, 11761, 94.64]]}, "l4c4": {"n": 4, "cols": ["OrderYear", "US_Orders", "Total_Orders", "US_order_ratio"], "sample": [[2011, 727, 1607, 45.24], [2012, 1701, 3915, 43.45], [2013, 5247, 14182, 37.0], [2014, 4366, 11761, 37.12]]}, "l4c5": {"n": 10, "cols": ["ProductName", "Profit", "Profit_Margin"], "sample": [["Road Bottle Cage", 9635.0, 0.626], ["ML Road Tire", 14486.0, 0.626], ["ML Mountain Tire", 21796.0, 0.626], ["LL Mountain Tire", 13485.0, 0.626], ["Mountain Tire Tube", 9668.0, 0.626]]}, "l4ex": {"n": 10, "cols": ["Year", "Month", "Revenue", "Profit", "Margin"], "sample": [[2012, 6, 4099354.0, 10155.0, 0.002], [2012, 1, 3970627.0, 278910.0, 0.07], [2012, 9, 3454152.0, 20303.0, 0.006], [2012, 7, 3417954.0, 88624.0, 0.026], [2012, 5, 3074603.0, 148563.0, 0.048]]}};
 
 const EX=[
 {id:'cp1',grp:'Classwork',tag:'Classwork 1',lvl:'Medium',viLabel:'Question (from class practice)',
@@ -719,147 +719,7 @@ GROUP BY YEAR(OrderDate), MONTH(OrderDate)
 HAVING SUM(LineTotal) > 1000000
 ORDER BY Revenue DESC`,
  res:'l4ex',
- watch:['The key\'s example: Sales_orders has 1M rows × 10 columns, Dim_Product 100 rows × 100 columns. You need 100K rows and 5 columns of orders, and 5 columns of products. Trim both before joining.','The rule from the key: always filter in WHERE if you can.','The key\'s second version also adds <code>OnlineOrderFlag = 1</code> inside the subquery. That changes the question to online orders only, so its numbers differ from the first version. The SQL above keeps the original question and only moves the date filter.']},
-
-{id:'h1',grp:'Homework Easy–Medium',tag:'HW 1',lvl:'Medium',
- vi:'BOD muốn làm một report overall về doanh thu, lợi nhuận và biên lợi nhuận, số khách hàng theo monthly/yearly trong 4 năm công ty hoạt động.',
- en:'Board report: revenue, profit, profit margin and number of customers by year and month.',
- out:['OrderYear','OrderMonth','Revenue','Product_Cost','Profit','Profit_margin','num_customers'],flt:[],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'line values'},joins:[{type:'LEFT JOIN',t:'ADW_Sales_orders',key:'SalesOrderID',adds:'OrderDate, CustomerID'},{type:'LEFT JOIN',t:'ADW_Dim_Product',key:'ProductID',adds:'StandardCost'}]}],
- flow:[['FROM + JOIN','detail ← orders, product','',1],['GROUP BY','YEAR, MONTH','',2],['SELECT','SUM(LineTotal), cost, profit, margin, COUNT(DISTINCT CustomerID)','',3],['ORDER BY','year, month','',4]],
- st:['Metrics: revenue, profit, margin, customers. Dimensions: year, month.','Revenue and quantity: detail. Order date and customer: orders. Cost: product.','Revenue = SUM(LineTotal) (already net of promotion). Product cost = SUM(OrderQty × StandardCost). Profit = revenue − cost. Margin = profit ÷ revenue.','38 months from 2011-05 to 2014-06. The 2011-05 margin is only 0.7%: check the first month before presenting it.'],
- sql:`SELECT YEAR(OrderDate) AS OrderYear, MONTH(OrderDate) AS OrderMonth
-     , SUM(LineTotal) AS Revenue
-     , SUM(t1.OrderQty * t3.StandardCost) AS Product_Cost
-     , SUM(LineTotal - t1.OrderQty * t3.StandardCost) AS Profit
-     , SUM(LineTotal - t1.OrderQty * t3.StandardCost) / SUM(LineTotal) AS Profit_margin
-     , COUNT(DISTINCT CustomerID) AS num_customers
-FROM ADW_Sales_orders_detail t1
-LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-GROUP BY YEAR(OrderDate), MONTH(OrderDate)
-ORDER BY OrderYear, OrderMonth`,
- res:'l4h1',
- watch:['Customers per month cannot be added up to a yearly total: one customer buys in several months. Compute the yearly figure with its own query.','Revenue was tested two ways in the key (LineTotal vs UnitPrice × (1 − discount) × qty). They agree, so choose one and document it.']},
-{id:'h2',grp:'Homework Easy–Medium',tag:'HW 2',lvl:'Medium',
- vi:'BOD muốn làm report về doanh thu, lợi nhuận, số khách hàng, biên lợi nhuận theo country trong 4 năm. Đâu là country có performance tốt và ổn định nhất?',
- en:'Same report by country and year. Which country performs best and most steadily?',
- out:['OrderYear','CountryRegionCode','Revenue','Profit','Profit_margin','num_customers'],flt:[],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'line values'},joins:[{type:'LEFT JOIN',t:'ADW_Sales_orders',key:'SalesOrderID',adds:'OrderDate, CustomerID, TerritoryID'},{type:'LEFT JOIN',t:'ADW_Dim_Product',key:'ProductID',adds:'StandardCost'},{type:'LEFT JOIN',t:'ADW_Dim_Territory',key:'TerritoryID',adds:'CountryRegionCode',from:'Sales_orders'}]}],
- st:['Same metrics as HW 1, dimension = country and year (24 rows).','Add Dim_Territory, joined through the orders table.','GROUP BY year and country. Then read the table: "good" = high margin, "stable" = margin and growth do not swing.','Australia: margin 40%, 37%, 27%, 31%, revenue growing until 2013. Canada and US: margin near zero or negative in 2012. Australia is the best and most stable.'],
- sql:`SELECT YEAR(t2.OrderDate) AS OrderYear
-     , t4.CountryRegionCode
-     , SUM(LineTotal) AS Revenue
-     , SUM(LineTotal - t1.OrderQty * t3.StandardCost) AS Profit
-     , SUM(LineTotal - t1.OrderQty * t3.StandardCost) / SUM(LineTotal) AS Profit_margin
-     , COUNT(DISTINCT CustomerID) AS num_customers
-FROM ADW_Sales_orders_detail t1
-LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-LEFT JOIN ADW_Dim_Territory t4 ON t2.TerritoryID = t4.TerritoryID
-GROUP BY YEAR(t2.OrderDate), t4.CountryRegionCode`,
- res:'l4h2',
- watch:['The query only produces the table. The business answer (best and steadiest) is your reading of it. In this data Australia leads on margin every year; the US has the revenue but a thin margin.','2014 covers six months, so its revenue is not comparable with full years.']},
-{id:'h3',grp:'Homework Easy–Medium',tag:'HW 3',lvl:'Medium',
- vi:'Doanh thu theo các phương thức thanh toán ở từng quốc gia hiện tại đang như thế nào?',
- en:'Revenue by payment method in each country.',
- out:['Country','PaymentMethod','Revenue'],flt:[],
- blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'TotalDue'},joins:[{type:'LEFT JOIN',t:'ADW_Dim_Territory',key:'TerritoryID',adds:'CountryRegionCode'},{type:'LEFT JOIN',t:'ADW_Dim_CreditCard',key:'CreditCardID',adds:'CardType',cast:1}]}],
- st:['Metric: revenue. Dimensions: country and payment method.','Orders, Territory for the country, CreditCard for the card type.','Payment method is not a column: no card = Cash, otherwise the card type. Build it with CASE WHEN and group by the same expression.','30 country × method rows. Four card brands plus Cash for each of six countries.'],
- sql:`SELECT t2.CountryRegionCode AS Country
-     , CASE WHEN t1.CreditCardID = 'NULL' OR t1.CreditCardID = '' THEN 'Cash'
-            ELSE CardType END AS PaymentMethod
-     , SUM(TotalDue) AS Revenue                       -- includes tax and shipping
-FROM ADW_Sales_orders t1
-LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID
-LEFT JOIN ADW_Dim_CreditCard t3
-       ON CAST(t1.CreditCardID AS varchar) = CAST(t3.CreditCardID AS varchar)
-GROUP BY t2.CountryRegionCode
-       , CASE WHEN t1.CreditCardID = 'NULL' OR t1.CreditCardID = '' THEN 'Cash' ELSE CardType END
-ORDER BY Country, Revenue DESC`,
- res:'l4h3',
- watch:['The GROUP BY repeats the full CASE expression. Aliases from SELECT are not available in GROUP BY in T-SQL, because SELECT runs after GROUP BY.','Missing card is stored as the text <code>\'NULL\'</code> in the course database, so the key tests for it. In a normal table use <code>IS NULL</code>.']},
-{id:'h4',grp:'Homework Easy–Medium',tag:'HW 4',lvl:'Medium',
- vi:'So sánh tỉ lệ về doanh thu của channel Online ở các nước trong năm 2013 và 2014. Kênh online đang perform tốt nhất ở đâu? Gợi ý: conditional aggregation.',
- en:'Online share of revenue by country, 2013 versus 2014. Where does online do best?',
- out:['year','Country','Online_Revenue','Total_Revenue','Online_Revenue_Pct'],flt:['year IN (2013, 2014)'],
- blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'TotalDue, OnlineOrderFlag'},joins:[{type:'LEFT JOIN',t:'ADW_Dim_Territory',key:'TerritoryID',adds:'CountryRegionCode'}]}],
- st:['Ratio = online revenue ÷ total revenue, by country and year.','Orders and Dim_Territory.','Conditional SUM for online, plain SUM for total, same base (TotalDue) on both sides. Filter years in WHERE.','Australia is highest both years (76.2% then 77.7%); Canada lowest (10.0% then 23.1%). Every country rose in 2014.'],
- sql:`SELECT YEAR(t1.OrderDate) AS year
-     , t2.CountryRegionCode AS Country
-     , SUM(CASE WHEN t1.OnlineOrderFlag = 1 THEN TotalDue ELSE 0 END) AS Online_Revenue
-     , SUM(SubTotal) AS Total_Revenue            -- key: SubTotal here, but the % below divides by TotalDue
-     , SUM(CASE WHEN t1.OnlineOrderFlag = 1 THEN TotalDue ELSE 0 END) * 100.00 / SUM(TotalDue) AS Online_Revenue_Pct
-FROM ADW_Sales_orders t1
-LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID
-WHERE YEAR(t1.OrderDate) IN (2013, 2014)
-GROUP BY t2.CountryRegionCode, YEAR(t1.OrderDate)
-ORDER BY year, Online_Revenue_Pct DESC`,
- res:'l4h4',
- watch:['<b>Key inconsistency.</b> The Total_Revenue column sums SubTotal, but the percentage divides by TotalDue. Use <code>SUM(TotalDue)</code> in the Total_Revenue column too (the sample above shows both).','The 2014 rise is partly a half-year effect on the mix, so say "H1 2014" in the report.']},
-
-{id:'h5',grp:'Homework Medium–Hard',tag:'HW 5',lvl:'Hard',
- vi:'So sánh performance bán hàng giữa ngày trong tuần và ngày cuối tuần tại US: số lượng sản phẩm bán ra (Quantity) trung bình/ngày và trung bình/khách hàng tại các Territory của US theo weekdays vs weekend. Nhận xét gì từ số liệu?',
- en:'US weekdays vs weekends: average quantity sold per day and per customer, by territory. What do you see?',
- out:['TerritoryName','DOW_type','avg_daily_quantity','avg_quantity_per_cust','num_days'],flt:["CountryRegionCode = 'US'"],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'OrderQty'},joins:[{type:'LEFT JOIN',t:'ADW_Sales_orders',key:'SalesOrderID',adds:'OrderDate, CustomerID'},{type:'LEFT JOIN',t:'ADW_Dim_Territory',key:'TerritoryID',adds:'TerritoryName',from:'Sales_orders'}]}],
- flow:[['FROM + JOIN','detail, orders, territory','',1],['WHERE',"CountryRegionCode = 'US'",'',2],['GROUP BY','TerritoryName, weekday/weekend','',3],['SELECT','SUM(qty) / days, SUM(qty) / customers','',4]],
- st:['Metrics: average quantity per day and per customer. Dimensions: territory and day type.','Quantity: detail. Date, customer: orders. Territory name: Dim_Territory.','Day type with CASE WHEN on DATEPART(weekday, ...) (1 = Sunday, 7 = Saturday). Average per day = total quantity ÷ number of distinct order days. Per customer = total ÷ distinct customers.','10 rows. Weekend days sell more per day in Central, Northeast and Northwest; Southeast and Southwest do not.'],
- sql:`SELECT TerritoryName
-     , CASE WHEN DATEPART(weekday, OrderDate) IN (1, 7) THEN 'Weekends' ELSE 'Weekdays' END AS DOW_type
-     , SUM(t0.OrderQty * 1.00) / COUNT(DISTINCT CAST(OrderDate AS DATE)) AS avg_daily_quantity
-     , SUM(t0.OrderQty * 1.00) / COUNT(DISTINCT CustomerID) AS avg_quantity_per_cust
-     , COUNT(DISTINCT OrderDate) AS num_days
-FROM ADW_Sales_orders_detail t0
-LEFT JOIN ADW_Sales_orders t1 ON t0.SalesOrderID = t1.SalesOrderID
-LEFT JOIN ADW_Dim_Territory t2 ON t1.TerritoryID = t2.TerritoryID
-WHERE CountryRegionCode = 'US'
-GROUP BY t2.TerritoryName
-       , CASE WHEN DATEPART(weekday, OrderDate) IN (1, 7) THEN 'Weekends' ELSE 'Weekdays' END
-ORDER BY TerritoryName, DOW_type`,
- res:'l4h5',
- watch:['Divide by the number of days that actually had orders, not by 5 or 2: weekdays and weekends have different day counts. The <code>num_days</code> column shows how few days some territories sell on.','Compare only like with like. Northwest and Southwest sell on ~600 weekday days; Central sells on 34, so the per-day figures describe different business models.','<code>DATEPART(weekday, ...)</code> depends on the server\'s DATEFIRST setting. Confirm 1 = Sunday with <code>SELECT DATEPART(weekday, \'2026-09-15\')</code> as the key does.']},
-{id:'h6',grp:'Homework Medium–Hard',tag:'HW 6',lvl:'Hard',
- vi:'Phân tích hành vi mua hàng của khách hàng ở US vs EU: so sánh tần suất mua hàng và số lượng sản phẩm trung bình/đơn hàng. Location nào đang perform tốt hơn?',
- en:'US vs EU: purchase frequency (orders per customer) and average quantity per order. Which region does better?',
- out:['OrderYear','Region','OrderFrequency','AvgQtyPerOrder'],flt:["Group = 'Europe' OR country = 'US'"],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'OrderQty'},joins:[{type:'LEFT JOIN',t:'ADW_Sales_orders',key:'SalesOrderID',adds:'OrderDate, CustomerID'},{type:'LEFT JOIN',t:'ADW_Dim_Territory',key:'TerritoryID',adds:'Group, CountryRegionCode',from:'Sales_orders'}]}],
- st:['Frequency = orders ÷ distinct customers. Quantity per order = total quantity ÷ distinct orders. Dimension: region (EU or US).','Detail, orders, territory.','Keep only Europe or US with WHERE. A CASE WHEN turns Territory Group into "EU" and "US". Use COUNT(DISTINCT) because the detail table repeats an order once per line.','EU has higher frequency in 2013 (1.25 vs 1.20) and 2014 (1.09 vs 1.05); the US wins in 2011 and 2012. The US sells more items per order every year.'],
- sql:`SELECT YEAR(OrderDate) AS OrderYear
-     , CASE WHEN [Group] = 'Europe' THEN 'EU' ELSE 'US' END AS Region
-     , COUNT(DISTINCT t1.SalesOrderID) * 1.00 / COUNT(DISTINCT CustomerID) AS OrderFrequency
-     , SUM(t1.OrderQty) * 1.00 / COUNT(DISTINCT t1.SalesOrderID) AS AvgQtyPerOrder
-FROM ADW_Sales_orders_detail t1
-LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-LEFT JOIN ADW_Dim_Territory t3 ON t2.TerritoryID = t3.TerritoryID
-WHERE [Group] = 'Europe' OR CountryRegionCode = 'US'
-GROUP BY YEAR(OrderDate), CASE WHEN [Group] = 'Europe' THEN 'EU' ELSE 'US' END
-ORDER BY OrderYear, Region`,
- res:'l4h6',
- watch:['"Better" is not one number: US wins on items per order, EU wins on frequency in the last two years. Say which metric you rank by.','Without <code>DISTINCT</code> you would count an order once per product line and inflate frequency.']},
-{id:'h7',grp:'Homework Medium–Hard',tag:'HW 7',lvl:'Hard',
- vi:'Nếu công ty muốn tập trung đẩy bán 1 category ở EU trong năm tới thì nên tập trung bán Category nào? (câu hỏi mở: xét nhiều khía cạnh, ví dụ doanh thu/lợi nhuận và %profit margin)',
- en:'Open question: which category should the company push in Europe next year?',
- out:['ProductCategoryName','Revenue','Profit','Profit_margin','Orders','AOV'],flt:["Group = 'Europe'"],
- blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'LineTotal'},joins:[{type:'LEFT JOIN',t:'ADW_Sales_orders',key:'SalesOrderID',adds:'TerritoryID'},{type:'LEFT JOIN',t:'ADW_Dim_Product',key:'ProductID',adds:'StandardCost'},{type:'LEFT JOIN',t:'ADW_Dim_ProductSubCategory',key:'ProductSubcategoryID',adds:'ProductCategoryID',cast:1,from:'Dim_Product'},{type:'LEFT JOIN',t:'ADW_Dim_ProductCategory',key:'ProductCategoryID',adds:'ProductCategoryName',cast:1,from:'SubCategory'},{type:'LEFT JOIN',t:'ADW_Dim_Territory',key:'TerritoryID',adds:'Group',from:'Sales_orders'}]}],
- st:['No metric is given: pick several that a business would use. Here: revenue, profit, margin, orders, AOV. Dimension: category.','Six tables: detail, orders, product, sub-category, category, territory.','Same profit logic as HW 1, grouped by category, filtered to Europe.','Bikes: 17.2M revenue, 2.86M profit, margin 16.6%. Accessories: margin 51.7% but only 0.33M revenue. Components: margin 4.6%. Clothing: 13%.'],
- sql:`SELECT ProductCategoryName
-     , SUM(LineTotal) AS Revenue
-     , SUM(LineTotal) - SUM(t3.StandardCost * t1.OrderQty) AS Profit
-     , (SUM(LineTotal) - SUM(t3.StandardCost * t1.OrderQty)) / SUM(LineTotal) AS Profit_margin
-     , COUNT(DISTINCT t1.SalesOrderID) AS Orders
-     , SUM(LineTotal) / COUNT(DISTINCT t1.SalesOrderID) AS AOV
-FROM ADW_Sales_orders_detail t1
-LEFT JOIN ADW_Sales_orders t2 ON t1.SalesOrderID = t2.SalesOrderID
-LEFT JOIN ADW_Dim_Product t3 ON t1.ProductID = t3.ProductID
-LEFT JOIN ADW_Dim_ProductSubCategory t4 ON t3.ProductSubcategoryID = CAST(t4.ProductSubcategoryID AS VARCHAR)
-LEFT JOIN ADW_Dim_ProductCategory t5 ON CAST(t4.ProductCategoryID AS varchar) = CAST(t5.ProductCategoryID AS varchar)
-LEFT JOIN ADW_Dim_Territory t6 ON t2.TerritoryID = t6.TerritoryID
-WHERE [Group] = 'Europe'
-GROUP BY ProductCategoryName`,
- res:'l4h7',
- chart:{type:'bar',cat:'ProductCategoryName',val:'Revenue',valLabel:'Revenue',fmt:'usd',hi:['Bikes'],title:'Revenue by category',sub:'Bikes bring 87% of revenue, but Accessories has the highest profit margin (51.7%).'},
- watch:['Give a recommendation backed by two views: <b>Bikes</b> carry almost all profit (2.86M of 3.17M), <b>Accessories</b> have the best margin and the most orders but a tiny AOV (59). A reasonable answer is "Bikes for profit, Accessories as the margin-rich add-on".','The key also computes frequency and quantity per order, which are not needed for the decision: more metrics is not better analysis.','Add the year to the GROUP BY (commented out in the key) to see whether the picture is stable.']}
+ watch:['The key\'s example: Sales_orders has 1M rows × 10 columns, Dim_Product 100 rows × 100 columns. You need 100K rows and 5 columns of orders, and 5 columns of products. Trim both before joining.','The rule from the key: always filter in WHERE if you can.','The key\'s second version also adds <code>OnlineOrderFlag = 1</code> inside the subquery. That changes the question to online orders only, so its numbers differ from the first version. The SQL above keeps the original question and only moves the date filter.']}
 ];
 
 G.render(Object.assign({EX, RES}, {stepNames:['Metrics &amp; dimensions','Tables &amp; joins','Calculate','Validate'], open:'cp1'}));
