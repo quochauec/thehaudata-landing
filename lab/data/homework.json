@@ -48,6 +48,27 @@
    "slug": "cohort-retention",
    "sub": "First purchase month, months since first order, retention table",
    "ds": "ADW"
+  },
+  "15": {
+   "title": "Structuring Questions",
+   "label": "Structuring Questions",
+   "slug": "structuring-questions",
+   "sub": "Metric definitions, issue trees, MECE checks, business model numbers",
+   "ds": "CRM + ADW"
+  },
+  "16": {
+   "title": "Metrics and Deep Dives",
+   "label": "Metrics and Deep Dives",
+   "slug": "metrics-deep-dives",
+   "sub": "Input metrics, drill-downs, 80/20, contribution to change, what-if",
+   "ds": "ADW + CRM"
+  },
+  "17": {
+   "title": "Storytelling and Bias",
+   "label": "Storytelling and Bias",
+   "slug": "storytelling-bias",
+   "sub": "Rates vs totals, Top N + Other, mean vs median, survivorship, like-for-like",
+   "ds": "ADW + CRM + GBE"
   }
  },
  "questions": [
@@ -108,6 +129,29 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -142,6 +186,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text"
+     ],
+     "nums": [
+      55
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -172,6 +241,29 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1551,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      70032931
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -207,6 +299,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      29641,
+      51131,
+      163930.3943
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -245,6 +365,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      227667,
+      3445.6884000000005,
+      88630
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -298,6 +446,58 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 22,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text",
+      "number",
+      "number",
+      "text",
+      "number",
+      "number",
+      "number",
+      "number",
+      "text",
+      "text",
+      "text",
+      "number",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "number"
+     ],
+     "nums": [
+      7620,
+      10,
+      10,
+      1000,
+      750,
+      20403.182999999997,
+      34866.29999999999,
+      40,
+      584.6
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -330,6 +530,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 13,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      110
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -368,6 +592,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 432,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number",
+      "text"
+     ],
+     "nums": [
+      9539410,
+      2712,
+      400,
+      1200517.096300003
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -407,6 +661,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 5445,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      106178517,
+      10960596,
+      21213,
+      5256
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -447,6 +730,38 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1674,
+     "cols": 9,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      3424816,
+      3170942
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -477,6 +792,27 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -507,6 +843,27 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -556,6 +913,37 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 9,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "number",
+      "text"
+     ],
+     "nums": [
+      276985
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -608,6 +996,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 646,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      12838226
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -647,6 +1059,37 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 6,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      4689,
+      7552.8024,
+      13844.939999999999,
+      3.273168
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -681,6 +1124,33 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 160,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      7964019,
+      4757492,
+      11320468.935500002
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -714,6 +1184,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      59284,
+      357865.2059
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -750,6 +1245,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1479,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text"
+     ],
+     "nums": [
+      69050980
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -782,6 +1302,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 9,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      7749
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -812,6 +1356,27 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 72,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1054,6 +1619,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6033,
+      41.976996,
+      1708.047636,
+      5476.553911
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1108,6 +1703,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "number"
+     ],
+     "nums": [
+      8727
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1220,6 +1840,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      27659,
+      31465
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1252,6 +1897,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      504
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1286,6 +1955,29 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 85,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1320,6 +2012,33 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      4238,
+      4238,
+      2040
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": true
+    }
+   },
    "approach": []
   },
   {
@@ -1352,6 +2071,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      15266
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1386,6 +2129,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 137,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      285,
+      285
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1418,6 +2187,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      1323,
+      31465
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,true,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1474,6 +2268,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      85,
+      85,
+      0,
+      0
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1510,6 +2333,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 19119,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      393067521,
+      3656843,
+      31465,
+      123216786.11589852
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1546,6 +2398,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 19119,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      393067521,
+      57290,
+      43526,
+      56993
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1582,6 +2463,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      19119,
+      31465,
+      123216786.1159
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1654,6 +2563,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 19119,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      393067521
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1686,6 +2619,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 38,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      19119
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1720,6 +2677,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 485,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6502,
+      30736
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1758,6 +2741,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 38,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      19119,
+      346,
+      432,
+      876
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1778,6 +2791,1064 @@
    "req": null,
    "note": "38 rows",
    "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L15-01",
+   "lesson": 15,
+   "level": "Easy",
+   "ds": "crm",
+   "title": "Two win rates",
+   "story": "The Sales Director says the win rate looks low. Before you analyse anything, fix the definition. Return the number of closed deals (stage Won or Lost), the number of won deals, the win rate as a percent of closed deals and the win rate as a percent of all deals in the pipeline, both rounded to 1 decimal. Then write the metric line of your analytics question: which rate would you use, and why?",
+   "hint": "A closed deal has the stage Won or Lost. Engaging and Prospecting deals are still open: they sit in the second denominator but not in the first.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "a6571889c2561dc4",
+      "61691f4ba1f5cac1",
+      "898dd6c4876b8cf9",
+      "d4096577d50bc31e"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6711,
+      4238,
+      63.2,
+      48.2
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L15-02",
+   "lesson": 15,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Which split covers every deal?",
+   "story": "You plan three branches for an issue tree on the pipeline: by sales team (join to CRM_sales_teams on the agent), by account sector (join to CRM_Accounts on the account) and by product list (join to CRM_products on the product name). A branch is only useful if it reaches every deal. For each split, return the split name, the number of deals it reaches and the number of deals it misses, out of all deals in CRM_sales_pipeline. Which branches are collectively exhaustive?",
+   "hint": "Count the rows after each inner join and subtract from the total number of deals in the pipeline.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "f455fc0f8eddd2c4",
+      "b0c4a4f3fea6bdc0",
+      "5c6c7d6ed0ccecaf"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      23495,
+      2905
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L15-03",
+   "lesson": 15,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Win rate by quarter, and the months behind it",
+   "story": "The Director says: \"The win rate was great in the first quarter and has been lower since.\" For each quarter of 2017 (by close date), return how many different months of closed deals it holds, the number of closed deals and the win rate (percent of closed deals, 1 decimal). Count only closed deals. Can the first quarter be compared with the others?",
+   "hint": "Use CASE WHEN on MONTH(close_date) to build the quarter. T-SQL does not let you reuse the SELECT alias in GROUP BY, so repeat the CASE or build it in a CTE.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "367d7b508554b10d",
+      "2ca479f00dd2a716",
+      "6c7b78bde56d18c0",
+      "bf4de87c3a88837f"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      10,
+      6711,
+      265.5
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L15-04",
+   "lesson": 15,
+   "level": "Hard",
+   "ds": "crm",
+   "title": "Is the March jump the same in every office?",
+   "story": "An issue tree for \"why is the win rate different in March?\" has a segment branch (who sells) and a time branch (when deals close). Test the segment branch. For each regional office (CRM_sales_teams, joined on the agent), return the win rate in March and the win rate from April to December, both as a percent of closed deals rounded to 1 decimal. Does the gap come from one office?",
+   "hint": "Two conditional aggregations per office: one for March, one for the months after. Divide each by the closed deals of the same period, not by all closed deals.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "09ca1ff1174036c8",
+      "53ed727067f8fa48",
+      "63d331611e01cf56"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      246.3,
+      183.3
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L15-05",
+   "lesson": 15,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "AdventureWorks channels in numbers",
+   "story": "You have been asked to research AdventureWorks before an analysis. Fill the channel and revenue blocks of a Business Model Canvas with data. An order is online when OnlineOrderFlag = 1 and sold by a sales rep otherwise. For each channel, return the number of orders, its percent of all orders, the revenue (sum of SubTotal), its percent of revenue and the average order value (revenue divided by orders). Round percents to 1 decimal and the average to 0 decimals.",
+   "hint": "A window over an aggregate gives the percent of total: SUM(COUNT(*)) OVER () is the total number of orders.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "90bc8e30a5856d2a",
+      "7f03acc75fdcdd49",
+      "8fff463cfe6da215",
+      "020074e096e0610d",
+      "a9fc631bf0dff9bd",
+      "e82bbe0a455e6c56"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 6,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      31465,
+      100,
+      109846381,
+      100,
+      22209
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L15-06",
+   "lesson": 15,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Orders by sales reason: overlap and gap",
+   "story": "A colleague wants to break orders down by sales reason (ADW_Sales_orders_reasons, one row per order and reason). Before the chart, test the breakdown. Return the total number of orders, the number of rows in the reasons table, the number of orders that have at least one reason, the number of orders with no reason and the number of orders with two or more reasons. Is \"orders by sales reason\" MECE?",
+   "hint": "Four small subqueries. Use COUNT(DISTINCT SalesOrderID) for the orders that have a reason, and GROUP BY ... HAVING COUNT(*) > 1 for the orders with several.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "91aae1203860db58",
+      "f5f66731158338b4",
+      "c43373dfcb2e80ba",
+      "8ccae31067022067",
+      "08c6c8cd6977695c"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      31465,
+      27647,
+      23012,
+      8453,
+      4482
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L16-01",
+   "lesson": 16,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Split won value into input metrics",
+   "story": "Won value is an output metric. The Sales Director wants the input metrics behind it. For each product, among closed deals, return the number of closed deals, the win rate (percent, 1 decimal), the average value of a won deal (0 decimals) and the total won value. Then compare GTXPro with GTX Basic: they win about the same share of deals, yet GTXPro earns far more. Which input metric explains it?",
+   "hint": "Won value = closed deals x win rate x average won value. Compute the three inputs and the output in one grouped query.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 7,
+     "cols": [
+      "b8f6b088e1b27638",
+      "a75cb46d3b4a2a53",
+      "c2a7f2d2fd2c4359",
+      "7af92a0b4ffeabec",
+      "8c8adb7ddaa8188e"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6711,
+      438.8,
+      42083,
+      10005534
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,true,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L16-02",
+   "lesson": 16,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Does the detail follow the total?",
+   "story": "Revenue (sum of LineTotal) grew between 2012 and 2013. Does every category grow at the same pace? Return one row per category plus a row called 'All categories', with the revenue in 2012, the revenue in 2013 (0 decimals) and the growth in percent (1 decimal).",
+   "hint": "Build one CTE with category, year and line total for 2012 and 2013, then aggregate it twice: by category, and for the total row. Join the lines to the order header for the date and walk the product chain for the category.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 5,
+     "cols": [
+      "c636218736856a56",
+      "d5c12c1b79e99d92",
+      "f7a99fb54017d0c6",
+      "9394d72c31fc009c"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      67048603,
+      87244958,
+      750.9
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L16-03",
+   "lesson": 16,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "How many groups does each dimension return?",
+   "story": "Before you group, guess how many rows come back. Check your guesses. Return the number of groups for each of these dimensions, one row per dimension with the columns dimension and groups: product category, product sub-category, product sold (in the order lines), sales territory, customer (in the orders) and year-month of the order. Which of them are a dimension, and which is a key?",
+   "hint": "COUNT(DISTINCT column) per dimension, stacked with UNION ALL. For the year-month, count distinct YEAR(OrderDate) * 100 + MONTH(OrderDate).",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 6,
+     "cols": [
+      "0997e1c4e32725d0",
+      "ae808b7a9cd23d35"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      19474
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": false,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L16-04",
+   "lesson": 16,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "The 80/20 check by sub-category",
+   "story": "Work where the mass is. Rank the product sub-categories by revenue (sum of LineTotal, 0 decimals). Return the sub-category, its revenue, its percent of total revenue and the cumulative percent (both 1 decimal), from the largest to the smallest. How many sub-categories make up 80% of revenue?",
+   "hint": "A running total needs a window: SUM(revenue) OVER (ORDER BY revenue DESC). Divide by SUM(revenue) OVER () for the share of the total.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L16-05",
+   "lesson": 16,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Where did first-half growth come from?",
+   "story": "Compare the first half of 2014 (January to June) with the first half of 2013 by sales territory, using the sum of SubTotal. Return the territory, the revenue in each period, the change, and each territory's share of the total change (percent, 1 decimal). Which territory contributes most, and is the total moving in the same direction as its biggest parts?",
+   "hint": "Aggregate revenue per territory for each half-year with conditional SUMs, then use a window SUM over the changes for the share of the total change.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L16-06",
+   "lesson": 16,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "A discount on online clothing",
+   "story": "Marketing proposes a 10% price cut on all Clothing sold online. Use 2013 as the base. Return one row with the revenue (sum of LineTotal), the cost (sum of OrderQty x StandardCost from ADW_Dim_Product), the gross profit, and the unit lift in percent (1 decimal) that the discount needs to leave gross profit unchanged. Round money to 0 decimals. Would you recommend it?",
+   "hint": "After a 10% price cut, revenue per unit is 0.9 times the old value and cost per unit is unchanged. Break-even lift = (old gross profit) / (new gross profit per base unit) - 1.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "8c73f2b0229f7363",
+      "1301331d41660c7c",
+      "5eeb15668865d50c",
+      "ec8ce291aaa86371"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      168344,
+      100994,
+      67350,
+      33.3
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L17-01",
+   "lesson": 17,
+   "level": "Easy",
+   "ds": "crm",
+   "title": "Leader by total, leader by rate",
+   "story": "A slide will rank products by won value. Check whether the ranking changes when you use the win rate. For each product, among closed deals, return the total won value, the win rate (percent, 1 decimal), the rank by won value and the rank by win rate (rank 1 is the highest). Which product would you put first on a slide about sales efficiency?",
+   "hint": "Compute won value and the win rate in a CTE, then add two RANK() OVER columns with different ORDER BY.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 7,
+     "cols": [
+      "b8f6b088e1b27638",
+      "8c8adb7ddaa8188e",
+      "c2a7f2d2fd2c4359",
+      "52df5ef546847dc9",
+      "52df5ef546847dc9"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      10005534,
+      438.80000000000007,
+      28,
+      28
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L17-02",
+   "lesson": 17,
+   "level": "Medium",
+   "ds": "gbe",
+   "title": "Top 3 categories and Other",
+   "story": "A chart of units sold by product category has eight bars. Make it readable for a slide. Return the three categories that sold the most units, plus one row called 'Other' for all the rest. Show the units and the percent of all units (1 decimal). Put the three categories first, from largest to smallest, and 'Other' last.",
+   "hint": "Units per category first, rank them, then relabel everything below rank 3 as 'Other' and add up again.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "8336305932ba04c2",
+      "23a15aae8e876a16",
+      "89003291e8f3db75"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      197757,
+      100
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L17-03",
+   "lesson": 17,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Mean or median order value?",
+   "story": "The report says \"the average order value in 2013 was X\". For each channel (online, sales rep), return the number of orders placed in 2013, the mean SubTotal and the median SubTotal (0 decimals). If they disagree, which one would you put on the slide?",
+   "hint": "The median is the middle row when orders are sorted. Number the rows per channel with ROW_NUMBER() OVER (PARTITION BY ... ORDER BY SubTotal), count the rows per channel, and average the one or two middle rows (rn * 2 IN (n, n + 1, n + 2)).",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "90bc8e30a5856d2a",
+      "209e5acfad19fff2",
+      "342d2ac9acda2c54",
+      "32873e9176a688f3"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      14182,
+      21435,
+      6847
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,true",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L17-04",
+   "lesson": 17,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Winners only: who is missing?",
+   "story": "A slide says \"the average deal is worth X\" for each product. Check what the average covers. For each product, return the average value of won deals (0 decimals) and the average value across all closed deals, counting a lost deal at its stored value (0 decimals). What does the first number leave out?",
+   "hint": "AVG ignores NULL, so AVG(CASE WHEN deal_stage = 'Won' THEN close_value END) averages the won deals only. A plain AVG(close_value) over the closed deals includes the lost ones.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 7,
+     "cols": [
+      "b8f6b088e1b27638",
+      "7af92a0b4ffeabec",
+      "1d5ae5dddef258a5"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      42083,
+      25715
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,false",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L17-05",
+   "lesson": 17,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Two headlines for 2014",
+   "story": "The data ends on 2014-06-30. For each product category, return two numbers: the revenue (sum of LineTotal) change in percent (1 decimal) from full-year 2013 to full-year 2014, and the change from January-June 2013 to January-June 2014. Then write the headline you would put on a slide, and the note you would add under it.",
+   "hint": "One CTE with category, year, month and line total. Then conditional SUMs: whole years for the first change, months 1 to 6 for the second.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "23d07b22a67bff35",
+      "8bd5638b0d9dcad7",
+      "5b313feeb6391edc"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      -208.8,
+      216.2
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L17-06",
+   "lesson": 17,
+   "level": "Hard",
+   "ds": "crm",
+   "title": "Does the pattern hold in every product?",
+   "story": "Before you present \"deals close at a higher win rate in quarter-end months\", check the trend inside each segment. For each product, among closed deals, return the win rate in quarter-end months (March, June, September, December), the win rate in the other months (percent, 1 decimal) and a column called quarter_end_higher with 'Yes' or 'No'. Is the overall pattern a Simpson's paradox?",
+   "hint": "Two conditional rates per product in a CTE, then a CASE WHEN that compares them.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "specs": [
+    {
+     "n": 7,
+     "cols": [
+      "b8f6b088e1b27638",
+      "33150629497047bc",
+      "0e1cd2f0c16010e2",
+      "e30bde90a8de446d"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "text"
+     ],
+     "nums": [
+      583.2,
+      355.7
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   }
  ]
