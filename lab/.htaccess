@@ -15,4 +15,15 @@ Options -Indexes
 RewriteEngine On
 RewriteRule ^(login|admin|logout|answer|progress)/?$ $1.php [L]
 RewriteRule ^(login|admin|logout|answer|progress|_gate)\.php$ - [L]
+# The runtime libraries (DuckDB, Pyodide, sqlglot, editor bundle) hold no mentee data and no answers. Apache serves them straight,
+# without PHP, so a class signing in together does not use up the host's PHP processes. Pages, data and answers stay behind the gate.
+RewriteRule ^vendor/ - [E=LABVENDOR:1,L]
 RewriteRule ^ _gate.php [L]
+
+# Cache the libraries for a week (they change only when the vendor files are rebuilt) and compress what compresses well.
+<IfModule mod_headers.c>
+Header set Cache-Control "public, max-age=604800" env=LABVENDOR
+</IfModule>
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE application/wasm application/javascript text/javascript application/json
+</IfModule>
