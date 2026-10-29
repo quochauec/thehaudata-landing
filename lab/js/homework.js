@@ -1,7 +1,7 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=416838aa49";
-import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=416838aa49";
+import * as engine from "./engine.js?v=e9f683d938";
+import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=e9f683d938";
 
 
 const LS = {
@@ -11,7 +11,10 @@ const LS = {
 };
 const isDone = id => LS.get("done:" + id) === "1";
 const LEVEL_TAG = l => /Hard|Advanced/.test(l) ? "o" : /Easy|Basic/.test(l) ? "g" : "";
-const LESSON_LABEL = n => n === 5 ? "Lessons 5 and 6" : "Lesson " + n;
+// Lessons are shown by name. The number stays the data key; each lesson has a short `label` and a deep-link `slug` (data.lessons).
+let LESSONS = {};
+const LESSON_LABEL = n => (LESSONS[n] && LESSONS[n].label) || "Homework";
+const lessonSlug = n => (LESSONS[n] && LESSONS[n].slug) || String(n);
 const levelKey = l => /Hard|Advanced/.test(l) ? "hard" : /Easy|Basic/.test(l) ? "easy" : "mid";
 const LEVEL_NAME = { easy: "Easy", mid: "Medium", hard: "Hard" };
 
@@ -29,7 +32,7 @@ function buildExport(data, name) {
       if (note) rows.push("Conclusion: " + note);
       rows.push("");
     });
-    if (rows.length) out.push(`== ${LESSON_LABEL(n)}: ${data.lessons[n].title} ==`, ...rows);
+    if (rows.length) out.push(`== ${data.lessons[n].title} ==`, ...rows);
   }
   if (out.length <= 5) out.push("No work saved yet.");
   return out.join("\n");
@@ -77,19 +80,22 @@ function diagnose(a, b, sSql, mf) {
   return lines.concat(nudge.slice(0, 3));
 }
 
-// Deep links: #homework, #homework/<lesson>, #homework/<lesson>/<question id>.
+// Deep links: #homework, #homework/<lesson slug>, #homework/<lesson slug>/<question id>. A lesson number still works in old links.
 const parseRoute = () => {
   const p = (location.hash || "").replace("#", "").split("/");
   if (p[0] !== "homework") return { lesson: null, q: null };
   let q = null; try { q = p[2] ? decodeURIComponent(p[2]) : null; } catch (e) { }
-  return { lesson: +p[1] || null, q };
+  const k = p[1] ? decodeURIComponent(p[1]) : "";
+  const hit = Object.keys(LESSONS).find(n => LESSONS[n].slug === k);
+  return { lesson: hit ? +hit : (+k || null), q };
 };
 const setRoute = (...parts) => {
-  const h = ["homework", ...parts].map(encodeURIComponent).join("/");
+  const h = ["homework", ...parts.map((x, i) => i === 0 ? lessonSlug(x) : x)].map(encodeURIComponent).join("/");
   try { history.replaceState(null, "", "#" + h); } catch (e) { }
 };
 
 export function mountHomework({ data, hdr, main, goHome }) {
+  LESSONS = data.lessons;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const byLesson = n => data.questions.filter(q => q.lesson === n);
   const r0 = parseRoute(), q0 = r0.q && data.questions.find(x => x.id === r0.q);
@@ -110,14 +116,14 @@ export function mountHomework({ data, hdr, main, goHome }) {
           <label for="hw-export"><b>Summary to send to your mentor</b></label><textarea id="hw-export" rows="12" readonly style="font-family:var(--mono);font-size:12.5px"></textarea>
           <div class="row2"><button class="btn primary" data-copy>Copy to clipboard</button><button class="btn" data-download>Download .txt</button><span class="note" data-exstatus role="status"></span></div>
           <p class="note">Your SQL and notes are read from this browser. Nothing is sent anywhere until you paste or send the file yourself.</p></div></div>`;
-    hdr.innerHTML = `<div class="eyebrow">Homework</div><h1>SQL homework, Lessons 2 to 10</h1>
+    hdr.innerHTML = `<div class="eyebrow">Homework</div><h1>SQL homework, by topic</h1>
       <p>The business questions from the course, on the same tables as the class database. Write T-SQL, run it, and check your answer. Hints and model answers stay closed until you open them.</p>`;
     const cards = Object.entries(data.lessons).map(([n, l]) => {
       const qs = byLesson(+n), done = qs.filter(q => isDone(q.id)).length;
-      return `<button class="cc" data-lesson="${n}"><span class="tag">${LESSON_LABEL(+n)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>
+      return `<button class="cc" data-lesson="${n}"><span class="tag">${esc(l.label !== l.title ? l.label : l.ds)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>
         <span class="row"><span class="tm">${qs.length} questions · ${esc(l.ds)}</span>${done ? `<span class="dn">${done}/${qs.length} done</span>` : ""}</span></button>`;
     }).join("");
-    main.innerHTML = `<div class="hub">${prog}<section><div class="dshead"><h2>Pick a lesson</h2><span>Each question names the tables it needs. Table names match SQL Server, so queries paste in unchanged.</span></div><div class="cards">${cards}</div></section>
+    main.innerHTML = `<div class="hub">${prog}<section><div class="dshead"><h2>Pick a topic</h2><span>Each question names the tables it needs. Table names match SQL Server, so queries paste in unchanged.</span></div><div class="cards">${cards}</div></section>
       <div class="card"><h2><small>How answers are checked</small></h2><ul>
         <li><b>Auto-check:</b> the page compares the rows you return with the model output. Column order, column names and extra columns do not matter.</li>
         <li><b>Compare:</b> when the answer depends on how you define a metric, open the model answer and compare your logic and numbers.</li></ul></div></div>`;
@@ -150,7 +156,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
     if (target && lv !== "all" && levelKey(target.level) !== lv) lv = "all";   // a deep link must not land on a hidden question
     const levels = ["easy", "mid", "hard"].filter(k => all.some(q => levelKey(q.level) === k));
     const shown = all.map((q, i) => ({ q, i })).filter(({ q }) => lv === "all" || levelKey(q.level) === lv);
-    hdr.innerHTML = `<button class="back" id="bk">← All lessons</button><div class="eyebrow" style="margin-top:6px">${LESSON_LABEL(n)} · ${esc(l.ds)}</div><h1>${esc(l.title)}</h1><p>${esc(l.sub)}</p>`;
+    hdr.innerHTML = `<button class="back" id="bk">← All topics</button><div class="eyebrow" style="margin-top:6px">${esc(l.label)} · ${esc(l.ds)}</div><h1>${esc(l.title)}</h1><p>${esc(l.sub)}</p>`;
     const bar = levels.length > 1 ? `<div class="pgbar" role="group" aria-label="Filter by level">` +
       [["all", "All"], ...levels.map(k => [k, LEVEL_NAME[k]])].map(([k, nm]) => `<button class="chip" data-lv="${k}" aria-pressed="${k === lv}">${nm}${k === "all" ? ` (${all.length})` : ` (${all.filter(q => levelKey(q.level) === k).length})`}</button>`).join("") + `</div>` : "";
     main.innerHTML = `<section class="stack" style="padding-top:20px">` + bar + (shown.length ? "" : `<p class="note">No questions at this level.</p>`) + shown.map(({ q, i }) => `

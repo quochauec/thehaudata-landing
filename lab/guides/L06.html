@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TheHauData Lesson 6 Study Guide</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TheHauData Built-in Functions and Optimisation Study Guide</title>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
@@ -208,9 +208,9 @@ body{margin:0}
 </style>
 
 <header class="top"><div class="wrap">
-  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Lesson 6</div>
+  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Built-in Functions and Optimisation</div>
   <h1>Review, Built-in Functions and SQL Optimisation</h1>
-  <p>One-page recap of Lessons 1–5, the built-in functions you will use daily, two optimisation tips, and a function playground. The homework is shared with Lesson 5.</p>
+  <p>One-page recap of the earlier SQL guides, the built-in functions you will use daily, two optimisation tips, and a function playground. The homework is shared with the CTE and Windows guide.</p>
   <nav class="tabs" role="tablist" aria-label="Study guide sections">
     <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
     <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Practice</button>
@@ -220,10 +220,10 @@ body{margin:0}
 <main class="wrap">
 <section class="view on" id="v-sum" role="tabpanel" aria-labelledby="t-sum">
 
-  <div class="lead"><span>Lesson 6 <b>reviews</b> everything so far, adds the <b>built-in functions</b> that clean and reshape data, and teaches two habits that make queries <b>faster and cheaper</b>.</span>
+  <div class="lead"><span>This guide <b>reviews</b> everything so far, adds the <b>built-in functions</b> that clean and reshape data, and teaches two habits that make queries <b>faster and cheaper</b>.</span>
   <span style="font-weight:500;font-size:14px;opacity:.85">Then play SQL Noir to practise.</span></div>
   <div class="poster">
-    <div class="card c12"><h2><small>Review</small> Lessons 1–5 in one map</h2>
+    <div class="card c12"><h2><small>Review</small> SQL basics to windows in one map</h2>
       <div class="two" style="grid-template-columns:repeat(3,1fr)">
         <div><b>Concepts</b><ul><li>How data is stored: tables, schema, database, warehouse</li><li>Data types</li><li>Fact and dimension tables, keys, relationships</li></ul></div>
         <div><b>Key commands</b><ul><li><code>SELECT FROM WHERE</code></li><li><code>GROUP BY HAVING ORDER BY TOP</code></li><li><code>JOIN</code>, <code>UNION</code>, <code>CASE WHEN</code></li></ul></div>
@@ -234,7 +234,7 @@ body{margin:0}
 
     <div class="card c6"><h2><small>Convert</small> CAST and COALESCE</h2>
       <ul>
-        <li><b><code>CAST(x AS type)</code></b> changes a data type. You used it all through Lesson 3 to join keys of different types, and in Lesson 4 to build percentages.</li>
+        <li><b><code>CAST(x AS type)</code></b> changes a data type. You used it all through Joins and Union to join keys of different types, and in Business Metrics to build percentages.</li>
         <li><b><code>COALESCE(a, b, c)</code></b> returns the first value that is not NULL. Typical use: show 'Cash' when there is no card type, or 0 when a number is missing.</li>
       </ul>
     </div>
@@ -265,19 +265,19 @@ body{margin:0}
         <li><div><b>Remove extra processing.</b> Select only the columns you need. Skip <code>DISTINCT</code>, <code>ORDER BY</code> and extra joins that the result does not need.</div></li>
         <li><div><b>Reduce the dataset early.</b> Filter in WHERE, or inside a subquery or CTE, <b>before</b> joining and grouping. Fewer rows enter every later step.</div></li>
       </ol>
-      <p class="note" style="margin-top:6px">Lesson 4's example: orders have 1M rows × 10 columns, products 100 rows × 100 columns. Trim both to what you use before the JOIN.</p>
+      <p class="note" style="margin-top:6px">The Business Metrics example: orders have 1M rows × 10 columns, products 100 rows × 100 columns. Trim both to what you use before the JOIN.</p>
     </div>
 
     <div class="card c6"><h2><small>Practice</small> SQL Noir</h2>
       <p>The slides end with a detective-style SQL game: <a href="https://www.sqlnoir.com" target="_blank" rel="noopener" style="color:var(--blue)">sqlnoir.com</a>. Solve cases using JOIN, GROUP BY, CTE and window functions.</p>
     </div>
 
-    <div class="card c12"><h2><small>Homework</small> Where the Lesson 5–6 homework uses these functions</h2>
+    <div class="card c12"><h2><small>Homework</small> Where the CTE and Windows homework uses these functions</h2>
       <div class="tbl-wrap"><table class="j"><tr><th>Function</th><th>Where it appears in the answer key</th></tr>
         <tr><td><code>CAST</code></td><td>Joining sub-category and category keys (HW 2, 4, 5, 7, 8, 9) and <code>TRY_CAST</code> in HW 7</td></tr>
         <tr><td><code>COALESCE / CASE</code></td><td>Cash when no card (HW 9)</td></tr>
         <tr><td><code>YEAR / MONTH</code></td><td>Yearly and monthly grouping (HW 3, 4, 5, 7)</td></tr></table></div>
-      <p class="note" style="margin-top:6px">Open the <b>Lesson 5 guide</b> for the 10 homework solutions.</p>
+      <p class="note" style="margin-top:6px">Open the <b>CTE and Windows guide</b> for the 10 homework solutions.</p>
     </div>
 
     <div class="card c12 pit"><h2><small>Watch out</small> Mistakes with built-in functions</h2>
@@ -290,13 +290,13 @@ body{margin:0}
     </div>
   </div>
 
-  <footer>Source: Lesson 6.pdf (Quoc-Hau Le, TheHauData).</footer>
+  <footer>Source: the Built-in Functions and Optimisation slides (Quoc-Hau Le, TheHauData).</footer>
 </section>
 <section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
 
   <div class="bar" id="filters"></div>
   <div id="exlist"></div>
-  <footer>Lesson 6 has no class-practice or homework file of its own: its homework is the same set as Lesson 5 (HW_Ref_solution_L056.sql, stored in both folders). The tasks below are new practice written for this guide, not from the answer key. Results come from running equivalent queries on the CSV files.</footer>
+  <footer>This guide has no class-practice or homework file of its own: its homework is the same set as the CTE and Windows guide (HW_Ref_solution_L056.sql, stored in both folders). The tasks below are new practice written for this guide, not from the answer key. Results come from running equivalent queries on the CSV files.</footer>
 </section>
 <section class="view" id="v-lab" role="tabpanel" aria-labelledby="t-lab">
 
@@ -624,7 +624,7 @@ GROUP BY COALESCE(CardType, 'Cash')
 ORDER BY orders DESC`,
  res:'l6p1',
  chart:{type:'bar',cat:'PaymentMethod',val:'orders',valLabel:'Orders',fmt:'int',title:'Orders by payment method',sub:'Four card brands are close to level. Cash is much smaller.'},
- watch:['In Lesson 4 the key wrote this as <code>CASE WHEN ... THEN \'Cash\'</code>. COALESCE is the shorter form when the test is simply "is it NULL".','If the course database stores missing cards as the text \'NULL\', COALESCE does not see a NULL. Check how missing values are stored first.']},
+ watch:['In Business Metrics the key wrote this as <code>CASE WHEN ... THEN \'Cash\'</code>. COALESCE is the shorter form when the test is simply "is it NULL".','If the course database stores missing cards as the text \'NULL\', COALESCE does not see a NULL. Check how missing values are stored first.']},
 {id:'p2',grp:'Practice (new)',tag:'Practice 2',lvl:'Easy',viLabel:'Task (written for this guide)',
  vi:'How many days does an order take to ship on average, and what are the shortest and longest?',
  en:'Shipping time with DATEDIFF. Then show the first three orders with a date 7 days later (DATEADD).',

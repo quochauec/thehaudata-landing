@@ -1,14 +1,27 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=416838aa49";
-import { mountHomework } from "./homework.js?v=416838aa49";
-import { mountCases } from "./cases.js?v=416838aa49";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=416838aa49";
-import * as sync from "./sync.js?v=416838aa49";
+import * as engine from "./engine.js?v=e9f683d938";
+import { mountHomework } from "./homework.js?v=e9f683d938";
+import { mountCases } from "./cases.js?v=e9f683d938";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=e9f683d938";
+import * as sync from "./sync.js?v=e9f683d938";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
 const ZONES = ["home", "guides", "homework", "cases", "dictionary", "playground"];
-const GUIDES = ["L02", "L03", "L04", "L05", "L06", "L07", "L08", "L09", "L10"];
+// Guides are shown by lesson name; the file key (L02 ...) stays internal. `full` is the lesson title, `short` fits a chip.
+const GUIDE_NAMES = {
+  L02: { full: "Get into SQL", short: "SQL Basics" }, L03: { full: "Combining Data", short: "Joins and Union" },
+  L04: { full: "Business Metrics", short: "Business Metrics" }, L05: { full: "Subquery, CTE and Window Functions", short: "CTE and Windows" },
+  L06: { full: "Built-in Functions and Optimisation", short: "Functions and Tuning" }, L07: { full: "Data Visualization", short: "Viz Basics" },
+  L08: { full: "Data Cleaning", short: "Data Cleaning" }, L09: { full: "RFM Segmentation", short: "RFM" }, L10: { full: "Cohort Retention", short: "Cohort Retention" },
+  L11: { full: "Looker Studio Dashboards", short: "Looker Studio" },
+  L13: { full: "Power BI Basics", short: "Power BI Basics" },
+  L14: { full: "Dashboard Design and DAX", short: "DAX and Design" },
+  L15: { full: "Ask, Define and Structure Analytics Questions", short: "Structuring Questions" },
+  L16: { full: "Analytics Mindset: Metrics and In-Depth Analysis", short: "Metrics and Deep Dives" },
+  L17: { full: "Data Storytelling and Bias in Analytics", short: "Storytelling and Bias" },
+};
+const GUIDES = Object.keys(GUIDE_NAMES);
 const store = {
   get(k) { try { return localStorage.getItem("lab:" + k); } catch (e) { return null; } },
   set(k, v) { try { localStorage.setItem("lab:" + k, v); } catch (e) { } },
@@ -32,8 +45,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=416838aa49");
-  const cs = await json("data/challenges.json?v=416838aa49");
+  hwData ??= await json("data/homework.json?v=e9f683d938");
+  const cs = await json("data/challenges.json?v=e9f683d938");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
@@ -46,9 +59,9 @@ async function home() {
       <li><b>Try first, then compare</b><span>Hints along the way. The model answer opens after your attempt.</span></li></ul>`;
   const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>What's new</small> Latest from the course</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(n.tag)}</span><div><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">Open</button>` : ""}</li>`).join("")}</ul></section>` : "";
   main.innerHTML = `<div class="hub">${newsHtml}<div class="cards homecards">
-      <button class="cc big" data-go="guides"><span class="tag">Lessons 2 to 10</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
-        <span class="row"><span class="tm">${GUIDES.length} lessons</span></span></button>
-      <button class="cc big" data-go="homework"><span class="tag">Lessons 2 to 10</span><b>Homework</b><span class="sk">${hwData.questions.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
+      <button class="cc big" data-go="guides"><span class="tag">SQL, BI and analytics</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
+        <span class="row"><span class="tm">${GUIDES.length} guides</span></span></button>
+      <button class="cc big" data-go="homework"><span class="tag">SQL topics</span><b>Homework</b><span class="sk">${hwData.questions.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
         <span class="row"><span class="tm">${hwData.questions.filter(q => q.check === "auto").length} with auto-check</span>${done ? `<span class="dn">${done}/${hwData.questions.length} done</span>` : ""}</span></button>
       <button class="cc big" data-go="cases"><span class="tag o">3 steps each</span><b>Case Studies</b><span class="sk">${cs.challenges.length} cases: read the request, plan your approach, then solve, chart and conclude.</span>
         <span class="row"><span class="tm">${live} run live on the real tables</span></span></button>
@@ -64,12 +77,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=416838aa49");
+  hwData ??= await json("data/homework.json?v=e9f683d938");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=416838aa49"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=e9f683d938"));
   casesApp.draw();
 }
 
@@ -98,12 +111,12 @@ async function pageFrame(file, title) {
 async function guides() {
   hdr.innerHTML = "";
   let cur = store.get("guide"); if (!GUIDES.includes(cur)) cur = GUIDES[0];
-  main.innerHTML = `<div class="embedbar" role="group" aria-label="Lesson"><span class="lbl">Lesson</span>${GUIDES.map(k => `<button class="chip" data-g="${k}" aria-pressed="false">${parseInt(k.slice(1), 10)}</button>`).join("")}</div><div id="gframe"></div>`;
+  main.innerHTML = `<div class="embedbar" role="group" aria-label="Study guide"><span class="lbl">Guide</span>${GUIDES.map(k => `<button class="chip" data-g="${k}" aria-pressed="false" title="${esc(GUIDE_NAMES[k].full)}">${esc(GUIDE_NAMES[k].short)}</button>`).join("")}</div><div id="gframe"></div>`;
   const show = async k => {
     cur = k; store.set("guide", k);
     $$("[data-g]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.g === k));
     const host = $("#gframe", main); host.innerHTML = "";
-    host.append(await pageFrame(`guides/${k}.html`, `Lesson ${parseInt(k.slice(1), 10)} study guide`));
+    host.append(await pageFrame(`guides/${k}.html`, `${GUIDE_NAMES[k].full} study guide`));
   };
   $$("[data-g]", main).forEach(b => b.onclick = () => show(b.dataset.g));
   await show(cur);
@@ -134,7 +147,7 @@ $$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone, 
 window.addEventListener("message", e => {
   const d = e.data;
   if (!d || d.labGo !== "homework" || !$$("iframe.embed").some(f => f.contentWindow === e.source)) return;
-  try { history.replaceState(null, "", "#homework" + (+d.lesson ? "/" + +d.lesson : "")); } catch (err) { }
+  try { const hl = hwData && hwData.lessons[+d.lesson]; history.replaceState(null, "", "#homework" + (hl ? "/" + hl.slug : "")); } catch (err) { }
   setZone("homework");
 });
 $$("[data-zone-link]").forEach(a => a.onclick = e => { e.preventDefault(); setZone(a.dataset.zoneLink, true); });

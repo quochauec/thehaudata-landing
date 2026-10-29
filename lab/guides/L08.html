@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TheHauData Lesson 8 Study Guide</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TheHauData Data Cleaning Study Guide</title>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
@@ -208,7 +208,7 @@ body{margin:0}
 </style>
 
 <header class="top"><div class="wrap">
-  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Lesson 8</div>
+  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Data Cleaning</div>
   <h1>Data Preprocessing and Advanced SQL</h1>
   <p>Why dirty data wrecks analysis, a checklist of the common problems and their fixes, and the SQL that does the cleaning, including JSON. Practice runs on the GlassDoor data-jobs data used in class.</p>
   <nav class="tabs" role="tablist" aria-label="Study guide sections">
@@ -271,7 +271,7 @@ body{margin:0}
       <p class="note" style="margin-top:6px">Other dialects: <code>JSON_EXTRACT</code> (MySQL), <code>JSON_EXTRACT_SCALAR</code> (BigQuery). Same idea, different name.</p>
     </div>
 
-    <div class="card c12"><h2><small>Homework</small> What the Lesson 8 homework asks</h2>
+    <div class="card c12"><h2><small>Homework</small> What the Data Cleaning homework asks</h2>
       <ol class="steps">
         <li><div>Brainstorm what you will analyze and draw an overview issue tree.</div></li>
         <li><div>From the tree, examine the data and write a preprocessing checklist.</div></li>
@@ -292,13 +292,13 @@ body{margin:0}
     </div>
   </div>
 
-  <footer>Source: _Lesson 8.pdf (Quoc-Hau Le, TheHauData); problem categories on the slides credited to DataCamp. SQL patterns follow Track2_Lesson4_Lecture_sample.sql.</footer>
+  <footer>Source: the Data Cleaning slides (Quoc-Hau Le, TheHauData); problem categories on the slides credited to DataCamp. SQL patterns follow Track2_Lesson4_Lecture_sample.sql.</footer>
 </section>
 <section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
 
   <div class="bar" id="filters"></div>
   <div id="exlist"></div>
-  <footer>The class case study cleans the GlassDoor Data Jobs tables (GlassDoor_DS_Job and GlassDoor_DS_Job_Company_Info, 672 rows each, in Lesson 13). The Lesson 8 homework uses the Audible dataset from Track 2, which is not in this workspace, so the tasks below follow the class case study instead and are written for this guide. Results come from running equivalent queries on the CSV files.</footer>
+  <footer>The class case study cleans the GlassDoor Data Jobs tables (GlassDoor_DS_Job and GlassDoor_DS_Job_Company_Info, 672 rows each, used in Power BI Basics). The Data Cleaning homework uses the Audible dataset from Track 2, which is not in this workspace, so the tasks below follow the class case study instead and are written for this guide. Results come from running equivalent queries on the CSV files.</footer>
 </section>
 <section class="view" id="v-lab" role="tabpanel" aria-labelledby="t-lab">
 
@@ -645,7 +645,7 @@ ORDER BY postings DESC`,
  res:'l8b',
  chart:{type:'bar',cat:'company_size',val:'postings',fmt:'int',hi:['Unknown'],title:'Job postings by company size',sub:'The 44 postings with no size listed are shown in orange.'},
  expect:'Why "Unknown" and not NULL or a guess: for a category column, a visible Unknown bucket keeps the rows and is honest. For a numeric column such as Founded you would set it to NULL so that AVG ignores it.',
- watch:['The class key applies the same CASE to Location, Headquarters, Size, Founded and Type_of_ownership. Repeat it in the same CTE.','Group by the whole CASE expression, not the alias (the Lesson 4 execution-order rule).']},
+ watch:['The class key applies the same CASE to Location, Headquarters, Size, Founded and Type_of_ownership. Repeat it in the same CTE.','Group by the whole CASE expression, not the alias (the execution-order rule from Business Metrics).']},
 {id:'p3',grp:'Missing and inconsistent',tag:'Practice 3',lvl:'Medium',viLabel:'Task (written for this guide)',
  vi:'Cột Company_Name có kèm điểm rating ở cuối (ví dụ "Healthfirst" xuống dòng "3.1"). Hãy tách tên công ty sạch và kiểm tra kết quả.',
  en:'Strip the rating that is glued to the company name, then verify.',
@@ -717,7 +717,7 @@ GROUP BY CASE WHEN LOWER(Job_Title) LIKE '%senior%' OR LOWER(Job_Title) LIKE '%s
 ORDER BY postings DESC`,
  res:'l8e',
  chart:{type:'bar',cat:'seniority',val:'postings',fmt:'int',hi:['Specialist'],title:'Most postings fall into the default Specialist label',sub:'559 of 672 postings. The CASE WHEN has to guess, so check the buckets before you report them.'},
- expect:'The long GROUP BY is why people wrap the CASE in a CTE and group by the alias in the next step (Lesson 5).',
+ expect:'The long GROUP BY is why people wrap the CASE in a CTE and group by the alias in the next step (CTE and Windows).',
  watch:['<code>%sr%</code> matches any title that contains the letters "sr" (for example inside a longer word). It is clean in this data, but check a sample of matches in new data.','"Specialist" is both a real level and the ELSE default, so it hides how many titles had no keyword. Use a separate label such as "Not stated" if you need to tell them apart.','The same pattern builds flag columns: <code>CASE WHEN LOWER(Job_Description) LIKE \'%sql%\' THEN 1 ELSE 0 END</code> (next task).']},
 {id:'p6',grp:'Feature columns',tag:'Practice 6',lvl:'Easy',viLabel:'Task (written for this guide)',
  vi:'Tạo các cột cờ (0/1) kỹ năng từ Job_Description và tính % tin tuyển dụng yêu cầu từng kỹ năng.',

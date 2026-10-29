@@ -2,36 +2,50 @@
  "lessons": {
   "2": {
    "title": "Get into SQL",
+   "label": "SQL Basics",
+   "slug": "sql-basics",
    "sub": "SELECT, WHERE, ORDER BY, TOP, DISTINCT, operators",
    "ds": "ADW"
   },
   "3": {
-   "title": "Combining data",
+   "title": "Combining Data",
+   "label": "Joins and Union",
+   "slug": "combining-data",
    "sub": "JOINs and UNION",
    "ds": "CRM + ADW"
   },
   "4": {
-   "title": "Business metrics",
+   "title": "Business Metrics",
+   "label": "Business Metrics",
+   "slug": "business-metrics",
    "sub": "CASE WHEN, aggregation, order of execution",
    "ds": "ADW"
   },
   "5": {
-   "title": "Subquery, CTE, window functions",
-   "sub": "Lessons 5 and 6 share one homework",
+   "title": "Subquery, CTE and Window Functions",
+   "label": "CTE and Windows",
+   "slug": "cte-windows",
+   "sub": "Shared with the Built-in Functions and Optimisation lesson",
    "ds": "ADW"
   },
   "8": {
-   "title": "Cleaning data",
+   "title": "Data Cleaning",
+   "label": "Data Cleaning",
+   "slug": "data-cleaning",
    "sub": "Missing values, typos, duplicates, outliers and date conversion",
    "ds": "ADW + CRM + GBE"
   },
   "9": {
-   "title": "Customer segmentation with RFM",
+   "title": "RFM Segmentation",
+   "label": "RFM",
+   "slug": "rfm-segmentation",
    "sub": "Recency, frequency, monetary, percentile scores and segments",
    "ds": "ADW"
   },
   "10": {
-   "title": "Cohort retention",
+   "title": "Cohort Retention",
+   "label": "Cohort Retention",
+   "slug": "cohort-retention",
    "sub": "First purchase month, months since first order, retention table",
    "ds": "ADW"
   }
@@ -94,29 +108,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -151,31 +142,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text"
-     ],
-     "nums": [
-      55
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -206,29 +172,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1551,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number"
-     ],
-     "nums": [
-      70032931
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -264,34 +207,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "text",
-      "number"
-     ],
-     "nums": [
-      29641,
-      51131,
-      163930.3943
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -330,34 +245,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 4,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "text",
-      "number"
-     ],
-     "nums": [
-      227667,
-      3445.6884000000005,
-      88630
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -411,58 +298,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 22,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text",
-      "number",
-      "number",
-      "text",
-      "number",
-      "number",
-      "number",
-      "number",
-      "text",
-      "text",
-      "text",
-      "number",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "number"
-     ],
-     "nums": [
-      7620,
-      10,
-      10,
-      1000,
-      750,
-      20403.182999999997,
-      34866.29999999999,
-      40,
-      584.6
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -495,30 +330,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 13,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      110
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -557,36 +368,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 432,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number",
-      "text"
-     ],
-     "nums": [
-      9539410,
-      2712,
-      400,
-      1200517.096300003
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -626,35 +407,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 5445,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      106178517,
-      10960596,
-      21213,
-      5256
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -695,38 +447,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1674,
-     "cols": 9,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      3424816,
-      3170942
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -757,27 +477,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 3,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -808,27 +507,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 7,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -878,37 +556,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 9,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "number",
-      "text"
-     ],
-     "nums": [
-      276985
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -961,30 +608,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 646,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      12838226
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1024,37 +647,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 6,
-     "cols": 6,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      4689,
-      7552.8024,
-      13844.939999999999,
-      3.273168
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1089,33 +681,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 160,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      7964019,
-      4757492,
-      11320468.935500002
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1149,31 +714,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 2,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number"
-     ],
-     "nums": [
-      59284,
-      357865.2059
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1210,31 +750,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1479,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text"
-     ],
-     "nums": [
-      69050980
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1267,30 +782,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 9,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      7749
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1321,27 +812,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 72,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1584,36 +1054,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 3,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      6033,
-      41.976996,
-      1708.047636,
-      5476.553911
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1668,31 +1108,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 6,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "number"
-     ],
-     "nums": [
-      8727
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1805,31 +1220,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number"
-     ],
-     "nums": [
-      27659,
-      31465
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1862,30 +1252,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number"
-     ],
-     "nums": [
-      504
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1920,29 +1286,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 85,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1951,7 +1294,7 @@
    "level": "Medium",
    "ds": "crm",
    "title": "Deals lost in a join",
-   "story": "In Lesson 3 you listed the 2017 won deals priced above the list price and got 1,674. That count missed deals, because the pipeline writes one product as 'GTXPro' and the product list writes 'GTX Pro'. Fix the name and join again. For won deals closed in 2017, return three numbers: how many deals there are, how many found a list price, and how many closed above the list price.",
+   "story": "In Combining Data you listed the 2017 won deals priced above the list price and got 1,674. That count missed deals, because the pipeline writes one product as 'GTXPro' and the product list writes 'GTX Pro'. Fix the name and join again. For won deals closed in 2017, return three numbers: how many deals there are, how many found a list price, and how many closed above the list price.",
    "hint": "Use REPLACE(product, 'GTXPro', 'GTX Pro') in the join condition. After the fix, the number of deals that found a price should equal the number of won deals.",
    "steps": [
     {
@@ -1977,33 +1320,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      4238,
-      4238,
-      2040
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "true,false,true",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": true
-    }
-   },
    "approach": []
   },
   {
@@ -2036,30 +1352,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 4,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number"
-     ],
-     "nums": [
-      15266
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2094,32 +1386,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 137,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      285,
-      285
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2152,31 +1418,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number"
-     ],
-     "nums": [
-      1323,
-      31465
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,true,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2233,35 +1474,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      85,
-      85,
-      0,
-      0
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2298,35 +1510,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 19119,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      393067521,
-      3656843,
-      31465,
-      123216786.11589852
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2363,35 +1546,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 19119,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      393067521,
-      57290,
-      43526,
-      56993
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2428,34 +1582,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 5,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      19119,
-      31465,
-      123216786.1159
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2528,30 +1654,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 19119,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      393067521
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2584,30 +1686,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 38,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number"
-     ],
-     "nums": [
-      19119
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2642,32 +1720,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 485,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      6502,
-      30736
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2706,36 +1758,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 38,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      19119,
-      346,
-      432,
-      876
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {

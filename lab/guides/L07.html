@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TheHauData Lesson 7 Study Guide</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TheHauData Data Visualization Study Guide</title>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
@@ -208,9 +208,9 @@ body{margin:0}
 </style>
 
 <header class="top"><div class="wrap">
-  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Lesson 7</div>
+  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Data Visualization</div>
   <h1>Data Visualization Fundamentals</h1>
-  <p>Why visuals work, the four-step process, how to set the context, and how to pick the right chart. Practice uses the Global Electronics Retailer data from the Lesson 7 homework.</p>
+  <p>Why visuals work, the four-step process, how to set the context, and how to pick the right chart. Practice uses the Global Electronics Retailer data from the Data Visualization homework.</p>
   <nav class="tabs" role="tablist" aria-label="Study guide sections">
     <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
     <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Practice</button>
@@ -229,7 +229,7 @@ body{margin:0}
         <div><b>Easier to understand</b><ul><li>Raw rows become trends, outliers and patterns</li><li>Works for business, marketing, public health</li></ul></div>
         <div><b>Easier to spot errors</b><ul><li>A spike or a hole in a line chart often means a data problem</li><li>Data visualization appears in 20.7% of analyst job postings (slide source: 365 Data Science)</li></ul></div>
       </div>
-      <p class="note" style="margin-top:6px">Where it sits in the process: Lessons 1–6 get and shape the data, Lesson 7 shows it, Lesson 8 onward goes back to deeper analysis.</p>
+      <p class="note" style="margin-top:6px">Where it sits in the process: the SQL guides get and shape the data, this guide shows it, and Data Cleaning onward goes back to deeper analysis.</p>
     </div>
 
     <div class="card c12"><h2><small>Process</small> Four steps to an effective visual</h2>
@@ -286,7 +286,7 @@ body{margin:0}
     </div>
 
     <div class="card c6"><h2><small>Practice</small> Class and homework</h2>
-      <p>The slides send you to a Google Sheets pivot table and pivot chart on the <b>Global Electronics Retailer</b> case study, charting the query results from Lesson 6. The homework has eight business questions: seasonality, category and location share, profit, customer segments, delivery time, online trend, and online vs offline order value.</p>
+      <p>The slides send you to a Google Sheets pivot table and pivot chart on the <b>Global Electronics Retailer</b> case study, charting the query results from Functions and Tuning. The homework has eight business questions: seasonality, category and location share, profit, customer segments, delivery time, online trend, and online vs offline order value.</p>
       <p class="note" style="margin-top:6px">Tab 2 shows the query behind five of them and the chart to choose.</p>
     </div>
 
@@ -300,13 +300,13 @@ body{margin:0}
     </div>
   </div>
 
-  <footer>Source: Lesson 7.pdf (Quoc-Hau Le, TheHauData). Chart guidance in the slides is credited to Storytelling with Data (Cole Nussbaumer Knaflic).</footer>
+  <footer>Source: the Data Visualization slides (Quoc-Hau Le, TheHauData). Chart guidance in the slides is credited to Storytelling with Data (Cole Nussbaumer Knaflic).</footer>
 </section>
 <section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
 
   <div class="bar" id="filters"></div>
   <div id="exlist"></div>
-  <footer>Lesson 7 has no SQL answer key. The class practice and homework build charts with Google Sheets pivot charts from SQL results on the Global Electronics Retailer data. The five tasks below pair each homework question with the query that feeds the chart and the chart you would choose. Results come from running equivalent queries on the CSV files in 2. Datasets. Table and column names follow the CSV headers: adjust them to the names in your database.</footer>
+  <footer>This guide has no SQL answer key. The class practice and homework build charts with Google Sheets pivot charts from SQL results on the Global Electronics Retailer data. The five tasks below pair each homework question with the query that feeds the chart and the chart you would choose. Results come from running equivalent queries on the CSV files in 2. Datasets. Table and column names follow the CSV headers: adjust them to the names in your database.</footer>
 </section>
 <section class="view" id="v-lab" role="tabpanel" aria-labelledby="t-lab">
 
@@ -680,7 +680,7 @@ ORDER BY order_month`,
  en:'Revenue share by category and year: the data for a 100% stacked bar.',
  out:['yr','Category','revenue','pct_of_year'],flt:[],
  blocks:[{base:{t:'GBE_Sales',role:'fact',use:'Order Date, Quantity'},joins:[{type:'JOIN',t:'GBE_Products',key:'ProductKey',adds:'Category, price'}]}],
- st:['Each category share of the year revenue.','Sales for date and quantity, Products for category and price.','Group by year and category. A window SUM partitioned by year gives the yearly total, so the share is one division. This is the Lesson 5 window function.','Home Appliances leads 2016 with 28.9%. Each year adds to 100%.'],
+ st:['Each category share of the year revenue.','Sales for date and quantity, Products for category and price.','Group by year and category. A window SUM partitioned by year gives the yearly total, so the share is one division. This is the window function from CTE and Windows.','Home Appliances leads 2016 with 28.9%. Each year adds to 100%.'],
  sql:`SELECT YEAR(t1.[Order Date]) AS yr
      , t2.Category
      , SUM(t1.Quantity * t2.price) AS revenue

@@ -1,0 +1,1127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>TheHauData Ask, Define and Structure Analytics Questions Study Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky tab bar over three views. Summary = one-page poster grid; Walkthrough = ER map + accordion of exercises; Lab = interactive JOIN/UNION. */
+:root{
+  --navy:#0b2545; --blue:#1f5fbf; --orange:#e8761a;
+  --bg:#f4f6fa; --surface:#ffffff; --fg:#14213a; --muted:#5b6880; --line:#d9e0ec;
+  --blue-soft:#e3edfb; --orange-soft:#fdebd9; --code-bg:#0f1b33; --code-fg:#dbe6fb;
+  --ok:#1b8a5a; --warn:#b45309; --warn-soft:#fdf1dc; --ok-soft:#dff3e9;
+  --kw:#7db4ff; --str:#f6b26b; --cmt:#8d9bb5; --num:#9fe0b5;
+  --c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;--cx:#b9bfcb;--h0:#eaf1fc;--h1:#104281;--htx:#ffffff;
+  --font:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --navy:#9cc0f5; --blue:#6ea4f2; --orange:#f4983f;
+  --bg:#0c1424; --surface:#131e35; --fg:#e6edf9; --muted:#9aa8c4; --line:#263556;
+  --blue-soft:#1a2c4f; --orange-soft:#3a2a17; --code-bg:#080f1d; --code-fg:#dbe6fb;
+  --ok:#4fd39b; --warn:#f2b45a; --warn-soft:#352915; --ok-soft:#14332a; --c1:#3987e5;--c2:#d95926;--c3:#199e70;--cx:#4b5876;--h0:#1a2a4a;--h1:#6da7ec;--htx:#0c1424; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#9cc0f5; --blue:#6ea4f2; --orange:#f4983f;
+  --bg:#0c1424; --surface:#131e35; --fg:#e6edf9; --muted:#9aa8c4; --line:#263556;
+  --blue-soft:#1a2c4f; --orange-soft:#3a2a17; --code-bg:#080f1d; --code-fg:#dbe6fb;
+  --ok:#4fd39b; --warn:#f2b45a; --warn-soft:#352915; --ok-soft:#14332a; --c1:#3987e5;--c2:#d95926;--c3:#199e70;--cx:#4b5876;--h0:#1a2a4a;--h1:#6da7ec;--htx:#0c1424; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px;margin:0}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.2}
+code,.mono{font-family:var(--mono)}
+header.top{background:var(--navy);color:#fff;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+  padding:22px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+:root[data-theme="dark"] header.top{background:#16294d;color:#e6edf9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header.top{background:#16294d;color:#e6edf9}}
+header .wrap{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--orange)}
+header h1{font-size:clamp(24px,4vw,34px);font-weight:800;color:inherit}
+header p{margin:0;opacity:.85;max-width:70ch}
+nav.tabs{display:flex;gap:4px;margin-top:16px;overflow-x:auto}
+nav.tabs button{font:inherit;font-weight:600;font-size:14px;border:0;background:transparent;color:inherit;opacity:.72;padding:11px 16px;border-radius:9px 9px 0 0;cursor:pointer;white-space:nowrap}
+nav.tabs button:hover{opacity:1}
+nav.tabs button[aria-selected="true"]{background:var(--bg);color:var(--fg);opacity:1}
+nav.tabs button:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+section.view{display:none;padding-top:24px}
+section.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.card h2{font-size:15px;font-weight:800;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card h2 small{font-size:11px;color:var(--orange);letter-spacing:.07em;text-transform:uppercase}
+.card p{margin:0 0 8px}.card p:last-child{margin-bottom:0}
+.card ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.lead{background:var(--navy);color:#fff;border-radius:12px;padding:16px 20px;font-size:16px;font-weight:600;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+:root[data-theme="dark"] .lead{background:#16294d;color:#e6edf9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .lead{background:#16294d;color:#e6edf9}}
+.lead b{color:var(--orange)}
+.poster{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:14px}
+.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
+@media(max-width:860px){.c4,.c6,.c8{grid-column:span 12}}
+.pair{display:flex;gap:10px;flex-wrap:wrap}
+.pair>div{flex:1 1 150px;min-width:0;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:13px}
+.pair svg{width:100%;max-width:170px;height:auto}
+.pair b{display:block;font-size:14px;color:var(--fg)}
+.steps{display:grid;gap:8px;counter-reset:s;padding:0;margin:0;list-style:none}
+.steps li{counter-increment:s;display:flex;gap:10px;align-items:flex-start}
+.steps li::before{content:counter(s);flex:none;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;margin-top:1px}
+:root[data-theme="dark"] .steps li::before{color:#08122a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .steps li::before{color:#08122a}}
+.tbl-wrap{overflow-x:auto}
+table.j{border-collapse:collapse;width:100%;font-size:13px}
+table.j th,table.j td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+table.j th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+table.j svg{width:56px;height:32px;display:block}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--blue-soft);color:var(--blue);white-space:nowrap}
+.tag.o{background:var(--orange-soft);color:var(--warn)}
+.tag.g{background:var(--ok-soft);color:var(--ok)}
+.pit li b{color:var(--warn)}
+.keyline{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.rel{display:flex;gap:8px;flex-wrap:wrap;font-size:13px}
+.rel span{background:var(--blue-soft);border-radius:8px;padding:4px 9px}
+/* walkthrough */
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0 12px}
+.chip{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 12px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#08122a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#08122a}}
+.er{overflow-x:auto}
+.er svg{min-width:640px;width:100%;height:auto;display:block}
+.er text{font-family:var(--font)}
+details.ex{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+details.ex>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+details.ex>summary::-webkit-details-marker{display:none}
+details.ex>summary::after{content:"+";margin-left:auto;font-weight:800;color:var(--blue);font-size:18px}
+details.ex[open]>summary::after{content:"–"}
+.ex-title{font-weight:700;flex:1 1 260px;min-width:0}
+.ex-body{padding:0 16px 16px;display:grid;gap:14px}
+.q{background:var(--blue-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.q i{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.stepbox{display:grid;gap:8px}
+.stp{display:grid;grid-template-columns:28px 1fr;gap:10px}
+.stp .n{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center}
+:root[data-theme="dark"] .stp .n{color:#08122a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .stp .n{color:#08122a}}
+.stp b{display:block;font-size:13px}
+.stp div div{font-size:14px}
+.map{display:grid;gap:10px;border:1px dashed var(--line);border-radius:10px;padding:12px}
+.maplabel{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.blk{display:flex;gap:0;align-items:stretch;flex-wrap:wrap}
+.tcard{border:2px solid var(--blue);background:var(--surface);border-radius:9px;padding:8px 10px;font-size:12.5px;min-width:150px;max-width:230px}
+.tcard.base{border-color:var(--orange)}
+.tcard b{display:block;font-family:var(--mono);font-size:12px;word-break:break-all}
+.tcard em{font-style:normal;color:var(--muted);display:block;margin-top:2px}
+.tcard .role{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--orange)}
+.arms{display:grid;gap:8px;align-content:center;padding-left:0}
+.arm{display:flex;align-items:center;gap:0;flex-wrap:nowrap}
+.link{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:128px;padding:0 6px;font-size:11px;color:var(--muted);text-align:center;position:relative}
+.link span.jt{font-weight:800;color:var(--blue);font-size:11px}
+.link::after{content:"";height:2px;background:var(--blue);width:100%;margin-top:2px;position:relative}
+.link span.cast{color:var(--warn);font-weight:700}
+.trunk{width:14px;border-left:2px solid var(--blue);border-top:2px solid var(--blue);border-bottom:2px solid var(--blue);align-self:stretch;margin:14px 0;border-radius:6px 0 0 6px;opacity:.0}
+.comb{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--orange)}
+.comb::before,.comb::after{content:"";flex:1;height:2px;background:var(--orange)}
+.out{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px}
+.out .pill{background:var(--ok-soft);color:var(--ok);border-radius:6px;padding:2px 8px;font-family:var(--mono)}
+.out .flt{background:var(--orange-soft);color:var(--warn);border-radius:6px;padding:2px 8px;font-family:var(--mono)}
+.codewrap{position:relative}
+pre.sql{margin:0;background:var(--code-bg);color:var(--code-fg);border-radius:10px;padding:14px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6}
+pre.sql .k{color:var(--kw);font-weight:500}.sql .s{color:var(--str)}.sql .c{color:var(--cmt)}.sql .nm{color:var(--num)}
+.copy{position:absolute;top:8px;right:8px;font:inherit;font-size:12px;font-weight:600;background:#ffffff1f;color:#fff;border:1px solid #ffffff40;border-radius:6px;padding:3px 9px;cursor:pointer}
+.res{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.res header{display:flex;gap:10px;align-items:baseline;padding:8px 12px;background:var(--ok-soft);color:var(--ok);font-size:13px;font-weight:700;flex-wrap:wrap}
+.res header span{font-weight:500;color:var(--muted);font-size:12px}
+.res .tbl-wrap{padding:0 6px}
+.watch{background:var(--warn-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.watch b{color:var(--warn)}
+.watch ul{margin:4px 0 0;padding-left:18px}
+.note{font-size:12.5px;color:var(--muted)}
+/* lab */
+.lab{display:grid;gap:16px}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ctrl label{font-size:13px;display:flex;gap:6px;align-items:center;margin-left:8px;cursor:pointer}
+.three{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:14px}
+@media(max-width:900px){.three{grid-template-columns:1fr}}
+.three h3{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+table.d{border-collapse:collapse;width:100%;font-size:13px;font-family:var(--mono)}
+table.d th{font-size:11px;text-align:left;padding:5px 8px;color:var(--muted);border-bottom:2px solid var(--line)}
+table.d td{padding:5px 8px;border-bottom:1px solid var(--line)}
+table.d tr.drop{opacity:.35;text-decoration:line-through}
+table.d tr.keep td:first-child{box-shadow:inset 3px 0 0 var(--ok)}
+table.d td.nul{color:var(--orange);font-style:italic}
+table.d tr.m td{background:var(--blue-soft)}
+table.d tr.lo td{background:var(--orange-soft)}
+table.d tr.dup td{background:var(--orange-soft)}
+.cnt{font-weight:800;font-size:22px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:4px}
+footer{margin-top:28px;font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.card,details.ex{transition:border-color .15s}}
+
+/* shared extras */
+.flow{display:flex;gap:6px;flex-wrap:wrap;align-items:stretch}
+.fl{flex:1 1 150px;min-width:0;border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:var(--surface);font-size:12.5px;position:relative}
+.fl b{display:block;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--blue)}
+.fl i{position:absolute;top:-8px;right:8px;font-style:normal;font-size:10px;font-weight:800;background:var(--orange);color:#fff;border-radius:99px;padding:0 6px}
+.fl code{font-size:11.5px;word-break:break-word}
+.fl.skip{opacity:.5}
+.chain{display:flex;gap:0;flex-wrap:wrap;align-items:center;row-gap:8px}
+.cte{border:2px solid var(--blue);border-radius:9px;background:var(--surface);padding:7px 10px;font-size:12.5px;max-width:260px}
+.cte b{display:block;font-family:var(--mono);font-size:12px}
+.cte.fin{border-color:var(--orange)}
+.cte .win{display:block;margin-top:4px;font-family:var(--mono);font-size:11px;color:var(--orange)}
+.chain .ar{padding:0 8px;color:var(--muted);font-weight:800}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.two{grid-template-columns:1fr}}
+.mini{display:grid;gap:10px}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--blue-soft);border-radius:8px;padding:3px 9px;font-size:13px}
+.btn{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 12px;border-radius:8px;cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.in{font:inherit;font-family:var(--mono);font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface);color:var(--fg);min-width:0;width:100%}
+table.d td.hl,table.d th.hl{background:var(--orange-soft)}
+table.d td.cur{box-shadow:inset 0 0 0 2px var(--blue)}
+
+body{margin:0}
+[hidden]{display:none!important}
+
+/* ---- charts ---- */
+.viz{margin:0;border:1px solid var(--line);border-radius:10px;padding:12px 14px 8px;background:var(--surface);position:relative;min-width:0}
+.viz figcaption{display:flex;flex-direction:column;gap:2px;margin-bottom:6px}
+.viz figcaption b{font-size:14.5px;line-height:1.3}
+.viz figcaption span{font-size:12.5px;color:var(--muted)}
+.viz-leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;margin-bottom:4px}
+.viz-leg:empty{display:none}
+.viz-leg .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+.viz-box{position:relative;min-width:0}
+.viz-svg{min-width:0}
+.viz svg{display:block;max-width:100%;overflow:visible;font-size:12px;font-family:var(--font)}
+.viz .vz-t{fill:var(--fg)} .viz .vz-m{fill:var(--muted)}
+.viz .vz-g{stroke:var(--line);stroke-width:1} .viz .vz-ax{stroke:var(--muted);stroke-width:1}
+.viz .vz-x{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.viz .vz-f.s1,.viz .sw.s1{fill:var(--c1);background:var(--c1)} .viz .vz-f.s2,.viz .sw.s2{fill:var(--c2);background:var(--c2)}
+.viz .vz-f.s3,.viz .sw.s3{fill:var(--c3);background:var(--c3)} .viz .vz-f.sx,.viz .sw.sx{fill:var(--cx);background:var(--cx)}
+.viz .vz-l{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round} .viz .vz-l.s1{stroke:var(--c1)} .viz .vz-l.dash{stroke-dasharray:4 4}
+.viz .vz-d{stroke:var(--surface);stroke-width:2} .viz .vz-d.s1{fill:var(--c1)} .viz .vz-d.s2{fill:var(--c2)} .viz .vz-d.hollow{fill:var(--surface);stroke:var(--c1)}
+.viz .vz-hit{fill:transparent}
+.viz .vz-f:hover,.viz .vz-cell:hover{opacity:.82}
+.viz-tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--surface);font-size:12px;padding:4px 8px;border-radius:6px;white-space:nowrap;z-index:5}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Structuring Questions</div>
+  <h1>Ask, Define and Structure Analytics Questions</h1>
+  <p>Turn a vague request into a question you can answer, break it into branches that do not overlap, and check each branch with SQL. Practice on the CRM sales pipeline, AdventureWorks and Global Electronics.</p>
+  <nav class="tabs" role="tablist" aria-label="Study guide sections">
+    <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
+    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Practice</button>
+    <button role="tab" id="t-lab" aria-selected="false" aria-controls="v-lab">3 · Question workshop</button>
+  </nav>
+</div></header>
+<main class="wrap">
+<section class="view on" id="v-sum" role="tabpanel" aria-labelledby="t-sum">
+
+  <div class="lead"><span>Most of the work in an analysis is deciding what to ask. A sharp question saves the queries you would have written for the wrong problem.</span>
+  <span style="font-weight:500;font-size:14px;opacity:.85">Try the question workshop in tab 3.</span></div>
+  <div class="poster">
+    <div class="card c12"><h2><small>Scope</small> What a data analyst gets asked to do</h2>
+      <p>Requests arrive as ad-hoc messages: a Slack line, an email, a question at the end of a meeting. The job is to turn each one into an answer the business can act on. The slides put the Ask and Share steps at about 20% of the workload for 80% of the result.</p>
+      <div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Step in a typical process</th><th>What happens</th></tr>
+        <tr><td><b>Business understanding</b></td><td>Learn how the business makes money and who is asking.</td></tr>
+        <tr><td><b>Ask</b></td><td>Turn the request into a clear analytics question.</td></tr>
+        <tr><td><b>Prepare and Process</b></td><td>Find the data, check it, clean it.</td></tr>
+        <tr><td><b>Analyze</b></td><td>Query, compare, test.</td></tr>
+        <tr><td><b>Share</b></td><td>Present the answer to the people who decide.</td></tr>
+        <tr><td><b>Act</b></td><td>The business does something with it.</td></tr></table></div>
+    </div>
+
+    <div class="card c6"><h2><small>Framework</small> DIKW</h2>
+      <p>Data becomes <b>information</b> when you add context, <b>knowledge</b> when you add meaning, and <b>wisdom</b> when you add insight. A table of 8,800 deals is data. "63.2% of closed deals were won" is information. Knowing that the rate depends on the month of closing is knowledge. Deciding what the team should do about it is wisdom.</p></div>
+    <div class="card c6"><h2><small>Skills</small> Domain knowledge first</h2>
+      <p>A good question needs the business model, the stakeholders, how revenue and cost arise, the competitors and the key metrics. The slides name six business types in tech: e-commerce, SaaS, free mobile app, media site, user-generated content and two-sided marketplace. Each one watches different metrics.</p></div>
+
+    <div class="card c12"><h2><small>Research</small> Business Model Canvas and business stage</h2>
+      <p>The canvas puts a business on one page: customer segments, value proposition, channels, customer relationships, revenue streams, key resources, activities, partners and cost structure. The business stage tells you which question matters now.</p>
+      <div class="tbl-wrap"><table class="j"><tr><th>Stage</th><th>Key focus</th><th>A question that fits</th></tr>
+        <tr><td><b>Empathy</b></td><td>Do people have the problem we solve?</td><td>Who tries the product and why?</td></tr>
+        <tr><td><b>Stickiness</b></td><td>Do people come back?</td><td>What share of customers buy a second time?</td></tr>
+        <tr><td><b>Virality</b> (optional)</td><td>Do users bring others?</td><td>How many new customers come from referrals?</td></tr>
+        <tr><td><b>Revenue</b></td><td>Does each customer pay enough?</td><td>What is the order value, and where is it highest?</td></tr>
+        <tr><td><b>Scale</b></td><td>Can we grow without breaking?</td><td>Which channel scales at a stable cost?</td></tr></table></div>
+    </div>
+
+    <div class="card c12"><h2><small>Anatomy</small> The five parts of an analytics question</h2>
+      <div class="tbl-wrap"><table class="j"><tr><th>Part</th><th>It answers</th><th>Example, from the CRM pipeline</th></tr>
+        <tr><td><b>1. Problem and context (and time)</b></td><td>Why are we asking, and about which data?</td><td>The Sales Director thinks win rate is low. The CRM holds 6,711 closed deals from March to December 2017.</td></tr>
+        <tr><td><b>2. What, how or why</b></td><td>What kind of answer do we need?</td><td>What is the win rate by period and segment?</td></tr>
+        <tr><td><b>3. Metric</b></td><td>How is the answer measured?</td><td>Win rate = Won / (Won + Lost), on closed deals.</td></tr>
+        <tr><td><b>4. Action</b></td><td>What will someone do with it?</td><td>Choose where to coach the team.</td></tr>
+        <tr><td><b>5. Goal and time</b></td><td>How much, by when?</td><td>A recommendation for the next sales review.</td></tr></table></div>
+      <p class="note" style="margin-top:6px">A clear question names a metric and an action. "Why are sales bad?" names neither.</p>
+    </div>
+
+    <div class="card c12"><h2><small>Structure</small> Issue trees and MECE</h2>
+      <p>An issue tree splits one question into branches that together cover it. A good tree is consistent (the same kind of split at each level), MECE and coherent (each branch leads to something you can check). <b>MECE</b> means mutually exclusive and collectively exhaustive. Two tests:</p>
+      <ul>
+        <li><b>Overlap?</b> Can one item sit in two branches? If yes, the branches are not mutually exclusive.</li>
+        <li><b>Full cover?</b> Does every item land in some branch? If not, the branches are not collectively exhaustive.</li>
+      </ul>
+      <div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Way to split</th><th>Idea</th><th>Example</th></tr>
+        <tr><td><b>Process</b></td><td>Steps in order</td><td>Prospecting, Engaging, then Won or Lost</td></tr>
+        <tr><td><b>Math</b></td><td>Parts of a formula</td><td>Revenue = Orders x Average order value</td></tr>
+        <tr><td><b>Components</b></td><td>Parts of a whole</td><td>Revenue by product category</td></tr>
+        <tr><td><b>Segment</b></td><td>Groups of people or places</td><td>Win rate by regional office</td></tr>
+        <tr><td><b>Antonym</b></td><td>Something and its opposite</td><td>Online and not online</td></tr></table></div>
+      <p class="note" style="margin-top:6px">The e-commerce tree on the slides: Revenue = Orders x AOV, and Orders = orders from new customers + orders from repeat customers. Pyramid Principle and SCQA come back in the Storytelling guide.</p>
+    </div>
+
+    <div class="card c12 pit"><h2><small>Watch out</small> Mistakes in a first question</h2>
+      <ul>
+        <li><b>Two win rates in one number.</b> Won / closed is 63.2%. Won / all deals is 48.2%. Write the definition into the question (Practice 1).</li>
+        <li><b>A drop that is a calendar effect.</b> Win rate reads 82.1% in the first quarter and about 61% after it, but that quarter holds only March (Practice 2).</li>
+        <li><b>A tree that only looks complete.</b> Counting sales by reason adds up to 27,647 for 31,465 orders, because some orders have several reasons and some have none (Practice 4).</li>
+        <li><b>A join that drops rows without a warning.</b> The product name GTXPro is spelled GTX Pro in the products table, so 1,480 deals disappear (Practice 4).</li>
+        <li><b>No action.</b> If nobody can say what they would do with the answer, the question is not ready.</li>
+        <li><b>Starting from the data.</b> Checking what the tables hold is fine. Choosing the question from what is easy to query is not.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>Source: the Structuring Questions slides (Quoc-Hau Le, TheHauData). The DIKW framework, the business types and the Business Model Canvas on the slides credit their original authors.</footer>
+</section>
+<section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
+
+  <div class="bar" id="filters"></div>
+  <div id="exlist"></div>
+  <footer>The CRM pipeline has 8,800 deals: 4,238 won, 2,473 lost, 1,589 engaging and 500 prospecting. Closed deals (won or lost) number 6,711 and close between 2017-03-01 and 2017-12-31. AdventureWorks has 31,465 orders from 2011-05-31 to 2014-06-30 and revenue of $109,846,381. Global Electronics has 62,884 order lines. Results come from running equivalent queries on the CSV files.</footer>
+</section>
+<section class="view" id="v-lab" role="tabpanel" aria-labelledby="t-lab">
+
+  <div class="card lab">
+    <h2><small>Tool 1</small> Question builder</h2>
+    <p class="note" style="margin:0 0 8px">Fill the five parts. The tool joins them into one question and flags what is missing or vague.</p>
+    <div class="cp-row">
+      <label>1. Problem and context<input id="qb-ctx" type="text" placeholder="e.g. The Sales Director thinks win rate is low. CRM, 6,711 closed deals, March to December 2017."></label>
+      <label>2. What, how or why<select id="qb-kind"><option value="">Choose</option><option>What</option><option>How</option><option>Why</option></select></label>
+      <label>The question itself<input id="qb-core" type="text" placeholder="e.g. is the win rate by period and by segment, and where does it differ?"></label>
+      <label>3. Metric<input id="qb-metric" type="text" placeholder="e.g. Won / (Won + Lost) on closed deals"></label>
+      <label>4. Action<input id="qb-act" type="text" placeholder="e.g. decide where to coach the team"></label>
+      <label>5. Goal and time<input id="qb-goal" type="text" placeholder="e.g. a recommendation for the next sales review on 15 March"></label>
+    </div>
+    <p style="margin-top:8px"><button class="chip" id="qb-go" type="button">Check my question</button></p>
+    <div class="cp-out" id="qb-out" aria-live="polite"></div>
+  </div>
+
+  <div class="card lab" style="margin-top:12px">
+    <h2><small>Tool 2</small> Sum check for a breakdown</h2>
+    <p class="note" style="margin:0 0 8px">Enter the real total and the sum of your groups. Pick an example to fill both.</p>
+    <div class="cp-row">
+      <label>Example<select id="sc-pick"></select></label>
+      <label>Real total<input id="sc-total" type="number" min="0" step="1"></label>
+      <label>Sum of the groups<input id="sc-sum" type="number" min="0" step="1"></label>
+    </div>
+    <div class="cp-out" id="sc-out" aria-live="polite"></div>
+  </div>
+  <style>
+    .cp-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+    .cp-row label{display:grid;gap:3px;font-size:12px;color:var(--muted)}
+    .cp-row select,.cp-row input{font:inherit;font-size:14px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+    .cp-out{margin-top:10px;display:grid;gap:8px}
+    .cp-out .rec{background:var(--ok-soft);color:var(--ok);border-radius:10px;padding:10px 12px;font-weight:700}
+    .cp-out .rec.bad{background:var(--warn-soft);color:var(--warn)}
+    .cp-out .ln{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface);font-size:14px}
+    .cp-out .ln b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  </style>
+
+</section>
+</main>
+<script>/* Shared engine for TheHauData study guides.
+   A lesson page defines window.GUIDE = { EX, RES, stepNames, er:[{host,W,H,nodes,edges}], open:'id' } then loads this file.
+   Exercise spec: {id,grp,tag,lvl,vi,en,out[],flt[],blocks[],combine,flow[],ctes[],st[],sql,res,resLabel,expect,watch[]} */
+(function(){
+const $ = (s, r=document) => r.querySelector(s);
+const el = (t, a={}, h='') => { const e=document.createElement(t); for(const k in a){ if(k==='class') e.className=a[k]; else e.setAttribute(k,a[k]); } if(h) e.innerHTML=h; return e; };
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+window.G = {$, el, esc};
+
+/* ---------- tabs ---------- */
+const tabs = [...document.querySelectorAll('nav.tabs button')];
+const store = 'tab:'+location.pathname;
+function show(id){
+  tabs.forEach(b=>{ const on=b.id===id; b.setAttribute('aria-selected',on); $('#'+b.getAttribute('aria-controls')).classList.toggle('on',on); });
+  try{ localStorage.setItem(store,id);}catch(e){}
+  window.scrollTo({top:0});
+}
+tabs.forEach(b=>b.addEventListener('click',()=>show(b.id)));
+document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.go);}));
+try{ const t=localStorage.getItem(store); if(t && $('#'+t)) show(t); }catch(e){}
+G.show = show;
+
+/* ---------- SQL highlight ---------- */
+const KW=/\b(SELECT|DISTINCT|TOP|FROM|LEFT|RIGHT|INNER|FULL|CROSS|OUTER|JOIN|ON|WHERE|AND|OR|IN|AS|BETWEEN|UNION|ALL|ORDER|BY|DESC|ASC|IS|NOT|NULL|LIKE|CAST|VARCHAR|NVARCHAR|GROUP|HAVING|CASE|WHEN|THEN|ELSE|END|WITH|OVER|PARTITION|ROWS|UNBOUNDED|PRECEDING|FOLLOWING|CURRENT|ROW|COUNT|SUM|AVG|MIN|MAX|YEAR|MONTH|DAY|DATEDIFF|DATEPART|DATEADD|QUARTER|WEEKDAY|LOWER|LAG|LEAD|RANK|DENSE_RANK|ROW_NUMBER|PERCENT_RANK|COALESCE|LEN|LEFT|RIGHT|REPLACE|TRIM|SUBSTRING|CONCAT|FORMAT|ROUND|INT|DATE)\b/gi;
+function hl(code){
+  return code.split('\n').map(line=>{
+    const i=line.indexOf('--'); let main=line, cm='';
+    if(i>=0){ main=line.slice(0,i); cm=line.slice(i); }
+    let out=''; let last=0; const re=/'(?:[^']|'')*'/g; let m;
+    const seg=t=>esc(t).replace(KW,'<span class="k">$&</span>').replace(/\b\d+(\.\d+)?\b/g,'<span class="nm">$&</span>');
+    while((m=re.exec(main))){ out+=seg(main.slice(last,m.index))+'<span class="s">'+esc(m[0])+'</span>'; last=m.index+m[0].length; }
+    out+=seg(main.slice(last));
+    return out+(cm?'<span class="c">'+esc(cm)+'</span>':'');
+  }).join('\n');
+}
+G.hl = hl;
+document.querySelectorAll('pre.sql[data-hl]').forEach(p=>{ p.innerHTML=hl(p.textContent); });
+
+/* ---------- ER map ---------- */
+G.drawER = function(host,W,H,nodes,edges){
+  const bw=165,bh=52; let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Table relationship map">
+  <defs><marker id="ar${host.id}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="var(--muted)"/></marker></defs>`;
+  const N={}; nodes.forEach(n=>N[n.id]=n);
+  const ctr=n=>[n.x+bw/2,n.y+bh/2];
+  const edge=(a,b)=>{ const [ax,ay]=ctr(a),[bx,by]=ctr(b); const dx=bx-ax,dy=by-ay; const t=Math.min(Math.abs((bw/2+4)/(dx||1e-9)),Math.abs((bh/2+4)/(dy||1e-9)));
+    const p1=[ax+dx*t,ay+dy*t]; const u=Math.min(Math.abs((bw/2+8)/(dx||1e-9)),Math.abs((bh/2+8)/(dy||1e-9))); const p2=[bx-dx*u,by-dy*u]; return [p1,p2]; };
+  edges.forEach(e=>{ const [p1,p2]=edge(N[e.a],N[e.b]); const mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;
+    s+=`<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#ar${host.id})"/>`;
+    const lab=(e.warn?'⚠ ':'')+e.k, w=lab.length*6.4+12;
+    s+=`<rect x="${mx-w/2}" y="${my-9}" width="${w}" height="17" rx="8" fill="var(--surface)" stroke="${e.warn?'var(--warn)':'var(--line)'}"/><text x="${mx}" y="${my+3.5}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${e.warn?'var(--warn)':'var(--fg)'}">${lab}</text>`; });
+  nodes.forEach(n=>{ const c=n.fact?'var(--orange)':'var(--blue)', bg=n.fact?'var(--orange-soft)':'var(--blue-soft)';
+    s+=`<rect x="${n.x}" y="${n.y}" width="${bw}" height="${bh}" rx="8" fill="${bg}" stroke="${c}" stroke-width="2"/>
+    <text x="${n.x+10}" y="${n.y+20}" font-size="12" font-weight="700" fill="var(--fg)" font-family="var(--mono)">${n.id}</text>
+    <text x="${n.x+10}" y="${n.y+38}" font-size="10.5" fill="var(--muted)">${n.sub}</text>`; });
+  host.innerHTML=s+'</svg>';
+};
+
+/* ---------- exercises ---------- */
+function tcard(t,role,sub,isBase){
+  return `<div class="tcard${isBase?' base':''}">${role?`<span class="role">${isBase?'FROM · ':''}${role}</span>`:''}<b>${t}</b>${sub?`<em>${sub}</em>`:''}</div>`;
+}
+function blockHTML(b){
+  let h=`<div>${b.label?`<div class="maplabel" style="margin-bottom:4px">${b.label}</div>`:''}<div class="blk">${tcard(b.base.t,b.base.role,b.base.use,true)}`;
+  if(b.joins && b.joins.length){
+    h+=`<div class="arms">`+b.joins.map(j=>`<div class="arm"><div class="link"><span class="jt">${j.type}</span><span>ON ${j.key}</span>${j.cast?'<span class="cast">⚠ CAST type</span>':''}</div>${tcard(j.t,'',(j.from?`via ${j.from} · `:'')+'adds '+j.adds,false)}</div>`).join('')+`</div>`;
+  }
+  return h+`</div></div>`;
+}
+function flowHTML(f){
+  return `<div class="flow">`+f.map((x,i)=>`<div class="fl${x[2]==='skip'?' skip':''}"><i>${x[3]||i+1}</i><b>${x[0]}</b><code>${esc(x[1])}</code></div>`).join('')+`</div>`;
+}
+function chainHTML(c){
+  return `<div class="chain">`+c.map((x,i)=>`${i?'<span class="ar">→</span>':''}<div class="cte${x.fin?' fin':''}"><b>${esc(x.n)}</b>${esc(x.d)}${x.w?`<span class="win">${esc(x.w)}</span>`:''}</div>`).join('')+`</div>`;
+}
+function resHTML(RES,ids,labels){
+  ids=[].concat(ids||[]); return ids.map((id,i)=>{
+    const r=RES[id]; if(!r) return '';
+    const th=r.cols.map(c=>`<th>${esc(c)}</th>`).join('');
+    const rows=r.sample.map(x=>'<tr>'+x.map(v=>`<td class="${v===null?'nul':''}">${v===null?'NULL':esc(typeof v==='number'?v.toLocaleString('en-US'):v)}</td>`).join('')+'</tr>').join('');
+    return `<div class="res"><header>${labels?labels[i]+' · ':''}${r.n.toLocaleString()} row${r.n===1?'':'s'}<span>first ${Math.min(r.sample.length,r.n)} shown</span></header><div class="tbl-wrap"><table class="d"><tr>${th}</tr>${rows}</table></div></div>`;
+  }).join('');
+}
+G.render = function(cfg){
+  const {EX,RES}=cfg; const steps=cfg.stepNames||['Expected output','Which tables?','Keys & JOIN type','Filter & validate'];
+  const list=$('#exlist');
+  EX.forEach(e=>{
+    const d=el('details',{class:'ex','data-grp':e.grp,id:'ex-'+e.id});
+    const maps=[];
+    if(e.flow) maps.push(`<div class="maplabel">Query in execution order</div>${flowHTML(e.flow)}`);
+    if(e.ctes) maps.push(`<div class="maplabel">CTE chain</div>${chainHTML(e.ctes)}`);
+    if(e.blocks) maps.push(`<div class="maplabel">Table map</div>`+e.blocks.map((b,k)=>blockHTML(b)+(e.combine&&k<e.blocks.length-1?`<div class="comb">${e.combine}</div>`:'')).join(''));
+    const outRow=(e.out&&e.out.length)?`<div class="out"><span class="maplabel">Output</span>${e.out.map(o=>`<span class="pill">${esc(o)}</span>`).join('')}${(e.flt&&e.flt.length)?'<span class="maplabel" style="margin-left:8px">Filter</span>':''}${(e.flt||[]).map(o=>`<span class="flt">${esc(o)}</span>`).join('')}</div>`:'';
+    d.innerHTML=`<summary><span class="tag${e.grp==='Classwork'||/class/i.test(e.grp)?'':' o'}">${e.tag}</span><span class="ex-title">${esc(e.en)}</span><span class="tag g">${e.lvl}</span></summary>
+    <div class="ex-body">
+      <div class="q"><b>${e.viLabel||'Question (Vietnamese, as given)'}</b><br>${esc(e.vi)}</div>
+      <div class="stepbox">${e.st.map((s,k)=>`<div class="stp"><div class="n">${k+1}</div><div><b>${(e.stepNames||steps)[k]||''}</b><div>${s}</div></div></div>`).join('')}</div>
+      ${(maps.length||outRow)?`<div class="map">${maps.join('')}${outRow}</div>`:''}
+      <div class="codewrap"><pre class="sql">${hl(e.sql)}</pre><button class="copy" type="button">Copy</button></div>
+      ${resHTML(RES,e.res,e.resLabel)}${G.chartHTML?G.chartHTML(e,RES):''}${e.expect?`<div class="note">${e.expect}</div>`:''}
+      ${(e.watch&&e.watch.length)?`<div class="watch"><b>Watch out</b><ul>${e.watch.map(w=>`<li>${w}</li>`).join('')}</ul></div>`:''}
+    </div>`;
+    d.querySelector('.copy').addEventListener('click',async ev=>{
+      const btn=ev.currentTarget;
+      try{ await navigator.clipboard.writeText(e.sql); btn.textContent='Copied'; }
+      catch(_){ const r=document.createRange(); r.selectNodeContents(d.querySelector('pre')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent='Selected'; }
+      setTimeout(()=>btn.textContent='Copy',1500);
+    });
+    list.appendChild(d);
+  });
+  if(cfg.open && $('#ex-'+cfg.open)) $('#ex-'+cfg.open).open=true;
+  const groups=['All',...new Set(EX.map(e=>e.grp))];
+  const fb=$('#filters'); let cur='All';
+  groups.forEach(g=>{ const b=el('button',{class:'chip',type:'button','aria-pressed':g==='All'},`${g} <span style="opacity:.7">${g==='All'?EX.length:EX.filter(e=>e.grp===g).length}</span>`);
+    b.addEventListener('click',()=>{cur=g;[...fb.children].forEach(c=>c.setAttribute('aria-pressed',c===b));
+      [...list.children].forEach(d=>d.hidden=!(g==='All'||d.dataset.grp===g));}); fb.appendChild(b); });
+  (cfg.er||[]).forEach(m=>G.drawER($(m.host),m.W,m.H,m.nodes,m.edges));
+  if(G.chartInit)G.chartInit();
+};
+})();
+/* ---- charts: bar, col, line, stack, heat. SVG drawn at the host's real pixel width, redrawn on resize. ---- */
+(function(){
+const G=window.G;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function fv(f,v){
+  v=+v;const a=Math.abs(v);
+  if(f==='usd')return '$'+(a>=1e6?(v/1e6).toFixed(a>=1e7?0:1)+'M':a>=1e3?Math.round(v/1e3)+'K':Math.round(v));
+  if(f==='pct')return (a<10&&v%1?v.toFixed(1):Math.round(v))+'%';
+  if(f==='pct1')return v.toFixed(1)+'%';
+  if(f==='usd0')return '$'+Math.round(v).toLocaleString('en-US');
+  if(f==='days')return v.toFixed(2)+' d';
+  if(f==='n2')return v.toLocaleString('en-US',{maximumFractionDigits:2});
+  return Math.round(v).toLocaleString('en-US');
+}
+function fvFull(f,v){ v=+v; if(f==='usd')return '$'+Math.round(v).toLocaleString('en-US'); return fv(f,v); }
+function nice(max,n){ n=n||4;const raw=max/n,p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p;
+  const s=(m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*p;return {step:s,max:Math.ceil(max/s-1e-9)*s}; }
+function rbar(x,y,w,h,r){ // rounded data end (right), square at the baseline
+  r=Math.min(r,h/2,Math.max(w,0));if(w<=0)return '';
+  return 'M'+x+','+y+'h'+(w-r)+'a'+r+','+r+' 0 0 1 '+r+','+r+'v'+(h-2*r)+'a'+r+','+r+' 0 0 1 -'+r+','+r+'h-'+(w-r)+'z'; }
+function cbar(x,y,w,h,r){ // rounded top, square at the baseline
+  r=Math.min(r,w/2,h);if(h<=0)return '';
+  return 'M'+x+','+(y+h)+'v-'+(h-r)+'a'+r+','+r+' 0 0 1 '+r+',-'+r+'h'+(w-2*r)+'a'+r+','+r+' 0 0 1 '+r+','+r+'v'+(h-r)+'z'; }
+function trunc(s,px){ const n=Math.max(4,Math.floor(px/6.4)); s=String(s); return s.length>n?s.slice(0,n-1)+'…':s; }
+const SER=['s1','s2','s3'];
+const ix=(cols,c)=>cols.indexOf(c);
+
+function prep(spec,r){
+  let cols=r.cols,rows=r.full||(r.sample.length===r.n?r.sample:null);
+  if(!rows)return null;
+  if(spec.wide){ // one row of several columns -> one category per column
+    const row=rows[0];rows=spec.wide.cols.map((c,i)=>[spec.wide.labels[i],row[cols.indexOf(c)]]);cols=['label','value'];
+    spec=Object.assign({},spec,{cat:'label',val:'value'});
+    if(spec.sort)rows.sort((a,b)=>b[1]-a[1]);
+  }
+  return {spec,cols,rows};
+}
+
+function drawBar(W,spec,cols,rows,host){
+  const series=spec.series||[{col:spec.val,label:spec.valLabel||spec.val}];
+  const ci=ix(cols,spec.cat),vi=series.map(s=>ix(cols,s.col));
+  const maxLab=Math.max(...rows.map(r=>String(r[ci]).length));
+  const Lw=Math.min(Math.round(W*0.42),Math.max(60,maxLab*6.6+10));
+  const R=64,rowH=series.length*17+(series.length>1?14:12),top=4;
+  const H=top+rows.length*rowH+4;
+  const max=nice(Math.max(...rows.flatMap(r=>vi.map(i=>+r[i]))),4).max;
+  if(series.length>1)host._legend=series.map((se,j)=>'<span><i class="sw '+SER[j]+'"></i>'+esc(se.label)+'</span>').join('');
+  const pw=W-Lw-R;let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  rows.forEach((r,k)=>{
+    const y0=top+k*rowH,hi=(spec.hi||[]).includes(r[ci]);
+    s+='<text class="vz-t" x="'+(Lw-8)+'" y="'+(y0+rowH/2+4)+'" text-anchor="end">'+esc(trunc(r[ci],Lw-10))+'</text>';
+    series.forEach((se,j)=>{
+      const v=+r[vi[j]],w=Math.max(0,v/max*pw),by=y0+(rowH-series.length*15-(series.length-1)*2)/2+j*17;
+      const cls=series.length>1?SER[j]:(hi?'s2':'s1');
+      s+='<path class="vz-f '+cls+'" d="'+rbar(Lw,by,w,15,4)+'" data-tip="'+esc(r[ci])+(series.length>1?' · '+esc(se.label):'')+': '+fvFull(spec.fmt,v)+'"/>';
+      s+='<text class="vz-m" x="'+(Lw+w+6)+'" y="'+(by+11.5)+'">'+fv(spec.fmt,v)+'</text>';
+    });
+  });
+  return s+'<line class="vz-ax" x1="'+Lw+'" x2="'+Lw+'" y1="'+top+'" y2="'+(H-4)+'"/></svg>';
+}
+function drawCol(W,spec,cols,rows){
+  const ci=ix(cols,spec.cat),vi=ix(cols,spec.val),H=240,L=46,Rr=12,T=22,B=30;
+  const n=nice(Math.max(...rows.map(r=>+r[vi])),4),pw=W-L-Rr,ph=H-T-B,slot=pw/rows.length,bw=Math.min(90,slot*0.5);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  for(let t=0;t<=n.max+1e-9;t+=n.step){const y=T+ph-t/n.max*ph;
+    s+='<line class="'+(t?'vz-g':'vz-ax')+'" x1="'+L+'" x2="'+(W-Rr)+'" y1="'+y+'" y2="'+y+'"/><text class="vz-m" x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end">'+fv(spec.tfmt||spec.fmt,t)+'</text>';}
+  rows.forEach((r,k)=>{const v=+r[vi],h=v/n.max*ph,x=L+k*slot+(slot-bw)/2,hi=(spec.hi||[]).includes(r[ci]);
+    s+='<path class="vz-f '+(hi?'s2':'s1')+'" d="'+cbar(x,T+ph-h,bw,h,4)+'" data-tip="'+esc(r[ci])+': '+fvFull(spec.fmt,v)+'"/>';
+    s+='<text class="vz-t" x="'+(x+bw/2)+'" y="'+(T+ph-h-6)+'" text-anchor="middle" font-weight="600">'+fv(spec.fmt,v)+'</text>';
+    s+='<text class="vz-t" x="'+(x+bw/2)+'" y="'+(H-10)+'" text-anchor="middle">'+esc(r[ci])+'</text>';});
+  return s+'</svg>';
+}
+function drawLine(W,spec,cols,rows){
+  const xi=ix(cols,spec.x),yi=ix(cols,spec.y),H=W<480?210:250,L=W<480?42:50,Rr=W<480?48:62,T=16,B=26;
+  const pw=W-L-Rr,ph=H-T-B,N=rows.length,ys=rows.map(r=>+r[yi]);
+  const n=nice(Math.max(...ys),4);
+  const X=i=>L+(N>1?i/(N-1)*pw:pw/2),Y=v=>T+ph-v/n.max*ph;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  for(let t=0;t<=n.max+1e-9;t+=n.step)
+    s+='<line class="'+(t?'vz-g':'vz-ax')+'" x1="'+L+'" x2="'+(W-Rr)+'" y1="'+Y(t)+'" y2="'+Y(t)+'"/><text class="vz-m" x="'+(L-6)+'" y="'+(Y(t)+4)+'" text-anchor="end">'+fv(spec.tfmt||spec.fmt,t)+'</text>';
+  const lab=rows.map(r=>String(r[xi]));const isM=lab.every(l=>/^\d{4}-\d{2}$/.test(l));
+  const maxT=Math.max(2,Math.floor(pw/54));let ticks=[];
+  if(isM){const jan=lab.map((l,i)=>l.endsWith('-01')?i:-1).filter(i=>i>=0);const k=Math.ceil(jan.length/maxT);ticks=jan.filter((_,j)=>j%k===0).map(i=>[i,lab[i].slice(0,4)]);}
+  else{const k=Math.ceil(N/maxT);ticks=lab.map((l,i)=>[i,l]).filter(([i])=>i%k===0);}
+  ticks.forEach(([i,t])=>{s+='<text class="vz-m" x="'+X(i)+'" y="'+(H-8)+'" text-anchor="middle">'+esc(t)+'</text>';});
+  const pts=ys.map((v,i)=>[X(i),Y(v)]);const pl=spec.partialLast&&N>2;
+  const main=pl?pts.slice(0,-1):pts;
+  s+='<path class="vz-l s1" d="M'+main.map(p=>p.join(',')).join('L')+'"/>';
+  if(pl)s+='<path class="vz-l s1 dash" d="M'+pts[N-2].join(',')+'L'+pts[N-1].join(',')+'"/>';
+  const last=pts[N-1];
+  s+='<circle class="vz-d s1'+(pl?' hollow':'')+'" cx="'+last[0]+'" cy="'+last[1]+'" r="4"/>';
+  s+='<text class="vz-t" x="'+(last[0]+8)+'" y="'+(last[1]+4)+'" font-weight="600">'+fv(spec.fmt,ys[N-1])+'</text>';
+  if(pl)s+='<text class="vz-m" x="'+(last[0]+8)+'" y="'+(last[1]+18)+'">partial</text>';
+  if(spec.peak){const m=ys.indexOf(Math.max(...ys.slice(0,pl?N-1:N)));
+    s+='<circle class="vz-d s2" cx="'+pts[m][0]+'" cy="'+pts[m][1]+'" r="4"/><text class="vz-t" x="'+Math.min(pts[m][0],W-Rr-70)+'" y="'+(pts[m][1]-9)+'" font-weight="600">Peak '+fv(spec.fmt,ys[m])+'</text>';}
+  if(spec.first){s+='<circle class="vz-d s1" cx="'+pts[0][0]+'" cy="'+pts[0][1]+'" r="4"/><text class="vz-t" x="'+(pts[0][0]+2)+'" y="'+(pts[0][1]-9)+'" font-weight="600">'+fv(spec.fmt,ys[0])+'</text>';}
+  s+='<line class="vz-x" id="vzx" x1="0" x2="0" y1="'+T+'" y2="'+(T+ph)+'" visibility="hidden"/><circle class="vz-d s1" id="vzc" r="5" visibility="hidden"/>';
+  const sw=pw/Math.max(N-1,1);
+  rows.forEach((r,i)=>{s+='<rect class="vz-hit" x="'+(X(i)-sw/2)+'" y="'+T+'" width="'+sw+'" height="'+ph+'" data-i="'+i+'" data-px="'+X(i)+'" data-py="'+Y(ys[i])+'" data-tip="'+esc(r[xi])+': '+fvFull(spec.fmt,ys[i])+((pl&&i===N-1)?' (partial)':'')+'"/>';});
+  return s+'</svg>';
+}
+function drawStack(W,spec,cols,rows,host){
+  const xi=ix(cols,spec.x),ci=ix(cols,spec.cat),vi=ix(cols,spec.val);
+  const years=[...new Set(rows.map(r=>r[xi]))].sort(),totals={};
+  rows.forEach(r=>{totals[r[ci]]=(totals[r[ci]]||0)+ +r[vi];});
+  const top=Object.keys(totals).sort((a,b)=>totals[b]-totals[a]).slice(0,spec.top||3);
+  const segs=top.concat(['Other']);
+  host._legend=segs.map((n,i)=>'<span><i class="sw '+(i<top.length?SER[i]:'sx')+'"></i>'+esc(n)+'</span>').join('');
+  const H=250,L=40,Rr=W<560?8:132,T=10,B=26,pw=W-L-Rr,ph=H-T-B,slot=pw/years.length,bw=Math.min(76,slot*0.62);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  [0,25,50,75,100].forEach(t=>{const y=T+ph-t/100*ph;s+='<line class="'+(t?'vz-g':'vz-ax')+'" x1="'+L+'" x2="'+(W-Rr)+'" y1="'+y+'" y2="'+y+'"/><text class="vz-m" x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end">'+t+'%</text>';});
+  years.forEach((yr,k)=>{
+    const x=L+k*slot+(slot-bw)/2,share={};let acc=0;
+    segs.forEach(n=>share[n]=0);
+    rows.filter(r=>r[xi]===yr).forEach(r=>{const n=top.includes(r[ci])?r[ci]:'Other';share[n]+= +r[vi];});
+    const sum=segs.reduce((a,n)=>a+share[n],0);
+    segs.forEach((n,i)=>{const h=share[n]/sum*ph;if(h<=0)return;const y=T+ph-acc-h;acc+=h;
+      s+='<rect class="vz-f '+(i<top.length?SER[i]:'sx')+'" x="'+x+'" y="'+(y+0.5)+'" width="'+bw+'" height="'+Math.max(h-1,0.5)+'" rx="1.5" data-tip="'+yr+' · '+esc(n)+': '+(share[n]/sum*100).toFixed(1)+'%"/>';
+      if(k===years.length-1&&W>=560)s+='<text class="vz-t" x="'+(x+bw+8)+'" y="'+(y+h/2+4)+'">'+esc(trunc(n,Rr-12))+' '+(share[n]/sum*100).toFixed(0)+'%</text>';});
+    s+='<text class="vz-m" x="'+(x+bw/2)+'" y="'+(H-8)+'" text-anchor="middle">'+yr+'</text>';
+  });
+  return s+'</svg>';
+}
+function drawHeat(W,spec,cols,rows){
+  const ci=ix(cols,spec.cat),vcols=spec.vals,vi=vcols.map(c=>ix(cols,c));
+  const L=Math.min(86,W*0.22),T=26,cw=(W-L-4)/vcols.length,ch=Math.min(32,Math.max(24,cw*0.55)),H=T+rows.length*ch+4;
+  const vals=rows.flatMap(r=>vi.map(i=>+r[i]).filter(v=>!isNaN(v)));const mx=Math.max(...vals);
+  const heads=spec.heads||vcols;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  vcols.forEach((c,j)=>{s+='<text class="vz-m" x="'+(L+j*cw+cw/2)+'" y="'+(T-9)+'" text-anchor="middle">'+esc(heads[j])+'</text>';});
+  rows.forEach((r,k)=>{
+    s+='<text class="vz-t" x="'+(L-8)+'" y="'+(T+k*ch+ch/2+4)+'" text-anchor="end">'+esc(r[ci])+'</text>';
+    vi.forEach((i,j)=>{const v=+r[i],t=Math.min(1,v/mx),hi=t>0.45;
+      s+='<rect class="vz-cell" x="'+(L+j*cw+1)+'" y="'+(T+k*ch+1)+'" width="'+(cw-2)+'" height="'+(ch-2)+'" rx="3" style="fill:color-mix(in srgb,var(--h1) '+Math.round(t*100)+'%,var(--h0))" data-tip="'+esc(r[ci])+' · '+esc(heads[j])+': '+v.toFixed(1)+'%"/>';
+      s+='<text x="'+(L+j*cw+cw/2)+'" y="'+(T+k*ch+ch/2+4)+'" text-anchor="middle" style="fill:var('+(hi?'--htx':'--fg')+');pointer-events:none">'+v.toFixed(1)+'</text>';});
+  });
+  return s+'</svg>';
+}
+const DRAW={bar:drawBar,col:drawCol,line:drawLine,stack:drawStack,heat:drawHeat};
+
+function paint(host){
+  const W=Math.floor(host.clientWidth);if(W<120||host._w===W)return;host._w=W;
+  const P=host._p;const svg=DRAW[P.spec.type](W,P.spec,P.cols,P.rows,host);
+  host.querySelector('.viz-leg').innerHTML=host._legend||'';
+  host.querySelector('.viz-svg').innerHTML=svg;
+}
+function wire(host){
+  const tip=host.querySelector('.viz-tip'),box=host.querySelector('.viz-svg');
+  box.addEventListener('pointermove',ev=>{
+    const t=ev.target.closest&&ev.target.closest('[data-tip]');
+    if(!t){tip.hidden=true;return;}
+    tip.textContent=t.getAttribute('data-tip');tip.hidden=false;
+    const b=box.getBoundingClientRect();let x=ev.clientX-b.left+12,y=ev.clientY-b.top-34;
+    x=Math.min(x,b.width-tip.offsetWidth-4);tip.style.left=Math.max(0,x)+'px';tip.style.top=Math.max(0,y)+'px';
+    if(t.dataset.i!==undefined){const vx=box.querySelector('#vzx'),vc=box.querySelector('#vzc');
+      vx.setAttribute('x1',t.dataset.px);vx.setAttribute('x2',t.dataset.px);vc.setAttribute('cx',t.dataset.px);vc.setAttribute('cy',t.dataset.py);
+      vx.setAttribute('visibility','visible');vc.setAttribute('visibility','visible');}
+  });
+  box.addEventListener('pointerleave',()=>{tip.hidden=true;const vx=box.querySelector('#vzx'),vc=box.querySelector('#vzc');if(vx){vx.setAttribute('visibility','hidden');vc.setAttribute('visibility','hidden');}});
+}
+G.chartHTML=function(e,RES){
+  if(!e.chart)return '';
+  const r=RES[[].concat(e.res||[])[0]];if(!r)return '';
+  const P=prep(e.chart,r);if(!P)return '';
+  const id='viz-'+e.id;G._viz=G._viz||{};G._viz[id]=P;
+  return '<figure class="viz" id="'+id+'"><figcaption><b>'+esc(e.chart.title)+'</b><span>'+esc(e.chart.sub||'')+'</span></figcaption><div class="viz-leg"></div><div class="viz-box"><div class="viz-svg"></div><div class="viz-tip" hidden></div></div></figure>';
+};
+G.chartInit=function(){
+  document.querySelectorAll('figure.viz').forEach(h=>{
+    h._p=G._viz[h.id];wire(h);
+    new ResizeObserver(()=>paint(h)).observe(h);paint(h);
+  });
+};
+})();
+</script>
+<script>
+const RES = {"l15a": {"cols": ["deal_stage", "deals", "pct_of_deals", "first_close", "last_close", "close_value"], "n": 4, "sample": [["Won", 4238, 48.2, "2017-03-01", "2017-12-31", 10005534], ["Lost", 2473, 28.1, "2017-03-01", "2017-12-31", 0], ["Engaging", 1589, 18.1, null, null, null], ["Prospecting", 500, 5.7, null, null, null]], "full": [["Won", 4238, 48.2, "2017-03-01", "2017-12-31", 10005534], ["Lost", 2473, 28.1, "2017-03-01", "2017-12-31", 0], ["Engaging", 1589, 18.1, null, null, null], ["Prospecting", 500, 5.7, null, null, null]]}, "l15a2": {"cols": ["all_deals", "closed_deals", "won_deals", "win_rate_closed_pct", "win_rate_all_pct", "avg_won_value"], "n": 1, "sample": [[8800, 6711, 4238, 63.2, 48.2, 2361.0]], "full": [[8800, 6711, 4238, 63.2, 48.2, 2361.0]]}, "l15b": {"cols": ["close_quarter", "months_in_data", "closed_deals", "won", "win_rate_pct"], "n": 4, "sample": [["2017-Q1", 1, 647, 531, 82.1], ["2017-Q2", 3, 2032, 1254, 61.7], ["2017-Q3", 3, 2047, 1257, 61.4], ["2017-Q4", 3, 1985, 1196, 60.3]], "full": [["2017-Q1", 1, 647, 531, 82.1], ["2017-Q2", 3, 2032, 1254, 61.7], ["2017-Q3", 3, 2047, 1257, 61.4], ["2017-Q4", 3, 1985, 1196, 60.3]]}, "l15b2": {"cols": ["branch", "groups", "deals_covered", "lowest_win_rate", "highest_win_rate", "spread_pts"], "n": 4, "sample": [["Regional office", 3, 6711, 62.6, 63.9, 1.4], ["Manager", 6, 6711, 62.1, 64.4, 2.3], ["Account sector", 10, 6711, 61.2, 64.8, 3.7], ["Product", 7, 6711, 60.0, 64.8, 4.8]], "full": [["Regional office", 3, 6711, 62.6, 63.9, 1.4], ["Manager", 6, 6711, 62.1, 64.4, 2.3], ["Account sector", 10, 6711, 61.2, 64.8, 3.7], ["Product", 7, 6711, 60.0, 64.8, 4.8]]}, "l15b3": {"cols": ["close_month", "closed_deals", "win_rate_pct"], "n": 10, "sample": [[3, 647, 82.1], [4, 586, 48.6], [5, 805, 54.4], [6, 641, 82.8], [7, 627, 49.1], [8, 785, 56.8], [9, 635, 79.2], [10, 566, 49.3], [11, 768, 52.9], [12, 651, 78.5]], "full": [[3, 647, 82.1], [4, 586, 48.6], [5, 805, 54.4], [6, 641, 82.8], [7, 627, 49.1], [8, 785, 56.8], [9, 635, 79.2], [10, 566, 49.3], [11, 768, 52.9], [12, 651, 78.5]]}, "l15b4": {"cols": ["regional_office", "win_rate_march", "win_rate_apr_to_dec"], "n": 3, "sample": [["Central", 79.3, 60.8], ["East", 82.2, 61.0], ["West", 84.8, 61.5]], "full": [["Central", 79.3, 60.8], ["East", 82.2, 61.0], ["West", 84.8, 61.5]]}, "l15b5": {"cols": ["quarter_end_month", "closed_deals", "win_rate_pct"], "n": 4, "sample": [["2017-Q1 (March)", 647, 82.1], ["2017-Q2 (June)", 641, 82.8], ["2017-Q3 (September)", 635, 79.2], ["2017-Q4 (December)", 651, 78.5]], "full": [["2017-Q1 (March)", 647, 82.1], ["2017-Q2 (June)", 641, 82.8], ["2017-Q3 (September)", 635, 79.2], ["2017-Q4 (December)", 651, 78.5]]}, "l15c": {"cols": ["channel", "orders", "pct_of_orders", "revenue", "pct_of_revenue", "aov"], "n": 2, "sample": [["Sales rep", 3806, 12.1, 80487704.0, 73.3, 21148.0], ["Online", 27659, 87.9, 29358677.0, 26.7, 1061.0]], "full": [["Sales rep", 3806, 12.1, 80487704.0, 73.3, 21148.0], ["Online", 27659, 87.9, 29358677.0, 26.7, 1061.0]]}, "l15c2": {"cols": ["category", "revenue", "pct_of_revenue"], "n": 4, "sample": [["Bikes", 94651173.0, 86.2], ["Components", 11802593.0, 10.7], ["Clothing", 2120543.0, 1.9], ["Accessories", 1272073.0, 1.2]], "full": [["Bikes", 94651173.0, 86.2], ["Components", 11802593.0, 10.7], ["Clothing", 2120543.0, 1.9], ["Accessories", 1272073.0, 1.2]]}, "l15c3": {"cols": ["customers", "orders", "orders_per_customer", "pct_customers_2plus_orders", "first_order_date", "last_order_date"], "n": 1, "sample": [[19119, 31465, 1.65, 39.1, "2011-05-31", "2014-06-30"]], "full": [[19119, 31465, 1.65, 39.1, "2011-05-31", "2014-06-30"]]}, "l15c4": {"cols": ["orders", "days_with_orders", "orders_per_active_day", "revenue_per_active_day"], "n": 1, "sample": [[31465, 1124, 28.0, 97728.0]], "full": [[31465, 1124, 28.0, 97728.0]]}, "l15d": {"cols": ["breakdown", "rows_in_total", "sum_of_groups"], "n": 4, "sample": [["GBE order lines by store country (online counts as one group)", 62884, 62884], ["ADW orders by sales reason", 31465, 27647], ["CRM deals by account sector", 8800, 7375], ["CRM deals by product, using the products table", 8800, 7320]], "full": [["GBE order lines by store country (online counts as one group)", 62884, 62884], ["ADW orders by sales reason", 31465, 27647], ["CRM deals by account sector", 8800, 7375], ["CRM deals by product, using the products table", 8800, 7320]]}, "l15d2": {"cols": ["orders_with_a_reason", "orders_without_a_reason", "orders_with_2plus_reasons", "reason_rows"], "n": 1, "sample": [[23012, 8453, 4482, 27647]], "full": [[23012, 8453, 4482, 27647]]}, "l15d3": {"cols": ["product_in_pipeline", "deals"], "n": 1, "sample": [["GTXPro", 1480]], "full": [["GTXPro", 1480]]}, "l15d4": {"cols": ["deals_without_account", "of_which_closed"], "n": 1, "sample": [[1425, 0]], "full": [[1425, 0]]}};
+
+const EX=[
+{id:'p1',grp:'Define the question',tag:'Practice 1',lvl:'Easy',viLabel:'Task (written for this guide)',
+ vi:'Giám đốc kinh doanh nhắn trên Slack: "Win rate dạo này có vẻ thấp, pipeline cũng mỏng. Em xem giúp anh sales đang gặp vấn đề gì và nên làm gì nhé." Hãy viết lại thành một câu hỏi phân tích đủ 5 phần (bối cảnh, cái gì/như thế nào/tại sao, chỉ số, hành động, mục tiêu và thời gian). Trước khi hỏi lại sếp, dùng SQL xem pipeline đang có gì.',
+ en:'Turn a vague Slack message into an analytics question with the five parts, after a quick look at what the CRM pipeline holds.',
+ out:['deal_stage','deals','pct_of_deals','first_close','last_close','close_value','all_deals','closed_deals','won_deals','win_rate_closed_pct','win_rate_all_pct','avg_won_value'],flt:[],
+ blocks:[{base:{t:'CRM_sales_pipeline',role:'fact',use:'deal_stage, close_date, close_value'},joins:[]}],
+ st:['A question the Sales Director can confirm, with a metric defined and an action named.','The CRM pipeline: 8,800 deals, one row per deal, with stage, dates and value.','COUNT by deal stage shows what exists. Two win-rate definitions show why the metric needs a written definition.','Won 4,238 (48.2%), Lost 2,473 (28.1%), Engaging 1,589 (18.1%), Prospecting 500 (5.7%). Win rate is 63.2% of closed deals but 48.2% of all deals. Open deals number 2,089 and carry no close date.'],
+ sql:`-- What is in the pipeline?
+SELECT deal_stage
+     , COUNT(*) AS deals
+     , ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 1) AS pct_of_deals
+     , MIN(close_date) AS first_close
+     , MAX(close_date) AS last_close
+     , SUM(close_value) AS close_value
+FROM CRM_sales_pipeline
+GROUP BY deal_stage
+ORDER BY deals DESC
+
+-- Two ways to read "win rate"
+SELECT COUNT(*) AS all_deals
+     , SUM(CASE WHEN deal_stage IN ('Won', 'Lost') THEN 1 ELSE 0 END) AS closed_deals
+     , SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) AS won_deals
+     , ROUND(100.0 * SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) / SUM(CASE WHEN deal_stage IN ('Won', 'Lost') THEN 1 ELSE 0 END), 1) AS win_rate_closed_pct
+     , ROUND(100.0 * SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) / COUNT(*), 1) AS win_rate_all_pct
+     , ROUND(AVG(CASE WHEN deal_stage = 'Won' THEN close_value END), 0) AS avg_won_value
+FROM CRM_sales_pipeline`,
+ res:['l15a','l15a2'],resLabel:['What the pipeline holds','Two readings of win rate'],
+ chart:{type:'bar',cat:'deal_stage',val:'deals',fmt:'int',hi:['Won'],title:'4,238 of 8,800 deals are won, 2,089 are still open',sub:'Engaging and Prospecting deals have no close date, so they cannot be placed in a month.'},
+ expect:`<b>Rewrite.</b><div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Part</th><th>The rewritten question</th></tr>
+ <tr><td><b>Problem and context</b></td><td>The Sales Director feels win rate is low and the pipeline is thin. The CRM holds 8,800 deals, 6,711 of them closed between March and December 2017.</td></tr>
+ <tr><td><b>What, how or why</b></td><td>What is the win rate by period and by segment, and where is it lower than elsewhere?</td></tr>
+ <tr><td><b>Metric</b></td><td>Win rate = Won / (Won + Lost) on closed deals, 63.2% overall. Pipeline size = number of open deals (Engaging + Prospecting), 2,089.</td></tr>
+ <tr><td><b>Action</b></td><td>Decide where to coach the team or review the sales process.</td></tr>
+ <tr><td><b>Goal and time</b></td><td>A recommendation for the next sales review. To confirm with the Director: the date and what rate counts as healthy.</td></tr></table></div>
+ <div style="margin-top:8px"><b>Questions to send back before you query anything:</b> Low compared with what: last quarter, a target, another team? What does "thin" mean: fewer deals, or less value? Who decides what to do with the answer?</div>`,
+ watch:['The message holds two claims, low win rate and thin pipeline, and a request for a diagnosis and a decision. Split them before you start: each gets its own metric.','Write the win-rate definition into the question. Counting every deal in the denominator gives 48.2%, and the Director may be reading either number.','"Thin" cannot be measured as value here. Lost deals carry a value of 0 and open deals have none, so only counts are available, and there is no earlier snapshot to compare with.','1,425 of the open deals have no account. That limits any cut by customer sector later (Practice 4).']},
+{id:'p2',grp:'Structure the question',tag:'Practice 2',lvl:'Medium',viLabel:'Task (written for this guide)',
+ vi:'Sau buổi họp, sếp nói: "Win rate quý 1 là 82%, các quý sau chỉ còn khoảng 61%. Vì sao win rate giảm?" Hãy vẽ cây vấn đề cho câu hỏi này bằng ít nhất hai cách chia (theo phân khúc và theo thời gian), kiểm tra các nhánh có MECE không bằng SQL, rồi cho biết nhánh nào thật sự giải thích mức giảm.',
+ en:'Build an issue tree for "why did win rate drop?", test that its branches cover every closed deal, and find which branch explains the drop.',
+ out:['close_quarter','months_in_data','closed_deals','won','win_rate_pct','branch','groups','deals_covered','lowest_win_rate','highest_win_rate','spread_pts','close_month','regional_office','win_rate_march','win_rate_apr_to_dec','quarter_end_month'],flt:[],
+ blocks:[{base:{t:'CRM_sales_pipeline',role:'fact',use:'deal_stage, close_date, product'},joins:[{type:'JOIN',t:'CRM_sales_teams',key:'sales_agent',adds:'regional_office, manager'},{type:'JOIN',t:'CRM_Accounts',key:'account',adds:'sector'}]}],
+ ctes:[{n:'r',d:'deals and win rate per group, for four ways to split',w:'GROUP BY',fin:1}],
+ st:['A tree that explains the drop in win rate, with each branch checked against the data.','Closed deals (Won or Lost) from the pipeline, joined to the sales team and the account.','Win rate by quarter first. Then four segment splits, each checked for full cover. Then month by month, and March against the rest by office.','Four quarters: 82.1%, 61.7%, 61.4%, 60.3%, but the first quarter holds only March. All four segment splits cover the 6,711 closed deals and differ by only 1.4 to 4.8 points. Quarter-end months run 78.5% to 82.8%, the others 48.6% to 56.8%.'],
+ sql:`-- Win rate by close quarter
+SELECT CASE WHEN MONTH(close_date) IN (1, 2, 3) THEN '2017-Q1'
+            WHEN MONTH(close_date) IN (4, 5, 6) THEN '2017-Q2'
+            WHEN MONTH(close_date) IN (7, 8, 9) THEN '2017-Q3'
+            ELSE '2017-Q4' END AS close_quarter
+     , COUNT(DISTINCT MONTH(close_date)) AS months_in_data
+     , COUNT(*) AS closed_deals
+     , SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) AS won
+     , ROUND(100.0 * SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) / COUNT(*), 1) AS win_rate_pct
+FROM CRM_sales_pipeline
+WHERE deal_stage IN ('Won', 'Lost')
+GROUP BY CASE WHEN MONTH(close_date) IN (1, 2, 3) THEN '2017-Q1'
+              WHEN MONTH(close_date) IN (4, 5, 6) THEN '2017-Q2'
+              WHEN MONTH(close_date) IN (7, 8, 9) THEN '2017-Q3'
+              ELSE '2017-Q4' END
+ORDER BY close_quarter
+
+-- Segment branches: does each split cover every closed deal, and how far apart are the groups?
+WITH closed AS (
+    SELECT p.deal_stage, p.product, t.regional_office, t.manager, a.sector
+    FROM CRM_sales_pipeline p
+    JOIN CRM_sales_teams t ON p.sales_agent = t.sales_agent
+    JOIN CRM_Accounts a ON p.account = a.account
+    WHERE p.deal_stage IN ('Won', 'Lost')
+),
+g AS (
+    SELECT 'Product' AS branch, product AS grp, deal_stage FROM closed
+    UNION ALL SELECT 'Regional office', regional_office, deal_stage FROM closed
+    UNION ALL SELECT 'Manager', manager, deal_stage FROM closed
+    UNION ALL SELECT 'Account sector', sector, deal_stage FROM closed
+),
+r AS (
+    SELECT branch, grp, COUNT(*) AS n, 100.0 * SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) / COUNT(*) AS wr
+    FROM g GROUP BY branch, grp
+)
+SELECT branch
+     , COUNT(*) AS groups
+     , SUM(n) AS deals_covered
+     , ROUND(MIN(wr), 1) AS lowest_win_rate
+     , ROUND(MAX(wr), 1) AS highest_win_rate
+     , ROUND(MAX(wr) - MIN(wr), 1) AS spread_pts
+FROM r
+GROUP BY branch
+ORDER BY spread_pts
+
+-- Time branch: win rate by close month
+SELECT MONTH(close_date) AS close_month
+     , COUNT(*) AS closed_deals
+     , ROUND(100.0 * SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) / COUNT(*), 1) AS win_rate_pct
+FROM CRM_sales_pipeline
+WHERE deal_stage IN ('Won', 'Lost')
+GROUP BY MONTH(close_date)
+ORDER BY close_month
+
+-- Is the March jump the same in every office?
+SELECT t.regional_office
+     , ROUND(100.0 * SUM(CASE WHEN p.deal_stage = 'Won' AND MONTH(p.close_date) = 3 THEN 1 ELSE 0 END) / SUM(CASE WHEN MONTH(p.close_date) = 3 THEN 1 ELSE 0 END), 1) AS win_rate_march
+     , ROUND(100.0 * SUM(CASE WHEN p.deal_stage = 'Won' AND MONTH(p.close_date) > 3 THEN 1 ELSE 0 END) / SUM(CASE WHEN MONTH(p.close_date) > 3 THEN 1 ELSE 0 END), 1) AS win_rate_apr_to_dec
+FROM CRM_sales_pipeline p
+JOIN CRM_sales_teams t ON p.sales_agent = t.sales_agent
+WHERE p.deal_stage IN ('Won', 'Lost')
+GROUP BY t.regional_office
+ORDER BY t.regional_office
+
+-- Like for like: only the last month of each quarter
+SELECT CASE MONTH(close_date) WHEN 3 THEN '2017-Q1 (March)' WHEN 6 THEN '2017-Q2 (June)' WHEN 9 THEN '2017-Q3 (September)' ELSE '2017-Q4 (December)' END AS quarter_end_month
+     , COUNT(*) AS closed_deals
+     , ROUND(100.0 * SUM(CASE WHEN deal_stage = 'Won' THEN 1 ELSE 0 END) / COUNT(*), 1) AS win_rate_pct
+FROM CRM_sales_pipeline
+WHERE deal_stage IN ('Won', 'Lost') AND MONTH(close_date) IN (3, 6, 9, 12)
+GROUP BY MONTH(close_date)
+ORDER BY MONTH(close_date)`,
+ res:['l15b','l15b2','l15b3','l15b4','l15b5'],resLabel:['Win rate by close quarter','Segment branches: cover and spread','Win rate by close month','March against April to December, by office','Quarter-end months only'],
+ chart:{type:'col',cat:'close_quarter',val:'win_rate_pct',fmt:'pct1',hi:['2017-Q1'],title:'Win rate falls from 82% to 61%, but Q1 holds only March',sub:'The orange bar is one month of data. The other quarters hold three months each.'},
+ expect:`<b>Issue tree.</b><pre class="sql">Why did win rate drop?   (win rate = Won / (Won + Lost))
+|- Segment (who and what we sell)
+|   |- Product            7 groups
+|   |- Regional office    3 groups
+|   |- Manager            6 groups
+|   \\- Account sector    10 groups
+\\- Time (when deals close)
+    |- Quarter
+    \\- Month</pre>
+ <div style="margin-top:8px"><b>MECE test.</b> Each segment split puts all 6,711 closed deals in exactly one group, so there is no overlap and no gap. The win rates inside each split differ by only 1.4 (office), 2.3 (manager), 3.7 (sector) and 4.8 (product) points. None of them can explain a 20-point change.</div>
+ <div style="margin-top:8px"><b>The time branch does.</b> The first quarter has one month of closed deals, March. March, June, September and December run 82.1%, 82.8%, 79.2% and 78.5%. Every other month runs 48.6% to 56.8%. Compare quarter-end with quarter-end and the change is 82.1% to 78.5%, a drop of 3.6 points. All three offices show the same March gap (79.3% to 84.8% in March, about 61% from April to December), so it is not about who sells.</div>
+ <div style="margin-top:8px"><b>Say it carefully.</b> The data shows a calendar pattern. It does not show why quarter-end months win more. Ask the Sales Director whether deals are pushed or logged at quarter end before you recommend anything.</div>`,
+ watch:['A branch is only useful if you can check it. Writing the tree is half the work: the SQL shows that four of the five branches are flat.','Q1 is one month. Always count how many months or days sit behind a period before you compare periods.','The segment splits are MECE here because every deal has one product, one agent and one account. A split by sales reason or by account for open deals would not be (Practice 4).','GTK 500 has only 25 closed deals. Its 60.0% is the lowest product rate, but 25 deals is too few to read much into.']},
+{id:'p3',grp:'Understand the business',tag:'Practice 3',lvl:'Medium',viLabel:'Task (written for this guide)',
+ vi:'Bạn nhận dự án phân tích cho AdventureWorks, công ty bán xe đạp, và chưa biết gì về họ. Hãy điền Business Model Canvas trong 15 phút (khách hàng, kênh, nguồn doanh thu, quan hệ khách hàng, giá trị mang lại), dùng SQL kiểm tra phần nào dữ liệu xác nhận được, rồi chọn 3 chỉ số mà công ty nên xem hằng ngày.',
+ en:'Fill a Business Model Canvas for AdventureWorks in 15 minutes, check what the data confirms, and pick three daily metrics.',
+ out:['channel','orders','pct_of_orders','revenue','pct_of_revenue','aov','category','customers','orders_per_customer','pct_customers_2plus_orders','first_order_date','last_order_date','days_with_orders','orders_per_active_day','revenue_per_active_day'],flt:[],
+ blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'OnlineOrderFlag, SubTotal, CustomerID, OrderDate'},joins:[]}],
+ st:['A one-page picture of the business, with each box marked as confirmed by data or still to ask.','The order header table, and the order lines with the product chain for categories.','Group orders by channel, revenue by category, orders per customer and orders per active day.','Online is 87.9% of orders and 26.7% of revenue, with an order value of $1,061 against $21,148 for orders with a sales rep. Bikes bring 86.2% of revenue. 39.1% of 19,119 customers ordered at least twice.'],
+ sql:`-- Channel: who places the order?
+SELECT CASE WHEN OnlineOrderFlag = 1 THEN 'Online' ELSE 'Sales rep' END AS channel
+     , COUNT(*) AS orders
+     , ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 1) AS pct_of_orders
+     , ROUND(SUM(SubTotal), 0) AS revenue
+     , ROUND(100.0 * SUM(SubTotal) / SUM(SUM(SubTotal)) OVER (), 1) AS pct_of_revenue
+     , ROUND(SUM(SubTotal) / COUNT(*), 0) AS aov
+FROM ADW_Sales_orders
+GROUP BY CASE WHEN OnlineOrderFlag = 1 THEN 'Online' ELSE 'Sales rep' END
+ORDER BY revenue DESC
+
+-- Revenue streams: product category
+SELECT c.ProductCategoryName AS category
+     , ROUND(SUM(d.LineTotal), 0) AS revenue
+     , ROUND(100.0 * SUM(d.LineTotal) / SUM(SUM(d.LineTotal)) OVER (), 1) AS pct_of_revenue
+FROM ADW_Sales_orders_detail d
+JOIN ADW_Dim_Product p ON d.ProductID = p.ProductID
+JOIN ADW_Dim_ProductSubCategory sc ON p.ProductSubcategoryID = sc.ProductSubcategoryID
+JOIN ADW_Dim_ProductCategory c ON sc.ProductCategoryID = c.ProductCategoryID
+GROUP BY c.ProductCategoryName
+ORDER BY revenue DESC
+
+-- Customer relationships: do customers come back?
+WITH per_cust AS (
+    SELECT CustomerID, COUNT(*) AS n_orders FROM ADW_Sales_orders GROUP BY CustomerID
+)
+SELECT COUNT(*) AS customers
+     , SUM(n_orders) AS orders
+     , ROUND(1.0 * SUM(n_orders) / COUNT(*), 2) AS orders_per_customer
+     , ROUND(100.0 * SUM(CASE WHEN n_orders >= 2 THEN 1 ELSE 0 END) / COUNT(*), 1) AS pct_customers_2plus_orders
+     , MIN(od.first_order) AS first_order_date
+     , MAX(od.last_order) AS last_order_date
+FROM per_cust
+CROSS JOIN (SELECT MIN(OrderDate) AS first_order, MAX(OrderDate) AS last_order FROM ADW_Sales_orders) od
+
+-- Daily rhythm
+SELECT COUNT(*) AS orders
+     , COUNT(DISTINCT OrderDate) AS days_with_orders
+     , ROUND(1.0 * COUNT(*) / COUNT(DISTINCT OrderDate), 1) AS orders_per_active_day
+     , ROUND(SUM(SubTotal) / COUNT(DISTINCT OrderDate), 0) AS revenue_per_active_day
+FROM ADW_Sales_orders`,
+ res:['l15c','l15c2','l15c3','l15c4'],resLabel:['Channel','Revenue by category','Orders per customer','Orders per active day'],
+ chart:{type:'bar',cat:'channel',val:'pct_of_revenue',fmt:'pct1',hi:['Online'],title:'Online is 88% of orders but only 27% of revenue',sub:'An online order averages $1,061. An order placed with a sales rep averages $21,148.'},
+ expect:`<b>Canvas.</b><div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Block</th><th>What we think</th><th>Data check</th></tr>
+ <tr><td><b>Customer segments</b></td><td>Individual buyers online, and larger accounts served by sales reps.</td><td>Every order without a sales person is online, every other order has one. The two channels differ by 20 times in order value.</td></tr>
+ <tr><td><b>Channels</b></td><td>The web shop and a sales force.</td><td>27,659 online orders and 3,806 with a sales rep.</td></tr>
+ <tr><td><b>Revenue streams</b></td><td>Selling products, mostly bikes.</td><td>Bikes 86.2%, Components 10.7%, Clothing 1.9%, Accessories 1.2%.</td></tr>
+ <tr><td><b>Customer relationships</b></td><td>Some repeat buying.</td><td>1.65 orders per customer, 39.1% ordered at least twice.</td></tr>
+ <tr><td><b>Value proposition, key resources, partners, costs</b></td><td>Unknown.</td><td>Not in this data. Ask the business or read their public pages.</td></tr></table></div>
+ <div style="margin-top:8px"><b>Three daily metrics.</b> Revenue per day ($97,728 on a day with orders). Orders per day (28.0), split by channel. Average order value by channel ($1,061 online, $21,148 with a rep). Each one is measurable from the order table, and each one points to a different team.</div>
+ <div style="margin-top:8px"><b>Stage.</b> Repeat buying at 39.1% suggests Stickiness is worth a look. Confirm with the business which stage they believe they are in.</div>`,
+ watch:['The canvas has nine boxes and the data fills four. Mark the rest as questions for the business instead of guessing them.','Orders without a sales person are flagged online. I read orders with a sales person as the sales-rep channel. That reading follows the flag in the data. The company has not confirmed it.','Per-active-day figures skip days with no orders. Over 1,124 active days between 2011-05-31 and 2014-06-30 they average only the days that had orders.','Revenue here is the sum of order subtotals ($109,846,381), which equals the sum of line totals. A different revenue definition (with tax and freight) would change every figure.']},
+{id:'p4',grp:'Structure the question',tag:'Practice 4',lvl:'Easy',viLabel:'Task (written for this guide)',
+ vi:'Với mỗi cách chia dưới đây, trả lời hai câu: các nhóm có chồng lấn không, và cộng lại có đủ toàn bộ không? Dùng SQL so tổng các nhóm với tổng thật, rồi giải thích chênh lệch.',
+ en:'Four breakdowns, four checks: compare the sum of the groups with the real total and explain any gap.',
+ out:['breakdown','rows_in_total','sum_of_groups','orders_with_a_reason','orders_without_a_reason','orders_with_2plus_reasons','reason_rows','product_in_pipeline','deals','deals_without_account','of_which_closed'],flt:[],
+ blocks:[{base:{t:'CRM_sales_pipeline',role:'fact',use:'product, account, deal_stage'},joins:[{type:'JOIN',t:'CRM_Accounts',key:'account',adds:'sector'},{type:'JOIN',t:'CRM_products',key:'product',adds:'product match'}]}],
+ st:['A verdict for each breakdown: overlap, gap, both, or neither.','Global Electronics sales and stores, AdventureWorks orders and sales reasons, CRM pipeline, accounts and products.','Count the rows in the total, then count the rows the breakdown reaches. Investigate every difference.','Store country covers 62,884 of 62,884 lines. Sales reasons reach 27,647 rows for 31,465 orders. Account sector reaches 7,375 of 8,800 deals. The products table reaches 7,320 of 8,800 deals.'],
+ sql:`SELECT 'GBE order lines by store country (online counts as one group)' AS breakdown
+     , (SELECT COUNT(*) FROM GBE_Sales) AS rows_in_total
+     , (SELECT COUNT(*) FROM GBE_Sales s JOIN GBE_Stores st ON s.StoreKey = st.StoreKey) AS sum_of_groups
+UNION ALL
+SELECT 'ADW orders by sales reason'
+     , (SELECT COUNT(*) FROM ADW_Sales_orders)
+     , (SELECT COUNT(*) FROM ADW_Sales_orders_reasons)
+UNION ALL
+SELECT 'CRM deals by account sector'
+     , (SELECT COUNT(*) FROM CRM_sales_pipeline)
+     , (SELECT COUNT(*) FROM CRM_sales_pipeline p JOIN CRM_Accounts a ON p.account = a.account)
+UNION ALL
+SELECT 'CRM deals by product, using the products table'
+     , (SELECT COUNT(*) FROM CRM_sales_pipeline)
+     , (SELECT COUNT(*) FROM CRM_sales_pipeline p JOIN CRM_products pr ON p.product = pr.product)
+
+-- Why do sales reasons not match?
+SELECT (SELECT COUNT(DISTINCT SalesOrderID) FROM ADW_Sales_orders_reasons) AS orders_with_a_reason
+     , (SELECT COUNT(*) FROM ADW_Sales_orders) - (SELECT COUNT(DISTINCT SalesOrderID) FROM ADW_Sales_orders_reasons) AS orders_without_a_reason
+     , (SELECT COUNT(*) FROM (SELECT SalesOrderID FROM ADW_Sales_orders_reasons GROUP BY SalesOrderID HAVING COUNT(*) > 1) x) AS orders_with_2plus_reasons
+     , (SELECT COUNT(*) FROM ADW_Sales_orders_reasons) AS reason_rows
+
+-- Which product names do not match the products table?
+SELECT p.product AS product_in_pipeline, COUNT(*) AS deals
+FROM CRM_sales_pipeline p
+LEFT JOIN CRM_products pr ON p.product = pr.product
+WHERE pr.product IS NULL
+GROUP BY p.product
+
+-- Which deals have no account?
+SELECT COUNT(*) AS deals_without_account
+     , SUM(CASE WHEN deal_stage IN ('Won', 'Lost') THEN 1 ELSE 0 END) AS of_which_closed
+FROM CRM_sales_pipeline
+WHERE account IS NULL`,
+ res:['l15d','l15d2','l15d3','l15d4'],resLabel:['Sum of the groups against the total','Sales reasons: overlap and gap','Product names with no match','Deals with no account'],
+ expect:`<b>Verdicts.</b><div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Breakdown</th><th>Overlap?</th><th>Full cover?</th><th>Why</th></tr>
+ <tr><td>GBE lines by store country</td><td>No</td><td>Yes</td><td>MECE. Each line has one StoreKey, and the online store is a row in the stores table. 62,884 of 62,884.</td></tr>
+ <tr><td>ADW orders by sales reason</td><td>Yes</td><td>No</td><td>4,482 orders have two or three reasons, so they count more than once. 8,453 orders have no reason at all. The two errors partly cancel: 27,647 rows against 31,465 orders.</td></tr>
+ <tr><td>CRM deals by account sector</td><td>No</td><td>No</td><td>1,425 deals have no account, so no sector. All of them are still open. Reach: 7,375 of 8,800.</td></tr>
+ <tr><td>CRM deals by product (products table)</td><td>No</td><td>No</td><td>The pipeline says GTXPro and the products table says GTX Pro, so 1,480 deals find no match. Reach: 7,320 of 8,800.</td></tr></table></div>
+ <div style="margin-top:8px"><b>Fix.</b> For sector, add an explicit "No account" group and say so in the chart note. For product, match on the spelling that exists in both tables or fix the name in the source. For sales reasons, count orders per reason and say that they overlap, or pick a single main reason.</div>`,
+ watch:['A matching sum is a good sign but proves little by itself. Sales reasons show why: overlap adds rows and missing reasons remove rows, so the two can balance each other.','A join is a breakdown too. An inner join silently drops every row without a match, and the groups then look complete.','The antonym trick (X and not X) gives full cover for free. "Has an account" and "no account" together cover all 8,800 deals.','Fix the cause when you can. A new group called "Unknown" keeps the totals honest while someone repairs the source.']}
+];
+
+G.render(Object.assign({EX, RES}, {stepNames:['Goal','Source','Query','Validate'], open:'p1'}));
+
+const esc2=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const VAGUE=['better','improve','lately','recently','bad','good','some','thin','weird','issue','soon','more','less','a lot','performance'];
+G.$('#qb-go').addEventListener('click',()=>{
+  const v={ctx:G.$('#qb-ctx').value.trim(),kind:G.$('#qb-kind').value,core:G.$('#qb-core').value.trim(),metric:G.$('#qb-metric').value.trim(),act:G.$('#qb-act').value.trim(),goal:G.$('#qb-goal').value.trim()};
+  const names={ctx:'Problem and context',kind:'What, how or why',core:'The question itself',metric:'Metric',act:'Action',goal:'Goal and time'};
+  const missing=Object.keys(names).filter(k=>!v[k]).map(k=>names[k]);
+  const all=Object.values(v).join(' ').toLowerCase();
+  const vague=VAGUE.filter(w=>new RegExp('\\b'+w+'\\b').test(all));
+  const notes=[];
+  if(v.goal&&!/\d/.test(v.goal)&&!/(next|today|tomorrow|week|month|quarter|review|meeting)/i.test(v.goal))notes.push('Goal and time has no date, number or event. Add one so someone can tell when the work is done.');
+  if(v.metric&&!/[\/%]|rate|per|count|total|average|sum|share|ratio|number of|revenue|orders|deals/i.test(v.metric))notes.push('The metric does not read like a calculation. Say what you divide by what, or what you count.');
+  if(vague.length)notes.push('Vague words that need a number or a definition: '+vague.map(w=>'"'+w+'"').join(', ')+'.');
+  const q=missing.length?'':`<div class="ln"><b>Your question</b>${esc2(v.ctx)} ${esc2(v.kind)} ${esc2(v.core)} Measured as: ${esc2(v.metric)}. So that we can: ${esc2(v.act)}. By: ${esc2(v.goal)}.</div>`;
+  const ok=!missing.length&&!notes.length;
+  G.$('#qb-out').innerHTML=`<div class="rec${ok?'':' bad'}">${ok?'All five parts are there and nothing looks vague':missing.length?missing.length+' part'+(missing.length>1?'s':'')+' missing':notes.length+' thing'+(notes.length>1?'s':'')+' to tighten'}</div>`
+    +(missing.length?`<div class="ln"><b>Missing</b>${missing.join(', ')}</div>`:'')+notes.map(n=>`<div class="ln"><b>Tighten</b>${n}</div>`).join('')+q;
+});
+const SC=[
+ ['Choose an example',null,null],
+ ['GBE order lines by store country',62884,62884],
+ ['ADW orders by sales reason',31465,27647],
+ ['CRM deals by account sector',8800,7375],
+ ['CRM deals by product, products table',8800,7320]
+];
+G.$('#sc-pick').innerHTML=SC.map((s,i)=>`<option value="${i}">${s[0]}</option>`).join('');
+function sc(){
+  const t=G.$('#sc-total').value,s=G.$('#sc-sum').value;
+  if(t===''||s===''){G.$('#sc-out').innerHTML='';return;}
+  const total=+t,sum=+s,diff=sum-total;
+  let head,cls='rec',lines=[];
+  if(diff===0){
+    head='The sum matches the total';
+    lines.push(['Still check','Equal totals can hide two errors that cancel out. Ask both questions: can one item sit in two groups, and can an item sit in none?']);
+  } else if(diff>0){
+    cls='rec bad';head=`The groups add up to ${diff.toLocaleString('en-US')} more than the total`;
+    lines.push(['Likely cause','Overlap. Some items are counted in more than one group, as with an order that has several reasons.']);
+    lines.push(['Next step','Count items per group key and look for keys that repeat. Choose one main group per item or say that the groups overlap.']);
+  } else {
+    cls='rec bad';head=`The groups add up to ${Math.abs(diff).toLocaleString('en-US')} less than the total`;
+    lines.push(['Likely cause','A gap. Some items fall in no group: a missing value, an unmatched key or a spelling that differs between tables.']);
+    lines.push(['Next step','LEFT JOIN from the full table and filter for rows where the group key is NULL. Add an explicit group for them.']);
+  }
+  G.$('#sc-out').innerHTML=`<div class="${cls}">${head}</div>`+lines.map(l=>`<div class="ln"><b>${l[0]}</b>${l[1]}</div>`).join('');
+}
+G.$('#sc-pick').addEventListener('change',()=>{const x=SC[+G.$('#sc-pick').value];if(x[1]!==null){G.$('#sc-total').value=x[1];G.$('#sc-sum').value=x[2];}sc();});
+G.$('#sc-total').addEventListener('input',sc);G.$('#sc-sum').addEventListener('input',sc);
+
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"><style id="lab-embed">/* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
+   Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
+   Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
+   The live site has no dark mode; the dark values below are a mirror built from its ink and violet. */
+:root{
+  /* site palette */
+  --violet:#5B21FF; --violet-mid:#7C4DFF; --violet-lite:#A78BFA; --violet-pale:#EDE9FE; --purple:#9C27FF; --pink:#E040FB; --pink-lite:#FCE4FF;
+  --coral:#FF5252; --site-orange:#FF6D00; --amber:#FFB300; --amber-lite:#FFF8E1; --teal:#00BCD4; --teal-lite:#E0F7FA; --site-green:#00C853;
+  --ink:#1A0A4F; --ink2:#3D2A7A; --subtle:#B8AEDE;
+  --grad-hero:linear-gradient(135deg,#5B21FF 0%,#9C27FF 55%,#E040FB 100%);
+  --grad-soft:linear-gradient(135deg,#EDE9FE 0%,#F3E8FF 100%);
+  --radius:20px; --radius-sm:10px;
+  --shadow:0 12px 48px rgba(91,33,255,.13); --shadow-sm:0 4px 16px rgba(91,33,255,.09); --shadow-lg:0 24px 80px rgba(91,33,255,.20);
+  --glass:rgba(255,255,255,.9); --on-grad:#fff; --foot-bg:#1A0A4F;
+  /* tokens used by the shared components */
+  --navy:#1A0A4F; --blue:#5B21FF; --orange:#FF6D00;
+  --bg:#F7F5FF; --surface:#FFFFFF; --fg:#1A0A4F; --muted:#6A5C9C; --line:#DDD6FE;
+  --blue-soft:#EDE9FE; --orange-soft:#FFF3E0; --code-bg:#150B3D; --code-fg:#EDE9FE;
+  --ok:#15803D; --ok-soft:#DCFCE7; --warn:#C2410C; --warn-soft:#FFF8E1;
+  --kw:#C4B5FD; --str:#FFB74D; --cmt:#8E83C0; --num:#7EE7C4;
+  --c1:#5B21FF; --c2:#FF6D00; --c3:#00BCD4; --cx:#B8AEDE; --h0:#EDE9FE; --h1:#5B21FF; --htx:#FFFFFF;
+  --font:'Plus Jakarta Sans','Nunito',system-ui,sans-serif; --font-display:'Nunito','Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --violet:#8B6BFF; --violet-pale:#2A1F66; --violet-lite:#A78BFA; --pink-lite:#3A1B5E; --amber-lite:#3A2A12; --teal-lite:#10313A;
+  --ink:#EDE9FE; --ink2:#C9BFF2; --subtle:#6D60A8;
+  --shadow:0 12px 48px rgba(0,0,0,.45); --shadow-sm:0 4px 16px rgba(0,0,0,.35); --shadow-lg:0 24px 80px rgba(0,0,0,.55);
+  --glass:rgba(15,10,46,.88); --foot-bg:#0A0620;
+  --navy:#EDE9FE; --blue:#A78BFA; --orange:#FF9F43;
+  --bg:#0F0A2E; --surface:#1A1245; --fg:#EDE9FE; --muted:#A99FD6; --line:#3D2A7A;
+  --blue-soft:#2A1F66; --orange-soft:#3A2A12; --code-bg:#0A0620; --code-fg:#EDE9FE;
+  --ok:#4ADE80; --ok-soft:#10301F; --warn:#FDBA74; --warn-soft:#3A2A12;
+  --kw:#C4B5FD; --str:#FFB74D; --cmt:#8E83C0; --num:#7EE7C4;
+  --c1:#8B6BFF; --c2:#FF9F43; --c3:#22D3EE; --cx:#5C5090; --h0:#2A1F66; --h1:#A78BFA; --htx:#0F0A2E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --violet:#8B6BFF; --violet-pale:#2A1F66; --violet-lite:#A78BFA; --pink-lite:#3A1B5E; --amber-lite:#3A2A12; --teal-lite:#10313A;
+  --ink:#EDE9FE; --ink2:#C9BFF2; --subtle:#6D60A8;
+  --shadow:0 12px 48px rgba(0,0,0,.45); --shadow-sm:0 4px 16px rgba(0,0,0,.35); --shadow-lg:0 24px 80px rgba(0,0,0,.55);
+  --glass:rgba(15,10,46,.88); --foot-bg:#0A0620;
+  --navy:#EDE9FE; --blue:#A78BFA; --orange:#FF9F43;
+  --bg:#0F0A2E; --surface:#1A1245; --fg:#EDE9FE; --muted:#A99FD6; --line:#3D2A7A;
+  --blue-soft:#2A1F66; --orange-soft:#3A2A12; --code-bg:#0A0620; --code-fg:#EDE9FE;
+  --ok:#4ADE80; --ok-soft:#10301F; --warn:#FDBA74; --warn-soft:#3A2A12;
+  --kw:#C4B5FD; --str:#FFB74D; --cmt:#8E83C0; --num:#7EE7C4;
+  --c1:#8B6BFF; --c2:#FF9F43; --c3:#22D3EE; --cx:#5C5090; --h0:#2A1F66; --h1:#A78BFA; --htx:#0F0A2E; color-scheme:dark}
+
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.65;padding-bottom:0}
+h1,h2,h3{font-family:var(--font-display)}
+.wrap{max-width:1200px}
+
+/* ---- top nav (site: white glass bar, logo left, pill links, gradient CTA) ---- */
+nav.topnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(20px,env(safe-area-inset-right,0px)) 10px max(20px,env(safe-area-inset-left,0px));background:var(--glass);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border-bottom:1.5px solid var(--line);box-shadow:0 2px 16px rgba(91,33,255,.07);display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--glass);z-index:60}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:1.2rem;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.logo svg{display:block;flex:none}
+.logo .acc{color:var(--violet)}
+.logo .lab{font-weight:800;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);background:var(--violet-pale);border:1.5px solid var(--line);border-radius:40px;padding:2px 9px;margin-left:2px}
+nav.zones{display:flex;gap:2px;margin:0 0 0 8px;overflow-x:auto;flex:1 1 auto;scrollbar-width:none}
+nav.zones::-webkit-scrollbar{display:none}
+nav.zones button{font:inherit;font-size:.86rem;font-weight:600;color:var(--muted);background:transparent;border:0;border-radius:40px;padding:7px 12px;cursor:pointer;white-space:nowrap;opacity:1;border-bottom:0;transition:all .2s}
+nav.zones button:hover{color:var(--violet);background:var(--violet-pale)}
+nav.zones button[aria-selected="true"]{color:var(--violet);background:var(--violet-pale);font-weight:800;border-bottom:0}
+nav.zones button:focus-visible,.nav-cta:focus-visible{outline:3px solid var(--site-orange);outline-offset:2px}
+.nav-cta{font-size:.84rem;font-weight:700;color:var(--on-grad);background:var(--grad-hero);border-radius:40px;padding:8px 18px;text-decoration:none;box-shadow:0 4px 14px rgba(91,33,255,.32);white-space:nowrap;transition:all .2s}
+.nav-cta:hover{opacity:.92;transform:translateY(-1px)}
+.eng{margin-left:auto;font-size:.74rem;font-weight:700;color:var(--muted);border:1.5px solid var(--line);border-radius:40px;padding:3px 11px;background:var(--surface);white-space:nowrap;opacity:1}
+.eng[data-phase="ready"]::before{color:var(--site-green)}
+.eng[data-phase="loading"]::before{color:var(--amber)}
+.eng[data-phase="error"]::before{color:var(--coral)}
+.eng[data-phase="loading"]::before{animation:lab-pulse 1.6s infinite}
+@keyframes lab-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (max-width:1120px){nav.zones{order:3;flex-basis:100%;margin:0}.eng{margin-left:auto}}
+.nav-out{font-size:.84rem;font-weight:700;color:var(--muted);border:1.5px solid var(--line);border-radius:40px;padding:6px 14px;text-decoration:none;white-space:nowrap;background:var(--surface);transition:all .2s}
+.nav-out:hover{color:var(--violet);border-color:var(--violet-lite)}
+.nav-out:focus-visible{outline:3px solid var(--site-orange);outline-offset:2px}
+.nav-out[hidden]{display:none}
+@media (max-width:760px){.nav-cta{display:none}}
+
+/* ---- hero (site: soft blurred blobs, dotted mask, badge pill, display title) ---- */
+.hero{position:relative;overflow:hidden;background:var(--surface);border-bottom:1.5px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:0 max(16px,env(safe-area-inset-left,0px))}
+.hero .hblob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(90px);opacity:.16}
+.hero .hb1{width:420px;height:420px;background:#7C4DFF;top:-170px;right:-40px}
+.hero .hb2{width:300px;height:300px;background:#E040FB;bottom:-150px;left:12%}
+.hero .hb3{width:220px;height:220px;background:#00BCD4;top:30%;left:-90px}
+.hero .hdots{position:absolute;inset:0;pointer-events:none;opacity:.3;background-image:radial-gradient(circle,var(--violet-lite) 1px,transparent 1px);background-size:30px 30px;-webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 50%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 80% 90% at 50% 50%,#000 35%,transparent 100%)}
+@media (prefers-reduced-motion:no-preference){.hero .hb1{animation:lab-float 11s ease-in-out infinite}.hero .hb2{animation:lab-float 14s 3s ease-in-out infinite}}
+@keyframes lab-float{0%,100%{transform:translate(0,0)}50%{transform:translate(16px,-22px)}}
+.hero .wrap{position:relative;z-index:1}
+#hdr{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:34px 0 30px}
+#hdr .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--violet-pale);border:1.5px solid var(--line);color:var(--violet);padding:5px 14px;border-radius:40px;font-size:.74rem;font-weight:800;letter-spacing:.06em}
+#hdr .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--violet)}
+#hdr h1{font-family:var(--font-display);font-weight:900;font-size:clamp(2rem,4.2vw,3.1rem);line-height:1.1;letter-spacing:-.03em;color:var(--ink);text-wrap:balance}
+#hdr p{margin:0;color:var(--muted);font-size:1.02rem;font-weight:500;max-width:62ch;line-height:1.7}
+.gt{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+#hdr .back{color:var(--violet);font-weight:700;opacity:1;font-size:.88rem;align-self:flex-start}
+.metachips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0}
+.metachip{font-size:.78rem;font-weight:700;color:var(--ink2);background:var(--surface);border:1.5px solid var(--line);border-radius:40px;padding:3px 12px;opacity:1;box-shadow:var(--shadow-sm)}
+nav.stepper{display:flex;gap:6px;margin:6px 0 0;overflow-x:auto;max-width:100%}
+nav.stepper button{font:inherit;font-weight:700;font-size:.86rem;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);opacity:1;padding:8px 16px;border-radius:40px;cursor:pointer;white-space:nowrap;display:flex;gap:8px;align-items:center}
+nav.stepper button small{opacity:.8;font-weight:600}
+nav.stepper button[aria-selected="true"]{background:var(--grad-hero);border-color:transparent;color:var(--on-grad);box-shadow:0 4px 14px rgba(91,33,255,.3)}
+nav.stepper .dot{border-color:currentColor}
+nav.stepper .done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+nav.stepper button[aria-selected="true"] .dot{border-color:#fff}
+
+/* ---- surfaces ---- */
+main.wrap{padding-top:28px;padding-bottom:56px}
+.card,details.blk,details.ex,.figure,.cc,.stat div{border:1.5px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+.card{padding:22px 24px;box-shadow:var(--shadow-sm)}
+.card h2{font-family:var(--font-display);font-weight:900;font-size:1.02rem;color:var(--ink)}
+.card h2 small,.sec{color:var(--violet)}
+.cc{box-shadow:var(--shadow-sm);transition:all .25s;padding:22px 24px}
+.cc:hover{border-color:var(--violet-lite);box-shadow:var(--shadow);transform:translateY(-3px)}
+.cc b{font-family:var(--font-display);font-weight:900;letter-spacing:-.01em}
+.cc.big b{font-size:1.3rem}
+.homecards{gap:18px}
+.dshead h2{font-family:var(--font-display);font-weight:900;font-size:1.35rem;letter-spacing:-.02em}
+details.ex>summary::after,details.blk>summary::after{color:var(--violet)}
+details.ex[open]{box-shadow:var(--shadow-sm);border-color:var(--violet-lite)}
+details.blk>summary,details.blk>summary .n{font-family:var(--font-display)}
+details.blk>summary .n{background:var(--grad-hero);color:#fff}
+.ex-title{font-family:var(--font-display);font-weight:800}
+.q,.ask,.hintbox{border-radius:14px}
+.q{background:var(--violet-pale);color:var(--ink)}
+.ask{background:var(--amber-lite);border:1.5px solid rgba(255,109,0,.25);color:var(--ink)}
+.mail{border-left:0;border-top:4px solid transparent;border-image:var(--grad-hero) 1}
+.lead{background:var(--grad-hero);color:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
+.lead b{color:#FFE082}
+.hintbox{background:var(--violet-pale);border-color:var(--violet-lite)}
+.reveal>summary{color:var(--violet)}
+
+/* ---- chips, tags, buttons ---- */
+.tag{background:var(--violet-pale);color:var(--violet);border:1.5px solid var(--line);font-weight:800;letter-spacing:.03em}
+.tag.o{background:var(--amber-lite);color:var(--site-orange);border-color:rgba(255,109,0,.3)}
+:root[data-theme="dark"] .tag.o{color:#FF9F43}
+.tag.g{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.rank{border-radius:40px}
+.rank.C{background:#16A34A}.rank.B{background:var(--violet)}.rank.A{background:var(--site-orange)}
+.chip{border:1.5px solid var(--line);border-radius:40px;font-weight:700;color:var(--ink2);padding:6px 14px}
+.chip:hover{border-color:var(--violet);color:var(--violet)}
+.chip[aria-pressed="true"]{background:var(--grad-hero);border-color:transparent;color:#fff}
+.btn{font-family:var(--font);font-weight:700;border:2px solid var(--line);border-radius:50px;padding:8px 20px;background:var(--surface);color:var(--ink2);transition:all .2s}
+.btn:hover{border-color:var(--violet);color:var(--violet);background:var(--violet-pale)}
+.btn.primary{background:var(--grad-hero);border-color:transparent;color:#fff;font-weight:800;box-shadow:0 6px 20px rgba(91,33,255,.32)}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(91,33,255,.45);color:#fff;background:var(--grad-hero)}
+:root[data-theme="dark"] .btn.primary{color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#fff}}
+.btn:focus-visible,.chip:focus-visible,.cc:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--site-orange);outline-offset:2px}
+button.tryit{margin:2px 0 10px}
+
+/* ---- editor, results, code ---- */
+textarea.sqled{border:1.5px solid var(--ink2);border-radius:16px;box-shadow:var(--shadow-sm)}
+.sqlp .schema{border:1.5px solid var(--line);border-radius:14px}
+pre.sql,pre.duck{border-radius:14px}
+.resgrid{border:1.5px solid var(--line);border-radius:14px}
+table.res th,table.r th,table.j th{color:var(--muted)}
+.verdict.ok{color:var(--ok)}.verdict.no{color:var(--warn)}
+.stat span{color:var(--violet);font-family:var(--font-display);font-weight:900}
+.closed{border-color:var(--ok);background:var(--ok-soft);border-radius:14px}
+.note-box{border-radius:14px;border:1.5px dashed var(--line)}
+.livehost{margin-top:10px}
+
+/* ---- footer (site: ink background, three columns) ---- */
+footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0;max-width:none;padding:44px max(24px,env(safe-area-inset-right,0px)) 28px max(24px,env(safe-area-inset-left,0px));background:var(--foot-bg);color:rgba(255,255,255,.7);font-size:.88rem;text-align:left}
+.sitefoot .inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:34px}
+@media (max-width:760px){.sitefoot .inner{grid-template-columns:1fr;gap:24px}}
+.sitefoot .fl{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:1.15rem;color:#fff;text-decoration:none}
+.sitefoot p{margin:10px 0 0;line-height:1.7}
+.sitefoot h4{margin:0 0 10px;font-family:var(--font-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.sitefoot a{color:rgba(255,255,255,.7);text-decoration:none}
+.sitefoot a:hover{color:#fff;text-decoration:underline}
+.sitefoot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.sitefoot .legal{max-width:1200px;margin:28px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:.8rem;color:rgba(255,255,255,.5)}
+
+/* footer: brand link must not inherit the guide's white ".fl" pill; CTA band above the link columns */
+.sitefoot .fl{background:none;border:0;border-radius:0;padding:0;flex:none;position:static}
+.sitefoot .footcta{grid-template-columns:1fr auto;align-items:center;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.14)}
+.sitefoot .footcta .eyebrow{color:#C084FC}
+.sitefoot .footcta h3{margin:6px 0 0;font-family:var(--font-display);font-size:1.5rem;line-height:1.25;color:#fff}
+.sitefoot .footcta p{max-width:620px;margin-top:8px}
+.sitefoot .ctabtns{display:flex;gap:10px;flex-wrap:wrap}
+.sitefoot .ctabtns .btn{text-decoration:none;white-space:nowrap}
+.sitefoot .ctabtns .btn:not(.primary){background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+.sitefoot .ctabtns .btn:not(.primary):hover{background:rgba(255,255,255,.1);text-decoration:none}
+.sitefoot .ctabtns .btn.primary,.sitefoot .ctabtns .btn.primary:hover{color:#fff;text-decoration:none}
+@media (max-width:760px){.sitefoot .footcta{grid-template-columns:1fr}}
+
+/* Study Guide pages (inside an iframe). build_dist.py appends theme.css, then this file. */
+/* Study Guide header: light hero like the Lab, tabs as pills (the originals assumed a dark navy header). */
+header.top{background:var(--surface)!important;color:var(--fg)!important;border-bottom:1.5px solid var(--line);padding-bottom:14px!important}
+header.top h1{color:var(--ink)!important;font-family:var(--font-display);font-weight:900;letter-spacing:-.02em}
+header.top p{opacity:1!important;color:var(--muted)}
+header.top .eyebrow{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;background:var(--violet-pale);border:1.5px solid var(--line);color:var(--violet);padding:4px 13px;border-radius:40px;letter-spacing:.05em}
+header.top nav.tabs{gap:6px;margin-top:14px}
+header.top nav.tabs button{color:var(--muted)!important;opacity:1!important;background:var(--surface)!important;border:1.5px solid var(--line)!important;border-radius:40px!important;padding:8px 16px!important;font-weight:700}
+header.top nav.tabs button:hover{color:var(--violet)!important;border-color:var(--violet)!important}
+header.top nav.tabs button[aria-selected="true"]{background:var(--grad-hero)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 4px 14px rgba(91,33,255,.3)}
+</style></body>
+</html>

@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>TheHauData Analytics Mindset: Metrics and In-Depth Analysis Study Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky tab bar over three views. Summary = one-page poster grid; Walkthrough = ER map + accordion of exercises; Lab = interactive JOIN/UNION. */
+:root{
+  --navy:#0b2545; --blue:#1f5fbf; --orange:#e8761a;
+  --bg:#f4f6fa; --surface:#ffffff; --fg:#14213a; --muted:#5b6880; --line:#d9e0ec;
+  --blue-soft:#e3edfb; --orange-soft:#fdebd9; --code-bg:#0f1b33; --code-fg:#dbe6fb;
+  --ok:#1b8a5a; --warn:#b45309; --warn-soft:#fdf1dc; --ok-soft:#dff3e9;
+  --kw:#7db4ff; --str:#f6b26b; --cmt:#8d9bb5; --num:#9fe0b5;
+  --c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;--cx:#b9bfcb;--h0:#eaf1fc;--h1:#104281;--htx:#ffffff;
+  --font:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --navy:#9cc0f5; --blue:#6ea4f2; --orange:#f4983f;
+  --bg:#0c1424; --surface:#131e35; --fg:#e6edf9; --muted:#9aa8c4; --line:#263556;
+  --blue-soft:#1a2c4f; --orange-soft:#3a2a17; --code-bg:#080f1d; --code-fg:#dbe6fb;
+  --ok:#4fd39b; --warn:#f2b45a; --warn-soft:#352915; --ok-soft:#14332a; --c1:#3987e5;--c2:#d95926;--c3:#199e70;--cx:#4b5876;--h0:#1a2a4a;--h1:#6da7ec;--htx:#0c1424; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#9cc0f5; --blue:#6ea4f2; --orange:#f4983f;
+  --bg:#0c1424; --surface:#131e35; --fg:#e6edf9; --muted:#9aa8c4; --line:#263556;
+  --blue-soft:#1a2c4f; --orange-soft:#3a2a17; --code-bg:#080f1d; --code-fg:#dbe6fb;
+  --ok:#4fd39b; --warn:#f2b45a; --warn-soft:#352915; --ok-soft:#14332a; --c1:#3987e5;--c2:#d95926;--c3:#199e70;--cx:#4b5876;--h0:#1a2a4a;--h1:#6da7ec;--htx:#0c1424; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px;margin:0}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.2}
+code,.mono{font-family:var(--mono)}
+header.top{background:var(--navy);color:#fff;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+  padding:22px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+:root[data-theme="dark"] header.top{background:#16294d;color:#e6edf9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header.top{background:#16294d;color:#e6edf9}}
+header .wrap{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--orange)}
+header h1{font-size:clamp(24px,4vw,34px);font-weight:800;color:inherit}
+header p{margin:0;opacity:.85;max-width:70ch}
+nav.tabs{display:flex;gap:4px;margin-top:16px;overflow-x:auto}
+nav.tabs button{font:inherit;font-weight:600;font-size:14px;border:0;background:transparent;color:inherit;opacity:.72;padding:11px 16px;border-radius:9px 9px 0 0;cursor:pointer;white-space:nowrap}
+nav.tabs button:hover{opacity:1}
+nav.tabs button[aria-selected="true"]{background:var(--bg);color:var(--fg);opacity:1}
+nav.tabs button:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+section.view{display:none;padding-top:24px}
+section.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.card h2{font-size:15px;font-weight:800;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card h2 small{font-size:11px;color:var(--orange);letter-spacing:.07em;text-transform:uppercase}
+.card p{margin:0 0 8px}.card p:last-child{margin-bottom:0}
+.card ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.lead{background:var(--navy);color:#fff;border-radius:12px;padding:16px 20px;font-size:16px;font-weight:600;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+:root[data-theme="dark"] .lead{background:#16294d;color:#e6edf9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .lead{background:#16294d;color:#e6edf9}}
+.lead b{color:var(--orange)}
+.poster{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:14px}
+.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
+@media(max-width:860px){.c4,.c6,.c8{grid-column:span 12}}
+.pair{display:flex;gap:10px;flex-wrap:wrap}
+.pair>div{flex:1 1 150px;min-width:0;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:13px}
+.pair svg{width:100%;max-width:170px;height:auto}
+.pair b{display:block;font-size:14px;color:var(--fg)}
+.steps{display:grid;gap:8px;counter-reset:s;padding:0;margin:0;list-style:none}
+.steps li{counter-increment:s;display:flex;gap:10px;align-items:flex-start}
+.steps li::before{content:counter(s);flex:none;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;margin-top:1px}
+:root[data-theme="dark"] .steps li::before{color:#08122a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .steps li::before{color:#08122a}}
+.tbl-wrap{overflow-x:auto}
+table.j{border-collapse:collapse;width:100%;font-size:13px}
+table.j th,table.j td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+table.j th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+table.j svg{width:56px;height:32px;display:block}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--blue-soft);color:var(--blue);white-space:nowrap}
+.tag.o{background:var(--orange-soft);color:var(--warn)}
+.tag.g{background:var(--ok-soft);color:var(--ok)}
+.pit li b{color:var(--warn)}
+.keyline{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.rel{display:flex;gap:8px;flex-wrap:wrap;font-size:13px}
+.rel span{background:var(--blue-soft);border-radius:8px;padding:4px 9px}
+/* walkthrough */
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0 12px}
+.chip{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 12px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#08122a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#08122a}}
+.er{overflow-x:auto}
+.er svg{min-width:640px;width:100%;height:auto;display:block}
+.er text{font-family:var(--font)}
+details.ex{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+details.ex>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+details.ex>summary::-webkit-details-marker{display:none}
+details.ex>summary::after{content:"+";margin-left:auto;font-weight:800;color:var(--blue);font-size:18px}
+details.ex[open]>summary::after{content:"–"}
+.ex-title{font-weight:700;flex:1 1 260px;min-width:0}
+.ex-body{padding:0 16px 16px;display:grid;gap:14px}
+.q{background:var(--blue-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.q i{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.stepbox{display:grid;gap:8px}
+.stp{display:grid;grid-template-columns:28px 1fr;gap:10px}
+.stp .n{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center}
+:root[data-theme="dark"] .stp .n{color:#08122a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .stp .n{color:#08122a}}
+.stp b{display:block;font-size:13px}
+.stp div div{font-size:14px}
+.map{display:grid;gap:10px;border:1px dashed var(--line);border-radius:10px;padding:12px}
+.maplabel{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.blk{display:flex;gap:0;align-items:stretch;flex-wrap:wrap}
+.tcard{border:2px solid var(--blue);background:var(--surface);border-radius:9px;padding:8px 10px;font-size:12.5px;min-width:150px;max-width:230px}
+.tcard.base{border-color:var(--orange)}
+.tcard b{display:block;font-family:var(--mono);font-size:12px;word-break:break-all}
+.tcard em{font-style:normal;color:var(--muted);display:block;margin-top:2px}
+.tcard .role{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--orange)}
+.arms{display:grid;gap:8px;align-content:center;padding-left:0}
+.arm{display:flex;align-items:center;gap:0;flex-wrap:nowrap}
+.link{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:128px;padding:0 6px;font-size:11px;color:var(--muted);text-align:center;position:relative}
+.link span.jt{font-weight:800;color:var(--blue);font-size:11px}
+.link::after{content:"";height:2px;background:var(--blue);width:100%;margin-top:2px;position:relative}
+.link span.cast{color:var(--warn);font-weight:700}
+.trunk{width:14px;border-left:2px solid var(--blue);border-top:2px solid var(--blue);border-bottom:2px solid var(--blue);align-self:stretch;margin:14px 0;border-radius:6px 0 0 6px;opacity:.0}
+.comb{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--orange)}
+.comb::before,.comb::after{content:"";flex:1;height:2px;background:var(--orange)}
+.out{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px}
+.out .pill{background:var(--ok-soft);color:var(--ok);border-radius:6px;padding:2px 8px;font-family:var(--mono)}
+.out .flt{background:var(--orange-soft);color:var(--warn);border-radius:6px;padding:2px 8px;font-family:var(--mono)}
+.codewrap{position:relative}
+pre.sql{margin:0;background:var(--code-bg);color:var(--code-fg);border-radius:10px;padding:14px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6}
+pre.sql .k{color:var(--kw);font-weight:500}.sql .s{color:var(--str)}.sql .c{color:var(--cmt)}.sql .nm{color:var(--num)}
+.copy{position:absolute;top:8px;right:8px;font:inherit;font-size:12px;font-weight:600;background:#ffffff1f;color:#fff;border:1px solid #ffffff40;border-radius:6px;padding:3px 9px;cursor:pointer}
+.res{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.res header{display:flex;gap:10px;align-items:baseline;padding:8px 12px;background:var(--ok-soft);color:var(--ok);font-size:13px;font-weight:700;flex-wrap:wrap}
+.res header span{font-weight:500;color:var(--muted);font-size:12px}
+.res .tbl-wrap{padding:0 6px}
+.watch{background:var(--warn-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.watch b{color:var(--warn)}
+.watch ul{margin:4px 0 0;padding-left:18px}
+.note{font-size:12.5px;color:var(--muted)}
+/* lab */
+.lab{display:grid;gap:16px}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ctrl label{font-size:13px;display:flex;gap:6px;align-items:center;margin-left:8px;cursor:pointer}
+.three{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:14px}
+@media(max-width:900px){.three{grid-template-columns:1fr}}
+.three h3{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+table.d{border-collapse:collapse;width:100%;font-size:13px;font-family:var(--mono)}
+table.d th{font-size:11px;text-align:left;padding:5px 8px;color:var(--muted);border-bottom:2px solid var(--line)}
+table.d td{padding:5px 8px;border-bottom:1px solid var(--line)}
+table.d tr.drop{opacity:.35;text-decoration:line-through}
+table.d tr.keep td:first-child{box-shadow:inset 3px 0 0 var(--ok)}
+table.d td.nul{color:var(--orange);font-style:italic}
+table.d tr.m td{background:var(--blue-soft)}
+table.d tr.lo td{background:var(--orange-soft)}
+table.d tr.dup td{background:var(--orange-soft)}
+.cnt{font-weight:800;font-size:22px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:4px}
+footer{margin-top:28px;font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.card,details.ex{transition:border-color .15s}}
+
+/* shared extras */
+.flow{display:flex;gap:6px;flex-wrap:wrap;align-items:stretch}
+.fl{flex:1 1 150px;min-width:0;border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:var(--surface);font-size:12.5px;position:relative}
+.fl b{display:block;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--blue)}
+.fl i{position:absolute;top:-8px;right:8px;font-style:normal;font-size:10px;font-weight:800;background:var(--orange);color:#fff;border-radius:99px;padding:0 6px}
+.fl code{font-size:11.5px;word-break:break-word}
+.fl.skip{opacity:.5}
+.chain{display:flex;gap:0;flex-wrap:wrap;align-items:center;row-gap:8px}
+.cte{border:2px solid var(--blue);border-radius:9px;background:var(--surface);padding:7px 10px;font-size:12.5px;max-width:260px}
+.cte b{display:block;font-family:var(--mono);font-size:12px}
+.cte.fin{border-color:var(--orange)}
+.cte .win{display:block;margin-top:4px;font-family:var(--mono);font-size:11px;color:var(--orange)}
+.chain .ar{padding:0 8px;color:var(--muted);font-weight:800}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.two{grid-template-columns:1fr}}
+.mini{display:grid;gap:10px}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--blue-soft);border-radius:8px;padding:3px 9px;font-size:13px}
+.btn{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 12px;border-radius:8px;cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.in{font:inherit;font-family:var(--mono);font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface);color:var(--fg);min-width:0;width:100%}
+table.d td.hl,table.d th.hl{background:var(--orange-soft)}
+table.d td.cur{box-shadow:inset 0 0 0 2px var(--blue)}
+
+body{margin:0}
+[hidden]{display:none!important}
+
+/* ---- charts ---- */
+.viz{margin:0;border:1px solid var(--line);border-radius:10px;padding:12px 14px 8px;background:var(--surface);position:relative;min-width:0}
+.viz figcaption{display:flex;flex-direction:column;gap:2px;margin-bottom:6px}
+.viz figcaption b{font-size:14.5px;line-height:1.3}
+.viz figcaption span{font-size:12.5px;color:var(--muted)}
+.viz-leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;margin-bottom:4px}
+.viz-leg:empty{display:none}
+.viz-leg .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+.viz-box{position:relative;min-width:0}
+.viz-svg{min-width:0}
+.viz svg{display:block;max-width:100%;overflow:visible;font-size:12px;font-family:var(--font)}
+.viz .vz-t{fill:var(--fg)} .viz .vz-m{fill:var(--muted)}
+.viz .vz-g{stroke:var(--line);stroke-width:1} .viz .vz-ax{stroke:var(--muted);stroke-width:1}
+.viz .vz-x{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.viz .vz-f.s1,.viz .sw.s1{fill:var(--c1);background:var(--c1)} .viz .vz-f.s2,.viz .sw.s2{fill:var(--c2);background:var(--c2)}
+.viz .vz-f.s3,.viz .sw.s3{fill:var(--c3);background:var(--c3)} .viz .vz-f.sx,.viz .sw.sx{fill:var(--cx);background:var(--cx)}
+.viz .vz-l{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round} .viz .vz-l.s1{stroke:var(--c1)} .viz .vz-l.dash{stroke-dasharray:4 4}
+.viz .vz-d{stroke:var(--surface);stroke-width:2} .viz .vz-d.s1{fill:var(--c1)} .viz .vz-d.s2{fill:var(--c2)} .viz .vz-d.hollow{fill:var(--surface);stroke:var(--c1)}
+.viz .vz-hit{fill:transparent}
+.viz .vz-f:hover,.viz .vz-cell:hover{opacity:.82}
+.viz-tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--surface);font-size:12px;padding:4px 8px;border-radius:6px;white-space:nowrap;z-index:5}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="eyebrow">TheHauData Mentoring Program · Track 1 · Metrics and Deep Dives</div>
+  <h1>Analytics Mindset: Metrics and In-Depth Analysis</h1>
+  <p>Choose the right metrics, slice them with the right dimensions, check the overall number against its detail, find what drives a change, and estimate the impact of a decision. Practice on AdventureWorks.</p>
+  <nav class="tabs" role="tablist" aria-label="Study guide sections">
+    <button role="tab" id="t-sum" aria-selected="true" aria-controls="v-sum">1 · Key learnings</button>
+    <button role="tab" id="t-ex" aria-selected="false" aria-controls="v-ex">2 · Practice</button>
+    <button role="tab" id="t-lab" aria-selected="false" aria-controls="v-lab">3 · Analysis workbench</button>
+  </nav>
+</div></header>
+<main class="wrap">
+<section class="view on" id="v-sum" role="tabpanel" aria-labelledby="t-sum">
+
+  <div class="lead"><span>A number alone is not an answer. Pick metrics that show value, slice them with a purpose, and check the overall figure against its detail before you tell anyone what it means.</span>
+  <span style="font-weight:500;font-size:14px;opacity:.85">Try the workbench in tab 3.</span></div>
+  <div class="poster">
+    <div class="card c12"><h2><small>Part 1</small> Define the right key metrics</h2>
+      <div class="tbl-wrap"><table class="j"><tr><th>Idea</th><th>What it is</th><th>Example</th></tr>
+        <tr><td><b>North Star Metric (NSM)</b></td><td>The one number the whole company focuses on for long-term growth, over years. When it rises, revenue-related metrics follow.</td><td>Bill pay service: monthly active paying users</td></tr>
+        <tr><td><b>One Metric That Matters (OMTM)</b></td><td>The number one team focuses on for a period, depending on the product stage.</td><td>Months 1 to 6: new users and CAC. Months 7 to 12: churn rate</td></tr>
+        <tr><td><b>Output metric</b></td><td>An outcome or result.</td><td>Revenue, active customers</td></tr>
+        <tr><td><b>Input metric</b></td><td>An action or driver you can influence.</td><td>New customers, orders per customer, order value</td></tr></table></div>
+      <p class="note" style="margin-top:6px">The slides call revenue the worst example of a North Star. Revenue is what customers pay. The NSM should be the value they get back for it. A customer who feels the value pays more over time, so more sales is the result of a growing NSM. To find input metrics for an output, split it with the MECE math approach: Revenue = Customers x Orders per customer x Order value.</p>
+    </div>
+
+    <div class="card c6"><h2><small>Framework</small> Pirate funnel</h2>
+      <p>A way to cut a company into stages and see where to focus: acquisition, activation, retention, referral and revenue. The order of the stages differs between business models.</p></div>
+    <div class="card c6"><h2><small>Framework</small> Metrics by business stage</h2>
+      <p>The stage from the previous guide (empathy, stickiness, virality, revenue, scale) decides which metrics matter now. Chain it as: business model, then business objective, then NSM and OMTM.</p></div>
+
+    <div class="card c12"><h2><small>Where is the data</small> Eight data areas of a business</h2>
+      <p>Knowing where to find data is a large part of the job. The slides map the areas of a ride-hailing company to the Business Model Canvas. Join keys such as user_id and trip_id connect the areas, and that is where an analysis starts.</p>
+      <div class="tbl-wrap"><table class="j"><tr><th>Data area</th><th>Holds</th><th>Canvas block</th></tr>
+        <tr><td>Transaction</td><td>Trips, orders, fares, payments, refunds</td><td>Revenue streams</td></tr>
+        <tr><td>User profile</td><td>Accounts, demographics, tier</td><td>Customer segments</td></tr>
+        <tr><td>Driver database</td><td>Vetting, vehicle, ratings, earnings</td><td>Key resources</td></tr>
+        <tr><td>Traffic and events</td><td>App events, locations, matching logs</td><td>Key activities</td></tr>
+        <tr><td>Partner</td><td>Banks, wallets, merchants, fleets</td><td>Key partners</td></tr>
+        <tr><td>Marketing and promo</td><td>Campaigns, vouchers, channel attribution</td><td>Channels</td></tr>
+        <tr><td>Support and feedback</td><td>Tickets, ratings, NPS</td><td>Customer relationships</td></tr>
+        <tr><td>Risk and compliance</td><td>Fraud, chargebacks, incidents</td><td>Cost structure</td></tr></table></div>
+    </div>
+
+    <div class="card c12"><h2><small>Part 2</small> Metrics and dimensions</h2>
+      <div class="tbl-wrap"><table class="j"><tr><th></th><th>Metric</th><th>Dimension</th></tr>
+        <tr><td><b>It is</b></td><td>What you measure</td><td>How you slice it</td></tr>
+        <tr><td><b>Examples</b></td><td>Revenue, cost, orders, churn rate, delivery time</td><td>Year, month, channel, country, category, segment</td></tr>
+        <tr><td><b>Test</b></td><td>If adding two rows makes sense, it is a metric.</td><td>If it names a row instead of measuring it, it is a dimension.</td></tr></table></div>
+      <p style="margin-top:8px">"Revenue was $55.8M" is true and impossible to act on. The same metric by year, then by month, then by channel is where it turns into knowledge. This is the <b>dimension ladder</b>: year asks "are we growing?", year and month asks "is it seasonal?", channel and month asks "what is driving it?"</p>
+      <ul>
+        <li><b>Hierarchy</b> (country, city, district; year, quarter, month): drill one level at a time. Skipping a level hides where the problem sits.</li>
+        <li><b>Flat dimensions</b> (channel, payment method, segment): cross them freely with each other and with any level.</li>
+        <li><b>How many groups?</b> 2 to 12 is readable on a slide. 20 to 200 needs a top N and an "other" bucket. Thousands means you grouped by a key, such as order ID, and got the raw table back.</li>
+        <li>"City x channel" is a question. "City x district x SKU x campaign" is a data dump.</li>
+      </ul>
+    </div>
+
+    <div class="card c12"><h2><small>Part 3</small> Overall against detail</h2>
+      <p>Given the overall view, does the detail follow the same trend? Read in layers: overall, then by one dimension, then by two or three. Where a layer disagrees with the one above, that is the finding.</p>
+      <p><b>Overall against distribution.</b> An average can look healthy while the tail is not. In a delivery example on the slides, the average is 28 minutes and the 90th percentile is 52, so one order in ten takes nearly twice as long, and that is where refunds come from.</p>
+    </div>
+
+    <div class="card c12"><h2><small>Part 4</small> Key factors and root cause</h2>
+      <div class="tbl-wrap"><table class="j"><tr><th>Step</th><th>What to do</th></tr>
+        <tr><td><b>1. Rule out a data problem</b></td><td>Tracking changed (a release stopped events), definition changed (metric logic, filter, join), rows missing or late (check row counts per source per day), scope changed (new market, test group, filter left on). If one dimension goes to exactly zero, or the break lands on a release date, stop analysing and check the pipeline.</td></tr>
+        <tr><td><b>2. The 80/20 check</b></td><td>A few causes make up most of the result. Work where the mass is: a 5% gain in a big category beats doubling a tiny one.</td></tr>
+        <tr><td><b>3. If 80/20 comes back flat</b></td><td>Change the dimension, look for a shared cause upstream of all segments, or accept that the lever is system-wide. A flat Pareto is a finding.</td></tr>
+        <tr><td><b>4. 5 Whys</b></td><td>Ask why until the answer is something you control. Each answer must be checkable in the data. Run two or three chains for a big problem.</td></tr>
+        <tr><td><b>5. Decomposition tree</b></td><td>Break a total down one dimension at a time (a visual in Power BI) to see where the mass sits.</td></tr>
+        <tr><td><b>6. Compared to what?</b></td><td>At every why, name the group that did not change. If only one district is late, a district-specific cause is a real candidate. If all moved, the cause is wider.</td></tr></table></div>
+      <p class="note" style="margin-top:6px">Where 5 Whys goes wrong: stopping at a symptom, naming a person, accepting unchecked answers, following only one chain.</p>
+    </div>
+
+    <div class="card c12"><h2><small>Part 5</small> Impact estimation</h2>
+      <p>What happens if we change a price, run a tactic or launch a product? The input is historical data, the insights so far, and assumptions written down. The output is a simulation that lets the business refine the decision before committing money.</p>
+      <p>The slide example: free shipping above $35 lifts the basket, but the result hangs on one assumption. Below a certain basket lift, the scenario loses money. State that threshold.</p>
+      <div class="tbl-wrap"><table class="j"><tr><th>Technique</th><th>Question</th><th>What you hand over</th></tr>
+        <tr><td>Dimension breakdown</td><td>What are the useful points of view?</td><td>A slicing plan</td></tr>
+        <tr><td>Overall against detail</td><td>Does the detail follow the total?</td><td>The layer where it diverges</td></tr>
+        <tr><td>Key factors, root cause</td><td>What drives it, and why?</td><td>A cause you can act on</td></tr>
+        <tr><td>Impact estimation</td><td>What happens if we act?</td><td>A range and its assumptions</td></tr></table></div>
+    </div>
+
+    <div class="card c12 pit"><h2><small>Watch out</small> Mistakes in a first deep dive</h2>
+      <ul>
+        <li><b>Revenue as the North Star.</b> It measures what you collect, not the value customers get.</li>
+        <li><b>A total that hides a mix shift.</b> Order value fell 44.6% in 2014 overall, but only 10.4% once the channel mix is held at its 2013 level (Practice 2).</li>
+        <li><b>An average over a long tail.</b> 4.8% of orders bring 64.5% of revenue (Practice 2).</li>
+        <li><b>Analysing a drop before checking the data.</b> June 2014 revenue is $49,006 against $5.4M in May, and Bikes and Components stop appearing on 31 May (Practice 3).</li>
+        <li><b>A scenario with one hidden assumption.</b> A 10% discount needs 19.0% more units just to break even on gross profit (Practice 4).</li>
+        <li><b>Part years read as full years.</b> 2011 and 2014 each hold only part of a year, so compare like with like.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>Source: the Metrics and Deep Dives slides (Quoc-Hau Le, TheHauData). The metric types, the Pirate funnel and the business stages on the slides credit Ward van Gasteren, Dave McClure and the Lean Analytics book.</footer>
+</section>
+<section class="view" id="v-ex" role="tabpanel" aria-labelledby="t-ex">
+
+  <div class="bar" id="filters"></div>
+  <div id="exlist"></div>
+  <footer>The data is AdventureWorks: 31,465 orders from 2011-05-31 to 2014-06-30, 19,119 customers, revenue = SUM(SubTotal) = $109,846,381. 2011 and 2014 are part years (about 7 and 6 months). Results come from running equivalent queries on the CSV files.</footer>
+</section>
+<section class="view" id="v-lab" role="tabpanel" aria-labelledby="t-lab">
+
+  <div class="card lab">
+    <h2><small>Tool 1</small> Metric, dimension or key?</h2>
+    <p class="note" style="margin:0 0 8px">Decide for each item. A metric can be added up sensibly. A dimension names a group. A key identifies one row and returns the raw table if you group by it.</p>
+    <div id="md-list" class="cm-list"></div>
+    <p style="margin-top:8px"><button class="chip" id="md-go" type="button">Check my answers</button></p>
+    <div class="cp-out" id="md-out" aria-live="polite"></div>
+  </div>
+
+  <div class="card lab" style="margin-top:12px">
+    <h2><small>Tool 2</small> Discount impact estimator</h2>
+    <p class="note" style="margin:0 0 8px">Change the assumptions. The defaults are online Accessories in 2013 from Practice 4.</p>
+    <div class="cp-row">
+      <label>Base revenue ($)<input id="ie-rev" type="number" min="0" step="1" value="352909"></label>
+      <label>Base cost ($)<input id="ie-cost" type="number" min="0" step="1" value="131989"></label>
+      <label>Price cut (%)<input id="ie-disc" type="number" min="0" max="90" step="1" value="10"></label>
+      <label>Unit lift you expect (%)<input id="ie-lift" type="number" min="0" max="500" step="1" value="15"></label>
+    </div>
+    <div class="cp-out" id="ie-out" aria-live="polite"></div>
+  </div>
+  <style>
+    .cp-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+    .cp-row label{display:grid;gap:3px;font-size:12px;color:var(--muted)}
+    .cp-row select,.cp-row input{font:inherit;font-size:14px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+    .cp-out{margin-top:10px;display:grid;gap:8px}
+    .cp-out .rec{background:var(--ok-soft);color:var(--ok);border-radius:10px;padding:10px 12px;font-weight:700}
+    .cp-out .rec.bad{background:var(--warn-soft);color:var(--warn)}
+    .cp-out .ln{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface);font-size:14px}
+    .cp-out .ln b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .cm-list{display:grid;gap:6px}
+    .cm-list label{display:grid;grid-template-columns:minmax(200px,2fr) minmax(140px,1fr);gap:8px;align-items:center;font-size:14px}
+    .cm-list select{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+  </style>
+
+</section>
+</main>
+<script>/* Shared engine for TheHauData study guides.
+   A lesson page defines window.GUIDE = { EX, RES, stepNames, er:[{host,W,H,nodes,edges}], open:'id' } then loads this file.
+   Exercise spec: {id,grp,tag,lvl,vi,en,out[],flt[],blocks[],combine,flow[],ctes[],st[],sql,res,resLabel,expect,watch[]} */
+(function(){
+const $ = (s, r=document) => r.querySelector(s);
+const el = (t, a={}, h='') => { const e=document.createElement(t); for(const k in a){ if(k==='class') e.className=a[k]; else e.setAttribute(k,a[k]); } if(h) e.innerHTML=h; return e; };
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+window.G = {$, el, esc};
+
+/* ---------- tabs ---------- */
+const tabs = [...document.querySelectorAll('nav.tabs button')];
+const store = 'tab:'+location.pathname;
+function show(id){
+  tabs.forEach(b=>{ const on=b.id===id; b.setAttribute('aria-selected',on); $('#'+b.getAttribute('aria-controls')).classList.toggle('on',on); });
+  try{ localStorage.setItem(store,id);}catch(e){}
+  window.scrollTo({top:0});
+}
+tabs.forEach(b=>b.addEventListener('click',()=>show(b.id)));
+document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.go);}));
+try{ const t=localStorage.getItem(store); if(t && $('#'+t)) show(t); }catch(e){}
+G.show = show;
+
+/* ---------- SQL highlight ---------- */
+const KW=/\b(SELECT|DISTINCT|TOP|FROM|LEFT|RIGHT|INNER|FULL|CROSS|OUTER|JOIN|ON|WHERE|AND|OR|IN|AS|BETWEEN|UNION|ALL|ORDER|BY|DESC|ASC|IS|NOT|NULL|LIKE|CAST|VARCHAR|NVARCHAR|GROUP|HAVING|CASE|WHEN|THEN|ELSE|END|WITH|OVER|PARTITION|ROWS|UNBOUNDED|PRECEDING|FOLLOWING|CURRENT|ROW|COUNT|SUM|AVG|MIN|MAX|YEAR|MONTH|DAY|DATEDIFF|DATEPART|DATEADD|QUARTER|WEEKDAY|LOWER|LAG|LEAD|RANK|DENSE_RANK|ROW_NUMBER|PERCENT_RANK|COALESCE|LEN|LEFT|RIGHT|REPLACE|TRIM|SUBSTRING|CONCAT|FORMAT|ROUND|INT|DATE)\b/gi;
+function hl(code){
+  return code.split('\n').map(line=>{
+    const i=line.indexOf('--'); let main=line, cm='';
+    if(i>=0){ main=line.slice(0,i); cm=line.slice(i); }
+    let out=''; let last=0; const re=/'(?:[^']|'')*'/g; let m;
+    const seg=t=>esc(t).replace(KW,'<span class="k">$&</span>').replace(/\b\d+(\.\d+)?\b/g,'<span class="nm">$&</span>');
+    while((m=re.exec(main))){ out+=seg(main.slice(last,m.index))+'<span class="s">'+esc(m[0])+'</span>'; last=m.index+m[0].length; }
+    out+=seg(main.slice(last));
+    return out+(cm?'<span class="c">'+esc(cm)+'</span>':'');
+  }).join('\n');
+}
+G.hl = hl;
+document.querySelectorAll('pre.sql[data-hl]').forEach(p=>{ p.innerHTML=hl(p.textContent); });
+
+/* ---------- ER map ---------- */
+G.drawER = function(host,W,H,nodes,edges){
+  const bw=165,bh=52; let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Table relationship map">
+  <defs><marker id="ar${host.id}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="var(--muted)"/></marker></defs>`;
+  const N={}; nodes.forEach(n=>N[n.id]=n);
+  const ctr=n=>[n.x+bw/2,n.y+bh/2];
+  const edge=(a,b)=>{ const [ax,ay]=ctr(a),[bx,by]=ctr(b); const dx=bx-ax,dy=by-ay; const t=Math.min(Math.abs((bw/2+4)/(dx||1e-9)),Math.abs((bh/2+4)/(dy||1e-9)));
+    const p1=[ax+dx*t,ay+dy*t]; const u=Math.min(Math.abs((bw/2+8)/(dx||1e-9)),Math.abs((bh/2+8)/(dy||1e-9))); const p2=[bx-dx*u,by-dy*u]; return [p1,p2]; };
+  edges.forEach(e=>{ const [p1,p2]=edge(N[e.a],N[e.b]); const mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;
+    s+=`<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#ar${host.id})"/>`;
+    const lab=(e.warn?'⚠ ':'')+e.k, w=lab.length*6.4+12;
+    s+=`<rect x="${mx-w/2}" y="${my-9}" width="${w}" height="17" rx="8" fill="var(--surface)" stroke="${e.warn?'var(--warn)':'var(--line)'}"/><text x="${mx}" y="${my+3.5}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${e.warn?'var(--warn)':'var(--fg)'}">${lab}</text>`; });
+  nodes.forEach(n=>{ const c=n.fact?'var(--orange)':'var(--blue)', bg=n.fact?'var(--orange-soft)':'var(--blue-soft)';
+    s+=`<rect x="${n.x}" y="${n.y}" width="${bw}" height="${bh}" rx="8" fill="${bg}" stroke="${c}" stroke-width="2"/>
+    <text x="${n.x+10}" y="${n.y+20}" font-size="12" font-weight="700" fill="var(--fg)" font-family="var(--mono)">${n.id}</text>
+    <text x="${n.x+10}" y="${n.y+38}" font-size="10.5" fill="var(--muted)">${n.sub}</text>`; });
+  host.innerHTML=s+'</svg>';
+};
+
+/* ---------- exercises ---------- */
+function tcard(t,role,sub,isBase){
+  return `<div class="tcard${isBase?' base':''}">${role?`<span class="role">${isBase?'FROM · ':''}${role}</span>`:''}<b>${t}</b>${sub?`<em>${sub}</em>`:''}</div>`;
+}
+function blockHTML(b){
+  let h=`<div>${b.label?`<div class="maplabel" style="margin-bottom:4px">${b.label}</div>`:''}<div class="blk">${tcard(b.base.t,b.base.role,b.base.use,true)}`;
+  if(b.joins && b.joins.length){
+    h+=`<div class="arms">`+b.joins.map(j=>`<div class="arm"><div class="link"><span class="jt">${j.type}</span><span>ON ${j.key}</span>${j.cast?'<span class="cast">⚠ CAST type</span>':''}</div>${tcard(j.t,'',(j.from?`via ${j.from} · `:'')+'adds '+j.adds,false)}</div>`).join('')+`</div>`;
+  }
+  return h+`</div></div>`;
+}
+function flowHTML(f){
+  return `<div class="flow">`+f.map((x,i)=>`<div class="fl${x[2]==='skip'?' skip':''}"><i>${x[3]||i+1}</i><b>${x[0]}</b><code>${esc(x[1])}</code></div>`).join('')+`</div>`;
+}
+function chainHTML(c){
+  return `<div class="chain">`+c.map((x,i)=>`${i?'<span class="ar">→</span>':''}<div class="cte${x.fin?' fin':''}"><b>${esc(x.n)}</b>${esc(x.d)}${x.w?`<span class="win">${esc(x.w)}</span>`:''}</div>`).join('')+`</div>`;
+}
+function resHTML(RES,ids,labels){
+  ids=[].concat(ids||[]); return ids.map((id,i)=>{
+    const r=RES[id]; if(!r) return '';
+    const th=r.cols.map(c=>`<th>${esc(c)}</th>`).join('');
+    const rows=r.sample.map(x=>'<tr>'+x.map(v=>`<td class="${v===null?'nul':''}">${v===null?'NULL':esc(typeof v==='number'?v.toLocaleString('en-US'):v)}</td>`).join('')+'</tr>').join('');
+    return `<div class="res"><header>${labels?labels[i]+' · ':''}${r.n.toLocaleString()} row${r.n===1?'':'s'}<span>first ${Math.min(r.sample.length,r.n)} shown</span></header><div class="tbl-wrap"><table class="d"><tr>${th}</tr>${rows}</table></div></div>`;
+  }).join('');
+}
+G.render = function(cfg){
+  const {EX,RES}=cfg; const steps=cfg.stepNames||['Expected output','Which tables?','Keys & JOIN type','Filter & validate'];
+  const list=$('#exlist');
+  EX.forEach(e=>{
+    const d=el('details',{class:'ex','data-grp':e.grp,id:'ex-'+e.id});
+    const maps=[];
+    if(e.flow) maps.push(`<div class="maplabel">Query in execution order</div>${flowHTML(e.flow)}`);
+    if(e.ctes) maps.push(`<div class="maplabel">CTE chain</div>${chainHTML(e.ctes)}`);
+    if(e.blocks) maps.push(`<div class="maplabel">Table map</div>`+e.blocks.map((b,k)=>blockHTML(b)+(e.combine&&k<e.blocks.length-1?`<div class="comb">${e.combine}</div>`:'')).join(''));
+    const outRow=(e.out&&e.out.length)?`<div class="out"><span class="maplabel">Output</span>${e.out.map(o=>`<span class="pill">${esc(o)}</span>`).join('')}${(e.flt&&e.flt.length)?'<span class="maplabel" style="margin-left:8px">Filter</span>':''}${(e.flt||[]).map(o=>`<span class="flt">${esc(o)}</span>`).join('')}</div>`:'';
+    d.innerHTML=`<summary><span class="tag${e.grp==='Classwork'||/class/i.test(e.grp)?'':' o'}">${e.tag}</span><span class="ex-title">${esc(e.en)}</span><span class="tag g">${e.lvl}</span></summary>
+    <div class="ex-body">
+      <div class="q"><b>${e.viLabel||'Question (Vietnamese, as given)'}</b><br>${esc(e.vi)}</div>
+      <div class="stepbox">${e.st.map((s,k)=>`<div class="stp"><div class="n">${k+1}</div><div><b>${(e.stepNames||steps)[k]||''}</b><div>${s}</div></div></div>`).join('')}</div>
+      ${(maps.length||outRow)?`<div class="map">${maps.join('')}${outRow}</div>`:''}
+      <div class="codewrap"><pre class="sql">${hl(e.sql)}</pre><button class="copy" type="button">Copy</button></div>
+      ${resHTML(RES,e.res,e.resLabel)}${G.chartHTML?G.chartHTML(e,RES):''}${e.expect?`<div class="note">${e.expect}</div>`:''}
+      ${(e.watch&&e.watch.length)?`<div class="watch"><b>Watch out</b><ul>${e.watch.map(w=>`<li>${w}</li>`).join('')}</ul></div>`:''}
+    </div>`;
+    d.querySelector('.copy').addEventListener('click',async ev=>{
+      const btn=ev.currentTarget;
+      try{ await navigator.clipboard.writeText(e.sql); btn.textContent='Copied'; }
+      catch(_){ const r=document.createRange(); r.selectNodeContents(d.querySelector('pre')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent='Selected'; }
+      setTimeout(()=>btn.textContent='Copy',1500);
+    });
+    list.appendChild(d);
+  });
+  if(cfg.open && $('#ex-'+cfg.open)) $('#ex-'+cfg.open).open=true;
+  const groups=['All',...new Set(EX.map(e=>e.grp))];
+  const fb=$('#filters'); let cur='All';
+  groups.forEach(g=>{ const b=el('button',{class:'chip',type:'button','aria-pressed':g==='All'},`${g} <span style="opacity:.7">${g==='All'?EX.length:EX.filter(e=>e.grp===g).length}</span>`);
+    b.addEventListener('click',()=>{cur=g;[...fb.children].forEach(c=>c.setAttribute('aria-pressed',c===b));
+      [...list.children].forEach(d=>d.hidden=!(g==='All'||d.dataset.grp===g));}); fb.appendChild(b); });
+  (cfg.er||[]).forEach(m=>G.drawER($(m.host),m.W,m.H,m.nodes,m.edges));
+  if(G.chartInit)G.chartInit();
+};
+})();
+/* ---- charts: bar, col, line, stack, heat. SVG drawn at the host's real pixel width, redrawn on resize. ---- */
+(function(){
+const G=window.G;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function fv(f,v){
+  v=+v;const a=Math.abs(v);
+  if(f==='usd')return '$'+(a>=1e6?(v/1e6).toFixed(a>=1e7?0:1)+'M':a>=1e3?Math.round(v/1e3)+'K':Math.round(v));
+  if(f==='pct')return (a<10&&v%1?v.toFixed(1):Math.round(v))+'%';
+  if(f==='pct1')return v.toFixed(1)+'%';
+  if(f==='usd0')return '$'+Math.round(v).toLocaleString('en-US');
+  if(f==='days')return v.toFixed(2)+' d';
+  if(f==='n2')return v.toLocaleString('en-US',{maximumFractionDigits:2});
+  return Math.round(v).toLocaleString('en-US');
+}
+function fvFull(f,v){ v=+v; if(f==='usd')return '$'+Math.round(v).toLocaleString('en-US'); return fv(f,v); }
+function nice(max,n){ n=n||4;const raw=max/n,p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p;
+  const s=(m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*p;return {step:s,max:Math.ceil(max/s-1e-9)*s}; }
+function rbar(x,y,w,h,r){ // rounded data end (right), square at the baseline
+  r=Math.min(r,h/2,Math.max(w,0));if(w<=0)return '';
+  return 'M'+x+','+y+'h'+(w-r)+'a'+r+','+r+' 0 0 1 '+r+','+r+'v'+(h-2*r)+'a'+r+','+r+' 0 0 1 -'+r+','+r+'h-'+(w-r)+'z'; }
+function cbar(x,y,w,h,r){ // rounded top, square at the baseline
+  r=Math.min(r,w/2,h);if(h<=0)return '';
+  return 'M'+x+','+(y+h)+'v-'+(h-r)+'a'+r+','+r+' 0 0 1 '+r+',-'+r+'h'+(w-2*r)+'a'+r+','+r+' 0 0 1 '+r+','+r+'v'+(h-r)+'z'; }
+function trunc(s,px){ const n=Math.max(4,Math.floor(px/6.4)); s=String(s); return s.length>n?s.slice(0,n-1)+'…':s; }
+const SER=['s1','s2','s3'];
+const ix=(cols,c)=>cols.indexOf(c);
+
+function prep(spec,r){
+  let cols=r.cols,rows=r.full||(r.sample.length===r.n?r.sample:null);
+  if(!rows)return null;
+  if(spec.wide){ // one row of several columns -> one category per column
+    const row=rows[0];rows=spec.wide.cols.map((c,i)=>[spec.wide.labels[i],row[cols.indexOf(c)]]);cols=['label','value'];
+    spec=Object.assign({},spec,{cat:'label',val:'value'});
+    if(spec.sort)rows.sort((a,b)=>b[1]-a[1]);
+  }
+  return {spec,cols,rows};
+}
+
+function drawBar(W,spec,cols,rows,host){
+  const series=spec.series||[{col:spec.val,label:spec.valLabel||spec.val}];
+  const ci=ix(cols,spec.cat),vi=series.map(s=>ix(cols,s.col));
+  const maxLab=Math.max(...rows.map(r=>String(r[ci]).length));
+  const Lw=Math.min(Math.round(W*0.42),Math.max(60,maxLab*6.6+10));
+  const R=64,rowH=series.length*17+(series.length>1?14:12),top=4;
+  const H=top+rows.length*rowH+4;
+  const max=nice(Math.max(...rows.flatMap(r=>vi.map(i=>+r[i]))),4).max;
+  if(series.length>1)host._legend=series.map((se,j)=>'<span><i class="sw '+SER[j]+'"></i>'+esc(se.label)+'</span>').join('');
+  const pw=W-Lw-R;let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  rows.forEach((r,k)=>{
+    const y0=top+k*rowH,hi=(spec.hi||[]).includes(r[ci]);
+    s+='<text class="vz-t" x="'+(Lw-8)+'" y="'+(y0+rowH/2+4)+'" text-anchor="end">'+esc(trunc(r[ci],Lw-10))+'</text>';
+    series.forEach((se,j)=>{
+      const v=+r[vi[j]],w=Math.max(0,v/max*pw),by=y0+(rowH-series.length*15-(series.length-1)*2)/2+j*17;
+      const cls=series.length>1?SER[j]:(hi?'s2':'s1');
+      s+='<path class="vz-f '+cls+'" d="'+rbar(Lw,by,w,15,4)+'" data-tip="'+esc(r[ci])+(series.length>1?' · '+esc(se.label):'')+': '+fvFull(spec.fmt,v)+'"/>';
+      s+='<text class="vz-m" x="'+(Lw+w+6)+'" y="'+(by+11.5)+'">'+fv(spec.fmt,v)+'</text>';
+    });
+  });
+  return s+'<line class="vz-ax" x1="'+Lw+'" x2="'+Lw+'" y1="'+top+'" y2="'+(H-4)+'"/></svg>';
+}
+function drawCol(W,spec,cols,rows){
+  const ci=ix(cols,spec.cat),vi=ix(cols,spec.val),H=240,L=46,Rr=12,T=22,B=30;
+  const n=nice(Math.max(...rows.map(r=>+r[vi])),4),pw=W-L-Rr,ph=H-T-B,slot=pw/rows.length,bw=Math.min(90,slot*0.5);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  for(let t=0;t<=n.max+1e-9;t+=n.step){const y=T+ph-t/n.max*ph;
+    s+='<line class="'+(t?'vz-g':'vz-ax')+'" x1="'+L+'" x2="'+(W-Rr)+'" y1="'+y+'" y2="'+y+'"/><text class="vz-m" x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end">'+fv(spec.tfmt||spec.fmt,t)+'</text>';}
+  rows.forEach((r,k)=>{const v=+r[vi],h=v/n.max*ph,x=L+k*slot+(slot-bw)/2,hi=(spec.hi||[]).includes(r[ci]);
+    s+='<path class="vz-f '+(hi?'s2':'s1')+'" d="'+cbar(x,T+ph-h,bw,h,4)+'" data-tip="'+esc(r[ci])+': '+fvFull(spec.fmt,v)+'"/>';
+    s+='<text class="vz-t" x="'+(x+bw/2)+'" y="'+(T+ph-h-6)+'" text-anchor="middle" font-weight="600">'+fv(spec.fmt,v)+'</text>';
+    s+='<text class="vz-t" x="'+(x+bw/2)+'" y="'+(H-10)+'" text-anchor="middle">'+esc(r[ci])+'</text>';});
+  return s+'</svg>';
+}
+function drawLine(W,spec,cols,rows){
+  const xi=ix(cols,spec.x),yi=ix(cols,spec.y),H=W<480?210:250,L=W<480?42:50,Rr=W<480?48:62,T=16,B=26;
+  const pw=W-L-Rr,ph=H-T-B,N=rows.length,ys=rows.map(r=>+r[yi]);
+  const n=nice(Math.max(...ys),4);
+  const X=i=>L+(N>1?i/(N-1)*pw:pw/2),Y=v=>T+ph-v/n.max*ph;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  for(let t=0;t<=n.max+1e-9;t+=n.step)
+    s+='<line class="'+(t?'vz-g':'vz-ax')+'" x1="'+L+'" x2="'+(W-Rr)+'" y1="'+Y(t)+'" y2="'+Y(t)+'"/><text class="vz-m" x="'+(L-6)+'" y="'+(Y(t)+4)+'" text-anchor="end">'+fv(spec.tfmt||spec.fmt,t)+'</text>';
+  const lab=rows.map(r=>String(r[xi]));const isM=lab.every(l=>/^\d{4}-\d{2}$/.test(l));
+  const maxT=Math.max(2,Math.floor(pw/54));let ticks=[];
+  if(isM){const jan=lab.map((l,i)=>l.endsWith('-01')?i:-1).filter(i=>i>=0);const k=Math.ceil(jan.length/maxT);ticks=jan.filter((_,j)=>j%k===0).map(i=>[i,lab[i].slice(0,4)]);}
+  else{const k=Math.ceil(N/maxT);ticks=lab.map((l,i)=>[i,l]).filter(([i])=>i%k===0);}
+  ticks.forEach(([i,t])=>{s+='<text class="vz-m" x="'+X(i)+'" y="'+(H-8)+'" text-anchor="middle">'+esc(t)+'</text>';});
+  const pts=ys.map((v,i)=>[X(i),Y(v)]);const pl=spec.partialLast&&N>2;
+  const main=pl?pts.slice(0,-1):pts;
+  s+='<path class="vz-l s1" d="M'+main.map(p=>p.join(',')).join('L')+'"/>';
+  if(pl)s+='<path class="vz-l s1 dash" d="M'+pts[N-2].join(',')+'L'+pts[N-1].join(',')+'"/>';
+  const last=pts[N-1];
+  s+='<circle class="vz-d s1'+(pl?' hollow':'')+'" cx="'+last[0]+'" cy="'+last[1]+'" r="4"/>';
+  s+='<text class="vz-t" x="'+(last[0]+8)+'" y="'+(last[1]+4)+'" font-weight="600">'+fv(spec.fmt,ys[N-1])+'</text>';
+  if(pl)s+='<text class="vz-m" x="'+(last[0]+8)+'" y="'+(last[1]+18)+'">partial</text>';
+  if(spec.peak){const m=ys.indexOf(Math.max(...ys.slice(0,pl?N-1:N)));
+    s+='<circle class="vz-d s2" cx="'+pts[m][0]+'" cy="'+pts[m][1]+'" r="4"/><text class="vz-t" x="'+Math.min(pts[m][0],W-Rr-70)+'" y="'+(pts[m][1]-9)+'" font-weight="600">Peak '+fv(spec.fmt,ys[m])+'</text>';}
+  if(spec.first){s+='<circle class="vz-d s1" cx="'+pts[0][0]+'" cy="'+pts[0][1]+'" r="4"/><text class="vz-t" x="'+(pts[0][0]+2)+'" y="'+(pts[0][1]-9)+'" font-weight="600">'+fv(spec.fmt,ys[0])+'</text>';}
+  s+='<line class="vz-x" id="vzx" x1="0" x2="0" y1="'+T+'" y2="'+(T+ph)+'" visibility="hidden"/><circle class="vz-d s1" id="vzc" r="5" visibility="hidden"/>';
+  const sw=pw/Math.max(N-1,1);
+  rows.forEach((r,i)=>{s+='<rect class="vz-hit" x="'+(X(i)-sw/2)+'" y="'+T+'" width="'+sw+'" height="'+ph+'" data-i="'+i+'" data-px="'+X(i)+'" data-py="'+Y(ys[i])+'" data-tip="'+esc(r[xi])+': '+fvFull(spec.fmt,ys[i])+((pl&&i===N-1)?' (partial)':'')+'"/>';});
+  return s+'</svg>';
+}
+function drawStack(W,spec,cols,rows,host){
+  const xi=ix(cols,spec.x),ci=ix(cols,spec.cat),vi=ix(cols,spec.val);
+  const years=[...new Set(rows.map(r=>r[xi]))].sort(),totals={};
+  rows.forEach(r=>{totals[r[ci]]=(totals[r[ci]]||0)+ +r[vi];});
+  const top=Object.keys(totals).sort((a,b)=>totals[b]-totals[a]).slice(0,spec.top||3);
+  const segs=top.concat(['Other']);
+  host._legend=segs.map((n,i)=>'<span><i class="sw '+(i<top.length?SER[i]:'sx')+'"></i>'+esc(n)+'</span>').join('');
+  const H=250,L=40,Rr=W<560?8:132,T=10,B=26,pw=W-L-Rr,ph=H-T-B,slot=pw/years.length,bw=Math.min(76,slot*0.62);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  [0,25,50,75,100].forEach(t=>{const y=T+ph-t/100*ph;s+='<line class="'+(t?'vz-g':'vz-ax')+'" x1="'+L+'" x2="'+(W-Rr)+'" y1="'+y+'" y2="'+y+'"/><text class="vz-m" x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end">'+t+'%</text>';});
+  years.forEach((yr,k)=>{
+    const x=L+k*slot+(slot-bw)/2,share={};let acc=0;
+    segs.forEach(n=>share[n]=0);
+    rows.filter(r=>r[xi]===yr).forEach(r=>{const n=top.includes(r[ci])?r[ci]:'Other';share[n]+= +r[vi];});
+    const sum=segs.reduce((a,n)=>a+share[n],0);
+    segs.forEach((n,i)=>{const h=share[n]/sum*ph;if(h<=0)return;const y=T+ph-acc-h;acc+=h;
+      s+='<rect class="vz-f '+(i<top.length?SER[i]:'sx')+'" x="'+x+'" y="'+(y+0.5)+'" width="'+bw+'" height="'+Math.max(h-1,0.5)+'" rx="1.5" data-tip="'+yr+' · '+esc(n)+': '+(share[n]/sum*100).toFixed(1)+'%"/>';
+      if(k===years.length-1&&W>=560)s+='<text class="vz-t" x="'+(x+bw+8)+'" y="'+(y+h/2+4)+'">'+esc(trunc(n,Rr-12))+' '+(share[n]/sum*100).toFixed(0)+'%</text>';});
+    s+='<text class="vz-m" x="'+(x+bw/2)+'" y="'+(H-8)+'" text-anchor="middle">'+yr+'</text>';
+  });
+  return s+'</svg>';
+}
+function drawHeat(W,spec,cols,rows){
+  const ci=ix(cols,spec.cat),vcols=spec.vals,vi=vcols.map(c=>ix(cols,c));
+  const L=Math.min(86,W*0.22),T=26,cw=(W-L-4)/vcols.length,ch=Math.min(32,Math.max(24,cw*0.55)),H=T+rows.length*ch+4;
+  const vals=rows.flatMap(r=>vi.map(i=>+r[i]).filter(v=>!isNaN(v)));const mx=Math.max(...vals);
+  const heads=spec.heads||vcols;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(spec.title)+'">';
+  vcols.forEach((c,j)=>{s+='<text class="vz-m" x="'+(L+j*cw+cw/2)+'" y="'+(T-9)+'" text-anchor="middle">'+esc(heads[j])+'</text>';});
+  rows.forEach((r,k)=>{
+    s+='<text class="vz-t" x="'+(L-8)+'" y="'+(T+k*ch+ch/2+4)+'" text-anchor="end">'+esc(r[ci])+'</text>';
+    vi.forEach((i,j)=>{const v=+r[i],t=Math.min(1,v/mx),hi=t>0.45;
+      s+='<rect class="vz-cell" x="'+(L+j*cw+1)+'" y="'+(T+k*ch+1)+'" width="'+(cw-2)+'" height="'+(ch-2)+'" rx="3" style="fill:color-mix(in srgb,var(--h1) '+Math.round(t*100)+'%,var(--h0))" data-tip="'+esc(r[ci])+' · '+esc(heads[j])+': '+v.toFixed(1)+'%"/>';
+      s+='<text x="'+(L+j*cw+cw/2)+'" y="'+(T+k*ch+ch/2+4)+'" text-anchor="middle" style="fill:var('+(hi?'--htx':'--fg')+');pointer-events:none">'+v.toFixed(1)+'</text>';});
+  });
+  return s+'</svg>';
+}
+const DRAW={bar:drawBar,col:drawCol,line:drawLine,stack:drawStack,heat:drawHeat};
+
+function paint(host){
+  const W=Math.floor(host.clientWidth);if(W<120||host._w===W)return;host._w=W;
+  const P=host._p;const svg=DRAW[P.spec.type](W,P.spec,P.cols,P.rows,host);
+  host.querySelector('.viz-leg').innerHTML=host._legend||'';
+  host.querySelector('.viz-svg').innerHTML=svg;
+}
+function wire(host){
+  const tip=host.querySelector('.viz-tip'),box=host.querySelector('.viz-svg');
+  box.addEventListener('pointermove',ev=>{
+    const t=ev.target.closest&&ev.target.closest('[data-tip]');
+    if(!t){tip.hidden=true;return;}
+    tip.textContent=t.getAttribute('data-tip');tip.hidden=false;
+    const b=box.getBoundingClientRect();let x=ev.clientX-b.left+12,y=ev.clientY-b.top-34;
+    x=Math.min(x,b.width-tip.offsetWidth-4);tip.style.left=Math.max(0,x)+'px';tip.style.top=Math.max(0,y)+'px';
+    if(t.dataset.i!==undefined){const vx=box.querySelector('#vzx'),vc=box.querySelector('#vzc');
+      vx.setAttribute('x1',t.dataset.px);vx.setAttribute('x2',t.dataset.px);vc.setAttribute('cx',t.dataset.px);vc.setAttribute('cy',t.dataset.py);
+      vx.setAttribute('visibility','visible');vc.setAttribute('visibility','visible');}
+  });
+  box.addEventListener('pointerleave',()=>{tip.hidden=true;const vx=box.querySelector('#vzx'),vc=box.querySelector('#vzc');if(vx){vx.setAttribute('visibility','hidden');vc.setAttribute('visibility','hidden');}});
+}
+G.chartHTML=function(e,RES){
+  if(!e.chart)return '';
+  const r=RES[[].concat(e.res||[])[0]];if(!r)return '';
+  const P=prep(e.chart,r);if(!P)return '';
+  const id='viz-'+e.id;G._viz=G._viz||{};G._viz[id]=P;
+  return '<figure class="viz" id="'+id+'"><figcaption><b>'+esc(e.chart.title)+'</b><span>'+esc(e.chart.sub||'')+'</span></figcaption><div class="viz-leg"></div><div class="viz-box"><div class="viz-svg"></div><div class="viz-tip" hidden></div></div></figure>';
+};
+G.chartInit=function(){
+  document.querySelectorAll('figure.viz').forEach(h=>{
+    h._p=G._viz[h.id];wire(h);
+    new ResizeObserver(()=>paint(h)).observe(h);paint(h);
+  });
+};
+})();
+</script>
+<script>
+const RES = {"l16a": {"cols": ["yr", "active_customers", "new_customers", "returning_customers", "orders", "orders_per_customer", "aov", "revenue"], "n": 4, "sample": [[2011, 1406, 1406, 0, 1607, 1.14, 7867.0, 12641672.0], [2012, 3162, 2961, 201, 3915, 1.24, 8563.0, 33524301.0], [2013, 11095, 8730, 2365, 14182, 1.28, 3076.0, 43622479.0], [2014, 10354, 6022, 4332, 11761, 1.14, 1705.0, 20057929.0]], "full": [[2011, 1406, 1406, 0, 1607, 1.14, 7867.0, 12641672.0], [2012, 3162, 2961, 201, 3915, 1.24, 8563.0, 33524301.0], [2013, 11095, 8730, 2365, 14182, 1.28, 3076.0, 43622479.0], [2014, 10354, 6022, 4332, 11761, 1.14, 1705.0, 20057929.0]]}, "l16a2": {"cols": ["yr", "customers_x_orders_per_customer_x_aov", "revenue"], "n": 4, "sample": [[2011, 12641672.0, 12641672.0], [2012, 33524301.0, 33524301.0], [2013, 43622479.0, 43622479.0], [2014, 20057929.0, 20057929.0]], "full": [[2011, 12641672.0, 12641672.0], [2012, 33524301.0, 33524301.0], [2013, 43622479.0, 43622479.0], [2014, 20057929.0, 20057929.0]]}, "l16b": {"cols": ["yr", "orders", "online_share_pct", "aov_all", "aov_online", "aov_sales_rep"], "n": 4, "sample": [[2011, 1607, 74.7, 7867.0, 3217.0, 21622.0], [2012, 3915, 70.1, 8563.0, 2330.0, 23152.0], [2013, 14182, 88.7, 3076.0, 853.0, 20582.0], [2014, 11761, 94.6, 1705.0, 752.0, 18548.0]], "full": [[2011, 1607, 74.7, 7867.0, 3217.0, 21622.0], [2012, 3915, 70.1, 8563.0, 2330.0, 23152.0], [2013, 14182, 88.7, 3076.0, 853.0, 20582.0], [2014, 11761, 94.6, 1705.0, 752.0, 18548.0]]}, "l16b2": {"cols": ["comparison", "change_aov_all_pct", "change_aov_online_pct", "change_aov_sales_rep_pct"], "n": 1, "sample": [["2013 to 2014", -44.6, -11.8, -9.9]], "full": [["2013 to 2014", -44.6, -11.8, -9.9]]}, "l16b3": {"cols": ["dimension", "groups"], "n": 7, "sample": [["Year", 4], ["Channel", 2], ["Sales territory", 10], ["Year and month", 38], ["Territory x channel x year", 69], ["Customer", 19119], ["Order", 31465]], "full": [["Year", 4], ["Channel", 2], ["Sales territory", 10], ["Year and month", 38], ["Territory x channel x year", 69], ["Customer", 19119], ["Order", 31465]]}, "l16b4": {"cols": ["order_value_band", "orders", "pct_of_orders", "revenue", "pct_of_revenue"], "n": 5, "sample": [["1. under $100", 11480, 36.5, 486305.0, 0.4], ["2. $100 to $999", 5584, 17.7, 3064443.0, 2.8], ["3. $1,000 to $4,999", 12190, 38.7, 28349207.0, 25.8], ["4. $5,000 to $19,999", 690, 2.2, 7083676.0, 6.4], ["5. $20,000 and over", 1521, 4.8, 70862751.0, 64.5]], "full": [["1. under $100", 11480, 36.5, 486305.0, 0.4], ["2. $100 to $999", 5584, 17.7, 3064443.0, 2.8], ["3. $1,000 to $4,999", 12190, 38.7, 28349207.0, 25.8], ["4. $5,000 to $19,999", 690, 2.2, 7083676.0, 6.4], ["5. $20,000 and over", 1521, 4.8, 70862751.0, 64.5]]}, "l16b5": {"cols": ["aov_2013", "aov_2014", "aov_2014_with_2013_mix", "change_without_mix_shift_pct"], "n": 1, "sample": [[3076.0, 1705.0, 2757.0, -10.4]], "full": [[3076.0, 1705.0, 2757.0, -10.4]]}, "l16c": {"cols": ["yr_month", "orders", "days_with_orders", "revenue", "aov", "online_revenue", "sales_rep_orders"], "n": 6, "sample": [[201401, 2141, 31, 4289818.0, 2004.0, 1551066.0, 175], [201402, 1756, 28, 1337725.0, 762.0, 1334494.0, 3], [201403, 2399, 31, 7217531.0, 3009.0, 1691179.0, 271], [201404, 2115, 30, 1797174.0, 850.0, 1795889.0, 2], [201405, 2411, 31, 5366675.0, 2226.0, 1951196.0, 179], [201406, 939, 30, 49006.0, 52.0, 49006.0, 0]], "full": [[201401, 2141, 31, 4289818.0, 2004.0, 1551066.0, 175], [201402, 1756, 28, 1337725.0, 762.0, 1334494.0, 3], [201403, 2399, 31, 7217531.0, 3009.0, 1691179.0, 271], [201404, 2115, 30, 1797174.0, 850.0, 1795889.0, 2], [201405, 2411, 31, 5366675.0, 2226.0, 1951196.0, 179], [201406, 939, 30, 49006.0, 52.0, 49006.0, 0]]}, "l16c2": {"cols": ["yr_month", "category", "lines", "revenue"], "n": 8, "sample": [[201404, "Accessories", 3387, 69020.0], [201404, "Bikes", 1086, 1696566.0], [201404, "Clothing", 822, 30303.0], [201405, "Accessories", 3470, 66217.0], [201405, "Bikes", 1186, 1848954.0], [201405, "Clothing", 968, 36025.0], [201406, "Accessories", 1711, 32729.0], [201406, "Clothing", 419, 16277.0]], "full": [[201404, "Accessories", 3387, 69020.0], [201404, "Bikes", 1086, 1696566.0], [201404, "Clothing", 822, 30303.0], [201405, "Accessories", 3470, 66217.0], [201405, "Bikes", 1186, 1848954.0], [201405, "Clothing", 968, 36025.0], [201406, "Accessories", 1711, 32729.0], [201406, "Clothing", 419, 16277.0]]}, "l16c3": {"cols": ["order_day", "orders", "revenue", "categories_sold", "bikes_and_components_revenue"], "n": 7, "sample": [["2014-05-27", 73, 58081.0, 3, 55064.0], ["2014-05-28", 89, 78907.0, 3, 74956.0], ["2014-05-29", 67, 60960.0, 3, 57804.0], ["2014-05-30", 52, 48375.0, 3, 45779.0], ["2014-05-31", 37, 1835.0, 2, 0.0], ["2014-06-01", 34, 1514.0, 2, 0.0], ["2014-06-02", 34, 1797.0, 2, 0.0]], "full": [["2014-05-27", 73, 58081.0, 3, 55064.0], ["2014-05-28", 89, 78907.0, 3, 74956.0], ["2014-05-29", 67, 60960.0, 3, 57804.0], ["2014-05-30", 52, 48375.0, 3, 45779.0], ["2014-05-31", 37, 1835.0, 2, 0.0], ["2014-06-01", 34, 1514.0, 2, 0.0], ["2014-06-02", 34, 1797.0, 2, 0.0]]}, "l16c4": {"cols": ["yr_month", "products_sold"], "n": 6, "sample": [[201401, 145], [201402, 109], [201403, 173], [201404, 108], [201405, 166], [201406, 42]], "full": [[201401, 145], [201402, 109], [201403, 173], [201404, 108], [201405, 166], [201406, 42]]}, "l16d": {"cols": ["orders", "units", "revenue", "cost", "gross_profit", "gross_margin_pct"], "n": 1, "sample": [[9125, 18181, 352909.0, 131989.0, 220921.0, 62.6]], "full": [[9125, 18181, 352909.0, 131989.0, 220921.0, 62.6]]}, "l16d2": {"cols": ["unit_lift_pct", "units", "revenue", "cost", "gross_profit", "change_vs_base"], "n": 4, "sample": [[0, 18181.0, 317618.0, 131989.0, 185630.0, -35291.0], [10, 19999.0, 349380.0, 145188.0, 204193.0, -16728.0], [20, 21817.0, 381142.0, 158386.0, 222756.0, 1835.0], [30, 23635.0, 412904.0, 171585.0, 241319.0, 20398.0]], "full": [[0, 18181.0, 317618.0, 131989.0, 185630.0, -35291.0], [10, 19999.0, 349380.0, 145188.0, 204193.0, -16728.0], [20, 21817.0, 381142.0, 158386.0, 222756.0, 1835.0], [30, 23635.0, 412904.0, 171585.0, 241319.0, 20398.0]]}, "l16d3": {"cols": ["break_even_unit_lift_pct"], "n": 1, "sample": [[19.0]], "full": [[19.0]]}};
+
+const EX=[
+{id:'p1',grp:'Define the metrics',tag:'Practice 1',lvl:'Easy',viLabel:'Task (written for this guide)',
+ vi:'Ban lãnh đạo AdventureWorks hỏi: "Doanh thu là chỉ số quan trọng nhất đúng không?" Hãy đề xuất một North Star Metric khác doanh thu, tách doanh thu thành các chỉ số đầu vào bằng cách chia MECE (toán học), rồi dùng SQL kiểm tra phép nhân khớp với doanh thu từng năm và xem chỉ số đầu vào nào thay đổi nhiều nhất.',
+ en:'Pick a North Star other than revenue, split revenue into input metrics, and check that the split adds up.',
+ out:['yr','active_customers','new_customers','returning_customers','orders','orders_per_customer','aov','revenue','customers_x_orders_per_customer_x_aov'],flt:[],
+ blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'CustomerID, OrderDate, SubTotal'},joins:[]}],
+ ctes:[{n:'first_order',d:'each customer and the year of their first order',w:'GROUP BY',fin:1}],
+ st:['One North Star and three or four input metrics, with the arithmetic checked against revenue.','The order header: customer, order date and subtotal. 31,465 orders from 19,119 customers.','Count customers, orders and revenue per year. Mark each customer as new if their first order is in that year, returning if earlier. Multiply the three inputs back together.','Customers x orders per customer x order value equals revenue in every year ($43,622,479 in 2013). Active customers go 1,406, 3,162, 11,095, 10,354. Orders per customer stay between 1.14 and 1.28. Order value falls from $8,563 to $1,705.'],
+ sql:`-- Output metric split into input metrics, by year
+WITH first_order AS (
+    SELECT CustomerID, MIN(YEAR(OrderDate)) AS first_year
+    FROM ADW_Sales_orders
+    GROUP BY CustomerID
+)
+SELECT YEAR(o.OrderDate) AS yr
+     , COUNT(DISTINCT o.CustomerID) AS active_customers
+     , COUNT(DISTINCT CASE WHEN f.first_year = YEAR(o.OrderDate) THEN o.CustomerID END) AS new_customers
+     , COUNT(DISTINCT CASE WHEN f.first_year < YEAR(o.OrderDate) THEN o.CustomerID END) AS returning_customers
+     , COUNT(*) AS orders
+     , ROUND(1.0 * COUNT(*) / COUNT(DISTINCT o.CustomerID), 2) AS orders_per_customer
+     , ROUND(SUM(o.SubTotal) / COUNT(*), 0) AS aov
+     , ROUND(SUM(o.SubTotal), 0) AS revenue
+FROM ADW_Sales_orders o
+JOIN first_order f ON o.CustomerID = f.CustomerID
+GROUP BY YEAR(o.OrderDate)
+ORDER BY yr
+
+-- Does Customers x Orders per customer x AOV give back revenue?
+WITH y AS (
+    SELECT YEAR(OrderDate) AS yr, COUNT(DISTINCT CustomerID) AS customers, COUNT(*) AS orders, SUM(SubTotal) AS revenue
+    FROM ADW_Sales_orders
+    GROUP BY YEAR(OrderDate)
+)
+SELECT yr
+     , ROUND(customers * (1.0 * orders / customers) * (revenue / orders), 0) AS customers_x_orders_per_customer_x_aov
+     , ROUND(revenue, 0) AS revenue
+FROM y
+ORDER BY yr`,
+ res:['l16a','l16a2'],resLabel:['Input metrics by year','Check: inputs multiplied give revenue'],
+ chart:{type:'col',cat:'yr',val:'active_customers',fmt:'int',hi:[2011,2014],title:'Active customers: 1,406 in 2011 to 11,095 in 2013',sub:'2011 holds 7 months and 2014 holds 6, so the orange bars are part years.'},
+ expect:`<b>A possible answer.</b><div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Item</th><th>Proposal</th></tr>
+ <tr><td><b>North Star</b></td><td>Active customers per period, meaning customers who order. A customer who orders again is getting value. Revenue stays as an output metric next to it.</td></tr>
+ <tr><td><b>Input metrics</b></td><td>New customers. Returning customers. Orders per customer. Average order value.</td></tr>
+ <tr><td><b>Math split</b></td><td>Revenue = Customers x Orders per customer x Order value. It is exact in every year, so no input is missing and none overlaps.</td></tr>
+ <tr><td><b>What moved</b></td><td>Customers grew almost eight-fold from 2011 to 2013. Orders per customer barely moved. Order value fell from $8,563 (2012) to $3,076 (2013). Returning customers were 4,332 of 10,354 in the first six months of 2014, so repeat buying is growing.</td></tr></table></div>
+ <div style="margin-top:8px">Be ready to defend the pick. Active customers is a fair NSM for a business that wants repeat buyers. The business may prefer another one, such as customers who bought twice in a year. Write your reason down.</div>`,
+ watch:['"Returning" here means the customer first ordered in an earlier year in this data. The data starts on 2011-05-31, so every 2011 customer counts as new by construction.','2011 and 2014 are part years. A fall in 2014 customers (10,354 against 11,095) compares six months with twelve.','Order value fell while customers grew. That fits a business moving toward smaller online orders, which Practice 2 looks at.','The product of the three inputs matches revenue exactly because order value is defined as revenue divided by orders. The check proves the split is complete, not that the inputs are independent.']},
+{id:'p2',grp:'Dimensions and layers',tag:'Practice 2',lvl:'Medium',viLabel:'Task (written for this guide)',
+ vi:'Báo cáo cho thấy giá trị đơn hàng trung bình (AOV) năm 2014 giảm 44,6% so với 2013. Hãy đọc theo từng lớp: tổng thể, theo kênh bán, rồi kiểm tra phân phối giá trị đơn hàng. Chi tiết có đi cùng xu hướng với tổng thể không? Trước khi nhóm dữ liệu, ước lượng xem mỗi cách nhóm trả về bao nhiêu dòng.',
+ en:'Read the AOV drop in layers: overall, by channel, then the distribution of order values.',
+ out:['yr','orders','online_share_pct','aov_all','aov_online','aov_sales_rep','comparison','change_aov_all_pct','change_aov_online_pct','change_aov_sales_rep_pct','aov_2013','aov_2014','aov_2014_with_2013_mix','change_without_mix_shift_pct','dimension','groups','order_value_band','pct_of_orders','revenue','pct_of_revenue'],flt:[],
+ blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'OrderDate, OnlineOrderFlag, SubTotal'},joins:[]}],
+ st:['A verdict on the AOV drop: how much is real and how much is a change in the mix.','The order header again, grouped by year and channel, then by order value band.','Layer 1: AOV by year. Layer 2: AOV by year and channel with the online share. Layer 3: hold the 2013 mix and recompute 2014. Then the distribution.','Overall AOV falls 44.6% from 2013 to 2014. Online falls 11.8% and sales rep orders fall 9.9%. With the 2013 mix, 2014 AOV would be $2,757, down 10.4%. And 4.8% of orders bring 64.5% of revenue.'],
+ sql:`-- Layers 1 and 2: AOV by year and by channel
+SELECT YEAR(OrderDate) AS yr
+     , COUNT(*) AS orders
+     , ROUND(100.0 * SUM(CASE WHEN OnlineOrderFlag = 1 THEN 1 ELSE 0 END) / COUNT(*), 1) AS online_share_pct
+     , ROUND(SUM(SubTotal) / COUNT(*), 0) AS aov_all
+     , ROUND(SUM(CASE WHEN OnlineOrderFlag = 1 THEN SubTotal END) / SUM(CASE WHEN OnlineOrderFlag = 1 THEN 1 END), 0) AS aov_online
+     , ROUND(SUM(CASE WHEN OnlineOrderFlag = 0 THEN SubTotal END) / SUM(CASE WHEN OnlineOrderFlag = 0 THEN 1 END), 0) AS aov_sales_rep
+FROM ADW_Sales_orders
+GROUP BY YEAR(OrderDate)
+ORDER BY yr
+
+-- Percent change 2013 to 2014, overall and per channel
+WITH y AS (
+    SELECT YEAR(OrderDate) AS yr
+         , SUM(SubTotal) / COUNT(*) AS aov_all
+         , SUM(CASE WHEN OnlineOrderFlag = 1 THEN SubTotal END) / SUM(CASE WHEN OnlineOrderFlag = 1 THEN 1 END) AS aov_online
+         , SUM(CASE WHEN OnlineOrderFlag = 0 THEN SubTotal END) / SUM(CASE WHEN OnlineOrderFlag = 0 THEN 1 END) AS aov_sales_rep
+    FROM ADW_Sales_orders
+    GROUP BY YEAR(OrderDate)
+)
+SELECT '2013 to 2014' AS comparison
+     , ROUND(100.0 * (b.aov_all / a.aov_all - 1), 1) AS change_aov_all_pct
+     , ROUND(100.0 * (b.aov_online / a.aov_online - 1), 1) AS change_aov_online_pct
+     , ROUND(100.0 * (b.aov_sales_rep / a.aov_sales_rep - 1), 1) AS change_aov_sales_rep_pct
+FROM y a
+JOIN y b ON a.yr = 2013 AND b.yr = 2014
+
+-- Layer 3: 2014 AOV if the channel mix had stayed at its 2013 level
+WITH y AS (
+    SELECT YEAR(OrderDate) AS yr, COUNT(*) AS orders
+         , SUM(CASE WHEN OnlineOrderFlag = 1 THEN 1 ELSE 0 END) AS online_orders
+         , SUM(SubTotal) AS revenue
+         , SUM(CASE WHEN OnlineOrderFlag = 1 THEN SubTotal END) / SUM(CASE WHEN OnlineOrderFlag = 1 THEN 1 END) AS aov_online
+         , SUM(CASE WHEN OnlineOrderFlag = 0 THEN SubTotal END) / SUM(CASE WHEN OnlineOrderFlag = 0 THEN 1 END) AS aov_rep
+    FROM ADW_Sales_orders
+    GROUP BY YEAR(OrderDate)
+)
+SELECT ROUND(a.revenue / a.orders, 0) AS aov_2013
+     , ROUND(b.revenue / b.orders, 0) AS aov_2014
+     , ROUND((1.0 * a.online_orders / a.orders) * b.aov_online + (1 - 1.0 * a.online_orders / a.orders) * b.aov_rep, 0) AS aov_2014_with_2013_mix
+     , ROUND(100.0 * (((1.0 * a.online_orders / a.orders) * b.aov_online + (1 - 1.0 * a.online_orders / a.orders) * b.aov_rep) / (a.revenue / a.orders) - 1), 1) AS change_without_mix_shift_pct
+FROM y a
+JOIN y b ON a.yr = 2013 AND b.yr = 2014
+
+-- How many groups does each dimension return?
+SELECT 'Year' AS dimension, COUNT(DISTINCT YEAR(OrderDate)) AS groups FROM ADW_Sales_orders
+UNION ALL SELECT 'Channel', COUNT(DISTINCT OnlineOrderFlag) FROM ADW_Sales_orders
+UNION ALL SELECT 'Sales territory', COUNT(DISTINCT TerritoryID) FROM ADW_Sales_orders
+UNION ALL SELECT 'Year and month', COUNT(DISTINCT YEAR(OrderDate) * 100 + MONTH(OrderDate)) FROM ADW_Sales_orders
+UNION ALL SELECT 'Territory x channel x year', COUNT(*) FROM (SELECT DISTINCT TerritoryID, OnlineOrderFlag, YEAR(OrderDate) AS yr FROM ADW_Sales_orders) x
+UNION ALL SELECT 'Customer', COUNT(DISTINCT CustomerID) FROM ADW_Sales_orders
+UNION ALL SELECT 'Order', COUNT(DISTINCT SalesOrderID) FROM ADW_Sales_orders
+
+-- Distribution: order value bands
+SELECT CASE WHEN SubTotal < 100 THEN '1. under $100'
+            WHEN SubTotal < 1000 THEN '2. $100 to $999'
+            WHEN SubTotal < 5000 THEN '3. $1,000 to $4,999'
+            WHEN SubTotal < 20000 THEN '4. $5,000 to $19,999'
+            ELSE '5. $20,000 and over' END AS order_value_band
+     , COUNT(*) AS orders
+     , ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 1) AS pct_of_orders
+     , ROUND(SUM(SubTotal), 0) AS revenue
+     , ROUND(100.0 * SUM(SubTotal) / SUM(SUM(SubTotal)) OVER (), 1) AS pct_of_revenue
+FROM ADW_Sales_orders
+GROUP BY CASE WHEN SubTotal < 100 THEN '1. under $100'
+              WHEN SubTotal < 1000 THEN '2. $100 to $999'
+              WHEN SubTotal < 5000 THEN '3. $1,000 to $4,999'
+              WHEN SubTotal < 20000 THEN '4. $5,000 to $19,999'
+              ELSE '5. $20,000 and over' END
+ORDER BY order_value_band`,
+ res:['l16b','l16b2','l16b5','l16b3','l16b4'],resLabel:['AOV by year and channel','Change 2013 to 2014','Mix held at the 2013 level','Groups returned per dimension','Order value bands'],
+ chart:{type:'col',cat:'yr',val:'aov_all',fmt:'usd0',hi:[2014],title:'Overall AOV fell 45% in 2014, each channel about 10%',sub:'The online share of orders rose from 88.7% to 94.6%. Smaller online orders pull the overall figure down.'},
+ expect:`<b>Reading by layer.</b><div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Layer</th><th>What it shows</th></tr>
+ <tr><td><b>1. Year</b></td><td>AOV falls from $8,563 (2012) to $3,076 (2013) and $1,705 (2014). On its own this looks like a collapse in order value.</td></tr>
+ <tr><td><b>2. Year x channel</b></td><td>Sales rep orders hold near $18,500 to $23,200. Online orders are near $750 to $3,200. The online share of orders rises from 70.1% (2012) to 88.7% (2013) and 94.6% (2014).</td></tr>
+ <tr><td><b>3. Mix held constant</b></td><td>With the 2013 channel mix, 2014 AOV would be $2,757, a fall of 10.4% instead of 44.6%. About ten points are a real decline inside the channels, and the rest comes from selling more small online orders.</td></tr>
+ <tr><td><b>Distribution</b></td><td>36.5% of orders are under $100 and bring 0.4% of revenue. The 1,521 orders of $20,000 and over (4.8%) bring 64.5%.</td></tr></table></div>
+ <div style="margin-top:8px"><b>Takeaway.</b> The overall number does not show a pricing problem. It shows a business whose customer base shifted online. Which question to ask next depends on the goal: grow online order value, or protect the sales rep channel that carries 73.3% of revenue.</div>
+ <div style="margin-top:8px"><b>Groups returned.</b> Territory x channel x year gives 69 groups, readable with a sort and a top N. Grouping by customer (19,119) or by order (31,465) returns the raw table.</div>`,
+ watch:['Layer 3 is a mix check, not a causal test. It shows how much of the drop the channel shift can account for. It does not say why customers moved online.','2014 covers six months, 2011 seven. AOV is a ratio, so part years are less harmful here than for totals, but the sales rep orders arrive in batches, so a short window can mislead.','The average hides the tail. The average order is $3,491, and more than half of orders (54.2%) are under $1,000. Report the bands next to the average.','The "groups" table is the guess-the-rows habit from the slides, with numbers: check it before you group, not after.']},
+{id:'p3',grp:'Find the cause',tag:'Practice 3',lvl:'Medium',viLabel:'Task (written for this guide)',
+ vi:'Tháng 6/2014 doanh thu AdventureWorks chỉ còn khoảng 49 nghìn USD, trong khi tháng 5 là 5,4 triệu USD. Sếp hỏi: "Kinh doanh sụt thật hay dữ liệu có vấn đề?" Hãy kiểm tra dữ liệu trước (số dòng mỗi ngày, danh mục sản phẩm), so sánh với các tháng khác, rồi kết luận có nên đi tìm nguyên nhân kinh doanh hay không.',
+ en:'Revenue falls from $5.4M to $49k in one month. Check the data before looking for a business cause.',
+ out:['yr_month','orders','days_with_orders','revenue','aov','online_revenue','sales_rep_orders','category','lines','order_day','categories_sold','bikes_and_components_revenue','products_sold'],flt:[],
+ blocks:[{base:{t:'ADW_Sales_orders',role:'fact',use:'OrderDate, OnlineOrderFlag, SubTotal'},joins:[{type:'JOIN',t:'ADW_Sales_orders_detail',key:'SalesOrderID',adds:'ProductID, LineTotal'},{type:'JOIN',t:'Product chain',key:'ProductID',adds:'category'}]}],
+ st:['A decision: report a real decline, or flag a data problem and ask the data owner.','Orders and lines for 2014, with the product category chain.','Row counts per day first. Then revenue by month and channel, the category mix around the drop, and the exact day it starts.','Orders keep arriving every day, 939 in June. But from 31 May no Bikes or Components line appears. Products sold fall from 166 in May to 42 in June. Order value drops from $2,226 to $52.'],
+ sql:`-- Step 1: are rows arriving? Revenue, orders and days by month, 2014
+SELECT YEAR(OrderDate) * 100 + MONTH(OrderDate) AS yr_month
+     , COUNT(*) AS orders
+     , COUNT(DISTINCT CAST(OrderDate AS DATE)) AS days_with_orders
+     , ROUND(SUM(SubTotal), 0) AS revenue
+     , ROUND(SUM(SubTotal) / COUNT(*), 0) AS aov
+     , ROUND(SUM(CASE WHEN OnlineOrderFlag = 1 THEN SubTotal ELSE 0 END), 0) AS online_revenue
+     , SUM(CASE WHEN OnlineOrderFlag = 0 THEN 1 ELSE 0 END) AS sales_rep_orders
+FROM ADW_Sales_orders
+WHERE OrderDate >= '2014-01-01'
+GROUP BY YEAR(OrderDate) * 100 + MONTH(OrderDate)
+ORDER BY yr_month
+
+-- Step 2: which dimension changed? Online revenue by category
+SELECT YEAR(o.OrderDate) * 100 + MONTH(o.OrderDate) AS yr_month
+     , c.ProductCategoryName AS category
+     , COUNT(*) AS lines
+     , ROUND(SUM(d.LineTotal), 0) AS revenue
+FROM ADW_Sales_orders o
+JOIN ADW_Sales_orders_detail d ON o.SalesOrderID = d.SalesOrderID
+JOIN ADW_Dim_Product p ON d.ProductID = p.ProductID
+JOIN ADW_Dim_ProductSubCategory sc ON p.ProductSubcategoryID = sc.ProductSubcategoryID
+JOIN ADW_Dim_ProductCategory c ON sc.ProductCategoryID = c.ProductCategoryID
+WHERE o.OrderDate >= '2014-04-01' AND o.OnlineOrderFlag = 1
+GROUP BY YEAR(o.OrderDate) * 100 + MONTH(o.OrderDate), c.ProductCategoryName
+ORDER BY yr_month, category
+
+-- Step 3: the exact day
+SELECT CAST(o.OrderDate AS DATE) AS order_day
+     , COUNT(DISTINCT o.SalesOrderID) AS orders
+     , ROUND(SUM(d.LineTotal), 0) AS revenue
+     , COUNT(DISTINCT c.ProductCategoryName) AS categories_sold
+     , ROUND(SUM(CASE WHEN c.ProductCategoryName IN ('Bikes', 'Components') THEN d.LineTotal ELSE 0 END), 0) AS bikes_and_components_revenue
+FROM ADW_Sales_orders o
+JOIN ADW_Sales_orders_detail d ON o.SalesOrderID = d.SalesOrderID
+JOIN ADW_Dim_Product p ON d.ProductID = p.ProductID
+JOIN ADW_Dim_ProductSubCategory sc ON p.ProductSubcategoryID = sc.ProductSubcategoryID
+JOIN ADW_Dim_ProductCategory c ON sc.ProductCategoryID = c.ProductCategoryID
+WHERE o.OrderDate >= '2014-05-27' AND o.OrderDate < '2014-06-03' AND o.OnlineOrderFlag = 1
+GROUP BY CAST(o.OrderDate AS DATE)
+ORDER BY order_day
+
+-- Distinct products sold per month
+SELECT YEAR(o.OrderDate) * 100 + MONTH(o.OrderDate) AS yr_month
+     , COUNT(DISTINCT d.ProductID) AS products_sold
+FROM ADW_Sales_orders o
+JOIN ADW_Sales_orders_detail d ON o.SalesOrderID = d.SalesOrderID
+WHERE o.OrderDate >= '2014-01-01'
+GROUP BY YEAR(o.OrderDate) * 100 + MONTH(o.OrderDate)
+ORDER BY yr_month`,
+ res:['l16c','l16c2','l16c3','l16c4'],resLabel:['Revenue and orders by month','Online revenue by category','The days around the break','Products sold per month'],
+ chart:{type:'col',cat:'yr_month',val:'revenue',fmt:'usd',hi:[201406],title:'June 2014 revenue is $49,006, against $5.4M in May',sub:'Orders still arrive every day, so rows are not missing. The product mix is.'},
+ expect:`<b>Checklist from the slides.</b><div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Check</th><th>Result</th></tr>
+ <tr><td><b>Rows missing or late?</b></td><td>No. June has orders on all 30 days (939 orders). On 31 May orders are 37 against 52 the day before, so the count only dips, while revenue falls 96%.</td></tr>
+ <tr><td><b>One dimension at exactly zero?</b></td><td>Yes. Bikes and Components revenue is exactly 0 from 31 May. In May, Bikes were 94.8% of online revenue. Only Accessories and Clothing remain, and the number of products sold falls from 166 to 42.</td></tr>
+ <tr><td><b>Compared to what?</b></td><td>February and April 2014 also look low, but online revenue holds ($1.33M, $1.80M). Those months have only 3 and 2 sales rep orders, so they are the batchy sales rep channel. June is different: online revenue itself falls to $49,006.</td></tr></table></div>
+ <div style="margin-top:8px"><b>Conclusion for the manager.</b> Stop and check the pipeline before looking for a business cause. Ask the data owner whether the product feed or the extract changed on 31 May, or whether Bikes and Components stopped selling. Until then, do not report June 2014 as a decline.</div>`,
+ watch:['The slides say to stop analysing and check the pipeline when one dimension goes to exactly zero. A real sales drop rarely removes two whole categories on one day.','The data cannot tell you which explanation is right: an extract that lost products, or a real stop in sales. Both fit the numbers. Say so.','Check the benchmark before you panic. February and April 2014 show the same kind of dip in total revenue, and for a different reason.','Always filter the same way when you compare periods. Practice 3 uses online orders only for the category view so that the batchy sales rep orders do not distort it.']},
+{id:'p4',grp:'Impact estimation',tag:'Practice 4',lvl:'Medium',viLabel:'Task (written for this guide)',
+ vi:'Marketing đề xuất giảm giá 10% cho toàn bộ phụ kiện (Accessories) bán online. Hãy ước lượng tác động lên lợi nhuận gộp bằng dữ liệu năm 2013: lập bảng cơ sở và các kịch bản tăng số lượng bán (0%, 10%, 20%, 30%), nêu rõ giả định, và tính mức tăng số lượng tối thiểu để hòa vốn.',
+ en:'Estimate what a 10% discount on online accessories does to gross profit, with a base case and scenarios.',
+ out:['orders','units','revenue','cost','gross_profit','gross_margin_pct','unit_lift_pct','change_vs_base','break_even_unit_lift_pct'],flt:[],
+ blocks:[{base:{t:'ADW_Sales_orders_detail',role:'fact',use:'OrderQty, LineTotal'},joins:[{type:'JOIN',t:'ADW_Sales_orders',key:'SalesOrderID',adds:'OrderDate, OnlineOrderFlag'},{type:'JOIN',t:'ADW_Dim_Product',key:'ProductID',adds:'StandardCost'},{type:'JOIN',t:'Category chain',key:'ProductSubcategoryID',adds:'category'}]}],
+ ctes:[{n:'base',d:'2013 online accessories: orders, units, revenue, cost',w:'WHERE',fin:1}],
+ st:['A table of scenarios with one clear threshold the decision depends on.','Order lines of online Accessories in 2013, with the standard cost of each product.','Compute the base case. Then apply a 10% lower price and a unit lift of 0, 10, 20 and 30%. Solve for the lift where gross profit equals the base.','Base: 9,125 orders, 18,181 units, $352,909 revenue, $220,921 gross profit (62.6%). A 10% discount needs a 19.0% unit lift to break even. At +20% the gain is $1,835, at +30% it is $20,398.'],
+ sql:`-- Base case: online Accessories in 2013
+WITH base AS (
+    SELECT COUNT(DISTINCT o.SalesOrderID) AS orders
+         , SUM(d.OrderQty) AS units
+         , SUM(d.LineTotal) AS revenue
+         , SUM(d.OrderQty * p.StandardCost) AS cost
+    FROM ADW_Sales_orders o
+    JOIN ADW_Sales_orders_detail d ON o.SalesOrderID = d.SalesOrderID
+    JOIN ADW_Dim_Product p ON d.ProductID = p.ProductID
+    JOIN ADW_Dim_ProductSubCategory sc ON p.ProductSubcategoryID = sc.ProductSubcategoryID
+    JOIN ADW_Dim_ProductCategory c ON sc.ProductCategoryID = c.ProductCategoryID
+    WHERE o.OnlineOrderFlag = 1 AND c.ProductCategoryName = 'Accessories' AND YEAR(o.OrderDate) = 2013
+)
+SELECT orders, units, ROUND(revenue, 0) AS revenue, ROUND(cost, 0) AS cost
+     , ROUND(revenue - cost, 0) AS gross_profit
+     , ROUND(100.0 * (revenue - cost) / revenue, 1) AS gross_margin_pct
+FROM base
+
+-- Scenarios: price x 0.9, units x (1 + lift), unit cost unchanged
+WITH base AS (
+    SELECT SUM(d.OrderQty) AS units, SUM(d.LineTotal) AS revenue, SUM(d.OrderQty * p.StandardCost) AS cost
+    FROM ADW_Sales_orders o
+    JOIN ADW_Sales_orders_detail d ON o.SalesOrderID = d.SalesOrderID
+    JOIN ADW_Dim_Product p ON d.ProductID = p.ProductID
+    JOIN ADW_Dim_ProductSubCategory sc ON p.ProductSubcategoryID = sc.ProductSubcategoryID
+    JOIN ADW_Dim_ProductCategory c ON sc.ProductCategoryID = c.ProductCategoryID
+    WHERE o.OnlineOrderFlag = 1 AND c.ProductCategoryName = 'Accessories' AND YEAR(o.OrderDate) = 2013
+)
+SELECT s.unit_lift_pct
+     , ROUND(b.units * (1 + s.unit_lift_pct / 100.0), 0) AS units
+     , ROUND(b.revenue * 0.9 * (1 + s.unit_lift_pct / 100.0), 0) AS revenue
+     , ROUND(b.cost * (1 + s.unit_lift_pct / 100.0), 0) AS cost
+     , ROUND((b.revenue * 0.9 - b.cost) * (1 + s.unit_lift_pct / 100.0), 0) AS gross_profit
+     , ROUND((b.revenue * 0.9 - b.cost) * (1 + s.unit_lift_pct / 100.0) - (b.revenue - b.cost), 0) AS change_vs_base
+FROM base b
+CROSS JOIN (SELECT 0 AS unit_lift_pct UNION ALL SELECT 10 UNION ALL SELECT 20 UNION ALL SELECT 30) s
+ORDER BY s.unit_lift_pct
+
+-- The threshold: unit lift where gross profit equals the base
+WITH base AS (
+    SELECT SUM(d.LineTotal) AS revenue, SUM(d.OrderQty * p.StandardCost) AS cost
+    FROM ADW_Sales_orders o
+    JOIN ADW_Sales_orders_detail d ON o.SalesOrderID = d.SalesOrderID
+    JOIN ADW_Dim_Product p ON d.ProductID = p.ProductID
+    JOIN ADW_Dim_ProductSubCategory sc ON p.ProductSubcategoryID = sc.ProductSubcategoryID
+    JOIN ADW_Dim_ProductCategory c ON sc.ProductCategoryID = c.ProductCategoryID
+    WHERE o.OnlineOrderFlag = 1 AND c.ProductCategoryName = 'Accessories' AND YEAR(o.OrderDate) = 2013
+)
+SELECT ROUND(100.0 * ((revenue - cost) / (revenue * 0.9 - cost) - 1), 1) AS break_even_unit_lift_pct FROM base`,
+ res:['l16d','l16d2','l16d3'],resLabel:['Base case','Scenarios','Break-even unit lift'],
+ expect:`<b>Scenario table.</b><div class="tbl-wrap" style="margin-top:6px"><table class="j"><tr><th>Unit lift</th><th>Units</th><th>Revenue</th><th>Gross profit</th><th>Against base ($220,921)</th></tr>
+ <tr><td>0%</td><td>18,181</td><td>$317,618</td><td>$185,630</td><td>-$35,291</td></tr>
+ <tr><td>+10%</td><td>19,999</td><td>$349,380</td><td>$204,193</td><td>-$16,728</td></tr>
+ <tr><td>+20%</td><td>21,817</td><td>$381,142</td><td>$222,756</td><td>+$1,835</td></tr>
+ <tr><td>+30%</td><td>23,635</td><td>$412,904</td><td>$241,319</td><td>+$20,398</td></tr></table></div>
+ <div style="margin-top:8px"><b>Assumptions to write down.</b> The price falls 10% on every accessory line. Unit cost stays at the current standard cost. Traffic and the mix of products do not change. The lift in units is a guess, and the whole result hangs on it.</div>
+ <div style="margin-top:8px"><b>Takeaway.</b> Below a 19.0% rise in units the discount loses gross profit. At +20% it is break-even, and only above that does it pay. Accessories are 62.6% margin here, so the discount costs real profit on units that would have sold anyway. For a real number, look at how earlier customer-facing offers in the special offers table performed.</div>`,
+ watch:['The unit cost is each product current standard cost from the product table, not the cost on the order date. That is an approximation and a good thing to state.','The scenario assumes the discount does not change which products people buy. A discount on one category often pulls sales from another.','Revenue is back above the base at an 11.1% lift, but gross profit needs 19.0%. Judge a discount on profit, not revenue.','Show the range, not one forecast. The business needs to know that the answer flips near +19%.']}
+];
+
+G.render(Object.assign({EX, RES}, {stepNames:['Goal','Source','Query','Validate'], open:'p1'}));
+
+const MD=[
+ ['Revenue',0,'Metric. Adding two rows of revenue makes sense.'],
+ ['Sales territory',1,'Dimension. It names a group to slice by.'],
+ ['SalesOrderID',2,'Key. It identifies one row. Grouping by it returns 31,465 groups, the raw table.'],
+ ['Average order value',0,'Metric. A ratio you calculate and compare across groups.'],
+ ['Channel (online or sales rep)',1,'Dimension. Two groups, readable on a slide.'],
+ ['Orders',0,'Metric. A count you can add up.'],
+ ['CustomerID',2,'Key. 19,119 groups is a customer list, not a breakdown.'],
+ ['Order year',1,'Dimension, and the top of a hierarchy: year, quarter, month, day.'],
+ ['Product category',1,'Dimension. Four groups here, with sub-category below it.'],
+ ['Churn rate',0,'Metric. A rate you measure for each group.']
+];
+G.$('#md-list').innerHTML=MD.map((c,i)=>`<label><span>${i+1}. ${c[0]}</span><select data-i="${i}"><option value="">Choose</option><option value="0">Metric</option><option value="1">Dimension</option><option value="2">Key</option></select></label>`).join('');
+G.$('#md-go').addEventListener('click',()=>{
+  const pick=[...document.querySelectorAll('#md-list select')].map(x=>x.value);
+  if(pick.some(p=>p==='')){G.$('#md-out').innerHTML='<div class="ln">Choose an answer for every line first.</div>';return;}
+  const ok=MD.filter((c,i)=>+pick[i]===c[1]).length;
+  const miss=MD.map((c,i)=>+pick[i]===c[1]?'':`<div class="ln"><b>${i+1}. ${c[0]}</b>${c[2]}</div>`).join('');
+  G.$('#md-out').innerHTML=`<div class="rec${ok===MD.length?'':' bad'}">${ok} of ${MD.length} right</div>${miss||'<div class="ln"><b>Done</b>Metrics add up, dimensions slice, keys identify. Group by a key and you get the raw table back.</div>'}`;
+});
+const usd=n=>(n<0?'-$':'$')+Math.abs(Math.round(n)).toLocaleString('en-US');
+function ie(){
+  const rev=+G.$('#ie-rev').value,cost=+G.$('#ie-cost').value,disc=+G.$('#ie-disc').value/100,lift=+G.$('#ie-lift').value/100;
+  if(!(rev>0)||!(cost>=0)||disc>=1){G.$('#ie-out').innerHTML='<div class="ln">Enter a positive revenue, a cost and a price cut below 100%.</div>';return;}
+  const baseGP=rev-cost,unitGP=rev*(1-disc)-cost;
+  if(unitGP<=0){G.$('#ie-out').innerHTML='<div class="rec bad">The new price is at or below cost</div><div class="ln"><b>Result</b>Every extra unit loses money, so no unit lift makes this pay.</div>';return;}
+  const scGP=unitGP*(1+lift),diff=scGP-baseGP,be=(baseGP/unitGP-1)*100;
+  G.$('#ie-out').innerHTML=`<div class="rec${diff>=0?'':' bad'}">${diff>=0?'Gross profit rises':'Gross profit falls'} by ${usd(Math.abs(diff))}</div>`
+   +`<div class="ln"><b>Base gross profit</b>${usd(baseGP)} (${(100*baseGP/rev).toFixed(1)}% margin)</div>`
+   +`<div class="ln"><b>Scenario gross profit</b>${usd(scGP)} with the price cut and ${(lift*100).toFixed(0)}% more units</div>`
+   +`<div class="ln"><b>Break-even</b>The discount pays only above a ${be.toFixed(1)}% rise in units. Ask what evidence supports a lift that large.</div>`;
+}
+['ie-rev','ie-cost','ie-disc','ie-lift'].forEach(id=>G.$('#'+id).addEventListener('input',ie)); ie();
+
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"><style id="lab-embed">/* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
+   Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
+   Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
+   The live site has no dark mode; the dark values below are a mirror built from its ink and violet. */
+:root{
+  /* site palette */
+  --violet:#5B21FF; --violet-mid:#7C4DFF; --violet-lite:#A78BFA; --violet-pale:#EDE9FE; --purple:#9C27FF; --pink:#E040FB; --pink-lite:#FCE4FF;
+  --coral:#FF5252; --site-orange:#FF6D00; --amber:#FFB300; --amber-lite:#FFF8E1; --teal:#00BCD4; --teal-lite:#E0F7FA; --site-green:#00C853;
+  --ink:#1A0A4F; --ink2:#3D2A7A; --subtle:#B8AEDE;
+  --grad-hero:linear-gradient(135deg,#5B21FF 0%,#9C27FF 55%,#E040FB 100%);
+  --grad-soft:linear-gradient(135deg,#EDE9FE 0%,#F3E8FF 100%);
+  --radius:20px; --radius-sm:10px;
+  --shadow:0 12px 48px rgba(91,33,255,.13); --shadow-sm:0 4px 16px rgba(91,33,255,.09); --shadow-lg:0 24px 80px rgba(91,33,255,.20);
+  --glass:rgba(255,255,255,.9); --on-grad:#fff; --foot-bg:#1A0A4F;
+  /* tokens used by the shared components */
+  --navy:#1A0A4F; --blue:#5B21FF; --orange:#FF6D00;
+  --bg:#F7F5FF; --surface:#FFFFFF; --fg:#1A0A4F; --muted:#6A5C9C; --line:#DDD6FE;
+  --blue-soft:#EDE9FE; --orange-soft:#FFF3E0; --code-bg:#150B3D; --code-fg:#EDE9FE;
+  --ok:#15803D; --ok-soft:#DCFCE7; --warn:#C2410C; --warn-soft:#FFF8E1;
+  --kw:#C4B5FD; --str:#FFB74D; --cmt:#8E83C0; --num:#7EE7C4;
+  --c1:#5B21FF; --c2:#FF6D00; --c3:#00BCD4; --cx:#B8AEDE; --h0:#EDE9FE; --h1:#5B21FF; --htx:#FFFFFF;
+  --font:'Plus Jakarta Sans','Nunito',system-ui,sans-serif; --font-display:'Nunito','Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --violet:#8B6BFF; --violet-pale:#2A1F66; --violet-lite:#A78BFA; --pink-lite:#3A1B5E; --amber-lite:#3A2A12; --teal-lite:#10313A;
+  --ink:#EDE9FE; --ink2:#C9BFF2; --subtle:#6D60A8;
+  --shadow:0 12px 48px rgba(0,0,0,.45); --shadow-sm:0 4px 16px rgba(0,0,0,.35); --shadow-lg:0 24px 80px rgba(0,0,0,.55);
+  --glass:rgba(15,10,46,.88); --foot-bg:#0A0620;
+  --navy:#EDE9FE; --blue:#A78BFA; --orange:#FF9F43;
+  --bg:#0F0A2E; --surface:#1A1245; --fg:#EDE9FE; --muted:#A99FD6; --line:#3D2A7A;
+  --blue-soft:#2A1F66; --orange-soft:#3A2A12; --code-bg:#0A0620; --code-fg:#EDE9FE;
+  --ok:#4ADE80; --ok-soft:#10301F; --warn:#FDBA74; --warn-soft:#3A2A12;
+  --kw:#C4B5FD; --str:#FFB74D; --cmt:#8E83C0; --num:#7EE7C4;
+  --c1:#8B6BFF; --c2:#FF9F43; --c3:#22D3EE; --cx:#5C5090; --h0:#2A1F66; --h1:#A78BFA; --htx:#0F0A2E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --violet:#8B6BFF; --violet-pale:#2A1F66; --violet-lite:#A78BFA; --pink-lite:#3A1B5E; --amber-lite:#3A2A12; --teal-lite:#10313A;
+  --ink:#EDE9FE; --ink2:#C9BFF2; --subtle:#6D60A8;
+  --shadow:0 12px 48px rgba(0,0,0,.45); --shadow-sm:0 4px 16px rgba(0,0,0,.35); --shadow-lg:0 24px 80px rgba(0,0,0,.55);
+  --glass:rgba(15,10,46,.88); --foot-bg:#0A0620;
+  --navy:#EDE9FE; --blue:#A78BFA; --orange:#FF9F43;
+  --bg:#0F0A2E; --surface:#1A1245; --fg:#EDE9FE; --muted:#A99FD6; --line:#3D2A7A;
+  --blue-soft:#2A1F66; --orange-soft:#3A2A12; --code-bg:#0A0620; --code-fg:#EDE9FE;
+  --ok:#4ADE80; --ok-soft:#10301F; --warn:#FDBA74; --warn-soft:#3A2A12;
+  --kw:#C4B5FD; --str:#FFB74D; --cmt:#8E83C0; --num:#7EE7C4;
+  --c1:#8B6BFF; --c2:#FF9F43; --c3:#22D3EE; --cx:#5C5090; --h0:#2A1F66; --h1:#A78BFA; --htx:#0F0A2E; color-scheme:dark}
+
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.65;padding-bottom:0}
+h1,h2,h3{font-family:var(--font-display)}
+.wrap{max-width:1200px}
+
+/* ---- top nav (site: white glass bar, logo left, pill links, gradient CTA) ---- */
+nav.topnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(20px,env(safe-area-inset-right,0px)) 10px max(20px,env(safe-area-inset-left,0px));background:var(--glass);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border-bottom:1.5px solid var(--line);box-shadow:0 2px 16px rgba(91,33,255,.07);display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--glass);z-index:60}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:1.2rem;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.logo svg{display:block;flex:none}
+.logo .acc{color:var(--violet)}
+.logo .lab{font-weight:800;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);background:var(--violet-pale);border:1.5px solid var(--line);border-radius:40px;padding:2px 9px;margin-left:2px}
+nav.zones{display:flex;gap:2px;margin:0 0 0 8px;overflow-x:auto;flex:1 1 auto;scrollbar-width:none}
+nav.zones::-webkit-scrollbar{display:none}
+nav.zones button{font:inherit;font-size:.86rem;font-weight:600;color:var(--muted);background:transparent;border:0;border-radius:40px;padding:7px 12px;cursor:pointer;white-space:nowrap;opacity:1;border-bottom:0;transition:all .2s}
+nav.zones button:hover{color:var(--violet);background:var(--violet-pale)}
+nav.zones button[aria-selected="true"]{color:var(--violet);background:var(--violet-pale);font-weight:800;border-bottom:0}
+nav.zones button:focus-visible,.nav-cta:focus-visible{outline:3px solid var(--site-orange);outline-offset:2px}
+.nav-cta{font-size:.84rem;font-weight:700;color:var(--on-grad);background:var(--grad-hero);border-radius:40px;padding:8px 18px;text-decoration:none;box-shadow:0 4px 14px rgba(91,33,255,.32);white-space:nowrap;transition:all .2s}
+.nav-cta:hover{opacity:.92;transform:translateY(-1px)}
+.eng{margin-left:auto;font-size:.74rem;font-weight:700;color:var(--muted);border:1.5px solid var(--line);border-radius:40px;padding:3px 11px;background:var(--surface);white-space:nowrap;opacity:1}
+.eng[data-phase="ready"]::before{color:var(--site-green)}
+.eng[data-phase="loading"]::before{color:var(--amber)}
+.eng[data-phase="error"]::before{color:var(--coral)}
+.eng[data-phase="loading"]::before{animation:lab-pulse 1.6s infinite}
+@keyframes lab-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (max-width:1120px){nav.zones{order:3;flex-basis:100%;margin:0}.eng{margin-left:auto}}
+.nav-out{font-size:.84rem;font-weight:700;color:var(--muted);border:1.5px solid var(--line);border-radius:40px;padding:6px 14px;text-decoration:none;white-space:nowrap;background:var(--surface);transition:all .2s}
+.nav-out:hover{color:var(--violet);border-color:var(--violet-lite)}
+.nav-out:focus-visible{outline:3px solid var(--site-orange);outline-offset:2px}
+.nav-out[hidden]{display:none}
+@media (max-width:760px){.nav-cta{display:none}}
+
+/* ---- hero (site: soft blurred blobs, dotted mask, badge pill, display title) ---- */
+.hero{position:relative;overflow:hidden;background:var(--surface);border-bottom:1.5px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:0 max(16px,env(safe-area-inset-left,0px))}
+.hero .hblob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(90px);opacity:.16}
+.hero .hb1{width:420px;height:420px;background:#7C4DFF;top:-170px;right:-40px}
+.hero .hb2{width:300px;height:300px;background:#E040FB;bottom:-150px;left:12%}
+.hero .hb3{width:220px;height:220px;background:#00BCD4;top:30%;left:-90px}
+.hero .hdots{position:absolute;inset:0;pointer-events:none;opacity:.3;background-image:radial-gradient(circle,var(--violet-lite) 1px,transparent 1px);background-size:30px 30px;-webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 50%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 80% 90% at 50% 50%,#000 35%,transparent 100%)}
+@media (prefers-reduced-motion:no-preference){.hero .hb1{animation:lab-float 11s ease-in-out infinite}.hero .hb2{animation:lab-float 14s 3s ease-in-out infinite}}
+@keyframes lab-float{0%,100%{transform:translate(0,0)}50%{transform:translate(16px,-22px)}}
+.hero .wrap{position:relative;z-index:1}
+#hdr{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:34px 0 30px}
+#hdr .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--violet-pale);border:1.5px solid var(--line);color:var(--violet);padding:5px 14px;border-radius:40px;font-size:.74rem;font-weight:800;letter-spacing:.06em}
+#hdr .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--violet)}
+#hdr h1{font-family:var(--font-display);font-weight:900;font-size:clamp(2rem,4.2vw,3.1rem);line-height:1.1;letter-spacing:-.03em;color:var(--ink);text-wrap:balance}
+#hdr p{margin:0;color:var(--muted);font-size:1.02rem;font-weight:500;max-width:62ch;line-height:1.7}
+.gt{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+#hdr .back{color:var(--violet);font-weight:700;opacity:1;font-size:.88rem;align-self:flex-start}
+.metachips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0}
+.metachip{font-size:.78rem;font-weight:700;color:var(--ink2);background:var(--surface);border:1.5px solid var(--line);border-radius:40px;padding:3px 12px;opacity:1;box-shadow:var(--shadow-sm)}
+nav.stepper{display:flex;gap:6px;margin:6px 0 0;overflow-x:auto;max-width:100%}
+nav.stepper button{font:inherit;font-weight:700;font-size:.86rem;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);opacity:1;padding:8px 16px;border-radius:40px;cursor:pointer;white-space:nowrap;display:flex;gap:8px;align-items:center}
+nav.stepper button small{opacity:.8;font-weight:600}
+nav.stepper button[aria-selected="true"]{background:var(--grad-hero);border-color:transparent;color:var(--on-grad);box-shadow:0 4px 14px rgba(91,33,255,.3)}
+nav.stepper .dot{border-color:currentColor}
+nav.stepper .done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+nav.stepper button[aria-selected="true"] .dot{border-color:#fff}
+
+/* ---- surfaces ---- */
+main.wrap{padding-top:28px;padding-bottom:56px}
+.card,details.blk,details.ex,.figure,.cc,.stat div{border:1.5px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+.card{padding:22px 24px;box-shadow:var(--shadow-sm)}
+.card h2{font-family:var(--font-display);font-weight:900;font-size:1.02rem;color:var(--ink)}
+.card h2 small,.sec{color:var(--violet)}
+.cc{box-shadow:var(--shadow-sm);transition:all .25s;padding:22px 24px}
+.cc:hover{border-color:var(--violet-lite);box-shadow:var(--shadow);transform:translateY(-3px)}
+.cc b{font-family:var(--font-display);font-weight:900;letter-spacing:-.01em}
+.cc.big b{font-size:1.3rem}
+.homecards{gap:18px}
+.dshead h2{font-family:var(--font-display);font-weight:900;font-size:1.35rem;letter-spacing:-.02em}
+details.ex>summary::after,details.blk>summary::after{color:var(--violet)}
+details.ex[open]{box-shadow:var(--shadow-sm);border-color:var(--violet-lite)}
+details.blk>summary,details.blk>summary .n{font-family:var(--font-display)}
+details.blk>summary .n{background:var(--grad-hero);color:#fff}
+.ex-title{font-family:var(--font-display);font-weight:800}
+.q,.ask,.hintbox{border-radius:14px}
+.q{background:var(--violet-pale);color:var(--ink)}
+.ask{background:var(--amber-lite);border:1.5px solid rgba(255,109,0,.25);color:var(--ink)}
+.mail{border-left:0;border-top:4px solid transparent;border-image:var(--grad-hero) 1}
+.lead{background:var(--grad-hero);color:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
+.lead b{color:#FFE082}
+.hintbox{background:var(--violet-pale);border-color:var(--violet-lite)}
+.reveal>summary{color:var(--violet)}
+
+/* ---- chips, tags, buttons ---- */
+.tag{background:var(--violet-pale);color:var(--violet);border:1.5px solid var(--line);font-weight:800;letter-spacing:.03em}
+.tag.o{background:var(--amber-lite);color:var(--site-orange);border-color:rgba(255,109,0,.3)}
+:root[data-theme="dark"] .tag.o{color:#FF9F43}
+.tag.g{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.rank{border-radius:40px}
+.rank.C{background:#16A34A}.rank.B{background:var(--violet)}.rank.A{background:var(--site-orange)}
+.chip{border:1.5px solid var(--line);border-radius:40px;font-weight:700;color:var(--ink2);padding:6px 14px}
+.chip:hover{border-color:var(--violet);color:var(--violet)}
+.chip[aria-pressed="true"]{background:var(--grad-hero);border-color:transparent;color:#fff}
+.btn{font-family:var(--font);font-weight:700;border:2px solid var(--line);border-radius:50px;padding:8px 20px;background:var(--surface);color:var(--ink2);transition:all .2s}
+.btn:hover{border-color:var(--violet);color:var(--violet);background:var(--violet-pale)}
+.btn.primary{background:var(--grad-hero);border-color:transparent;color:#fff;font-weight:800;box-shadow:0 6px 20px rgba(91,33,255,.32)}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(91,33,255,.45);color:#fff;background:var(--grad-hero)}
+:root[data-theme="dark"] .btn.primary{color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#fff}}
+.btn:focus-visible,.chip:focus-visible,.cc:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--site-orange);outline-offset:2px}
+button.tryit{margin:2px 0 10px}
+
+/* ---- editor, results, code ---- */
+textarea.sqled{border:1.5px solid var(--ink2);border-radius:16px;box-shadow:var(--shadow-sm)}
+.sqlp .schema{border:1.5px solid var(--line);border-radius:14px}
+pre.sql,pre.duck{border-radius:14px}
+.resgrid{border:1.5px solid var(--line);border-radius:14px}
+table.res th,table.r th,table.j th{color:var(--muted)}
+.verdict.ok{color:var(--ok)}.verdict.no{color:var(--warn)}
+.stat span{color:var(--violet);font-family:var(--font-display);font-weight:900}
+.closed{border-color:var(--ok);background:var(--ok-soft);border-radius:14px}
+.note-box{border-radius:14px;border:1.5px dashed var(--line)}
+.livehost{margin-top:10px}
+
+/* ---- footer (site: ink background, three columns) ---- */
+footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0;max-width:none;padding:44px max(24px,env(safe-area-inset-right,0px)) 28px max(24px,env(safe-area-inset-left,0px));background:var(--foot-bg);color:rgba(255,255,255,.7);font-size:.88rem;text-align:left}
+.sitefoot .inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:34px}
+@media (max-width:760px){.sitefoot .inner{grid-template-columns:1fr;gap:24px}}
+.sitefoot .fl{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:1.15rem;color:#fff;text-decoration:none}
+.sitefoot p{margin:10px 0 0;line-height:1.7}
+.sitefoot h4{margin:0 0 10px;font-family:var(--font-display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.sitefoot a{color:rgba(255,255,255,.7);text-decoration:none}
+.sitefoot a:hover{color:#fff;text-decoration:underline}
+.sitefoot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.sitefoot .legal{max-width:1200px;margin:28px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:.8rem;color:rgba(255,255,255,.5)}
+
+/* footer: brand link must not inherit the guide's white ".fl" pill; CTA band above the link columns */
+.sitefoot .fl{background:none;border:0;border-radius:0;padding:0;flex:none;position:static}
+.sitefoot .footcta{grid-template-columns:1fr auto;align-items:center;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.14)}
+.sitefoot .footcta .eyebrow{color:#C084FC}
+.sitefoot .footcta h3{margin:6px 0 0;font-family:var(--font-display);font-size:1.5rem;line-height:1.25;color:#fff}
+.sitefoot .footcta p{max-width:620px;margin-top:8px}
+.sitefoot .ctabtns{display:flex;gap:10px;flex-wrap:wrap}
+.sitefoot .ctabtns .btn{text-decoration:none;white-space:nowrap}
+.sitefoot .ctabtns .btn:not(.primary){background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+.sitefoot .ctabtns .btn:not(.primary):hover{background:rgba(255,255,255,.1);text-decoration:none}
+.sitefoot .ctabtns .btn.primary,.sitefoot .ctabtns .btn.primary:hover{color:#fff;text-decoration:none}
+@media (max-width:760px){.sitefoot .footcta{grid-template-columns:1fr}}
+
+/* Study Guide pages (inside an iframe). build_dist.py appends theme.css, then this file. */
+/* Study Guide header: light hero like the Lab, tabs as pills (the originals assumed a dark navy header). */
+header.top{background:var(--surface)!important;color:var(--fg)!important;border-bottom:1.5px solid var(--line);padding-bottom:14px!important}
+header.top h1{color:var(--ink)!important;font-family:var(--font-display);font-weight:900;letter-spacing:-.02em}
+header.top p{opacity:1!important;color:var(--muted)}
+header.top .eyebrow{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;background:var(--violet-pale);border:1.5px solid var(--line);color:var(--violet);padding:4px 13px;border-radius:40px;letter-spacing:.05em}
+header.top nav.tabs{gap:6px;margin-top:14px}
+header.top nav.tabs button{color:var(--muted)!important;opacity:1!important;background:var(--surface)!important;border:1.5px solid var(--line)!important;border-radius:40px!important;padding:8px 16px!important;font-weight:700}
+header.top nav.tabs button:hover{color:var(--violet)!important;border-color:var(--violet)!important}
+header.top nav.tabs button[aria-selected="true"]{background:var(--grad-hero)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 4px 14px rgba(91,33,255,.3)}
+</style></body>
+</html>
