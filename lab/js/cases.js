@@ -1,4 +1,4 @@
-import { mount as mountSql } from "./sqlpanel.js?v=88dcebf843";
+import { mount as mountSql } from "./sqlpanel.js?v=1092f16c55";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -34,13 +34,14 @@ const li=a=>'<ul>'+a.map(x=>`<li>${x}</li>`).join('')+'</ul>';
 /* ---------- hub ---------- */
 function hub(){
   $('#hdr').innerHTML=`<div class="eyebrow">Case Studies</div><h1>Case Study Practice Zone</h1>
-   <p>Junior-level case studies on the class databases. Each takes 15 to 20 minutes and has three steps: read the context, plan your approach, then solve, chart and conclude. Hints, expected SQL and model answers stay closed until you open them. Step 3 has an editor that runs your T-SQL on the real tables.</p>`;
+   <p>Case studies on the class databases, from junior to senior level. Each takes 15 to 30 minutes and has three steps: read the business context, plan your approach, then solve, chart and conclude. Hints, expected SQL and model answers stay closed until you open them. Step 3 has an editor that runs your T-SQL on the real tables.</p>
+   <div class="lead usp"><span><b>What this zone trains: analytical thinking.</b> Every case asks you to name the decision, the metric and the trap before you write any SQL, then compares your thinking with ours. SQL is the tool, the judgment is the skill.</span></div>`;
   const card=c=>`<button class="cc" data-open="${c.id}"><span class="rank ${c.rank}" style="align-self:flex-start">${RANKS[c.rank]}</span><b>${c.title}</b><span class="sk">${c.skills.join(' · ')}</span>
        <span class="row"><span class="tm">⏱ ${c.minutes} min</span>${isDone(c.id)?'<span class="dn">✓ Done</span>':''}</span></button>`;
   const dsOrder=Object.keys(DATA.datasets);
   let h='<div class="hub"><div class="legend-r"><b>Rank = difficulty:</b> <span class="rank C">C · Junior</span> one or two tables, one clear metric <span class="rank B">B · Analyst</span> a few tables, a judgment call <span class="rank A">A · Senior</span> a trap in the obvious comparison</div>';
   [false,true].forEach(stretch=>{
-    if(stretch)h+='<div class="legend-r"><b>Stretch:</b> harder cases on other databases, for after the core set.</div>';
+    if(stretch)h+='<div class="legend-r"><b>More databases:</b> web analytics and loyalty data, too large to load here. Run the SQL in SQL Server; the expected output is shown.</div>';
     dsOrder.filter(k=>STRETCH.has(k)===stretch).forEach(k=>{const d=DATA.datasets[k], list=CH.filter(c=>c.dataset===k); if(!list.length)return;
       h+=`<section><div class="dshead"><h2>${d.name}</h2><span>${d.sub} · database ${d.db}${STRETCH.has(k)?' · read-only here':''}</span></div><div class="cards">`+list.map(card).join('')+`</div></section>`;});
   });
@@ -85,7 +86,8 @@ let afterFns=[];const after=c=>{afterFns.forEach(f=>f(c));afterFns=[];};
 
 /* ---------- 1 context ---------- */
 function context(c){const b=c.brief;
-  return `<div class="card mail"><h2><small>Incoming request</small></h2><div class="hd"><span><b>From:</b> ${b.from_}</span><span><b>To:</b> You, Data Analyst</span><span><b>Subject:</b> ${b.subject}</span></div>
+  const cx=c.context?`<div class="card ctx"><h2><small>Business context</small> Read this before the request</h2><p><b>The business.</b> ${c.context.company}</p><p><b>What is going on.</b> ${c.context.situation}</p><p><b>The decision at stake.</b> ${c.context.decision}</p></div>`:'';
+  return cx+`<div class="card mail"><h2><small>Incoming request</small></h2><div class="hd"><span><b>From:</b> ${b.from_}</span><span><b>To:</b> You, Data Analyst</span><span><b>Subject:</b> ${b.subject}</span></div>
    ${b.body.map(p=>`<p>${p}</p>`).join('')}</div>
    <div class="card"><h2><small>Good to know</small></h2>${li(b.facts)}</div>
    <div class="card"><h2><small>Key questions</small> What you need to answer</h2><ol class="kq">${c.questions.map(q=>`<li>${q}</li>`).join('')}</ol></div>
