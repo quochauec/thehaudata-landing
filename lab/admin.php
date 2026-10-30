@@ -64,8 +64,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'reset':
                 if ($exists($u)) { $make($u, accounts()['users'][$u]['cohort'] ?? null, ''); audit('admin-reset', $u); } else $err = 'No such account.';
                 break;
-            case 'edit':
-                if ($exists($u)) { store_update('accounts', function (&$a) use ($u, $cohort, $exp) { $a['users'][$u]['cohort'] = $cohort; $a['users'][$u]['note'] = trim((string)($_POST['note'] ?? '')); $a['users'][$u]['expires'] = $exp; }); audit('admin-edit', $u); $flash[] = "$u updated."; }
+            case 'edit':   // cohort, note, access end, and optionally a new username and/or a password the owner types
+                if (!$exists($u)) { $err = 'No such account.'; break; }
+                $nu = strtolower(trim((string)($_POST['newuser'] ?? ''))); if ($nu === '') $nu = $u;
+                $np = (string)($_POST['newpass'] ?? '');
+                if ($nu !== $u && !valid_user($nu)) { $err = 'Username: 2 to 32 characters, lowercase letters, digits, dot, dash or underscore.'; break; }
+                if ($nu !== $u && $exists($nu)) { $err = "$nu already exists. Pick another username."; break; }
+                if ($np !== '' && (strlen($np) < 8 || strlen($np) > 72)) { $err = 'Password: 8 to 72 characters.'; break; }
+                store_update('accounts', function (&$a) use ($u, $nu, $np, $cohort, $exp, $now) {
+                    $r = $a['users'][$u]; $r['cohort'] = $cohort; $r['note'] = trim((string)($_POST['note'] ?? '')); $r['expires'] = $exp;
+                    if ($np !== '') { $r['hash'] = password_hash($np, PASSWORD_DEFAULT); $r['pw_changed'] = $now; }   // pw_changed signs out anyone logged in with the old password
+                    if ($nu !== $u) unset($a['users'][$u]);   // the old session then points at no account and ends
+                    $a['users'][$nu] = $r;
+                }, ['admin' => null, 'users' => []]);
+                if ($nu !== $u) {   // carry the mentee's saved progress and answer count over to the new name
+                    $d = data_dir(); if (is_file("$d/progress-$u.json") && !is_file("$d/progress-$nu.json")) rename("$d/progress-$u.json", "$d/progress-$nu.json");
+                    store_update('reveals', function (&$r) use ($u, $nu) { if (isset($r[$u])) { $r[$nu] = $r[$u]; unset($r[$u]); } });
+                    audit("admin-rename $u -> $nu"); $flash[] = "$u renamed to $nu. Anyone signed in as $u is signed out.";
+                }
+                if ($np !== '') { $issued[] = [$nu, $np]; audit('admin-setpw', $nu); }
+                if ($nu === $u && $np === '') { audit('admin-edit', $u); $flash[] = "$u saved."; }
                 break;
             case 'toggle':
                 if ($exists($u)) { store_update('accounts', function (&$a) use ($u) { $a['users'][$u]['active'] = empty($a['users'][$u]['active']); }); audit('admin-toggle', $u); $flash[] = "$u switched."; }
@@ -104,7 +122,7 @@ page_start('Lab admin', true);
 <?php foreach ($flash as $f): ?><div class="msg ok" style="margin-top:14px"><?= h($f) ?></div><?php endforeach; ?>
 
 <?php if ($issued): ?>
-<h2>New passwords (copy them now)</h2>
+<h2>Passwords to copy now</h2>
 <div class="tw"><table id="issued"><thead><tr><th>Username</th><th>Password</th></tr></thead><tbody>
 <?php foreach ($issued as [$n, $p]): ?><tr><td><code><?= h($n) ?></code></td><td><span class="pw"><?= h($p) ?></span></td></tr><?php endforeach; ?>
 </tbody></table></div>
@@ -126,6 +144,7 @@ page_start('Lab admin', true);
   <div style="flex:0 0 auto"><button class="btn o" type="submit">Create c&lt;N&gt; for each cohort</button></div></form>
 
 <h2>Logins (<?= count($users) ?>)</h2>
+<p class="sm">Under each login: change the username, type a new password (8 to 72 characters, blank keeps the current one), cohort, note or end date, then Save. A new username or password signs that login out; saved progress moves with a rename. The password you type is shown once above, to copy.</p>
 <div class="tw"><table><thead><tr><th>Username</th><th>Cohort</th><th>Status</th><th>Access until</th><th>Last login</th><th>Note</th><th></th></tr></thead><tbody>
 <?php foreach ($users as $n => $r): ?>
 <tr><td><code><?= h($n) ?></code></td><td><?= h($r['cohort'] ?? '') ?></td>
@@ -137,6 +156,8 @@ page_start('Lab admin', true);
     <?= $form('toggle', $n, empty($r['active']) ? 'Enable' : 'Disable') ?>
     <?= $form('remove', $n, 'Remove', 'd', '', "Remove $n for good?") ?></td></tr>
 <tr><td colspan="7" style="padding-top:0"><form method="post" class="row" style="margin-bottom:4px"><input type="hidden" name="csrf" value="<?= h($tok) ?>"><input type="hidden" name="do" value="edit"><input type="hidden" name="user" value="<?= h($n) ?>">
+  <div style="flex:1 1 130px"><input type="text" name="newuser" value="<?= h($n) ?>" autocapitalize="none" aria-label="Username of <?= h($n) ?>" placeholder="username"></div>
+  <div style="flex:1 1 150px"><input type="text" name="newpass" autocomplete="off" aria-label="New password for <?= h($n) ?>" placeholder="new password (blank = keep)"></div>
   <div style="flex:0 0 90px"><input type="number" name="cohort" min="1" value="<?= h($r['cohort'] ?? '') ?>" aria-label="Cohort of <?= h($n) ?>"></div>
   <div><input type="text" name="note" value="<?= h($r['note'] ?? '') ?>" aria-label="Note for <?= h($n) ?>" placeholder="note"></div>
   <div style="flex:0 0 170px"><input type="date" name="expires" value="<?= h($r['expires'] ?? '') ?>" aria-label="Access until for <?= h($n) ?>"></div>
