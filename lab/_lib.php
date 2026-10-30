@@ -111,6 +111,25 @@ function gen_password(?int $cohort): string {
     $g = []; for ($i = 0; $i < 3; $i++) { $s = ''; for ($j = 0; $j < 4; $j++) $s .= ALPHABET[random_int(0, strlen(ALPHABET) - 1)]; $g[] = $s; }
     return ($cohort ? "C$cohort" : 'LAB') . '-' . implode('-', $g);
 }
+// The owner wants to see each login's current password in the admin page, so it is also kept encrypted (AES-256-GCM, key in lab-data/.pwkey,
+// never in git). The sign-in check still uses only the bcrypt hash. Logins whose password was set before this existed have no copy until it is set again.
+function pw_key(): string {
+    $f = data_dir() . '/.pwkey'; if (!is_dir(data_dir())) mkdir(data_dir(), 0750, true);
+    if (!is_file($f)) { file_put_contents($f, random_bytes(32)); @chmod($f, 0600); }
+    return substr(file_get_contents($f), 0, 32);
+}
+function pw_seal(string $pw): ?string {
+    if (!function_exists('openssl_encrypt')) return null;
+    $iv = random_bytes(12); $tag = '';
+    $ct = openssl_encrypt($pw, 'aes-256-gcm', pw_key(), OPENSSL_RAW_DATA, $iv, $tag);
+    return $ct === false ? null : base64_encode($iv . $tag . $ct);
+}
+function pw_open(?string $s): ?string {
+    if (!$s || !function_exists('openssl_decrypt')) return null;
+    $b = base64_decode($s, true); if ($b === false || strlen($b) < 29) return null;
+    $r = openssl_decrypt(substr($b, 28), 'aes-256-gcm', pw_key(), OPENSSL_RAW_DATA, substr($b, 0, 12), substr($b, 12, 16));
+    return $r === false ? null : $r;
+}
 function valid_user(string $u): bool { return (bool)preg_match('/^[a-z0-9][a-z0-9._-]{1,31}$/', $u); }
 function dummy_hash(): string { static $h; return $h ??= password_hash('x', PASSWORD_DEFAULT); }   // equalises timing for unknown accounts
 

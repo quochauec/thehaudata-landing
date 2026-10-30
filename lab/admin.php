@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             store_update('accounts', function (&$a) use ($name, $c, $note, $pw, $now, $exp) {
                 $old = $a['users'][$name] ?? [];
                 $a['users'][$name] = ['hash' => password_hash($pw, PASSWORD_DEFAULT), 'cohort' => $c ?? ($old['cohort'] ?? null), 'note' => $note !== '' ? $note : ($old['note'] ?? ''),
-                    'active' => true, 'expires' => $exp ?? ($old['expires'] ?? null), 'created' => $old['created'] ?? $now, 'last_login' => $old['last_login'] ?? null, 'pw_changed' => $now];
+                    'pw_enc' => pw_seal($pw), 'active' => true, 'expires' => $exp ?? ($old['expires'] ?? null), 'created' => $old['created'] ?? $now, 'last_login' => $old['last_login'] ?? null, 'pw_changed' => $now];
             }, ['admin' => null, 'users' => []]);
             $issued[] = [$name, $pw];
         };
@@ -66,14 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
             case 'edit':   // cohort, note, access end, and optionally a new username and/or a password the owner types
                 if (!$exists($u)) { $err = 'No such account.'; break; }
+                $a0 = accounts()['users'][$u];
                 $nu = strtolower(trim((string)($_POST['newuser'] ?? ''))); if ($nu === '') $nu = $u;
                 $np = (string)($_POST['newpass'] ?? '');
+                if ($np !== '' && $np === pw_open($a0['pw_enc'] ?? null)) $np = '';   // the box is pre-filled with the current password: unchanged means no change
                 if ($nu !== $u && !valid_user($nu)) { $err = 'Username: 2 to 32 characters, lowercase letters, digits, dot, dash or underscore.'; break; }
                 if ($nu !== $u && $exists($nu)) { $err = "$nu already exists. Pick another username."; break; }
                 if ($np !== '' && (strlen($np) < 8 || strlen($np) > 72)) { $err = 'Password: 8 to 72 characters.'; break; }
                 store_update('accounts', function (&$a) use ($u, $nu, $np, $cohort, $exp, $now) {
                     $r = $a['users'][$u]; $r['cohort'] = $cohort; $r['note'] = trim((string)($_POST['note'] ?? '')); $r['expires'] = $exp;
-                    if ($np !== '') { $r['hash'] = password_hash($np, PASSWORD_DEFAULT); $r['pw_changed'] = $now; }   // pw_changed signs out anyone logged in with the old password
+                    if ($np !== '') { $r['hash'] = password_hash($np, PASSWORD_DEFAULT); $r['pw_enc'] = pw_seal($np); $r['pw_changed'] = $now; }   // pw_changed signs out anyone logged in with the old password
                     if ($nu !== $u) unset($a['users'][$u]);   // the old session then points at no account and ends
                     $a['users'][$nu] = $r;
                 }, ['admin' => null, 'users' => []]);
@@ -116,7 +118,7 @@ $form = fn(string $do, string $user, string $label, string $cls = 'o', string $e
 
 page_start('Lab admin', true);
 ?>
-<div class="row" style="justify-content:space-between;align-items:center"><div><h1>Lab admin</h1><p style="margin:0">Mentee logins for the Lab. Passwords are shown once, when you create or reset a login.</p></div>
+<div class="row" style="justify-content:space-between;align-items:center"><div><h1>Lab admin</h1><p style="margin:0">Mentee logins for the Lab. Each login's current password shows in its row, for logins created or changed since this feature. Older logins show an empty box until you set a password once.</p></div>
   <?= $form('signout', '', 'Sign out') ?></div>
 <?php if ($err): ?><div class="msg bad" role="alert" style="margin-top:14px"><?= h($err) ?></div><?php endif; ?>
 <?php foreach ($flash as $f): ?><div class="msg ok" style="margin-top:14px"><?= h($f) ?></div><?php endforeach; ?>
@@ -144,7 +146,7 @@ page_start('Lab admin', true);
   <div style="flex:0 0 auto"><button class="btn o" type="submit">Create c&lt;N&gt; for each cohort</button></div></form>
 
 <h2>Logins (<?= count($users) ?>)</h2>
-<p class="sm">Under each login: change the username, type a new password (8 to 72 characters, blank keeps the current one), cohort, note or end date, then Save. A new username or password signs that login out; saved progress moves with a rename. The password you type is shown once above, to copy.</p>
+<p class="sm">Under each login: change the username, edit the password (8 to 72 characters; the box shows the current one when it is stored, blank keeps it), cohort, note or end date, then Save. A changed username or password signs that login out; saved progress moves with a rename. The password you type is shown once above, to copy.</p>
 <div class="tw"><table><thead><tr><th>Username</th><th>Cohort</th><th>Status</th><th>Access until</th><th>Last login</th><th>Note</th><th></th></tr></thead><tbody>
 <?php foreach ($users as $n => $r): ?>
 <tr><td><code><?= h($n) ?></code></td><td><?= h($r['cohort'] ?? '') ?></td>
@@ -157,7 +159,7 @@ page_start('Lab admin', true);
     <?= $form('remove', $n, 'Remove', 'd', '', "Remove $n for good?") ?></td></tr>
 <tr><td colspan="7" style="padding-top:0"><form method="post" class="row" style="margin-bottom:4px"><input type="hidden" name="csrf" value="<?= h($tok) ?>"><input type="hidden" name="do" value="edit"><input type="hidden" name="user" value="<?= h($n) ?>">
   <div style="flex:1 1 130px"><input type="text" name="newuser" value="<?= h($n) ?>" autocapitalize="none" aria-label="Username of <?= h($n) ?>" placeholder="username"></div>
-  <div style="flex:1 1 150px"><input type="text" name="newpass" autocomplete="off" aria-label="New password for <?= h($n) ?>" placeholder="new password (blank = keep)"></div>
+  <div style="flex:1 1 150px"><input type="text" name="newpass" autocomplete="off" value="<?= h(pw_open($r['pw_enc'] ?? null) ?? '') ?>" aria-label="Password of <?= h($n) ?>" placeholder="not stored: type one to set it"></div>
   <div style="flex:0 0 90px"><input type="number" name="cohort" min="1" value="<?= h($r['cohort'] ?? '') ?>" aria-label="Cohort of <?= h($n) ?>"></div>
   <div><input type="text" name="note" value="<?= h($r['note'] ?? '') ?>" aria-label="Note for <?= h($n) ?>" placeholder="note"></div>
   <div style="flex:0 0 170px"><input type="date" name="expires" value="<?= h($r['expires'] ?? '') ?>" aria-label="Access until for <?= h($n) ?>"></div>
