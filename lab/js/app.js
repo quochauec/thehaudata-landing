@@ -1,13 +1,13 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=c4afae32fc";
-import { mountHomework } from "./homework.js?v=c4afae32fc";
-import { mountCases } from "./cases.js?v=c4afae32fc";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=c4afae32fc";
-import * as sync from "./sync.js?v=c4afae32fc";
+import * as engine from "./engine.js?v=424eb8b52f";
+import { mountHomework } from "./homework.js?v=424eb8b52f";
+import { mountCases } from "./cases.js?v=424eb8b52f";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=424eb8b52f";
+import * as sync from "./sync.js?v=424eb8b52f";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
-const ZONES = ["home", "setup", "guides", "homework", "cases", "dictionary", "playground"];
+const ZONES = ["home", "guides", "homework", "cases", "dictionary", "playground", "setup"];
 // Guides are shown by lesson name; the file key (L02 ...) stays internal. `full` is the lesson title, `short` fits a chip.
 const GUIDE_NAMES = {
   L02: { full: "Get into SQL", short: "SQL Basics" }, L03: { full: "Combining Data", short: "Joins and Union" },
@@ -45,8 +45,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=c4afae32fc");
-  const cs = await json("data/challenges.json?v=c4afae32fc");
+  hwData ??= await json("data/homework.json?v=424eb8b52f");
+  const cs = await json("data/challenges.json?v=424eb8b52f");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
@@ -77,12 +77,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=c4afae32fc");
+  hwData ??= await json("data/homework.json?v=424eb8b52f");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=c4afae32fc"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=424eb8b52f"));
   casesApp.draw();
 }
 
