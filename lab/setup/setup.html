@@ -1,0 +1,783 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Installation for mentees</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&display=swap">
+<style>
+/* Layout: navy brand band with tab bar on top, one reading column below; each tab is a full guide with screenshot grids. TheHauData palette: navy 3D5A99 / 2D4580, title blue 1F3864, orange E07B39, Calibri. */
+:root{
+  --navy:#3d5a99; --navy-dark:#2d4580; --title:#1f3864; --orange:#e07b39; --orange-ink:#b85a1c;
+  --bg:#f5f5f5; --surface:#ffffff; --ink:#333333; --muted:#6b6b6b; --line:#dfe3ec;
+  --navy-soft:#e8eef9; --orange-soft:#fdeee2; --ok:#1d7a4d; --ok-soft:#e2f4ea;
+  --code-bg:#1e1e2e; --code-fg:#ffffff; --code-com:#6a9955; --code-kw:#dcdcaa; --code-str:#ce9178; --code-bar:#2a2a3d;
+  --head-bg:#2d4580; --head-fg:#ffffff;
+  --font:'Calibri','Carlito','Segoe UI',system-ui,sans-serif;
+  --mono:'Courier New',Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12182b; --surface:#1b2440; --ink:#e4e9f5; --muted:#9ba8c7; --line:#2c3860; --title:#c9d6f5;
+  --navy:#7c9be0; --navy-soft:#222f55; --orange:#f0974f; --orange-ink:#f0974f; --orange-soft:#3a2a22;
+  --ok:#5fd596; --ok-soft:#173326; --code-bg:#0e1222; --code-bar:#1b2038; --head-bg:#1d2a55; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12182b; --surface:#1b2440; --ink:#e4e9f5; --muted:#9ba8c7; --line:#2c3860; --title:#c9d6f5;
+  --navy:#7c9be0; --navy-soft:#222f55; --orange:#f0974f; --orange-ink:#f0974f; --orange-soft:#3a2a22;
+  --ok:#5fd596; --ok-soft:#173326; --code-bg:#0e1222; --code-bar:#1b2038; --head-bg:#1d2a55; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px))) calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+  padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));background:var(--head-bg);color:var(--head-fg)}
+.wrap{max-width:900px;margin:0 auto}
+h1,h2,h3{color:var(--title);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(2rem,6vw,2.9rem);font-weight:700;color:#fff}
+h2{font-size:1.8rem;font-weight:700}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0}
+a{color:var(--navy);font-weight:600}
+a:focus-visible,button:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:4px}
+code{font-family:var(--mono);font-size:.88em}
+:not(pre)>code{background:var(--navy-soft);color:var(--title);padding:.1em .4em;border-radius:4px;overflow-wrap:anywhere}
+.sub{color:var(--orange);font-weight:700}
+
+/* brand header */
+.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+.brand b{color:var(--orange);font-size:1rem;letter-spacing:.04em;text-transform:none}
+.hero{padding-block:26px 24px;display:flex;flex-direction:column;gap:10px}
+.hero .sub{font-size:1.2rem}
+.hero p.lead{color:#dce5f8;max-width:60ch}
+
+/* tabs */
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+.tab{flex:none;border:0;background:transparent;color:#cfdaf5;font:inherit;font-weight:700;padding:12px 16px;border-radius:10px 10px 0 0;cursor:pointer;white-space:nowrap}
+.tab:hover{background:rgba(255,255,255,.12);color:#fff}
+.tab[aria-selected="true"]{background:var(--bg);color:var(--title);box-shadow:inset 0 3px 0 var(--orange)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#fff}}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#fff}
+.tab small{display:block;font-weight:400;font-size:.72rem;opacity:.85}
+
+main{padding-block:36px 24px}
+.panel{display:flex;flex-direction:column;gap:44px}
+.panel[hidden]{display:none}
+.stage-head{display:flex;flex-direction:column;gap:4px;margin-bottom:16px}
+.stage-head .sub{font-size:1rem}
+.stage-head p{color:var(--muted)}
+
+/* roadmap */
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);counter-reset:s}
+.stage{position:relative;padding-right:12px;min-width:0}
+.stage::before{content:"";position:absolute;top:18px;left:40px;right:0;height:3px;background:var(--line)}
+.stage:last-child::before{display:none}
+.stage .dot{position:relative;z-index:1;width:38px;height:38px;border-radius:50%;background:var(--navy-dark);color:#fff;display:grid;place-items:center;font-weight:700;counter-increment:s}
+.stage:last-child .dot{background:var(--orange)}
+.stage .dot::after{content:counter(s)}
+.stage b{display:block;margin-top:8px;color:var(--title);font-size:1.1rem}
+.stage span{display:block;color:var(--muted);font-size:.9rem;line-height:1.35}
+@media(max-width:600px){
+  .roadmap{grid-template-columns:1fr;gap:10px}
+  .stage{display:grid;grid-template-columns:38px 1fr;column-gap:12px}
+  .stage::before{top:42px;bottom:-12px;left:18px;right:auto;width:3px;height:auto}
+  .stage b{margin:0}.stage .dot{grid-row:span 2}}
+
+/* setup cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.card{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.card:hover{border-color:var(--navy)}
+.card:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.card .tag{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-ink)}
+.card strong{font-size:1.3rem;color:var(--title)}
+.card small{color:var(--muted);font-size:.95rem;line-height:1.4}
+.card .go{margin-top:6px;font-weight:700;color:var(--navy)}
+
+.decide{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+.decide .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.q{background:var(--navy-dark);color:#fff;padding:5px 12px;border-radius:999px;font-weight:700;font-size:.92rem}
+.arrow{color:var(--muted)}
+.a{background:var(--navy-soft);padding:5px 12px;border-radius:8px;font-size:.95rem}
+
+/* steps */
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:n}
+.steps>li{counter-increment:n;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.steps>li::before{content:counter(n);width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps>li::before,:root:not([data-theme="light"]) .stage .dot{color:#0e1222}}
+:root[data-theme="dark"] .steps>li::before,:root[data-theme="dark"] .stage .dot{color:#0e1222}
+.body{display:flex;flex-direction:column;gap:10px;min-width:0}
+.body ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:4px}
+.body ol{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:2px}
+
+/* screenshots */
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;align-items:start}
+.shots.one{grid-template-columns:minmax(0,520px)}
+figure{margin:0;display:flex;flex-direction:column;gap:4px;min-width:0}
+figure img{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:zoom-in}
+figcaption{font-size:.82rem;color:var(--muted)}
+.hint{font-size:.82rem;color:var(--muted)}
+
+/* callouts */
+.note{display:flex;gap:10px;padding:12px 14px;border-radius:10px;font-size:.98rem;min-width:0}
+.note>div{min-width:0}
+.note svg{flex:none;width:20px;height:20px;margin-top:2px}
+.note.warn{background:var(--orange-soft)} .note.warn svg{color:var(--orange-ink)}
+.note.ok{background:var(--ok-soft)} .note.ok svg{color:var(--ok)}
+.note.info{background:var(--navy-soft)} .note.info svg{color:var(--navy)}
+
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.checks li{display:flex;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.95rem;min-width:0}
+.checks li::before{content:"";flex:none;width:18px;height:18px;margin-top:2px;border-radius:4px;background:var(--ok);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/contain no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/contain no-repeat}
+
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.chain .node{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:.92rem;font-weight:700;color:var(--title)}
+.chain .node.end{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.chain .sep{align-self:center;color:var(--orange)}
+
+/* code */
+.code{background:var(--code-bg);border-radius:10px;overflow:hidden}
+.code pre{margin:0;padding:14px 16px;overflow-x:auto;color:var(--code-fg);font-family:var(--mono);font-size:.86rem;line-height:1.6}
+.code .bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 16px;background:var(--code-bar);color:#aeb6d0;font-size:.78rem;font-family:var(--mono)}
+.copy{background:var(--orange);color:#fff;border:0;border-radius:6px;padding:3px 12px;font:inherit;font-weight:700;font-size:.85rem;cursor:pointer}
+.copy:hover{filter:brightness(1.08)}
+.c{color:var(--code-com)}.k{color:var(--code-kw)}.s{color:var(--code-str)}
+
+/* method blocks */
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+details>summary{cursor:pointer;padding:14px 16px;font-weight:700;font-size:1.15rem;color:var(--title)}
+details>.inner{padding:0 16px 16px;display:flex;flex-direction:column;gap:14px}
+.badge{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
+.badge.rec{background:var(--ok-soft);color:var(--ok)}.badge.adv{background:var(--orange-soft);color:var(--orange-ink)}.badge.opt{background:var(--navy-soft);color:var(--navy)}
+
+table{width:100%;border-collapse:collapse;font-size:.98rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--navy);color:#fff;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) th{color:#0e1222}}
+:root[data-theme="dark"] th{color:#0e1222}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.links a{display:block;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:12px 14px;text-decoration:none;color:var(--ink);overflow-wrap:anywhere;font-weight:400}
+.links a:hover{border-color:var(--navy);border-left-color:var(--orange)}
+.links b{color:var(--navy)}
+.links small{display:block;color:var(--muted);font-size:.85rem;margin-top:2px}
+
+footer{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px))) calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+  padding-block:20px max(20px,env(safe-area-inset-bottom,0px));padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));
+  background:var(--head-bg);color:#cfdaf5;font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer b{color:#fff}
+
+/* step navigator inside each setup tab */
+.stepnav{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:-14px;scrollbar-width:thin}
+.stepbtn{flex:none;display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--title);border:2px solid var(--line);border-radius:999px;padding:6px 14px 6px 6px;font:inherit;font-weight:700;font-size:.95rem;cursor:pointer;white-space:nowrap}
+.stepbtn i{font-style:normal;width:28px;height:28px;border-radius:50%;background:var(--navy-soft);color:var(--navy);display:grid;place-items:center;font-size:.9rem}
+.stepbtn:hover{border-color:var(--navy)}
+.stepbtn[aria-selected="true"]{border-color:var(--orange);background:var(--orange-soft)}
+.stepbtn[aria-selected="true"] i{background:var(--orange);color:#fff}
+.stepbtn[data-done="1"] i{background:var(--ok);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stepbtn[aria-selected="true"] i,:root:not([data-theme="light"]) .stepbtn[data-done="1"] i{color:#0e1222}}
+:root[data-theme="dark"] .stepbtn[aria-selected="true"] i,:root[data-theme="dark"] .stepbtn[data-done="1"] i{color:#0e1222}
+.stepsec[hidden]{display:none}
+.stepfoot{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.stepfoot button{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer}
+.stepfoot button.prev{background:transparent;color:var(--navy);border:2px solid var(--line)}
+.stepfoot button:hover{filter:brightness(1.08)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stepfoot button:not(.prev){color:#0e1222}}
+:root[data-theme="dark"] .stepfoot button:not(.prev){color:#0e1222}
+
+/* lightbox */
+#lb{position:fixed;inset:0;background:rgba(10,14,30,.88);display:none;align-items:center;justify-content:center;padding:20px;z-index:50;cursor:zoom-out}
+#lb.on{display:flex}
+#lb img{max-width:100%;max-height:100%;border-radius:8px;background:#fff}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-warn" viewBox="0 0 24 24"><path fill="currentColor" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 15-5-5 1.4-1.4L10 14.2l7.6-7.6L19 8l-9 9z"/></symbol>
+</svg>
+
+<div class="band">
+  <div class="wrap">
+    <div class="brand"><b>TheHauData</b><span>Mentoring Program</span></div>
+    <div class="hero">
+      <span class="sub">Section 1 and 2</span>
+      <h1>Install your SQL tools and load the course data</h1>
+      <p class="lead">About 30 to 45 minutes. Pick your setup in the tabs below and follow the steps in order. Click any screenshot to enlarge it.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Guide sections">
+      <button class="tab" role="tab" id="t-start" aria-controls="p-start" aria-selected="true" data-tab="start">Start here</button>
+      <button class="tab" role="tab" id="t-sqlexpress" aria-controls="p-sqlexpress" aria-selected="false" data-tab="sqlexpress">For Windows<small>SQL Express</small></button>
+      <button class="tab" role="tab" id="t-docker" aria-controls="p-docker" aria-selected="false" data-tab="docker">For Mac<small>Docker + VS Code</small></button>
+      <button class="tab" role="tab" id="t-help" aria-controls="p-help" aria-selected="false" data-tab="help">Help and links</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- ============ START ============ -->
+<div class="panel" id="p-start" role="tabpanel" aria-labelledby="t-start">
+  <section>
+    <div class="stage-head"><span class="sub">The plan</span><h2>Four stages</h2></div>
+    <div class="roadmap">
+      <div class="stage"><div class="dot"></div><b>Install</b><span>SQL Server and VS Code</span></div>
+      <div class="stage"><div class="dot"></div><b>Connect</b><span>Link VS Code to your server</span></div>
+      <div class="stage"><div class="dot"></div><b>Import</b><span>Restore the course databases</span></div>
+      <div class="stage"><div class="dot"></div><b>Check</b><span>Track 1 and 2 show up</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="stage-head"><span class="sub">Choose one</span><h2>Pick your setup</h2>
+      <p>Both end in the same place: a SQL Server you can query from VS Code.</p></div>
+    <div class="cards">
+      <button class="card" type="button" data-tab="sqlexpress"><span class="tag">Windows</span><strong>For Windows: SQL Express</strong><small>Installs directly on your computer. Default choice for Windows.</small><span class="go">Open For Windows →</span></button>
+      <button class="card" type="button" data-tab="docker"><span class="tag">Mac</span><strong>For Mac: Docker + VS Code</strong><small>SQL Server runs in a container. Use it on a Mac.</small><span class="go">Open For Mac →</span></button>
+    </div>
+    <div class="decide" style="margin-top:14px">
+      <div class="row"><span class="q">Windows laptop?</span><span class="arrow">→</span><span class="a">For Windows: SQL Express</span></div>
+      <div class="row"><span class="q">Mac?</span><span class="arrow">→</span><span class="a">For Mac: Docker + VS Code</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="stage-head"><span class="sub">What the tabs contain</span><h2>Where to find things</h2></div>
+    <ul class="checks">
+      <li>For Windows: install SQL Express, connect, restore the .bak files, plus other ways to import (T-SQL and CSV)</li>
+      <li>For Mac: install Docker and VS Code, connect, restore the .bak files, with screenshots</li>
+      <li>Help and links: quick fixes and every download or video link</li>
+    </ul>
+  </section>
+</div>
+
+<!-- ============ FOR WINDOWS: SQL EXPRESS + OTHER IMPORT ============ -->
+<div class="panel" id="p-sqlexpress" role="tabpanel" aria-labelledby="t-sqlexpress" hidden>
+  <section class="stepsec" data-label="Install SQL Express">
+    <div class="stage-head"><span class="sub">Step 1 of 5</span><h2>Install SQL Express</h2></div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Download SQL Express 2025</h3>
+        <p>Get it from Microsoft: <a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads">SQL Express 2025 download page</a>.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image1.png" alt="Microsoft SQL Server downloads page with the Express edition"><figcaption>The Microsoft download page</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Choose these installation options and wait until it is done</h3>
+        <div class="shots">
+          <figure><img loading="lazy" src="setup/img/image2.png" alt="SQL Express installer option screen 1"><figcaption>Installer options, screen 1</figcaption></figure>
+          <figure><img loading="lazy" src="setup/img/image3.png" alt="SQL Express installer option screen 2"><figcaption>Installer options, screen 2</figcaption></figure>
+        </div>
+        <div class="note warn"><svg><use href="#i-warn"/></svg><div><b>Got this error?</b> Download this Microsoft program, double-click it to run, then retry the SQL Express install:<br><a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">https://aka.ms/vs/17/release/vc_redist.x64.exe</a></div></div>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image4.png" alt="SQL Express installation error message"><figcaption>The error that this program fixes</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Copy the connection string to your sticky notes</h3>
+        <p>You need it to connect from VS Code in Step 3.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image5.png" alt="Installation complete screen showing the connection string"><figcaption>Connection string on the finish screen</figcaption></figure></div>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="stepsec" data-label="Install VS Code">
+    <div class="stage-head"><span class="sub">Step 2 of 5</span><h2>Install Visual Studio Code</h2>
+      <p>VS Code is a free, powerful code editor. We use it to write SQL queries and manage data.</p></div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Download and run the installer</h3>
+        <p>If you are not familiar with installing software, watch this <a href="https://www.youtube.com/watch?v=wU7IQLIOwoo">video</a>.</p>
+        <div class="chain">
+          <span class="node">Open the <a href="https://code.visualstudio.com/download">official VS Code website</a></span><span class="sep">→</span>
+          <span class="node">Click the large blue Download</span><span class="sep">→</span>
+          <span class="node">Run <code>VSCodeSetup.exe</code></span><span class="sep">→</span>
+          <span class="node">Accept license, Next</span>
+        </div>
+      </div></li>
+      <li><div class="body">
+        <h3>Tick these boxes on the "Select Additional Tasks" screen</h3>
+        <ul class="checks">
+          <li>Create a desktop icon (optional, but handy)</li>
+          <li>Add "Open with Code" action to the Windows Explorer file context menu</li>
+          <li>Register Code as an editor for supported file types</li>
+          <li>Add to PATH, so you can launch VS Code from any terminal</li>
+        </ul>
+        <p>Click <b>Next</b>, then <b>Install</b>. Launch VS Code from its icon.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image6.png" alt="Visual Studio Code icon on the Windows desktop"><figcaption>The VS Code icon on your desktop</figcaption></figure></div>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="stepsec" data-label="Connect">
+    <div class="stage-head"><span class="sub">Step 3 of 5</span><h2>Connect VS Code to SQL Server Express</h2>
+      <p>You add an extension so VS Code can talk to your database.</p></div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Install the MSSQL extension</h3>
+        <ul>
+          <li>Open VS Code.</li>
+          <li>Click the <b>Extensions</b> icon on the left sidebar (it looks like four squares).</li>
+          <li>Search for <b>SQL Server (mssql)</b>.</li>
+          <li>Click <b>Install</b> on the one published by Microsoft.</li>
+        </ul>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image7.png" alt="Extensions search showing SQL Server (mssql) by Microsoft"><figcaption>The mssql extension</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Open the SQL Server tab</h3>
+        <p>A new <b>SQL Server</b> icon (a database) appears in the left sidebar. Click it.</p>
+      </div></li>
+      <li><div class="body">
+        <h3>Add a new connection</h3>
+        <p>Click the <b>+</b> (plus) next to the "Connections" header.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image8.png" alt="Plus icon next to the Connections header"><figcaption>The + icon next to Connections</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Answer the prompts at the top of the window</h3>
+        <ul>
+          <li><b>Server name:</b> your SQL Express instance. Examples: <code>localhost\SQLEXPRESS</code> (usually Windows) or <code>localhost</code> (usually MacBook).</li>
+          <li><b>Database name:</b> leave blank and press Enter, or type the database you want.</li>
+          <li><b>Authentication type:</b> <b>Windows Authentication</b> is usually easiest for a local Express install. <b>SQL Login</b> also works.</li>
+          <li><b>Profile name:</b> a friendly name, for example <code>TheHauData Class</code>.</li>
+        </ul>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image9.png" alt="Example of a completed connection setup"><figcaption>Connection setup example</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Connect</h3>
+        <p>VS Code now tries to connect. If it works, your server and databases appear in the SQL Server sidebar.</p>
+      </div></li>
+    </ol>
+    <div class="note ok" style="margin-top:14px"><svg><use href="#i-ok"/></svg><div><b>Check:</b> your server is listed in the SQL Server sidebar.</div></div>
+  </section>
+
+  <section class="stepsec" data-label="Restore databases">
+    <div class="stage-head"><span class="sub">Step 4 of 5 · Method 1 <span class="badge rec">Recommended</span></span><h2>Import the databases in the VS Code UI</h2>
+      <p>If you already restored the Track 1 and Track 2 .bak files, you do not need to import anything else. A .bak file is a full backup of a whole database, so it is the easiest way to load the course datasets.</p></div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Download the backup files</h3>
+        <p>Download them from the <b>Dataset folder</b> (link in the <b>Class Checklist</b>).</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image10.png" alt="Dataset folder in the class checklist"><figcaption>The Dataset folder</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Copy the .bak file to the C drive or the Backup folder</h3>
+        <p>Choose <b>only one</b> option.</p>
+        <div class="shots">
+          <figure><img loading="lazy" src="setup/img/image11.png" alt="bak files copied to a folder on the C drive"><figcaption><b>Option 1:</b> C drive</figcaption></figure>
+          <figure><img loading="lazy" src="setup/img/image12.png" alt="bak file copied to the SQL Server Backup folder"><figcaption><b>Option 2:</b> Backup folder</figcaption></figure>
+        </div>
+        <p>Option 2 is the default path for .bak files:<br><code>C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup</code></p>
+      </div></li>
+      <li><div class="body">
+        <h3>Open the restore window</h3>
+        <div class="chain">
+          <span class="node">Right-click your connection (it must be active, "green mode")</span><span class="sep">→</span>
+          <span class="node">Restore Database</span><span class="sep">→</span>
+          <span class="node">Backup Location: Backup file</span>
+        </div>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image13.png" alt="Right-click menu with Restore Database"><figcaption>Right-click the connection, then Restore Database</figcaption></figure></div>
+        <div class="note warn"><svg><use href="#i-warn"/></svg><div><b>No restore option on your computer?</b> Turn it on:
+          <ol><li>Click the settings icon at the bottom left corner.</li><li>Choose <b>Workbench</b>.</li><li>Turn on <b>Enable Preview Feature</b>.</li><li>Close the settings window and refresh.</li></ol></div></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Go to the folder from step 2 and choose the .bak file</h3>
+        <div class="shots">
+          <figure><img loading="lazy" src="setup/img/image14.png" alt="Browsing to C:\bak files"><figcaption><b>Option 1 path:</b> <code>C:\bak files</code></figcaption></figure>
+          <figure><img loading="lazy" src="setup/img/image15.png" alt="Browsing to the SQL Server Backup folder"><figcaption><b>Option 2 path:</b> the Backup folder</figcaption></figure>
+        </div>
+      </div></li>
+      <li><div class="body">
+        <h3>Click Restore and wait for the status</h3>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image16.png" alt="Restore status while the database restores"><figcaption>Restore status</figcaption></figure></div>
+        <p>Repeat for each track.</p>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="stepsec" data-label="Final check">
+    <div class="stage-head"><span class="sub">Step 5 of 5</span><h2>Final check</h2></div>
+    <ul class="checks">
+      <li>Your server shows in the SQL Server sidebar</li>
+      <li>The connection is active (green)</li>
+      <li>The Track 1 and Track 2 databases are listed</li>
+      <li>Expanding a database shows its tables</li>
+    </ul>
+    <p style="margin-top:12px">Problems with Method 1? Try Method 2 (T-SQL restore) in the Other import step.</p>
+  </section>
+
+  <section class="stepsec" data-label="Other import" data-extra="1">
+    <div class="stage-head"><span class="sub">Extra · only if you need it</span><h2>If Method 1 did not work</h2></div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+  <div class="note info"><svg><use href="#i-info"/></svg><div>Use these only if Method 1 (restore in the VS Code UI) did not work, or if you want to add data beyond the course datasets.</div></div>
+
+  <details open>
+    <summary>Method 2: Restore with a T-SQL command <span class="badge adv">Advanced</span></summary>
+    <div class="inner">
+      <p>For people who cannot import with the UI. A .bak file is a full backup of a whole database.</p>
+      <ol class="steps">
+        <li><div class="body"><h3>Create a data folder on the C drive</h3><p>For example <code>C:\Data</code>. Put the .bak files in it.</p></div></li>
+        <li><div class="body"><h3>Open a new query</h3><p>In the VS Code SQL Server sidebar, right-click your connected server (or the database folder) and select <b>New Query</b>.</p></div></li>
+        <li><div class="body">
+          <h3>Paste and run this command</h3>
+          <div class="note warn"><svg><use href="#i-warn"/></svg><div><b>Crucial:</b> replace <code>[NewDatabaseName]</code>, <code>[OldDatabaseName]</code> and the file paths with your actual values. Your .bak file name will be different from the example.</div></div>
+          <div class="code"><div class="bar"><span>T-SQL</span><button class="copy" type="button">Copy</button></div><pre><span class="k">RESTORE DATABASE</span> [TheHauData_Track1] <span class="c">--Your database name</span>
+
+<span class="k">FROM DISK</span> = <span class="s">'C:\Data\TheHauData_Track1-20251220-10-21-31.bak'</span> <span class="c">--Your actual bak file path</span>
+
+<span class="k">WITH</span>
+
+   <span class="k">MOVE</span> <span class="s">'TheHauData_Track1'</span> <span class="k">TO</span> <span class="s">'C:\Data\TheHauData_Track1.mdf'</span>, <span class="c">--Automatically created file</span>
+
+   <span class="k">MOVE</span> <span class="s">'TheHauData_Track1_log'</span> <span class="k">TO</span> <span class="s">'C:\Data\TheHauData_Track1_log.ldf'</span>, <span class="c">--Automatically created file</span>
+
+   <span class="k">REPLACE</span>;
+
+<span class="k">RESTORE DATABASE</span> [TheHauData_Track2] <span class="c">--Your database name</span>
+
+<span class="k">FROM DISK</span> = <span class="s">'C:\Data\TheHauData_Track2-20251220-10-22-18.bak'</span> <span class="c">--Your actual bak file path</span>
+
+<span class="k">WITH</span>
+
+   <span class="k">MOVE</span> <span class="s">'TheHauData_Track2'</span> <span class="k">TO</span> <span class="s">'C:\Data\TheHauData_Track2.mdf'</span>, <span class="c">--Automatically created file</span>
+
+   <span class="k">MOVE</span> <span class="s">'TheHauData_Track2_log'</span> <span class="k">TO</span> <span class="s">'C:\Data\TheHauData_Track2_log.ldf'</span>, <span class="c">--Automatically created file</span>
+
+   <span class="k">REPLACE</span>;</pre></div>
+        </div></li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Method 3a: Import a .csv with the Import flat file wizard <span class="badge opt">Optional</span></summary>
+    <div class="inner">
+      <p>For extra data beyond the course datasets, or if you cannot import from a .bak file. One .csv file is one table.</p>
+      <ol class="steps">
+        <li><div class="body">
+          <h3>Download each .csv file</h3>
+          <p>Download the tables as .csv from <b>Course Documentation</b>.</p>
+          <div class="note info"><svg><use href="#i-info"/></svg><div>The datasets are in the folder <b>Documentation → Practice Datasets</b>. If you cannot open the folder, click request access or contact your mentor.</div></div>
+        </div></li>
+        <li><div class="body">
+          <h3>Right-click the target database and choose Import flat file</h3>
+          <p>Choose the connection and database where the new table should be saved.</p>
+          <div class="shots one"><figure><img loading="lazy" src="setup/img/image17.png" alt="Import flat file in the right-click menu"><figcaption>Import flat file</figcaption></figure></div>
+        </div></li>
+        <li><div class="body">
+          <h3>Enter the schema, table name and .csv location</h3>
+          <ul>
+            <li><b>3.1</b> Double check the <b>Target database</b>.</li>
+            <li><b>3.2</b> Choose the .csv file path on your computer.</li>
+            <li><b>3.3</b> Choose the schema and type the table name.</li>
+          </ul>
+          <div class="shots">
+            <figure><img loading="lazy" src="setup/img/image18.png" alt="Choosing the csv file path"><figcaption>Choose the .csv path</figcaption></figure>
+            <figure><img loading="lazy" src="setup/img/image19.png" alt="Choosing schema and table name"><figcaption>Schema and table name</figcaption></figure>
+          </div>
+        </div></li>
+        <li><div class="body">
+          <h3>Preview the data</h3>
+          <p>Check that you are importing the right file.</p>
+          <div class="shots one"><figure><img loading="lazy" src="setup/img/image20.png" alt="Data preview of the csv file"><figcaption>Data preview</figcaption></figure></div>
+        </div></li>
+        <li><div class="body">
+          <h3>Choose a data type for each column</h3>
+          <ul>
+            <li><b>5.1</b> Review each table's data types carefully.</li>
+            <li><b>5.2</b> Make the data size larger than the recommended data type.</li>
+            <li><b>5.3</b> Click <b>Import Data</b>.</li>
+          </ul>
+          <div class="note info"><svg><use href="#i-info"/></svg><div><b>Tips:</b> Text column → <code>nvarchar(Max)</code>. Number column → <code>Float</code>.</div></div>
+          <div class="shots one"><figure><img loading="lazy" src="setup/img/image21.png" alt="Column data type selection"><figcaption>Data types, then Import Data</figcaption></figure></div>
+        </div></li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Method 3b: Import a .csv with BULK INSERT <span class="badge opt">Optional</span></summary>
+    <div class="inner">
+      <p>Before you import, create the empty table with the right column names and types, or truncate the existing table. Open a <b>New Query</b> against your target database.</p>
+
+      <h3>Create a brand new table from a .csv file</h3>
+      <p>Example: a table named <b>match</b> in a database named <b>testing</b>.</p>
+      <p><b>Step 0.</b> Select your destination database. If it is a new database, create it first:</p>
+      <div class="code"><div class="bar"><span>T-SQL</span><button class="copy" type="button">Copy</button></div><pre><span class="k">CREATE DATABASE</span> testing</pre></div>
+      <p><b>Step 1.</b> Create an empty table with the correct column names and data types.</p>
+      <div class="code"><div class="bar"><span>T-SQL</span><button class="copy" type="button">Copy</button></div><pre><span class="c">-- Step 1: Create empty table (with proper schema design)</span>
+<span class="k">CREATE TABLE</span> [testing].dbo.match (
+    [year] BIGINT NOT NULL,
+    [host_country] NVARCHAR(MAX) NULL,
+    [winner] NVARCHAR(MAX) NULL,
+    [runners_up] NVARCHAR(MAX) NULL,
+    [third] NVARCHAR(MAX) NULL,
+    [fourth] NVARCHAR(MAX) NULL,
+    [goals] NVARCHAR(MAX) NULL,
+    [qualified_team] NVARCHAR(MAX) NULL,
+    [match_played] BIGINT NULL
+);</pre></div>
+      <p><b>Step 2.</b> Insert the data from the .csv file.</p>
+      <div class="code"><div class="bar"><span>T-SQL</span><button class="copy" type="button">Copy</button></div><pre><span class="c">--Step 2: Insert data to new table from csv file</span>
+<span class="k">BULK INSERT</span> [testing].dbo.match <span class="c">---your table name</span>
+<span class="k">FROM</span> <span class="s">'D:\Class\3. Practice Datasets\Datasets - CSV\3. World+Cup\world_cups.csv'</span> <span class="c">-- Use the full, local path to your CSV file</span>
+<span class="k">WITH</span> (
+    FIELDTERMINATOR = <span class="s">','</span>,  <span class="c">-- Separator used in your CSV (e.g., comma)</span>
+    ROWTERMINATOR = <span class="s">'\n'</span>,   <span class="c">-- Line break used in your CSV (usually '\n' or '\r\n')</span>
+    FIRSTROW = 2            <span class="c">-- Start loading data from the second row (to skip the header)</span>
+);</pre></div>
+
+      <h3>Overwrite data in a current table</h3>
+      <p><b>Step 1.</b> Truncate the current table (deletes the data only, keeps the structure).</p>
+      <div class="code"><div class="bar"><span>T-SQL</span><button class="copy" type="button">Copy</button></div><pre><span class="k">TRUNCATE TABLE</span> dbo.YourTableName;
+<span class="c">--Example</span>
+<span class="k">TRUNCATE TABLE</span> [testing].dbo.match;</pre></div>
+      <p><b>Step 2.</b> Insert the data from the .csv file.</p>
+      <div class="code"><div class="bar"><span>T-SQL</span><button class="copy" type="button">Copy</button></div><pre><span class="c">-- --Step 2: Insert data to new table from csv file</span>
+<span class="k">BULK INSERT</span> [testing].dbo.match
+<span class="k">FROM</span> <span class="s">'D:\Class\3. Practice Datasets\Datasets - CSV\3. World+Cup\world_cups.csv'</span> <span class="c">-- Use the full, local path to your CSV file</span>
+<span class="k">WITH</span> (
+    FIELDTERMINATOR = <span class="s">','</span>,  <span class="c">-- Separator used in your CSV (e.g., comma)</span>
+    ROWTERMINATOR = <span class="s">'\n'</span>,   <span class="c">-- Line break used in your CSV (usually '\n' or '\r\n')</span>
+    FIRSTROW = 2            <span class="c">-- Start loading data from the second row (to skip the header)</span>
+);</pre></div>
+    </div>
+  </details>
+    </div>
+  </section>
+</div>
+
+<!-- ============ FOR MAC: DOCKER + VS CODE ============ -->
+<div class="panel" id="p-docker" role="tabpanel" aria-labelledby="t-docker" hidden>
+  <section class="stepsec" data-label="Install software">
+    <div class="stage-head"><span class="sub">Step 1 of 4</span><h2>Install the base software</h2>
+      <p>Set up SQL Server with Docker and connect through Visual Studio Code (new version).</p></div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Install VS Code and the mssql extension</h3>
+        <p>Download from <a href="https://code.visualstudio.com/download">code.visualstudio.com/download</a> and install. Then open <b>Extensions</b> in VS Code, search <b>SQL Server (mssql)</b> and install it.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image22.png" alt="mssql extension in the VS Code Extensions list"><figcaption>The mssql extension</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Install Docker Desktop and the SQL containers extension</h3>
+        <p>Download Docker Desktop from <a href="https://www.docker.com/products/docker-desktop/">docker.com/products/docker-desktop</a>. Open Docker, go to <b>Extensions</b>, search <b>SQL containers</b> and install it.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image23.png" alt="SQL containers extension in Docker Desktop"><figcaption>The SQL containers extension in Docker Desktop</figcaption></figure></div>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="stepsec" data-label="Create container">
+    <div class="stage-head"><span class="sub">Step 2 of 4</span><h2>Create the SQL Server container</h2></div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Click New Deployment</h3>
+        <p>Open VS Code, click the <b>mssql</b> extension icon on the left toolbar, then choose <b>New Deployment</b>.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image24.png" alt="New Deployment button in the mssql tab"><figcaption>New Deployment</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Choose "Create a Local Docker SQL Server"</h3>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image25.png" alt="Create a Local Docker SQL Server option"><figcaption>Create a Local Docker SQL Server</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Set a password and click Create Container</h3>
+        <div class="note warn"><svg><use href="#i-warn"/></svg><div><b>Write your password down.</b> You need it to connect.</div></div>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image26.png" alt="Container password form"><figcaption>Password for the container</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Click Next</h3>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image27.png" alt="Next button after creating the container"><figcaption>Next</figcaption></figure></div>
+        <div class="note info"><svg><use href="#i-info"/></svg><div>If the setup shows <b>"Failed"</b>, do not worry. Let it keep running.</div></div>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image28.png" alt="Setup showing a Failed message"><figcaption>A "Failed" message is fine</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Check Docker Desktop</h3>
+        <p>Go back to Docker Desktop. <code>sql_server_container</code> should be there with the status <b>RUNNING</b>. If so, the container is created.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image29.png" alt="Docker Desktop showing sql_server_container running"><figcaption>sql_server_container, RUNNING</figcaption></figure></div>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="stepsec" data-label="Connect">
+    <div class="stage-head"><span class="sub">Step 3 of 4</span><h2>Connect the database to VS Code</h2></div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Copy the connection string from Docker</h3>
+        <p>In Docker Desktop, click <b>Copy Connection String</b> on the row of the container you just created.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image30.png" alt="Copy Connection String button in Docker Desktop"><figcaption>Copy Connection String</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Add Connection, then Load from Connection String</h3>
+        <p>Back in VS Code, in the mssql tab, choose <b>Add Connection</b> and click <b>Load from Connection String</b>.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image31.png" alt="Add Connection with Load from Connection String"><figcaption>Load from Connection String</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Paste the string and click Load</h3>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image32.png" alt="Pasting the connection string"><figcaption>Paste, then Load</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Enter your password and click Connect</h3>
+        <p>Use the password you made in Step 2.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image33.png" alt="Password prompt"><figcaption>Password, then Connect</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Look for localhost,1433</h3>
+        <p>The connection worked when the server <code>localhost,1433</code> shows in the Connections list.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image34.png" alt="localhost,1433 listed under Connections"><figcaption>localhost,1433 in Connections</figcaption></figure></div>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="stepsec" data-label="Restore data">
+    <div class="stage-head"><span class="sub">Step 4 of 4</span><h2>Restore the course data</h2>
+      <p>The container is a separate mini-computer, so you first copy the .bak file into it, then restore from there.</p></div>
+    <div class="chain" style="margin-bottom:16px">
+      <span class="node">Download .bak</span><span class="sep">→</span><span class="node"><code>docker ps</code></span><span class="sep">→</span><span class="node"><code>docker cp</code> into /tmp</span><span class="sep">→</span><span class="node">Restore in VS Code</span><span class="sep">→</span><span class="node end">Database appears</span>
+    </div>
+    <ol class="steps">
+      <li><div class="body">
+        <h3>Download the .bak files</h3>
+        <p>Download the course backup files (.bak) and save them in your <b>Downloads</b> folder.</p>
+      </div></li>
+      <li><div class="body">
+        <h3>Find your container ID</h3>
+        <p>Open <b>Terminal</b> and type:</p>
+        <div class="code"><div class="bar"><span>terminal</span><button class="copy" type="button">Copy</button></div><pre>docker ps</pre></div>
+        <p>Copy the <b>CONTAINER ID</b> of <code>sql_server_container</code>.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image35.png" alt="docker ps output listing the container ID"><figcaption>The CONTAINER ID column</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Copy the path of the .bak file</h3>
+        <p>Find the downloaded .bak file, right-click it and choose <b>Copy</b> to get its path.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image36.png" alt="Right-click on the .bak file to copy its path"><figcaption>Copy the file path</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Copy the file into the container</h3>
+        <p>Back in Terminal, use your own path and container ID:</p>
+        <div class="code"><div class="bar"><span>terminal</span><button class="copy" type="button">Copy</button></div><pre>docker cp [file_path_you_copied] [CONTAINER_ID]:/tmp
+
+<span class="c"># example</span>
+docker cp /Users/Bi/Downloads/2.Datasets/bak-2022version/TheHauData_Track1.bak 0704830623ce:/tmp</pre></div>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image37.png" alt="docker cp command in Terminal"><figcaption>The docker cp command</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Right-click the connection and choose Restore Database (Preview)</h3>
+        <p>In VS Code, right-click <code>localhost,1433</code>.</p>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image38.png" alt="Restore Database (Preview) in the right-click menu"><figcaption>Restore Database (Preview)</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Tick Backup File and click Browse files</h3>
+        <div class="shots one"><figure><img loading="lazy" src="setup/img/image39.png" alt="Backup Location set to Backup File with Browse files button"><figcaption>Backup File, then Browse files</figcaption></figure></div>
+      </div></li>
+      <li><div class="body">
+        <h3>Open the tmp folder, pick your .bak file and restore</h3>
+        <div class="shots">
+          <figure><img loading="lazy" src="setup/img/image40.png" alt="Browsing to the tmp folder"><figcaption>Browse to tmp</figcaption></figure>
+          <figure><img loading="lazy" src="setup/img/image41.png" alt="Selecting the bak file and restoring"><figcaption>Choose the file and restore</figcaption></figure>
+        </div>
+        <p>Repeat the same process for the other tracks (for example Track 2) until you finish.</p>
+      </div></li>
+    </ol>
+    <div class="note ok" style="margin-top:14px"><svg><use href="#i-ok"/></svg><div><b>Check:</b> Track 1 and Track 2 databases are listed under <code>localhost,1433</code>.</div></div>
+  </section>
+</div>
+
+<!-- ============ HELP ============ -->
+<div class="panel" id="p-help" role="tabpanel" aria-labelledby="t-help" hidden>
+  <section>
+    <div class="stage-head"><span class="sub">Stuck?</span><h2>Quick fixes</h2></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>What you see</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>SQL Express install shows an error</td><td>Install the <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Visual C++ Redistributable</a>, then run the SQL Express install again.</td></tr>
+          <tr><td>No "Restore Database" in the right-click menu</td><td>Settings → Workbench → turn on <b>Enable Preview Feature</b>, then refresh.</td></tr>
+          <tr><td>Docker setup says "Failed"</td><td>Leave it running, then check Docker Desktop for <code>sql_server_container</code> with status RUNNING.</td></tr>
+          <tr><td>Cannot open the Dataset folder or Practice Datasets</td><td>Click request access, or contact your mentor.</td></tr>
+          <tr><td>Method 1 will not work</td><td>Open <a href="#sqlexpress" data-tab="sqlexpress">For Windows</a> and try Method 2 (T-SQL restore).</td></tr>
+          <tr><td>A restore command fails</td><td>Check you replaced every database name and file path with your own.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="stage-head"><span class="sub">Reference</span><h2>All download and video links</h2></div>
+    <ul class="links">
+      <li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads"><b>SQL Express 2025</b><small>For Windows · SQL Server download</small></a></li>
+      <li><a href="https://aka.ms/vs/17/release/vc_redist.x64.exe"><b>Visual C++ Redistributable</b><small>Fix for SQL Express install errors</small></a></li>
+      <li><a href="https://code.visualstudio.com/download"><b>VS Code</b><small>Windows and Mac · official download page</small></a></li>
+      <li><a href="https://www.youtube.com/watch?v=wU7IQLIOwoo"><b>VS Code install video</b><small>For first-time installers</small></a></li>
+      <li><a href="https://www.docker.com/products/docker-desktop/"><b>Docker Desktop</b><small>For Mac · Docker</small></a></li>
+    </ul>
+  </section>
+  <p>That's all. If you run into trouble, please contact our team. Many thanks!</p>
+</div>
+
+</main>
+
+<footer><div class="wrap"><span>Author<br><b>Quoc-Hau Le</b></span><span>© TheHauData 2026<br>All rights reserved</span></div></footer>
+
+<div id="lb" role="dialog" aria-label="Enlarged screenshot"><img alt=""></div>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.tab')),panels={};
+  tabs.forEach(function(t){panels[t.dataset.tab]=document.getElementById('p-'+t.dataset.tab)});
+  function show(name,focus){
+    if(!panels[name])return;
+    tabs.forEach(function(t){var on=t.dataset.tab===name;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;panels[t.dataset.tab].hidden=!on;if(on&&focus)t.focus()});
+    window.scrollTo(0,0);
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){show(t.dataset.tab)});
+    t.addEventListener('keydown',function(e){
+      var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;
+      if(d){e.preventDefault();show(tabs[(i+d+tabs.length)%tabs.length].dataset.tab,true)}
+    });
+  });
+  document.querySelectorAll('[data-tab]:not(.tab)').forEach(function(el){
+    el.addEventListener('click',function(e){e.preventDefault();show(el.dataset.tab)});
+  });
+  var h=(location.hash||'').replace('#','');
+  if(panels[h])show(h);else show('start');
+
+
+  document.querySelectorAll('.panel').forEach(function(panel){
+    var secs=[].slice.call(panel.querySelectorAll(':scope > .stepsec'));
+    if(!secs.length)return;
+    var nav=document.createElement('div');nav.className='stepnav';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','Steps');
+    var btns=[],n=0,seen={};
+    secs.forEach(function(sec,i){
+      var extra=sec.hasAttribute('data-extra'),b=document.createElement('button');
+      b.type='button';b.className='stepbtn';b.setAttribute('role','tab');
+      b.innerHTML='<i>'+(extra?'+':++n)+'</i><span></span>';b.lastChild.textContent=(extra?'Extra: ':'Step '+n+': ')+sec.dataset.label;
+      b.addEventListener('click',function(){go(i)});nav.appendChild(b);btns.push(b);
+      var foot=document.createElement('div');foot.className='stepfoot';
+      var pv=document.createElement('button');pv.type='button';pv.className='prev';pv.textContent=i?'← Back':'';
+      var nx=document.createElement('button');nx.type='button';nx.textContent=i<secs.length-1?(secs[i+1].hasAttribute('data-extra')?'Need another way to import? →':'Next step →'):'';
+      if(!i)pv.style.visibility='hidden';if(i===secs.length-1)nx.style.visibility='hidden';
+      pv.addEventListener('click',function(){go(i-1)});nx.addEventListener('click',function(){go(i+1)});
+      foot.appendChild(pv);foot.appendChild(nx);sec.appendChild(foot);
+    });
+    panel.insertBefore(nav,panel.firstChild);
+    function go(k){
+      secs.forEach(function(sec,i){sec.hidden=i!==k});
+      btns.forEach(function(b,i){b.setAttribute('aria-selected',i===k);b.tabIndex=i===k?0:-1;if(i<k&&!secs[i].hasAttribute('data-extra'))b.setAttribute('data-done','1');else b.removeAttribute('data-done')});
+      window.scrollTo(0,0);btns[k].scrollIntoView({block:'nearest',inline:'center'});
+    }
+    go(0);
+  });
+
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var pre=btn.closest('.code').querySelector('pre'),txt=pre.innerText;
+      function done(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy'},1500)}
+      function fallback(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Press Ctrl+C';setTimeout(function(){btn.textContent='Copy'},2000)}
+      try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+    });
+  });
+
+  var lb=document.getElementById('lb'),lbi=lb.querySelector('img');
+  document.querySelectorAll('figure img').forEach(function(im){
+    im.addEventListener('click',function(){lbi.src=im.src;lbi.alt=im.alt;lb.classList.add('on')});
+  });
+  lb.addEventListener('click',function(){lb.classList.remove('on')});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('on')});
+})();
+</script>
+
+</body></html>

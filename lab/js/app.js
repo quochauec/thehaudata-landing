@@ -1,13 +1,13 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=1092f16c55";
-import { mountHomework } from "./homework.js?v=1092f16c55";
-import { mountCases } from "./cases.js?v=1092f16c55";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=1092f16c55";
-import * as sync from "./sync.js?v=1092f16c55";
+import * as engine from "./engine.js?v=c4afae32fc";
+import { mountHomework } from "./homework.js?v=c4afae32fc";
+import { mountCases } from "./cases.js?v=c4afae32fc";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=c4afae32fc";
+import * as sync from "./sync.js?v=c4afae32fc";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
-const ZONES = ["home", "guides", "homework", "cases", "dictionary", "playground"];
+const ZONES = ["home", "setup", "guides", "homework", "cases", "dictionary", "playground"];
 // Guides are shown by lesson name; the file key (L02 ...) stays internal. `full` is the lesson title, `short` fits a chip.
 const GUIDE_NAMES = {
   L02: { full: "Get into SQL", short: "SQL Basics" }, L03: { full: "Combining Data", short: "Joins and Union" },
@@ -45,8 +45,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=1092f16c55");
-  const cs = await json("data/challenges.json?v=1092f16c55");
+  hwData ??= await json("data/homework.json?v=c4afae32fc");
+  const cs = await json("data/challenges.json?v=c4afae32fc");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
@@ -77,12 +77,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=1092f16c55");
+  hwData ??= await json("data/homework.json?v=c4afae32fc");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=1092f16c55"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=c4afae32fc"));
   casesApp.draw();
 }
 
@@ -128,7 +128,13 @@ async function dictionary() {
   $("#dframe", main).append(await pageFrame("guides/dictionary.html", "Class data dictionary"));
 }
 
-const RENDER = { home, guides, homework, cases, dictionary, playground };
+async function setup() {
+  hdr.innerHTML = "";
+  main.innerHTML = `<div id="sframe"></div>`;
+  $("#sframe", main).append(await pageFrame("setup/setup.html", "Installation for mentees"));
+}
+
+const RENDER = { home, setup, guides, homework, cases, dictionary, playground };
 async function setZone(z, reset = false) {
   if (!ZONES.includes(z)) z = "home";
   current = z;
