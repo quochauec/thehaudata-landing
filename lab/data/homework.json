@@ -49,6 +49,13 @@
    "sub": "First purchase month, months since first order, retention table",
    "ds": "ADW"
   },
+  "12": {
+   "title": "Market Basket Analysis",
+   "label": "Basket Analysis",
+   "slug": "market-basket",
+   "sub": "Eligible baskets, pair counts, support, confidence, lift and rule strength",
+   "ds": "ADW"
+  },
   "15": {
    "title": "Structuring Questions",
    "label": "Structuring Questions",
@@ -133,6 +140,29 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -169,6 +199,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text"
+     ],
+     "nums": [
+      55
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -201,6 +256,29 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1551,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      70032931
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -238,6 +316,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      29641,
+      51131,
+      163930.3943
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -278,6 +384,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      227667,
+      3445.6884000000005,
+      88630
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -333,6 +467,58 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 22,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text",
+      "number",
+      "number",
+      "text",
+      "number",
+      "number",
+      "number",
+      "number",
+      "text",
+      "text",
+      "text",
+      "number",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "number"
+     ],
+     "nums": [
+      7620,
+      10,
+      10,
+      1000,
+      750,
+      20403.182999999997,
+      34866.29999999999,
+      40,
+      584.6
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -367,6 +553,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 13,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      110
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -407,6 +617,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 432,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number",
+      "text"
+     ],
+     "nums": [
+      9539410,
+      2712,
+      400,
+      1200517.096300003
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -448,6 +688,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 5445,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      106178517,
+      10960596,
+      21213,
+      5256
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -490,6 +759,38 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1674,
+     "cols": 9,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      3424816,
+      3170942
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -522,6 +823,27 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -554,6 +876,27 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -605,6 +948,37 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 9,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "number",
+      "text"
+     ],
+     "nums": [
+      276985
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -661,6 +1035,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 646,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      12838226
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -702,6 +1100,37 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 6,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      4689,
+      7552.8024,
+      13844.939999999999,
+      3.273168
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -738,6 +1167,33 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 160,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      7964019,
+      4757492,
+      11320468.935500002
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -773,6 +1229,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      59284,
+      357865.2059
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -811,6 +1292,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1479,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text"
+     ],
+     "nums": [
+      69050980
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -845,6 +1351,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 9,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      7749
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -877,6 +1407,27 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 72,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1141,6 +1692,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6033,
+      41.976996,
+      1708.047636,
+      5476.553911
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1199,6 +1780,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "number"
+     ],
+     "nums": [
+      8727
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1321,6 +1927,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      27659,
+      31465
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1355,6 +1986,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      504
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1391,6 +2046,29 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 85,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1427,6 +2105,33 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      4238,
+      4238,
+      2040
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": true
+    }
+   },
    "approach": []
   },
   {
@@ -1461,6 +2166,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      15266
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1497,6 +2226,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 137,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      285,
+      285
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1531,6 +2286,31 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      1323,
+      31465
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,true,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1591,6 +2371,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      85,
+      85,
+      0,
+      0
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1629,6 +2438,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 19119,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      393067521,
+      3656843,
+      31465,
+      123216786.11589852
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1667,6 +2505,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 19119,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      393067521,
+      57290,
+      43526,
+      56993
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1705,6 +2572,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      19119,
+      31465,
+      123216786.1159
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1783,6 +2678,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 19119,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      393067521
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1817,6 +2736,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 38,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      19119
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1853,6 +2796,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 485,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6502,
+      30736
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1893,6 +2862,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 38,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      19119,
+      346,
+      432,
+      876
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1912,6 +2911,473 @@
    "graded": 0,
    "req": null,
    "note": "38 rows",
+   "guide": [],
+   "links": [],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L12-01",
+   "lesson": 12,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "Which orders can be a basket?",
+   "story": "The Merchandising team wants to run a market basket analysis on AdventureWorks. A basket is one order, and an order with a single product cannot show which products sell together. Return the number of orders, the number of orders with at least 2 different products (eligible orders) and the eligible share as a percent of all orders, rounded to 1 decimal.",
+   "hint": "Count DISTINCT ProductID per SalesOrderID in a CTE, then count the orders with 2 or more.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": "1 row",
+   "guide": [],
+   "links": [],
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "91aae1203860db58",
+      "6570b35db7a50cb7",
+      "d392365cfdb7047c"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      31465,
+      21209,
+      67.4
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L12-02",
+   "lesson": 12,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "Online and reseller baskets",
+   "story": "Do online customers and resellers fill their baskets in the same way? For each channel (OnlineOrderFlag = 1 is Online, otherwise Reseller), return the number of orders, the average number of different products per order (2 decimals), the number of eligible orders and the eligible share as a percent, rounded to 1 decimal.",
+   "hint": "Reuse the basket CTE from the last question and join ADW_Sales_orders for OnlineOrderFlag. Use AVG(1.0 * products) so the average keeps its decimals.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": "2 rows",
+   "guide": [],
+   "links": [],
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "f2a74756b3107929",
+      "7f03acc75fdcdd49",
+      "7270e8dca9242a56",
+      "76ee65b7ae78b7c8",
+      "31c8fc0c3033f63b"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      31465,
+      18.19,
+      21209,
+      149.6
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,true,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L12-03",
+   "lesson": 12,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "How common is each product?",
+   "story": "Before you judge a pair, you need the base rate of each product. Among the eligible orders (2 or more different products), list the 6 products that appear in the most orders. Return the product name, the number of eligible orders that contain it and its share of all eligible orders as a percent, rounded to 1 decimal.",
+   "hint": "Build the eligible orders in a CTE, count DISTINCT SalesOrderID per ProductID, and rank the products with ROW_NUMBER() OVER (ORDER BY n DESC).",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": "6 rows",
+   "guide": [],
+   "links": [],
+   "specs": [
+    {
+     "n": 6,
+     "cols": [
+      "8ee13d5b9fa176a7",
+      "a437ce47b6382b49",
+      "d4cf21cd93c3ae43"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      19785,
+      93.30000000000001
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L12-04",
+   "lesson": 12,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "One rule, step by step",
+   "story": "Check one rule before you build all of them: Water Bottle - 30 oz. and Mountain Bottle Cage. Among the eligible orders, return the number of eligible orders, the number with the bottle, the number with the cage, the number with both, the support as a percent (2 decimals), the confidence from bottle to cage and from cage to bottle as percents (1 decimal) and the lift (2 decimals).",
+   "hint": "Flag each order with MAX(CASE WHEN ProductName = '...' THEN 1 ELSE 0 END) for the bottle and for the cage, then SUM the flags. SUM(has_bottle * has_cage) counts the orders with both.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": "1 row",
+   "guide": [],
+   "links": [],
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "6570b35db7a50cb7",
+      "76da027ec3c60844",
+      "851132e9a3c97b13",
+      "59b58a67ea8031c7",
+      "0b37fee9c7990785",
+      "eaf3d850006b845b",
+      "ac7898a54cb82057",
+      "aaf780e166b6c151"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 8,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      21209,
+      4368,
+      1948,
+      1692,
+      7.98,
+      38.7,
+      86.9,
+      4.22
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L12-05",
+   "lesson": 12,
+   "level": "Medium-Hard",
+   "ds": "adw",
+   "title": "Pairs that appear together",
+   "story": "Now find the pairs automatically. Among the eligible orders, return every pair of different products that appears together in at least 950 orders. Show both product names, the number of orders that contain the pair (pair_count) and the support as a percent of all eligible orders, rounded to 2 decimals. List the most frequent pair first, with each pair only once.",
+   "hint": "Join ADW_Sales_orders_detail to itself on SalesOrderID with a.ProductID < b.ProductID. Count DISTINCT a.SalesOrderID per pair and keep the pairs with 950 or more orders.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": "8 rows",
+   "guide": [],
+   "links": [],
+   "specs": [
+    {
+     "n": 8,
+     "cols": [
+      "c2be696f7fbd8b12",
+      "ff0b2414bea84af6",
+      "0a8b68828f39423d",
+      "62b0a099faa2ab72"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 8,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      9315,
+      43.919999999999995
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L12-06",
+   "lesson": 12,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Rules in both directions",
+   "story": "Turn the 8 pairs into rules. For each pair with at least 950 orders, return the two product names, the pair count, the support as a percent (2 decimals), the confidence from the first to the second product and the other way as percents (1 decimal), the lift (2 decimals) and a rule_strength label: Very Strong (lift 5 or more and confidence A to B 50% or more), Strong (3 and 30%), Moderate (2 and 15%), Weak Positive (lift 1 or more), otherwise No Association. Most frequent pair first.",
+   "hint": "Reuse the pair counts from the last question and add the number of eligible orders per product (single counts). Then confidence = pair_count / n(A) and lift = pair_count x N / (n(A) x n(B)). Check the labels from the strictest down with CASE WHEN.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": "8 rows",
+   "guide": [],
+   "links": [],
+   "specs": [
+    {
+     "n": 8,
+     "cols": [
+      "c2be696f7fbd8b12",
+      "ff0b2414bea84af6",
+      "0a8b68828f39423d",
+      "62b0a099faa2ab72",
+      "4907f26f69fb9413",
+      "81e24402f2c367a4",
+      "6fc35767c2fe934e",
+      "2a644821b44a3f56"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 8,
+     "cols": 8,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "text"
+     ],
+     "nums": [
+      9315,
+      43.919999999999995,
+      272.8,
+      440.40000000000003,
+      26.890000000000004
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L12-07",
+   "lesson": 12,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Which rules deserve action?",
+   "story": "A rule list full of rare pairs is useless. Among the pairs with at least 10 orders, look at the 8 rules with the highest lift that have at least 500 orders. Return the two product names, the pair count, the confidence from the first to the second product (1 decimal), the lift (2 decimals) and the rule_strength label from the last question, with the highest lift first. Then answer: which of these rules would you use for a cross-sell campaign, and which would you leave out?",
+   "hint": "Compute support, confidence and lift for the pairs with 10 or more orders in a CTE. Then keep the pairs with 500 or more orders, number them with ROW_NUMBER() OVER (ORDER BY lift DESC) and keep the first 8.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "note": "8 rows",
+   "guide": [],
+   "links": [],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L12-08",
+   "lesson": 12,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Online or reseller rules",
+   "story": "Should the online store and the reseller team use the same cross-sell rules? Repeat the analysis inside each channel (OnlineOrderFlag = 1 is Online, otherwise Reseller), using only the eligible orders of that channel. For each channel, return the 3 pairs that appear in the most orders: channel, rank_in_channel, the two product names, the pair count, the support as a percent of that channel's eligible orders (1 decimal), the confidence from the first to the second product (1 decimal) and the lift (2 decimals). Then write one recommendation for each channel.",
+   "hint": "Add the channel to every CTE: the eligible orders, the totals, the single counts and the pair counts. Rank the pairs with ROW_NUMBER() OVER (PARTITION BY channel ORDER BY pair_count DESC).",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "note": "6 rows",
    "guide": [],
    "links": [],
    "specs": [],
@@ -1953,6 +3419,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6711,
+      4238,
+      63.2,
+      48.2
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -1989,6 +3484,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      23495,
+      2905
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2027,6 +3548,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      10,
+      6711,
+      265.5
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "true,false,true",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2063,6 +3612,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      246.3,
+      183.3
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2105,6 +3680,38 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 6,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      31465,
+      100,
+      109846381,
+      100,
+      22209
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2145,6 +3752,37 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      31465,
+      27647,
+      23012,
+      8453,
+      4482
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2185,6 +3823,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      6711,
+      438.8,
+      42083,
+      10005534
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,true,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2223,6 +3891,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      67048603,
+      87244958,
+      750.9
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2257,6 +3953,30 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      19474
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": false,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2339,6 +4059,35 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      168344,
+      100994,
+      67350,
+      33.3
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2379,6 +4128,36 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 5,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      10005534,
+      438.80000000000007,
+      28,
+      28
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2415,6 +4194,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      197757,
+      100
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2453,6 +4258,34 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      14182,
+      21435,
+      6847
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,true",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2489,6 +4322,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      42083,
+      25715
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,false",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2525,6 +4384,32 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      -208.8,
+      216.2
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {
@@ -2563,6 +4448,33 @@
      ]
     }
    ],
+   "profile": {
+    "s": {
+     "rows": 7,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "text"
+     ],
+     "nums": [
+      583.2,
+      355.7
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
    "approach": []
   },
   {

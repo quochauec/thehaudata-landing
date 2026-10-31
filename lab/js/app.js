@@ -1,9 +1,9 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=d7e102a8c4";
-import { mountHomework } from "./homework.js?v=d7e102a8c4";
-import { mountCases } from "./cases.js?v=d7e102a8c4";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=d7e102a8c4";
-import * as sync from "./sync.js?v=d7e102a8c4";
+import * as engine from "./engine.js?v=146a727e5c";
+import { mountHomework } from "./homework.js?v=146a727e5c";
+import { mountCases } from "./cases.js?v=146a727e5c";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=146a727e5c";
+import * as sync from "./sync.js?v=146a727e5c";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -15,6 +15,7 @@ const GUIDE_NAMES = {
   L06: { full: "Built-in Functions and Optimisation", short: "Functions and Tuning" }, L07: { full: "Data Visualization", short: "Viz Basics" },
   L08: { full: "Data Cleaning", short: "Data Cleaning" }, L09: { full: "RFM Segmentation", short: "RFM" }, L10: { full: "Cohort Retention", short: "Cohort Retention" },
   L11: { full: "Looker Studio Dashboards", short: "Looker Studio" },
+  L12: { full: "Market Basket Analysis", short: "Basket Analysis" },
   L13: { full: "Power BI Basics", short: "Power BI Basics" },
   L14: { full: "Dashboard Design and DAX", short: "DAX and Design" },
   L15: { full: "Ask, Define and Structure Analytics Questions", short: "Structuring Questions" },
@@ -45,8 +46,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=d7e102a8c4");
-  const cs = await json("data/challenges.json?v=d7e102a8c4");
+  hwData ??= await json("data/homework.json?v=146a727e5c");
+  const cs = await json("data/challenges.json?v=146a727e5c");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
@@ -77,12 +78,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=d7e102a8c4");
+  hwData ??= await json("data/homework.json?v=146a727e5c");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=d7e102a8c4"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=146a727e5c"));
   casesApp.draw();
 }
 
