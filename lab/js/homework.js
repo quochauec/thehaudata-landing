@@ -1,7 +1,7 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=424eb8b52f";
-import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=424eb8b52f";
+import * as engine from "./engine.js?v=d7e102a8c4";
+import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=d7e102a8c4";
 
 
 const LS = {
@@ -29,7 +29,7 @@ function buildExport(data, name) {
       if (!isDone(q.id) && !sql && !note) return;
       rows.push(`[${isDone(q.id) ? "Done" : "In progress"}] ${i + 1}. ${q.title} (${q.level})`);
       if (sql) rows.push("SQL:", sql);
-      if (note) rows.push("Conclusion: " + note);
+      if (note) rows.push((q.check === "write" ? "Answer:\n" : "Conclusion: ") + note);
       rows.push("");
     });
     if (rows.length) out.push(`== ${data.lessons[n].title} ==`, ...rows);
@@ -94,6 +94,15 @@ const setRoute = (...parts) => {
   try { history.replaceState(null, "", "#" + h); } catch (e) { }
 };
 
+// The model answer is not in homework.json. It comes from the server one question at a time (answer.php), capped per login.
+async function fetchAnswer(id) {
+  const r = await fetch("answer?id=" + encodeURIComponent(id), { credentials: "same-origin" });
+  if (r.status === 429) throw new Error((await r.json()).error);
+  if (r.status === 401) throw new Error("Your session ended. Reload the page and sign in again.");
+  if (!r.ok) throw new Error("The model answer is only available on thehaudata.com/lab.");
+  return r.json();
+}
+
 export function mountHomework({ data, hdr, main, goHome }) {
   LESSONS = data.lessons;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -116,8 +125,8 @@ export function mountHomework({ data, hdr, main, goHome }) {
           <label for="hw-export"><b>Summary to send to your mentor</b></label><textarea id="hw-export" rows="12" readonly style="font-family:var(--mono);font-size:12.5px"></textarea>
           <div class="row2"><button class="btn primary" data-copy>Copy to clipboard</button><button class="btn" data-download>Download .txt</button><span class="note" data-exstatus role="status"></span></div>
           <p class="note">Your SQL and notes are read from this browser. Nothing is sent anywhere until you paste or send the file yourself.</p></div></div>`;
-    hdr.innerHTML = `<div class="eyebrow">Homework</div><h1>SQL homework, by topic</h1>
-      <p>The business questions from the course, on the same tables as the class database. Write T-SQL, run it, and check your answer. Hints and model answers stay closed until you open them.</p>`;
+    hdr.innerHTML = `<div class="eyebrow">Homework</div><h1>Homework, by topic</h1>
+      <p>The business questions from the course, on the same tables as the class database. Write T-SQL, run it, and check your answer. Some topics also have written analytics tasks: no SQL, you write the answer, then compare it with a model outline. Hints and model answers stay closed until you open them.</p>`;
     const cards = Object.entries(data.lessons).map(([n, l]) => {
       const qs = byLesson(+n), done = qs.filter(q => isDone(q.id)).length;
       return `<button class="cc" data-lesson="${n}"><span class="tag">${esc(l.label !== l.title ? l.label : l.ds)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>
@@ -126,7 +135,8 @@ export function mountHomework({ data, hdr, main, goHome }) {
     main.innerHTML = `<div class="hub">${prog}<section><div class="dshead"><h2>Pick a topic</h2><span>Each question names the tables it needs. Table names match SQL Server, so queries paste in unchanged.</span></div><div class="cards">${cards}</div></section>
       <div class="card"><h2><small>How answers are checked</small></h2><ul>
         <li><b>Auto-check:</b> the page compares the rows you return with the model output. Column order, column names and extra columns do not matter.</li>
-        <li><b>Compare:</b> when the answer depends on how you define a metric, open the model answer and compare your logic and numbers.</li></ul></div></div>`;
+        <li><b>Compare:</b> when the answer depends on how you define a metric, open the model answer and compare your logic and numbers.</li>
+        <li><b>Write-up:</b> a written task with guidelines. Write your answer first. The approach hint (with the SQL questions and cases to practise on) and the model outline open after a first draft.</li></ul></div></div>`;
     $$("[data-lesson]", main).forEach(b => b.onclick = () => openLesson(+b.dataset.lesson));
     const eb = $("[data-exportbox]", main), ta = $("#hw-export", main), nm = $("#hw-name", main), st = $("[data-exstatus]", main);
     const refreshExport = () => { LS.set("name", nm.value); ta.value = buildExport(data, nm.value.trim()); };
@@ -162,7 +172,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
     main.innerHTML = `<section class="stack" style="padding-top:20px">` + bar + (shown.length ? "" : `<p class="note">No questions at this level.</p>`) + shown.map(({ q, i }) => `
       <details class="ex" data-q="${q.id}">
         <summary><span class="tag ${LEVEL_TAG(q.level)}">${esc(q.level)}</span><span class="ex-title">${i + 1}. ${esc(q.title)}</span>
-          <span class="tag ${q.check === "auto" ? "g" : "o"}">${q.check === "auto" ? "Auto-check" : "Compare"}</span>
+          <span class="tag ${q.check === "auto" ? "g" : q.check === "write" ? "" : "o"}">${q.check === "auto" ? "Auto-check" : q.check === "write" ? "Write-up" : "Compare"}</span>
           <span class="dn" data-dn="${q.id}">${isDone(q.id) ? "✓ Done" : ""}</span></summary>
         <div class="ex-body" data-body="${q.id}"></div>
       </details>`).join("") + `</section>`;
@@ -180,8 +190,58 @@ export function mountHomework({ data, hdr, main, goHome }) {
 
   function markDone(q) { LS.set("done:" + q.id, "1"); const d = $(`[data-dn="${q.id}"]`); if (d) d.textContent = "✓ Done"; }
 
+  // Written analytics task: guidelines stay visible; the approach hint and the model outline open after a first draft.
+  function fillWrite(q, body) {
+    const byId = id => data.questions.find(x => x.id === id);
+    const link = l => l.hw && byId(l.hw)
+      ? `<li><button class="btn" type="button" data-golink="${esc(l.hw)}">${esc(byId(l.hw).title)}</button> <span class="note">${esc(l.why)}</span></li>`
+      : l.case ? `<li><b>Case Studies:</b> ${esc(l.case)} <span class="note">${esc(l.why)}</span></li>` : "";
+    body.innerHTML = `
+      <div class="q" style="white-space:pre-line">${esc(q.story)}</div>
+      <div class="mstep"><p><b>Guidelines</b></p><ol>${q.guide.map(g => `<li>${esc(g)}</li>`).join("")}</ol></div>
+      <div class="mstep"><label for="nt-${q.id}"><b>Your answer</b></label><textarea id="nt-${q.id}" rows="14" data-note="${q.id}" placeholder="Write your answer here. It is saved in this browser only."></textarea></div>
+      <p class="note" data-lock hidden></p>
+      <details class="reveal" data-gate="hint"><summary data-sum="hint">Approach hint</summary><p style="white-space:pre-line">${esc(q.hint)}</p>
+        <p><b>Practise this step with SQL</b></p><ul>${q.links.map(link).join("")}</ul></details>
+      <details class="reveal ans" data-gate="ans"><summary data-sum="ans">Model outline</summary><div class="ansbody"></div></details>`;
+    const nt = $(`[data-note="${q.id}"]`, body), names = { hint: "Approach hint", ans: "Model outline" };
+    nt.value = LS.get("note:" + q.id) || "";
+    const unlocked = () => isDone(q.id) || LS.get("unlock:" + q.id) === "1" || nt.value.trim().length >= 80;
+    const refreshLocks = () => $$("[data-gate]", body).forEach(g => {
+      const k = g.dataset.gate;
+      $(`[data-sum="${k}"]`, g).textContent = unlocked() ? names[k] : `${names[k]} (opens after a first draft)`;
+      if (unlocked()) $("[data-lock]", body).hidden = true;
+    });
+    nt.oninput = () => { nt.value ? LS.set("note:" + q.id, nt.value) : LS.del("note:" + q.id); refreshLocks(); };
+    $$("[data-gate]", body).forEach(g => g.addEventListener("toggle", () => {
+      if (g.open && !unlocked()) {
+        g.open = false;
+        const m = $("[data-lock]", body); m.hidden = false;
+        m.innerHTML = `Write a first draft first, even a rough one (a few lines). This opens once you have written about 80 characters. <button class="btn" type="button" data-unlock>Unlock anyway</button>`;
+        $("[data-unlock]", m).onclick = () => { LS.set("unlock:" + q.id, "1"); refreshLocks(); m.hidden = true; };
+      }
+    }));
+    refreshLocks();
+    $$("[data-golink]", body).forEach(b => b.onclick = () => { const t = byId(b.dataset.golink); view = { lesson: t.lesson, q: t.id }; draw(); });
+    const ans = $(".ansbody", body); let loading = false, shown = false;
+    $("[data-gate='ans']", body).addEventListener("toggle", async ev => {
+      if (!ev.target.open || !unlocked() || loading || shown) return;
+      loading = true; ans.innerHTML = `<p class="note">Loading the model outline…</p>`;
+      try {
+        const a = await fetchAnswer(q.id); shown = true;
+        ans.innerHTML = `<ul>${a.approach.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+          <label class="check" style="margin-top:8px"><span><input type="checkbox" data-self="${q.id}"> I wrote my answer and compared it with the model outline</span></label>`;
+        const self = $(`[data-self="${q.id}"]`, ans);
+        self.checked = isDone(q.id);
+        self.onchange = () => { if (self.checked) markDone(q); else { LS.del("done:" + q.id); $(`[data-dn="${q.id}"]`).textContent = ""; } };
+      } catch (e) { ans.innerHTML = `<p class="reserr">${esc(e.message || e)}</p>`; }
+      loading = false;
+    });
+  }
+
   function fill(d) {
     const q = data.questions.find(x => x.id === d.dataset.q), body = $(`[data-body="${q.id}"]`, d);
+    if (q.check === "write") return fillWrite(q, body);
     const dsName = { adw: "ADW_ tables", crm: "CRM_ tables", gbe: "GBE_ tables" }[q.ds] || (String(q.ds).toUpperCase() + "_ tables");
     body.innerHTML = `
       <div class="q" style="white-space:pre-line">${esc(q.story)}</div>
@@ -259,11 +319,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
       if (steps || loading) return;
       loading = true; ans.innerHTML = `<p class="note">Loading the model answer…</p>`;
       try {
-        const r = await fetch("answer?id=" + encodeURIComponent(q.id), { credentials: "same-origin" });
-        if (r.status === 429) throw new Error((await r.json()).error);
-        if (r.status === 401) throw new Error("Your session ended. Reload the page and sign in again.");
-        if (!r.ok) throw new Error("The model answer is only available on thehaudata.com/lab.");
-        renderAnswer(await r.json());
+        renderAnswer(await fetchAnswer(q.id));
       } catch (e) { ans.innerHTML = `<p class="reserr">${esc(e.message || e)}</p>`; }
       loading = false;
     };

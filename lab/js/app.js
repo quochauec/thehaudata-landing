@@ -1,9 +1,9 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=424eb8b52f";
-import { mountHomework } from "./homework.js?v=424eb8b52f";
-import { mountCases } from "./cases.js?v=424eb8b52f";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=424eb8b52f";
-import * as sync from "./sync.js?v=424eb8b52f";
+import * as engine from "./engine.js?v=d7e102a8c4";
+import { mountHomework } from "./homework.js?v=d7e102a8c4";
+import { mountCases } from "./cases.js?v=d7e102a8c4";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=d7e102a8c4";
+import * as sync from "./sync.js?v=d7e102a8c4";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -45,8 +45,8 @@ engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { 
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=424eb8b52f");
-  const cs = await json("data/challenges.json?v=424eb8b52f");
+  hwData ??= await json("data/homework.json?v=d7e102a8c4");
+  const cs = await json("data/challenges.json?v=d7e102a8c4");
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
@@ -77,12 +77,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=424eb8b52f");
+  hwData ??= await json("data/homework.json?v=d7e102a8c4");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=424eb8b52f"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=d7e102a8c4"));
   casesApp.draw();
 }
 

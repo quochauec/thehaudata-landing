@@ -92,6 +92,8 @@
    "graded": 1,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -115,6 +117,8 @@
     1
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 10,
@@ -129,29 +133,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -173,6 +154,8 @@
     1
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 10,
@@ -186,31 +169,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text"
-     ],
-     "nums": [
-      55
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -230,6 +188,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1551,
@@ -241,29 +201,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1551,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number"
-     ],
-     "nums": [
-      70032931
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -285,6 +222,8 @@
     3
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -299,34 +238,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "text",
-      "number"
-     ],
-     "nums": [
-      29641,
-      51131,
-      163930.3943
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -351,6 +262,8 @@
     0
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 4,
@@ -365,34 +278,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 4,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "text",
-      "number"
-     ],
-     "nums": [
-      227667,
-      3445.6884000000005,
-      88630
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -414,6 +299,8 @@
     8
    ],
    "note": "rows tie on StandardCost at the 10th place, so only the cost column is compared",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 10,
@@ -446,58 +333,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 22,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text",
-      "number",
-      "number",
-      "text",
-      "number",
-      "number",
-      "number",
-      "number",
-      "text",
-      "text",
-      "text",
-      "number",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "number"
-     ],
-     "nums": [
-      7620,
-      10,
-      10,
-      1000,
-      750,
-      20403.182999999997,
-      34866.29999999999,
-      40,
-      584.6
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -517,6 +352,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 13,
@@ -530,30 +367,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 13,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      110
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -576,6 +389,8 @@
     3
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 432,
@@ -592,36 +407,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 432,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number",
-      "text"
-     ],
-     "nums": [
-      9539410,
-      2712,
-      400,
-      1200517.096300003
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -645,6 +430,8 @@
     2
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 5445,
@@ -661,35 +448,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 5445,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      106178517,
-      10960596,
-      21213,
-      5256
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -711,6 +469,8 @@
     0
    ],
    "note": "1674 rows",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1674,
@@ -730,38 +490,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1674,
-     "cols": 9,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      3424816,
-      3170942
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -781,6 +509,8 @@
    "graded": 0,
    "req": null,
    "note": "3 rows",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 3,
@@ -792,27 +522,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 3,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -832,6 +541,8 @@
    "graded": 0,
    "req": null,
    "note": "7 rows",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 7,
@@ -843,27 +554,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 7,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -885,6 +575,8 @@
     8
    ],
    "note": "6 distinct sectors",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 10,
@@ -913,37 +605,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 9,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "text",
-      "number",
-      "text"
-     ],
-     "nums": [
-      276985
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -963,6 +624,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -983,6 +646,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 646,
@@ -996,30 +661,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 646,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      12838226
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1042,6 +683,8 @@
     1
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 6,
@@ -1059,37 +702,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 6,
-     "cols": 6,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      4689,
-      7552.8024,
-      13844.939999999999,
-      3.273168
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1111,6 +723,8 @@
     0
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 160,
@@ -1124,33 +738,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 160,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      7964019,
-      4757492,
-      11320468.935500002
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1172,6 +759,8 @@
     0
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 2,
@@ -1184,31 +773,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 2,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number"
-     ],
-     "nums": [
-      59284,
-      357865.2059
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1231,6 +795,8 @@
     2
    ],
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1479,
@@ -1245,31 +811,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1479,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "text"
-     ],
-     "nums": [
-      69050980
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1289,6 +830,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 9,
@@ -1302,30 +845,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 9,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      7749
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1345,6 +864,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 72,
@@ -1356,27 +877,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 72,
-     "cols": 1,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1396,6 +896,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1416,6 +918,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1436,6 +940,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1456,6 +962,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1476,6 +984,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1496,6 +1006,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1516,6 +1028,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1539,6 +1053,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1559,6 +1075,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1582,6 +1100,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1604,6 +1124,8 @@
     1
    ],
    "note": "Caps, Helmets, Jerseys",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 3,
@@ -1619,36 +1141,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 3,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      6033,
-      41.976996,
-      1708.047636,
-      5476.553911
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1668,6 +1160,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1688,6 +1182,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 6,
@@ -1703,31 +1199,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 6,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "number"
-     ],
-     "nums": [
-      8727
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1747,6 +1218,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1767,6 +1240,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1787,6 +1262,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1807,6 +1284,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -1827,6 +1306,8 @@
    "graded": 0,
    "req": null,
    "note": "27,659 of 31,465 orders",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -1840,31 +1321,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number"
-     ],
-     "nums": [
-      27659,
-      31465
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1884,6 +1340,8 @@
    "graded": 0,
    "req": null,
    "note": "10 rows, Unknown = 248 products",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 10,
@@ -1897,30 +1355,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 10,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number"
-     ],
-     "nums": [
-      504
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1940,6 +1374,8 @@
    "graded": 0,
    "req": null,
    "note": "85 rows",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 85,
@@ -1955,29 +1391,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 85,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "text",
-      "text"
-     ],
-     "nums": []
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -1997,6 +1410,8 @@
    "graded": 0,
    "req": null,
    "note": "4,238 deals, 4,238 with a price, 2,040 above list price",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -2012,33 +1427,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      4238,
-      4238,
-      2040
-     ]
-    },
-    "f": {
-     "left": true,
-     "cd": false,
-     "fn": "true,false,true",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": true
-    }
-   },
    "approach": []
   },
   {
@@ -2058,6 +1446,8 @@
    "graded": 0,
    "req": null,
    "note": "4 groups, 15,266 customers in total",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 4,
@@ -2071,30 +1461,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 4,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number"
-     ],
-     "nums": [
-      15266
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2114,6 +1480,8 @@
    "graded": 0,
    "req": null,
    "note": "137 names, each repeat has a different birthday",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 137,
@@ -2129,32 +1497,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 137,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      285,
-      285
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2174,6 +1516,8 @@
    "graded": 0,
    "req": null,
    "note": "1,323 of 31,465 orders",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -2187,31 +1531,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number"
-     ],
-     "nums": [
-      1323,
-      31465
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,true,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2231,6 +1550,8 @@
    "graded": 0,
    "req": null,
    "note": "Standard deviation 1,323 orders, IQR 2,127 orders",
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -2251,6 +1572,8 @@
    "graded": 0,
    "req": null,
    "note": "85 rows, 85 accounts, 0 typos left",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -2268,35 +1591,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      85,
-      85,
-      0,
-      0
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2316,6 +1610,8 @@
    "graded": 0,
    "req": null,
    "note": "19,119 customers",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 19119,
@@ -2333,35 +1629,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 19119,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      393067521,
-      3656843,
-      31465,
-      123216786.11589852
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2381,6 +1648,8 @@
    "graded": 0,
    "req": null,
    "note": "19,119 customers",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 19119,
@@ -2398,35 +1667,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 19119,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      393067521,
-      57290,
-      43526,
-      56993
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2446,6 +1686,8 @@
    "graded": 0,
    "req": null,
    "note": "5 segments",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 5,
@@ -2463,34 +1705,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 5,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      19119,
-      31465,
-      123216786.1159
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2510,6 +1724,8 @@
    "graded": 0,
    "req": null,
    "note": "Champions AOV 11,035; At Risk 2,652; Loyal 2,509; Promising 606; Hibernating 230",
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -2530,6 +1746,8 @@
    "graded": 0,
    "req": null,
    "note": "19 rows",
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -2550,6 +1768,8 @@
    "graded": 0,
    "req": null,
    "note": "19,119 customers",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 19119,
@@ -2563,30 +1783,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 19119,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "text"
-     ],
-     "nums": [
-      393067521
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,false",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2606,6 +1802,8 @@
    "graded": 0,
    "req": null,
    "note": "38 cohorts",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 38,
@@ -2619,30 +1817,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 38,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number"
-     ],
-     "nums": [
-      19119
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2662,6 +1836,8 @@
    "graded": 0,
    "req": null,
    "note": "485 rows",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 485,
@@ -2677,32 +1853,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 485,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      6502,
-      30736
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2722,6 +1872,8 @@
    "graded": 0,
    "req": null,
    "note": "38 rows",
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 38,
@@ -2741,36 +1893,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 38,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      19119,
-      346,
-      432,
-      876
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2790,6 +1912,8 @@
    "graded": 0,
    "req": null,
    "note": "38 rows",
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -2810,6 +1934,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -2827,35 +1953,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      6711,
-      4238,
-      63.2,
-      48.2
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2875,6 +1972,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 3,
@@ -2890,32 +1989,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 3,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      23495,
-      2905
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,false,true",
-     "group": false,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2935,6 +2008,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 4,
@@ -2952,34 +2027,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 4,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      10,
-      6711,
-      265.5
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "true,false,true",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -2999,6 +2046,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 3,
@@ -3014,32 +2063,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 3,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      246.3,
-      183.3
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3059,6 +2082,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 2,
@@ -3080,38 +2105,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 2,
-     "cols": 6,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      31465,
-      100,
-      109846381,
-      100,
-      22209
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3131,6 +2124,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -3150,37 +2145,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      31465,
-      27647,
-      23012,
-      8453,
-      4482
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3200,6 +2164,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 7,
@@ -3219,36 +2185,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 7,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      6711,
-      438.8,
-      42083,
-      10005534
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,true,true",
-     "group": true,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3268,6 +2204,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 5,
@@ -3285,34 +2223,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 5,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      67048603,
-      87244958,
-      750.9
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3332,6 +2242,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 6,
@@ -3345,30 +2257,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 6,
-     "cols": 2,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number"
-     ],
-     "nums": [
-      19474
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": true,
-     "fn": "false,false,true",
-     "group": false,
-     "where": false,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3388,6 +2276,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -3408,6 +2298,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [],
    "approach": []
   },
@@ -3428,6 +2320,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 1,
@@ -3445,35 +2339,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 1,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      168344,
-      100994,
-      67350,
-      33.3
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": false,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3493,6 +2358,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 7,
@@ -3512,36 +2379,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 7,
-     "cols": 5,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      10005534,
-      438.80000000000007,
-      28,
-      28
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,true",
-     "group": true,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3561,6 +2398,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 4,
@@ -3576,32 +2415,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 4,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      197757,
-      100
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": false,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3621,6 +2434,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 2,
@@ -3638,34 +2453,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 2,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "number"
-     ],
-     "nums": [
-      14182,
-      21435,
-      6847
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,true,true",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3685,6 +2472,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 7,
@@ -3700,32 +2489,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 7,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      42083,
-      25715
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "false,true,false",
-     "group": true,
-     "where": true,
-     "period": false,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3745,6 +2508,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 4,
@@ -3760,32 +2525,6 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 4,
-     "cols": 3,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number"
-     ],
-     "nums": [
-      -208.8,
-      216.2
-     ]
-    },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
-    }
-   },
    "approach": []
   },
   {
@@ -3805,6 +2544,8 @@
    "graded": 0,
    "req": null,
    "note": null,
+   "guide": [],
+   "links": [],
    "specs": [
     {
      "n": 7,
@@ -3822,33 +2563,369 @@
      ]
     }
    ],
-   "profile": {
-    "s": {
-     "rows": 7,
-     "cols": 4,
-     "dups": 0,
-     "nulls": 0,
-     "kinds": [
-      "text",
-      "number",
-      "number",
-      "text"
-     ],
-     "nums": [
-      583.2,
-      355.7
-     ]
+   "approach": []
+  },
+  {
+   "id": "L15-07",
+   "lesson": 15,
+   "level": "Medium",
+   "ds": "none",
+   "title": "BookMe: canvas and issue tree for +30%",
+   "story": "BookMe is a travel booking platform that mostly sells bus tickets. After the strategy talk, leadership says next year's focus is to grow revenue by at least 30% against this year. The market for this kind of business grows about 15% a year. You are interviewing as a data analyst for BookMe.\n\nPart 1: draw a Business Model Canvas that shows how BookMe earns money.\nPart 2: build an issue tree for the question \"How do we grow BookMe revenue by at least 30% next year?\"\n\nWrite both as text here. Indented lines are fine for the tree. The tree must be MECE and at least 3 levels deep.",
+   "hint": "Think of every leaf as a query you could run. The SQL questions in this lesson show how: a branch has to reach every row (\"Which split covers every deal?\"), a branch that comes back flat is still a finding (\"Is the March jump the same in every office?\"), and canvas boxes get numbers from data (\"AdventureWorks channels in numbers\"). For the volume-versus-price split at the top of your tree, see the case on customers versus order size.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Do the arithmetic first. The market gives +15%, the target is +30%, so BookMe has to grow 1.30 / 1.15 = 1.13 times faster than the market, about 13% more than the market alone. Write one line on how much of the +30% comes from the market and how much BookMe must win from competitors.",
+    "Canvas: fill the boxes you can state from what you know about the business: customer segments, value proposition, channels, revenue streams, key partners, costs. Put a question mark on every box you are guessing and write the question you would ask.",
+    "Start the tree with a formula, because a maths split is MECE by construction: Revenue = tickets sold x revenue per ticket. Then split each part again: tickets sold = buyers x tickets per buyer, revenue per ticket = ticket price x take rate.",
+    "Where the formula runs out, split by a business cut instead, such as new vs returning buyers, or by route or by channel. Use one kind of split per level.",
+    "Test every level twice. Overlap: can one item sit in two branches? Full cover: does every item land in a branch? Rename or remove the branches that fail.",
+    "End each branch with a leaf you can measure and name the metric. \"Improve marketing\" is not a leaf. \"New buyers from paid search per month\" is.",
+    "State your assumptions and one source for each (annual report, news article, market note). There is no single right tree."
+   ],
+   "links": [
+    {
+     "hw": "L15-02",
+     "why": "Check that a branch reaches every row"
     },
-    "f": {
-     "left": false,
-     "cd": false,
-     "fn": "true,false,false",
-     "group": true,
-     "where": true,
-     "period": true,
-     "nullfn": false
+    {
+     "hw": "L15-04",
+     "why": "Test one branch of a tree with data"
+    },
+    {
+     "hw": "L15-05",
+     "why": "Put numbers into canvas boxes"
+    },
+    {
+     "case": "Revenue grew in 2013: more customers or bigger orders?",
+     "why": "The volume-versus-price split on real data"
+    },
+    {
+     "case": "Revenue by country: which country do we mean?",
+     "why": "Define the split before you build the tree"
     }
-   },
+   ],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L15-08",
+   "lesson": 15,
+   "level": "Medium",
+   "ds": "none",
+   "title": "ShopSmart: a different tree for +45%",
+   "story": "ShopSmart is an eCommerce platform that sells home goods and furniture. After a strategy talk, leadership sets a goal to grow revenue by at least 45% against last year. The eCommerce market is projected to grow 20% a year.\n\nPart 1: draw a Business Model Canvas for ShopSmart.\nPart 2: build an issue tree for \"How do we grow ShopSmart revenue by at least 45% next year?\"\nPart 3: put your tree next to your BookMe tree (or imagine one) and write two lines on what changes and why.",
+   "hint": "Start with the definition, as in \"Two win rates\": decide what counts as a customer and a repeat order before you split. Then use the same data habits as the AdventureWorks cases: separate new from returning customers, and check whether average order value moved before blaming customer behaviour.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Arithmetic first: 1.45 / 1.20 = 1.21, so ShopSmart has to beat the market by about 21%. Compare this with BookMe's 13%. Which goal is harder, and what does that say about where the growth must come from?",
+    "Canvas: think about what makes furniture different. High price, few purchases per customer, bulky delivery, returns, and long research before buying. Let those facts show up in the boxes (channels, costs, key activities).",
+    "Use a different top split from the BookMe tree on purpose. Try customers first: new customers vs returning customers, then orders and order value inside each. Or use the funnel: visitors x conversion rate x order value.",
+    "Go at least three levels deep. Give each level one kind of split (a formula, then a segment, then a driver).",
+    "Run the two MECE tests on every level and fix the failing branches. Check that the branches add up to the whole target, not to a part of it.",
+    "Finish each branch with a metric you could compute. For furniture, ask whether repeat purchase is a realistic branch or a branch to drop, and say why.",
+    "For Part 3, write which parts of the two trees are the same (revenue formula) and which are specific to the business."
+   ],
+   "links": [
+    {
+     "hw": "L15-01",
+     "why": "Fix the metric definition before the tree"
+    },
+    {
+     "hw": "L15-05",
+     "why": "Channel split with real numbers"
+    },
+    {
+     "case": "2013 revenue: new customers or returning ones?",
+     "why": "The new versus returning branch on data"
+    },
+    {
+     "case": "Average order value fell 75%. Did customers spend less?",
+     "why": "When the order-value branch hides a mix change"
+    },
+    {
+     "case": "Revenue by country: which country do we mean?",
+     "why": "Check that a split covers every sale"
+    }
+   ],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L16-07",
+   "lesson": 16,
+   "level": "Medium",
+   "ds": "none",
+   "title": "Break a question into five parts",
+   "story": "Three product questions were written as one long sentence. For each one, fill in the five parts of an analytics question: Problem and context, What/How/Why, Metrics, Action, Goal. In Metrics, list the key metric and its sub-metrics. Write the three answers as three short blocks or a table.\n\na. \"Our platform is experiencing a decline in new user retention rates after 1-2 weeks on the platform. How can we determine if implementing a personalized onboarding process improves new user retention rates so that we can achieve a 25% increase in active users by the end of Q3 2025?\"\n\nb. \"We are facing increased competition in our market segment. How can we analyze user engagement metrics to determine if our new loyalty program increases customer loyalty, aiming for a 30% growth in repeat purchases by the end of 2024?\"\n\nc. \"Customer feedback indicates dissatisfaction with our delivery times. How can we evaluate the impact of optimizing our delivery logistics on customer satisfaction scores to achieve a 20% increase in positive feedback by the end of 2025?\"",
+   "hint": "The metric line is where most answers go wrong, so build it first. \"Two win rates\" shows how one word can mean two different numbers. \"Split won value into input metrics\" shows how a key metric breaks into sub-metrics you can compute. For the duration metric in (c), remember that an average of days can mislead; the retention-style questions (a) and (b) have a data example in the cases listed below.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Find the Goal first. It is the number and the date at the end of each question. Copy it as written.",
+    "Problem and context is what is happening now, before the question mark. Add the baseline you would need to measure it (for example, which period the drop is measured over).",
+    "What/How/Why: what you want to learn, how you would test it, and why it matters. Write it as a comparison: group A against group B, over one period.",
+    "Action is the change the business makes if the answer is yes. If the question never names one, write the action you would propose and say that the question left it out.",
+    "Metrics: one key metric with a written definition (what is counted, out of whom, over which period). Then two to four sub-metrics. A sub-metric is an input that explains the key metric, a segment cut, or a guardrail that must not get worse.",
+    "Check the key metric with one question: could two analysts run it and get the same number? If not, a part of the definition is missing."
+   ],
+   "links": [
+    {
+     "hw": "L15-01",
+     "why": "Write the definition into the metric line"
+    },
+    {
+     "hw": "L16-01",
+     "why": "Break a key metric into sub-metrics"
+    },
+    {
+     "case": "How long does a sale take, and does it depend on the product?",
+     "why": "A duration metric (for question c)"
+    },
+    {
+     "case": "The 2018 promotion: did it bring members who stay?",
+     "why": "A retention metric (for questions a and b)"
+    }
+   ],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L16-08",
+   "lesson": 16,
+   "level": "Medium",
+   "ds": "none",
+   "title": "North Star Metric for seven companies",
+   "story": "Define a North Star Metric (NSM) for each of these companies, from your own research: Canva, Pinterest, Twitter, Shopify, TikTok, Coursera, Shopee.\n\nFor each one write: the NSM as one sentence with a unit and a period, one line on why it shows value to the customer, and one input metric a team could move. Then pick two companies and add the One Metric That Matters (OMTM) you would give a team in its first year.",
+   "hint": "Practise the move on data you can query. \"Split won value into input metrics\" turns one output into inputs with a multiplication that must add up. \"Does the detail follow the total?\" checks that the parts really explain the whole. The cases on revenue growth do the same split on AdventureWorks and on a web store, and ask which input did the work.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Start from the value the customer gets. Ask which single action shows that the customer got what they came for.",
+    "Write the NSM as count + object + period. The course example for a bill-pay service is \"monthly active paying users\". Revenue is the weakest NSM: it measures what customers pay, and an NSM should measure what they get.",
+    "Test each candidate with four questions. Does it show value delivered? Does revenue follow it a few months later? Can a team move it? Can you compute it from data the company has?",
+    "Platforms with two sides (Shopee, Shopify) should count a completed exchange, not a visit. Content products (Pinterest, TikTok, Twitter, Canva, Coursera) should count an engaged or finished action, since an open alone says little.",
+    "Split the NSM with maths to find input metrics, for example NSM = active users x actions per active user. Pick one input per company.",
+    "OMTM is different from the NSM. It is the one number a team focuses on for a period, chosen by product stage (for example new users early, churn later).",
+    "Several answers are valid. Marks go for the four tests and your reasoning."
+   ],
+   "links": [
+    {
+     "hw": "L16-01",
+     "why": "Split one output into input metrics"
+    },
+    {
+     "hw": "L16-02",
+     "why": "Check that your inputs explain the whole"
+    },
+    {
+     "case": "Revenue grew in 2013: more customers or bigger orders?",
+     "why": "Which input moved the output"
+    },
+    {
+     "case": "Revenue grew every year. Which driver did the work?",
+     "why": "Same idea on web store data"
+    },
+    {
+     "case": "Revenue by office: more deals, a better win rate or bigger deals?",
+     "why": "Revenue split into three inputs, with an index"
+    }
+   ],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L16-09",
+   "lesson": 16,
+   "level": "Hard",
+   "ds": "none",
+   "title": "MeStyle: from objective to issue tree and metrics",
+   "story": "MeStyle is a mid-sized online fashion shop founded in 2021. By 2024 sales were falling, many carts were abandoned and the team could not explain customer behaviour. Management wants to use e-commerce analytics to (1) reduce cart abandonment and (2) understand customer behaviour and preferences so marketing works better. You are the new data analyst.\n\n1. Draw a Business Model Canvas for MeStyle: how does it make money?\n2. Pick at least one of the two objectives and write the analytics question in the five parts (Problem and context, What/How/Why, Metrics, Action, Goal). Assume a numeric goal, for example +20% customer retention year on year.\n3. Build an issue tree for your question: MECE, at least 3 levels.\n4. List the metrics and dimensions you would analyse from the tree and say why you picked each.",
+   "hint": "Every step of this task has a SQL question in this lesson: check that detail follows the total, count how many groups each dimension returns, run the 80/20 check, find where a change came from, and estimate an effect with a what-if. The web-store funnel case is the closest picture of your tree.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Canvas first, and keep it specific to online fashion: revenue from product sales, costs of goods, shipping, returns and ads, and the channels where customers arrive. Mark the boxes you are guessing.",
+    "Pick one objective. Write the five-part question with a numeric goal and say that the goal is your assumption.",
+    "Use the funnel as the backbone of the tree if you chose cart abandonment: abandonment rate = 1 - orders / carts created, and a session leaves at exactly one last stage (cart, checkout, payment, confirmation). That makes the stages MECE.",
+    "Under each stage, split by cause family: price or shipping surprise, friction (forms, payment methods), trust, technical errors, no intent to buy. Keep one kind of split per level.",
+    "For each leaf pick a metric and the dimensions you will cut it by (device, traffic source, new vs returning, category, day). For each dimension write the decision it informs.",
+    "Size the dimensions before you slice. A dimension with 2 values reads at a glance, one with 2,000 needs a Top N. Start where the mass is (the 80/20 check) and report a flat result as a finding.",
+    "Finish with a what-if: if abandonment fell from X% to Y%, how many more orders and how much revenue? Label X and Y as assumptions."
+   ],
+   "links": [
+    {
+     "hw": "L16-02",
+     "why": "Check that each tree level adds up to the level above"
+    },
+    {
+     "hw": "L16-03",
+     "why": "Size every dimension before you slice"
+    },
+    {
+     "hw": "L16-04",
+     "why": "Find where the mass is"
+    },
+    {
+     "hw": "L16-05",
+     "why": "Find which branch drove the change"
+    },
+    {
+     "hw": "L16-06",
+     "why": "Size the prize with a what-if"
+    },
+    {
+     "case": "Where do visitors drop out on the way to an order?",
+     "why": "A funnel on web store data"
+    },
+    {
+     "case": "Do 20% of products really bring 80% of revenue?",
+     "why": "The 80/20 check on real data"
+    }
+   ],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L17-07",
+   "lesson": 17,
+   "level": "Easy",
+   "ds": "none",
+   "title": "Name the bias: five judgement calls",
+   "story": "Name the bias in each situation using the seven from the lesson (confirmation, framing, availability, sampling, survivorship, outliers, Simpson's paradox). For each one give the evidence in one line and the fix.\n\na. A company reviews a marketing campaign. The team only highlights the sales increase in the demographic that matched what they expected.\nb. A hiring manager favours candidates from a prestigious university and ignores equally qualified candidates from lesser-known schools.\nc. A company reports that 85% of customers are satisfied and calls it overwhelmingly positive, without saying that few customers answered the survey.\nd. A research team stresses the findings that support its hypothesis about consumer preferences and dismisses the data that shows a different trend.\ne. A rival launches a product. The company reads only its negative reviews, assumes it will fail, and ignores its strong first sales.",
+   "hint": "Two SQL questions in this lesson show the same biases in data. \"Two headlines for 2014\" is framing: one dataset, two honest headlines. \"Winners only: who is missing?\" shows what a one-sided view leaves out. Work out how you would show each situation with numbers, then name it.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Read each situation and ask the red-flag question of the three cognitive biases. Confirmation: did anyone look for evidence against the idea? Framing: would the decision change if the same fact were worded the other way? Availability: is this common, or only memorable?",
+    "Write the bias, then one line of evidence taken from the text: which words in the situation show it.",
+    "If two biases fit, name the main one and mention the second. Say which family each belongs to (cognitive or statistical).",
+    "The fix must be an action: test the opposite, show absolute and relative numbers, use base rates and the full period.",
+    "Check your fix against the six questions before you share (alternatives, comparisons, base rate, sample, missing, shape)."
+   ],
+   "links": [
+    {
+     "hw": "L17-05",
+     "why": "Framing: one dataset, two headlines"
+    },
+    {
+     "hw": "L17-04",
+     "why": "What a one-sided view leaves out"
+    },
+    {
+     "case": "Delivery time fell by almost half. Is that still the headline?",
+     "why": "Framing: which two points does a headline compare?"
+    }
+   ],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L17-08",
+   "lesson": 17,
+   "level": "Medium",
+   "ds": "none",
+   "title": "Name the bias: five numbers that mislead",
+   "story": "Name the bias in each situation using the statistical ones (sampling, survivorship, outliers, Simpson's paradox). For each give the evidence in one line and say what query or comparison you would run to show it.\n\na. A company runs a satisfaction survey, but only users who opened the email can answer.\nb. An investment firm judges its portfolio by looking only at funds that are still active.\nc. A sales team sees a few reps far above everyone else and concludes that sales training works.\nd. A company compares two regions. Region A has higher total sales, but per person Region B does better.\ne. A business studies the demographics of its most loyal customers and concludes that marketing should target only that group.",
+   "hint": "Four SQL questions in this lesson run these comparisons on real tables: a winners-only average against all closed deals, a mean against a median, a total against a rate, and a pattern that is checked inside every product. Find the one that matches each situation and copy its comparison.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Use the red-flag question of each statistical bias. Sampling: who is in my sample and who is not? Survivorship: who is missing from this data? Outliers: does the median tell the same story as the mean? Simpson's paradox: does the trend hold in every segment?",
+    "Name the group that is missing or the number that is stretched, and use that as your evidence line.",
+    "For each situation write the comparison that would show the problem: a second group, a rate instead of a total, a median next to a mean, a count of those who left.",
+    "If a situation fits two biases, name the main one and note the other.",
+    "Say what you would report instead, in one sentence a manager can use."
+   ],
+   "links": [
+    {
+     "hw": "L17-04",
+     "why": "Survivorship: who is missing?"
+    },
+    {
+     "hw": "L17-03",
+     "why": "Outliers: mean or median?"
+    },
+    {
+     "hw": "L17-01",
+     "why": "Total or rate: who leads?"
+    },
+    {
+     "hw": "L17-06",
+     "why": "Simpson's paradox: does the pattern hold in every segment?"
+    }
+   ],
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L17-09",
+   "lesson": 17,
+   "level": "Hard",
+   "ds": "none",
+   "title": "Turn an analysis into a 5 to 7 slide deck",
+   "story": "Take an analysis you already have results for. In class, use the analysis your mentor shares. For practice in the Lab, use one case from the Case Studies tab, or your answer to \"Two headlines for 2014\".\n\nPick one or two topics from it (overall trend, growth, product, place, customer) and write a deck of 5 to 7 slides for a manager who has three minutes. For each slide write: the slide number, the title as a full-sentence takeaway with a number and a period, the chart you would show, and one line of message. Finish with a bias check: which of the seven biases could undermine your main claim, and what you did about it.",
+   "hint": "Your SQL answers already hold the slides. \"Two headlines for 2014\" is a framing choice for slide 2. \"Top 3 categories and Other\" is a chart choice for slides 4 and 5. \"Does the pattern hold in every product?\" is the bias check for slide 7. Pick one finding and build the deck around it.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Choose one or two topics. Five to seven slides cannot carry more.",
+    "Write the answer first, in one sentence. Then the two or three arguments that support it. Then the data under each argument. This is the Pyramid Principle, and it is slide 2.",
+    "A deck that works: 1 title with the question and the answer, 2 summary (answer, key points, what you ask for), 3 context and metric definitions (situation, complication, question, answer), 4 and 5 one insight each, 6 recommendation with the size of the prize and the next steps, 7 optional: risks and the bias check.",
+    "Write every title as a takeaway: what happened, the number and the period. \"Online is 88% of orders but 27% of revenue\" is a title. \"Orders by channel\" is a label.",
+    "One chart per slide and one message per chart. Use a rate when the groups differ in size, and Top 3 plus Other when a chart has many categories.",
+    "Finish with the six questions: alternatives, comparisons, base rate, sample, missing, shape. Write one line for each that applies.",
+    "Read the deck aloud. If it takes more than three minutes, cut a slide."
+   ],
+   "links": [
+    {
+     "hw": "L17-05",
+     "why": "Two headlines: a framing choice"
+    },
+    {
+     "hw": "L17-02",
+     "why": "A readable chart for many categories"
+    },
+    {
+     "hw": "L17-06",
+     "why": "The bias check slide"
+    },
+    {
+     "case": "Deals close better at quarter end. Real pressure or a reporting habit?",
+     "why": "A full analysis to present"
+    },
+    {
+     "case": "Delivery time fell by almost half. Is that still the headline?",
+     "why": "A headline to defend, with a bias check"
+    }
+   ],
+   "specs": [],
    "approach": []
   }
  ]
