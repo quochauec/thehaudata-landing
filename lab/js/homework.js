@@ -1,7 +1,9 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=146a727e5c";
-import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=146a727e5c";
+import * as engine from "./engine.js?v=33965c5b57";
+import { MODE } from "./mode.js?v=33965c5b57";
+import * as free from "./free.js?v=33965c5b57";
+import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=33965c5b57";
 
 
 const LS = {
@@ -10,6 +12,8 @@ const LS = {
   del(k) { try { localStorage.removeItem("hw:" + k); } catch (e) { } },
 };
 const isDone = id => LS.get("done:" + id) === "1";
+// Short fingerprint of a query (case, spacing and trailing semicolons ignored), used to tell a new try from a repeat run.
+const hashSql = s => { const t = s.replace(/\s+/g, " ").replace(/;+\s*$/, "").toLowerCase(); let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
 const LEVEL_TAG = l => /Hard|Advanced/.test(l) ? "o" : /Easy|Basic/.test(l) ? "g" : "";
 // Lessons are shown by name. The number stays the data key; each lesson has a short `label` and a deep-link `slug` (data.lessons).
 let LESSONS = {};
@@ -95,7 +99,7 @@ const setRoute = (...parts) => {
 };
 
 // The model answer is not in homework.json. It comes from the server one question at a time (answer.php), capped per login.
-async function fetchAnswer(id) {
+async function fetchAnswer(id) { if (MODE.free) return free.fetchAnswer(id);
   const r = await fetch("answer?id=" + encodeURIComponent(id), { credentials: "same-origin" });
   if (r.status === 429) throw new Error((await r.json()).error);
   if (r.status === 401) throw new Error("Your session ended. Reload the page and sign in again.");
@@ -107,13 +111,13 @@ export function mountHomework({ data, hdr, main, goHome }) {
   LESSONS = data.lessons;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const byLesson = n => data.questions.filter(q => q.lesson === n);
-  const r0 = parseRoute(), q0 = r0.q && data.questions.find(x => x.id === r0.q);
-  const l0 = q0 ? q0.lesson : (data.lessons[r0.lesson] ? r0.lesson : null);
+  const r0 = parseRoute(), q0 = r0.q && data.questions.find(x => x.id === r0.q && !x.locked);
+  const l0 = q0 ? q0.lesson : (data.lessons[r0.lesson] && !(MODE.free && byLesson(r0.lesson).every(x => x.locked)) ? r0.lesson : null);
   let view = { lesson: l0, q: q0 ? q0.id : null };
 
   function hub() {
     setRoute();
-    const all = data.questions, doneAll = all.filter(q => isDone(q.id)).length, pct = all.length ? Math.round(100 * doneAll / all.length) : 0;
+    const all = data.questions.filter(q => !MODE.free || !q.locked), doneAll = all.filter(q => isDone(q.id)).length, pct = all.length ? Math.round(100 * doneAll / all.length) : 0;
     const last = all.find(q => q.id === LS.get("last"));
     const resume = last && !isDone(last.id) ? last : (doneAll ? all.find(q => !isDone(q.id)) : null);
     const prog = `<div class="card"><h2><small>Your progress</small></h2>
@@ -128,7 +132,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
     hdr.innerHTML = `<div class="eyebrow">Homework</div><h1>Homework, by topic</h1>
       <p>The business questions from the course, on the same tables as the class database. Write T-SQL, run it, and check your answer. Some topics also have written analytics tasks: no SQL, you write the answer, then compare it with a model outline. Hints and model answers stay closed until you open them.</p>`;
     const cards = Object.entries(data.lessons).map(([n, l]) => {
-      const qs = byLesson(+n), done = qs.filter(q => isDone(q.id)).length;
+      const qs = byLesson(+n), done = qs.filter(q => isDone(q.id)).length; if (MODE.free && qs.length && qs.every(q => q.locked)) return free.lockedLesson(n, l, qs.length);
       return `<button class="cc" data-lesson="${n}"><span class="tag">${esc(l.label !== l.title ? l.label : l.ds)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>
         <span class="row"><span class="tm">${qs.length} questions · ${esc(l.ds)}</span>${done ? `<span class="dn">${done}/${qs.length} done</span>` : ""}</span></button>`;
     }).join("");
@@ -137,7 +141,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
         <li><b>Auto-check:</b> the page compares the rows you return with the model output. Column order, column names and extra columns do not matter.</li>
         <li><b>Compare:</b> when the answer depends on how you define a metric, open the model answer and compare your logic and numbers.</li>
         <li><b>Write-up:</b> a written task with guidelines. Write your answer first. The approach hint (with the SQL questions and cases to practise on) and the model outline open after a first draft.</li></ul></div></div>`;
-    $$("[data-lesson]", main).forEach(b => b.onclick = () => openLesson(+b.dataset.lesson));
+    $$("[data-lesson]", main).forEach(b => b.onclick = () => openLesson(+b.dataset.lesson)); $$("[data-locked]", main).forEach(b => b.onclick = () => free.lockedModal(b.dataset.locked));
     const eb = $("[data-exportbox]", main), ta = $("#hw-export", main), nm = $("#hw-name", main), st = $("[data-exstatus]", main);
     const refreshExport = () => { LS.set("name", nm.value); ta.value = buildExport(data, nm.value.trim()); };
     $("[data-export]", main).onclick = () => { eb.hidden = !eb.hidden; if (!eb.hidden) { nm.value = LS.get("name") || ""; refreshExport(); ta.focus(); } };
@@ -176,7 +180,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
           <span class="dn" data-dn="${q.id}">${isDone(q.id) ? "✓ Done" : ""}</span></summary>
         <div class="ex-body" data-body="${q.id}"></div>
       </details>`).join("") + `</section>`;
-    $("#bk").onclick = toHub;
+    $("#bk").onclick = toHub; if (MODE.free) main.insertAdjacentHTML("beforeend", free.courseCard("Keep going with the full homework"));
     $$("[data-lv]", main).forEach(b => b.onclick = () => { LS.set("level", b.dataset.lv); view.q = null; draw(); });
     $$("details.ex", main).forEach(d => d.addEventListener("toggle", () => {
       if (d.open) { LS.set("last", d.dataset.q); setRoute(n, d.dataset.q); if (!d.dataset.ready) { d.dataset.ready = 1; fill(d); } }
@@ -200,26 +204,25 @@ export function mountHomework({ data, hdr, main, goHome }) {
       <div class="q" style="white-space:pre-line">${esc(q.story)}</div>
       <div class="mstep"><p><b>Guidelines</b></p><ol>${q.guide.map(g => `<li>${esc(g)}</li>`).join("")}</ol></div>
       <div class="mstep"><label for="nt-${q.id}"><b>Your answer</b></label><textarea id="nt-${q.id}" rows="14" data-note="${q.id}" placeholder="Write your answer here. It is saved in this browser only."></textarea></div>
-      <p class="note" data-lock hidden></p>
+      <div class="rules" data-rules></div>
       <details class="reveal" data-gate="hint"><summary data-sum="hint">Approach hint</summary><p style="white-space:pre-line">${esc(q.hint)}</p>
         <p><b>Practise this step with SQL</b></p><ul>${q.links.map(link).join("")}</ul></details>
       <details class="reveal ans" data-gate="ans"><summary data-sum="ans">Model outline</summary><div class="ansbody"></div></details>`;
     const nt = $(`[data-note="${q.id}"]`, body), names = { hint: "Approach hint", ans: "Model outline" };
     nt.value = LS.get("note:" + q.id) || "";
-    const unlocked = () => isDone(q.id) || LS.get("unlock:" + q.id) === "1" || nt.value.trim().length >= 80;
-    const refreshLocks = () => $$("[data-gate]", body).forEach(g => {
-      const k = g.dataset.gate;
-      $(`[data-sum="${k}"]`, g).textContent = unlocked() ? names[k] : `${names[k]} (opens after a first draft)`;
-      if (unlocked()) $("[data-lock]", body).hidden = true;
-    });
+    const NEED = 80, rules = $("[data-rules]", body);
+    const unlocked = () => isDone(q.id) || nt.value.trim().length >= NEED;   // no unlock button; an older "unlock:" mark is ignored
+    const refreshLocks = () => {
+      const n = Math.min(nt.value.trim().length, NEED), open = unlocked();
+      $$("[data-gate]", body).forEach(g => { const k = g.dataset.gate; $(`[data-sum="${k}"]`, g).textContent = open ? names[k] : `${names[k]} (locked: ${n}/${NEED} characters)`; });
+      rules.classList.toggle("on", open);
+      rules.innerHTML = open
+        ? `<b>Hint and model outline are open.</b> Compare your structure and your reasoning with the outline, not only the conclusion.`
+        : `<b>Rules for the hint and the model outline</b><ol><li>Write your own first draft in the box above, at least ${NEED} characters (a few lines). It can be rough.</li><li>Then open the hint when you are stuck, and the model outline to compare with your draft.</li></ol><span class="prog">Your draft: <b>${n} of ${NEED}</b> characters. Stuck? Send your mentors what you have written and where you got stuck.</span>`;
+    };
     nt.oninput = () => { nt.value ? LS.set("note:" + q.id, nt.value) : LS.del("note:" + q.id); refreshLocks(); };
     $$("[data-gate]", body).forEach(g => g.addEventListener("toggle", () => {
-      if (g.open && !unlocked()) {
-        g.open = false;
-        const m = $("[data-lock]", body); m.hidden = false;
-        m.innerHTML = `Write a first draft first, even a rough one (a few lines). This opens once you have written about 80 characters. <button class="btn" type="button" data-unlock>Unlock anyway</button>`;
-        $("[data-unlock]", m).onclick = () => { LS.set("unlock:" + q.id, "1"); refreshLocks(); m.hidden = true; };
-      }
+      if (g.open && !unlocked()) { g.open = false; rules.classList.remove("flash"); void rules.offsetWidth; rules.classList.add("flash"); rules.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
     }));
     refreshLocks();
     $$("[data-golink]", body).forEach(b => b.onclick = () => { const t = byId(b.dataset.golink); view = { lesson: t.lesson, q: t.id }; draw(); });
@@ -249,33 +252,40 @@ export function mountHomework({ data, hdr, main, goHome }) {
       <p class="note">Uses the ${dsName}. Write your query below, then ${q.check === "auto" ? "press <b>Check my answer</b>" : "press Run and compare with the model answer"}.</p>
       <div class="panelhost"></div>
       ${q.check === "open" ? `<div class="mstep"><label for="nt-${q.id}"><b>Your conclusion</b></label><textarea id="nt-${q.id}" rows="3" data-note="${q.id}" placeholder="What would you tell the business, based on your numbers? One or two sentences."></textarea></div>` : ""}
-      <p class="note" data-lock hidden></p>
       <details class="reveal ans" data-gate="ans"><summary data-sum="ans">Approach and model answer</summary><div class="ansbody"></div></details>`;
+    body.insertBefore(Object.assign(document.createElement("div"), { className: "rules" }), body.children[1] || null);
+    const rules = $(".rules", body);
 
-    // Hint and model answer stay locked until the student has tried a query. "Unlock anyway" is the escape hatch.
-    const att = () => LS.get("att:" + q.id) || "";
-    const unlocked = gate => isDone(q.id) || LS.get("unlock:" + q.id) === "1" ||
-      (gate === "ans" && q.check === "auto" ? att() === "c" : att() !== "");
-    const lockWord = gate => gate === "ans" && q.check === "auto" ? "your first Check" : "your first run";
-    const refreshLocks = () => $$("[data-gate]", body).forEach(g => {
-      const gate = g.dataset.gate, sum = $(`[data-sum="${gate}"]`, g), label = gate === "hint" ? "Hint" : "Approach and model answer";
-      sum.textContent = unlocked(gate) ? label : `${label} (opens after ${lockWord(gate)})`;
-      if (unlocked(gate)) { const m = $("[data-lock]", body); m.hidden = true; }
-    });
-    const showLock = gate => {
-      const m = $("[data-lock]", body);
-      m.hidden = false;
-      m.innerHTML = `Try a query first, even a rough one. This opens after ${lockWord(gate)}. <button class="btn" type="button" data-unlock>Unlock anyway</button>`;
-      $("[data-unlock]", m).onclick = () => { LS.set("unlock:" + q.id, "1"); refreshLocks(); m.hidden = true; };
+    // Hint and model answer stay locked until the student has made TRIES different attempts (a run or a Check with a changed query).
+    // Running the same query again does not count. A failing query still counts, so a question the engine cannot run does not lock anyone out.
+    // There is no unlock button. An older "unlock:" mark from the previous version is ignored.
+    const TRIES = 5;
+    const tries = () => +(LS.get("n:" + q.id) || 0);
+    const unlocked = () => isDone(q.id) || tries() >= TRIES;
+    const refreshLocks = () => {
+      const n = Math.min(tries(), TRIES), open = unlocked();
+      $$("[data-gate]", body).forEach(g => {
+        const gate = g.dataset.gate, sum = $(`[data-sum="${gate}"]`, g), label = gate === "hint" ? "Hint" : "Approach and model answer";
+        sum.textContent = open ? label : `${label} (locked: ${n}/${TRIES} tries)`;
+      });
+      rules.classList.toggle("on", open);
+      rules.innerHTML = open
+        ? `<b>Hint and model answer are open.</b> Compare your logic first (grain, joins, filters, metric), then the syntax.`
+        : `<b>Rules for the hint and the model answer</b><ol><li>Make at least ${TRIES} different tries. A try is a Run or a Check with a changed query. Running the same query again does not count.</li><li>Rough tries are fine, and a query that errors still counts.</li><li>Then open the hint when you are stuck, and the model answer to compare with your own result.</li></ol><span class="prog">Your tries: <b>${n} of ${TRIES}</b>. Still stuck after ${TRIES}? Send your mentors your query and the point where you got stuck.</span>`;
     };
-    $$("[data-gate]", body).forEach(g => g.addEventListener("toggle", () => { if (g.open && !unlocked(g.dataset.gate)) { g.open = false; showLock(g.dataset.gate); } }));
+    const showLock = () => { rules.classList.remove("flash"); void rules.offsetWidth; rules.classList.add("flash"); rules.scrollIntoView({ block: "nearest", behavior: "smooth" }); };
+    $$("[data-gate]", body).forEach(g => g.addEventListener("toggle", () => { if (g.open && !unlocked()) { g.open = false; showLock(); } }));
     refreshLocks();
 
     const panel = mount($(".panelhost", body), {
       profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id,
       onAttempt: (kind, sql) => {
-        if (!clean(sql).trim()) return;   // an untouched template is not an attempt
-        if (kind === "check") LS.set("att:" + q.id, "c"); else if (att() !== "c") LS.set("att:" + q.id, "r");
+        const s = clean(sql).trim();
+        if (!s) return;   // an untouched template is not an attempt
+        const h = hashSql(s);
+        if (LS.get("last:" + q.id) === h) return;   // same query again is not a new try
+        LS.set("last:" + q.id, h);
+        LS.set("n:" + q.id, String(tries() + 1));
         refreshLocks();
       },
       check: q.check === "auto" ? async (out, sql) => {
@@ -308,7 +318,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
       $$("[data-load]", ans).forEach(b => b.onclick = () => panel.setSql(steps[+b.dataset.load].sql));
       $$("[data-runm]", ans).forEach(b => b.onclick = async () => {
         const i = +b.dataset.runm, host = $(`[data-mout="${i}"]`, ans); b.disabled = true; host.textContent = "Running…";
-        try { const out = await engine.run(steps[i].sql, "hw", [q.ds]); host.innerHTML = `<p class="note">${resultMeta(out)}</p>` + resultTable(out, 50); }
+        try { await engine.ready(); const out = await engine.run(steps[i].sql, "hw", [q.ds]); host.innerHTML = `<p class="note">${resultMeta(out)}</p>` + resultTable(out, 50); }
         catch (e) { host.innerHTML = `<p class="reserr">${esc(e.message || e)}</p>`; }
         b.disabled = false;
       });

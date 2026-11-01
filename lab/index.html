@@ -381,6 +381,15 @@ iframe.embed{display:block;width:100%;height:calc(100vh - 150px);min-height:560p
 .whatsnew li div{display:flex;flex-direction:column;gap:2px}
 .whatsnew li div span{font-size:.88rem;color:var(--muted)}
 @media(max-width:620px){.whatsnew li{grid-template-columns:auto 1fr}.whatsnew li div{grid-column:1/-1}.whatsnew li .btn{grid-column:1/-1;justify-self:start}}
+.guidecard .gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:12px}
+.guidecard h3{font-size:1rem;margin:0 0 6px}
+.guidecard ol,.guidecard ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.rules{margin:14px 0;padding:12px 16px;border:1px solid var(--line);border-left:4px solid #7C3AED;border-radius:10px;background:#F5F0FF;font-size:.9rem}
+.rules ol{margin:6px 0 8px;padding-left:20px;display:flex;flex-direction:column;gap:3px}
+.rules .prog{display:block}
+.rules.on{border-left-color:#16a34a;background:#F0FBF4}
+.rules.flash{animation:rflash .9s ease}
+@keyframes rflash{0%,60%{box-shadow:0 0 0 3px #C026D3}100%{box-shadow:0 0 0 0 transparent}}
 
 /* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
    Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
@@ -658,6 +667,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=146a727e5c"></script>
+<script type="module" src="js/app.js?v=33965c5b57"></script>
 
 </body></html>

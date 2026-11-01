@@ -1,4 +1,6 @@
-import { mount as mountSql } from "./sqlpanel.js?v=146a727e5c";
+import { mount as mountSql } from "./sqlpanel.js?v=33965c5b57";
+import { MODE } from "./mode.js?v=33965c5b57";
+import * as free from "./free.js?v=33965c5b57";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -12,7 +14,7 @@ const CH=DATA.challenges, byId=Object.fromEntries(CH.map(c=>[c.id,c]));
 const RANKS={C:'C · Junior',B:'B · Analyst',A:'A · Senior'};
 const STEPS=[['Context','~3 min'],['Approach','~4 min'],['Solve & conclude','~10 min']];
 const STRETCH=new Set(['fuzzy','loyalty']);
-let state={view:LS.get('view')||'hub',step:+(LS.get('step')||1)};
+let state={view:LS.get('view')||'hub',step:+(LS.get('step')||1)};{const m=(location.hash||'').match(/^#cases\/([\w-]+)/);if(m&&byId[m[1]]&&!byId[m[1]].locked)state={view:m[1],step:1};}
 const isDone=id=>LS.get('done:'+id)==='1';
 
 /* ---------- helpers ---------- */
@@ -36,7 +38,7 @@ function hub(){
   $('#hdr').innerHTML=`<div class="eyebrow">Case Studies</div><h1>Case Study Practice Zone</h1>
    <p>Case studies on the class databases, from junior to senior level. Each takes 15 to 30 minutes and has three steps: read the business context, plan your approach, then solve, chart and conclude. Hints, expected SQL and model answers stay closed until you open them. Step 3 has an editor that runs your T-SQL on the real tables.</p>
    <div class="lead usp"><span><b>What this zone trains: analytical thinking.</b> Every case asks you to name the decision, the metric and the trap before you write any SQL, then compares your thinking with ours. SQL is the tool, the judgment is the skill.</span></div>`;
-  const card=c=>`<button class="cc" data-open="${c.id}"><span class="rank ${c.rank}" style="align-self:flex-start">${RANKS[c.rank]}</span><b>${c.title}</b><span class="sk">${c.skills.join(' · ')}</span>
+  const card=c=>c.locked?free.lockedCard(c,RANKS):`<button class="cc" data-open="${c.id}"><span class="rank ${c.rank}" style="align-self:flex-start">${RANKS[c.rank]}</span><b>${c.title}</b><span class="sk">${c.skills.join(' · ')}</span>
        <span class="row"><span class="tm">⏱ ${c.minutes} min</span>${isDone(c.id)?'<span class="dn">✓ Done</span>':''}</span></button>`;
   const dsOrder=Object.keys(DATA.datasets);
   let h='<div class="hub"><div class="legend-r"><b>Rank = difficulty:</b> <span class="rank C">C · Junior</span> one or two tables, one clear metric <span class="rank B">B · Analyst</span> a few tables, a judgment call <span class="rank A">A · Senior</span> a trap in the obvious comparison</div>';
@@ -46,8 +48,8 @@ function hub(){
       h+=`<section><div class="dshead"><h2>${d.name}</h2><span>${d.sub} · database ${d.db}${STRETCH.has(k)?' · read-only here':''}</span></div><div class="cards">`+list.map(card).join('')+`</div></section>`;});
   });
   h+='</div>';
-  $('#main').innerHTML=h;
-  $$('[data-open]').forEach(b=>b.onclick=()=>openCh(b.dataset.open));
+  $('#main').innerHTML=(MODE.free?free.casesBanner(CH):'')+h;
+  $$('[data-open]').forEach(b=>b.onclick=()=>openCh(b.dataset.open));$$('[data-locked]').forEach(b=>b.onclick=()=>free.lockedModal(b.dataset.locked));
 }
 function openCh(id){state={view:id,step:1};LS.set('view',id);LS.set('step',1);draw();window.scrollTo({top:0});}
 function toHub(){state={view:'hub',step:1};LS.set('view','hub');draw();window.scrollTo({top:0});}
@@ -82,7 +84,7 @@ function challenge(c){
     ['done:'+c.id,'n:'+c.id+':f','n:'+c.id+':a','cele:'+c.id+':1','cele:'+c.id+':2','cele:'+c.id+':3'].forEach(k=>LS.del(k));LS.del('chk:'+c.id);draw();};
   after(c);
 }
-let afterFns=[];const after=c=>{afterFns.forEach(f=>f(c));afterFns=[];};
+let afterFns=[];const after=c=>{afterFns.forEach(f=>f(c));afterFns=[];if(MODE.free)free.gateReveals(document);};
 
 /* ---------- 1 context ---------- */
 function context(c){const b=c.brief;
@@ -210,7 +212,7 @@ function whatif(c){const w=c.whatif,extra=w.clicks*0.3;
   $('#cpc').oninput=draw;draw();}
 
 /* ---------- main ---------- */
-function draw(){afterFns=[];if(state.view==='hub'||!byId[state.view])hub();else challenge(byId[state.view]);}
+function draw(){afterFns=[];if(state.view==='hub'||!byId[state.view]||byId[state.view].locked)hub();else challenge(byId[state.view]);}
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const c=byId[state.view];if(c&&state.step===3)drawCharts(c);},150);});
 document.addEventListener('toggle',e=>{const c=byId[state.view];if(c&&state.step===3&&e.target.open)drawCharts(c);},true);
 return {draw};

@@ -1,6 +1,7 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=146a727e5c";
-import { createEditor } from "../vendor/editor.js?v=146a727e5c";
+import * as engine from "./engine.js?v=33965c5b57";
+import { MODE } from "./mode.js?v=33965c5b57";
+import { createEditor } from "../vendor/editor.js?v=33965c5b57";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -74,8 +75,8 @@ export function mount(root, opts) {
     <div class="edwrap"><div class="edstack" id="${id}-ed"></div></div>
     <div class="nextbar" id="${id}-nx"></div>
     <div class="sqlrow">
-      <button class="btn primary" id="${id}-run" disabled>Run</button>
-      ${opts.check ? `<button class="btn" id="${id}-chk" disabled>Check my answer</button>` : ""}
+      <button class="btn primary" id="${id}-run"${MODE.free ? "" : " disabled"}>Run</button>
+      ${opts.check ? `<button class="btn" id="${id}-chk"${MODE.free ? "" : " disabled"}>Check my answer</button>` : ""}
       ${opts.draftKey ? `<button class="btn" id="${id}-rst" type="button">Reset to blank</button>` : ""}
       <span class="verdict" id="${id}-vd" role="status" aria-live="polite"></span>
       <span class="eng" id="${id}-eng"></span>
@@ -113,10 +114,10 @@ export function mount(root, opts) {
 
   const setBusy = b => { runB.disabled = b || !engine.getStatus().ready; if (chkB) chkB.disabled = runB.disabled; };
   const unsub = engine.onStatus(s => {
-    $("eng").textContent = s.phase === "ready" ? "" : s.phase === "error" ? s.message : `Loading the SQL engine… ${s.pct || 0}%. About 10 seconds the first time.`;
+    $("eng").textContent = MODE.free && s.phase === "idle" ? "The SQL engine (about 40 MB) loads the first time you press Run." : s.phase === "ready" ? "" : s.phase === "error" ? s.message : `Loading the SQL engine… ${s.pct || 0}%. About 10 seconds the first time.`;
     if (s.ready) { runB.disabled = false; if (chkB) chkB.disabled = false; }
   });
-  engine.ready().then(async () => {
+  let startLazy = null; (MODE.free ? new Promise(res => { startLazy = res; }) : engine.ready()).then(async () => {
     try {
       await engine.use(opts.profile, opts.datasets);
       const ts = engine.tablesFor(opts.profile, opts.datasets);
@@ -130,7 +131,7 @@ export function mount(root, opts) {
     if (opts.onAttempt) opts.onAttempt(check && opts.check ? "check" : "run", ed.value);
     setBusy(true);
     try {
-      const out = await engine.run(ed.value, opts.profile, opts.datasets);
+      if (MODE.free) { await engine.ready(); if (startLazy) { startLazy(); startLazy = null; } } const out = await engine.run(ed.value, opts.profile, opts.datasets);
       $("duck").textContent = out.duck;
       $("grid").innerHTML = resultTable(out);
       $("meta").textContent = resultMeta(out);

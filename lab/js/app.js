@@ -1,9 +1,11 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=146a727e5c";
-import { mountHomework } from "./homework.js?v=146a727e5c";
-import { mountCases } from "./cases.js?v=146a727e5c";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=146a727e5c";
-import * as sync from "./sync.js?v=146a727e5c";
+import * as engine from "./engine.js?v=33965c5b57";
+import { mountHomework } from "./homework.js?v=33965c5b57";
+import { mountCases } from "./cases.js?v=33965c5b57";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=33965c5b57";
+import * as sync from "./sync.js?v=33965c5b57";
+import { MODE } from "./mode.js?v=33965c5b57";
+import * as free from "./free.js?v=33965c5b57";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -32,22 +34,22 @@ const json = async url => { const r = await fetch(url); if (!r.ok) throw new Err
 let hwData = null, casesApp = null, current = null;
 
 // Pull the signed-in login's saved progress into this browser before anything draws. Does nothing without a login.
-await sync.init();
+if (!MODE.free) await sync.init();
 
 // ---- engine status pill ----------------------------------------------------------------------------
 engine.onStatus(s => {
   const el = $("#eng"); if (!el) return;
   el.dataset.phase = s.phase;
-  el.textContent = s.phase === "ready" ? "SQL ready" : s.phase === "error" ? "SQL engine error" : `Loading the SQL engine… ${s.pct || 0}%`;
+  el.textContent = MODE.free && s.phase === "idle" ? "SQL loads on first Run" : s.phase === "ready" ? "SQL ready" : s.phase === "error" ? "SQL engine error" : `Loading the SQL engine… ${s.pct || 0}%`;
   el.title = s.message || "";
 });
 // Start the engine as soon as the page opens, then pull the ADW and CRM tables in the background.
-engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { });
+if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { });
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=146a727e5c");
-  const cs = await json("data/challenges.json?v=146a727e5c");
+  hwData ??= await json("data/homework.json?v=33965c5b57");
+  const cs = await json("data/challenges.json?v=33965c5b57"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
@@ -57,7 +59,7 @@ async function home() {
       <li><b>Real-life case studies</b><span>Requests that come from real companies, solved from brief to recommendation.</span></li>
       <li><b>Analytical mindset</b><span>Plan the approach and the metrics first. Syntax comes second.</span></li>
       <li><b>Practical, hands-on</b><span>Run T-SQL in the browser on the same tables used in class.</span></li>
-      <li><b>Try first, then compare</b><span>Hints along the way. The model answer opens after your attempt.</span></li></ul>`;
+      <li><b>Try first, then compare</b><span>Hints along the way. Hints and model answers open after 5 different tries.</span></li></ul>`;
   const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>What's new</small> Latest from the course</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(n.tag)}</span><div><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">Open</button>` : ""}</li>`).join("")}</ul></section>` : "";
   main.innerHTML = `<div class="hub">${newsHtml}<div class="cards homecards">
       <button class="cc big" data-go="guides"><span class="tag">SQL, BI and analytics</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
@@ -70,6 +72,25 @@ async function home() {
         <span class="row"><span class="tm">ADW, CRM, GBE and more</span></span></button>
       <button class="cc big" data-go="playground"><span class="tag g">Free practice</span><b>Playground</b><span class="sk">An open editor on the AdventureWorks, CRM and Global Electronics tables.</span>
         <span class="row"><span class="tm">No exercise attached</span></span></button></div>
+    <section class="card guidecard"><h2><small>Learning guidelines</small> How to learn with the Lab</h2>
+      <p class="note">The Lab lets you open hints and model answers while you practise. These guidelines show how to use them so the practice builds your own skill.</p>
+      <div class="gl">
+        <div><h3>1. How to practise a question</h3><ol>
+          <li>Read the question and write your approach first, on paper or as a comment in the editor: which tables, what one row means (the grain), which metric. Two or three minutes is enough.</li>
+          <li>Write your query and run it. A rough first version is fine.</li>
+          <li>Look at your result before you read any feedback. Check the row count, the columns and a few numbers against what the question asks. If something looks off, try to find out why before you open anything.</li>
+          <li>Press Check my answer (or compare with the expected output on open questions). Keep trying and changing your query: the hint and the model answer open after 5 different tries.</li></ol></div>
+        <div><h3>2. When to open hints and model answers</h3><ul>
+          <li><b>Hints:</b> open one when you have been stuck on the same problem for a while. Go back to your query after each hint and open the next one only if you are still stuck. In the Case Studies, hints come in order: a nudge first, then how to break the problem down, then what usually goes wrong.</li>
+          <li><b>Model answers:</b> open them after you have a result of your own, correct or not. For case studies and written tasks, write your own conclusion first, then compare.</li>
+          <li><b>The 5-try rule:</b> on homework, the hint and the model answer open after 5 different tries (a Run or a Check with a changed query). A query that errors still counts. On written tasks, write a first draft of about 80 characters first.</li>
+          <li><b>Still stuck after that?</b> Send your mentors your query and the point where you got stuck. That message teaches you more than the answer alone.</li></ul></div>
+        <div><h3>3. How to use a model answer</h3><ul>
+          <li>Compare the logic before the syntax: the grain, the joins, the filters and how the metric is defined.</li>
+          <li>If your result matched but your SQL looks different, ask which version a colleague would find easier to read, and which one still works with ten times the data.</li>
+          <li>If your result did not match, find the first line where your logic and the model answer split. Fix your own query from that line and run it again.</li>
+          <li>The next day, close the answer and rewrite the query from memory. Write one line on what you would do differently next time.</li></ul></div>
+      </div></section>
     <div class="card"><h2><small>Good to know</small></h2><ul>
       <li>Queries run in your browser. Nothing you type is sent anywhere.</li>
       <li>Table names match the class SQL Server database (<code>ADW_</code>, <code>CRM_</code>, <code>GBE_</code>), so a query written here pastes into SQL Server unchanged.</li>
@@ -78,12 +99,12 @@ async function home() {
 }
 
 async function homework() {
-  hwData ??= await json("data/homework.json?v=146a727e5c");
+  hwData ??= await json("data/homework.json?v=33965c5b57");
   mountHomework({ data: hwData, hdr, main });
 }
 
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=146a727e5c"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=33965c5b57"));
   casesApp.draw();
 }
 
@@ -111,13 +132,13 @@ async function pageFrame(file, title) {
 
 async function guides() {
   hdr.innerHTML = "";
-  let cur = store.get("guide"); if (!GUIDES.includes(cur)) cur = GUIDES[0];
-  main.innerHTML = `<div class="embedbar" role="group" aria-label="Study guide"><span class="lbl">Guide</span>${GUIDES.map(k => `<button class="chip" data-g="${k}" aria-pressed="false" title="${esc(GUIDE_NAMES[k].full)}">${esc(GUIDE_NAMES[k].short)}</button>`).join("")}</div><div id="gframe"></div>`;
+  let cur = store.get("guide"); if (!GUIDES.includes(cur) || (MODE.free && !free.GUIDES_OPEN.includes(cur))) cur = GUIDES[0];
+  main.innerHTML = `<div class="embedbar" role="group" aria-label="Study guide"><span class="lbl">Guide</span>${GUIDES.map(k => `<button class="chip" data-g="${k}" aria-pressed="false" title="${esc(GUIDE_NAMES[k].full)}">${MODE.free && !free.GUIDES_OPEN.includes(k) ? "🔒 " : ""}${esc(GUIDE_NAMES[k].short)}</button>`).join("")}</div><div id="gframe"></div>`;
   const show = async k => {
     cur = k; store.set("guide", k);
     $$("[data-g]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.g === k));
     const host = $("#gframe", main); host.innerHTML = "";
-    host.append(await pageFrame(`guides/${k}.html`, `${GUIDE_NAMES[k].full} study guide`));
+    if (MODE.free && !free.GUIDES_OPEN.includes(k)) { host.innerHTML = free.lockedPanel(GUIDE_NAMES[k].full + " study guide"); return; } host.append(await pageFrame(`guides/${k}.html`, `${GUIDE_NAMES[k].full} study guide`));
   };
   $$("[data-g]", main).forEach(b => b.onclick = () => show(b.dataset.g));
   await show(cur);
