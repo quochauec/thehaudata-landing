@@ -572,6 +572,230 @@
     "Currency": "VARCHAR",
     "Exchange": "DOUBLE"
    }
+  },
+  {
+   "name": "SQLTest_Facebook_Events",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Facebook_Events.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Facebook_Events\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'event_id': 'BIGINT', 'event_type': 'VARCHAR', 'event_date': 'TIMESTAMP', 'month': 'BIGINT'})",
+   "cols_hw": {
+    "user_id": "BIGINT",
+    "event_id": "BIGINT",
+    "event_type": "VARCHAR",
+    "event_date": "TIMESTAMP",
+    "month": "BIGINT"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Facebook_Events\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'event_id': 'BIGINT', 'event_type': 'VARCHAR', 'event_date': 'TIMESTAMP', 'month': 'BIGINT'})",
+   "cols_cs": {
+    "user_id": "BIGINT",
+    "event_id": "BIGINT",
+    "event_type": "VARCHAR",
+    "event_date": "TIMESTAMP",
+    "month": "BIGINT"
+   }
+  },
+  {
+   "name": "SQLTest_Facebook_Advertisers",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Facebook_Advertisers.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Facebook_Advertisers\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'VARCHAR', 'status': 'VARCHAR'})",
+   "cols_hw": {
+    "user_id": "VARCHAR",
+    "status": "VARCHAR"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Facebook_Advertisers\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'VARCHAR', 'status': 'VARCHAR'})",
+   "cols_cs": {
+    "user_id": "VARCHAR",
+    "status": "VARCHAR"
+   }
+  },
+  {
+   "name": "SQLTest_Facebook_Daily_Pay",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Facebook_Daily_Pay.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Facebook_Daily_Pay\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'VARCHAR', 'paid': 'BIGINT', 'status': 'VARCHAR'})",
+   "cols_hw": {
+    "user_id": "VARCHAR",
+    "paid": "BIGINT",
+    "status": "VARCHAR"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Facebook_Daily_Pay\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'VARCHAR', 'paid': 'BIGINT', 'status': 'VARCHAR'})",
+   "cols_cs": {
+    "user_id": "VARCHAR",
+    "paid": "BIGINT",
+    "status": "VARCHAR"
+   }
+  },
+  {
+   "name": "SQLTest_Google_Users_search",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Google_Users_search.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Google_Users_search\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'searches': 'BIGINT', 'num_users': 'BIGINT'})",
+   "cols_hw": {
+    "searches": "BIGINT",
+    "num_users": "BIGINT"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Google_Users_search\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'searches': 'BIGINT', 'num_users': 'BIGINT'})",
+   "cols_cs": {
+    "searches": "BIGINT",
+    "num_users": "BIGINT"
+   }
+  },
+  {
+   "name": "SQLTest_MCKinsey_Pizza_Topping",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_MCKinsey_Pizza_Topping.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_MCKinsey_Pizza_Topping\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'ingredient_cost': 'DOUBLE', 'topping_name': 'VARCHAR', 'id1': 'VARCHAR', 'id2': 'BIGINT'})",
+   "cols_hw": {
+    "ingredient_cost": "DOUBLE",
+    "topping_name": "VARCHAR",
+    "id1": "VARCHAR",
+    "id2": "BIGINT"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_MCKinsey_Pizza_Topping\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'ingredient_cost': 'DOUBLE', 'topping_name': 'VARCHAR', 'id1': 'VARCHAR', 'id2': 'BIGINT'})",
+   "cols_cs": {
+    "ingredient_cost": "DOUBLE",
+    "topping_name": "VARCHAR",
+    "id1": "VARCHAR",
+    "id2": "BIGINT"
+   }
+  },
+  {
+   "name": "SQLTest_Wayfair_Transactions",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Wayfair_Transactions.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Wayfair_Transactions\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'transaction_id': 'BIGINT', 'product_id': 'BIGINT', 'spend': 'DOUBLE', 'transaction_date': 'TIMESTAMP'})",
+   "cols_hw": {
+    "transaction_id": "BIGINT",
+    "product_id": "BIGINT",
+    "spend": "DOUBLE",
+    "transaction_date": "TIMESTAMP"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Wayfair_Transactions\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'transaction_id': 'BIGINT', 'product_id': 'BIGINT', 'spend': 'DOUBLE', 'transaction_date': 'TIMESTAMP'})",
+   "cols_cs": {
+    "transaction_id": "BIGINT",
+    "product_id": "BIGINT",
+    "spend": "DOUBLE",
+    "transaction_date": "TIMESTAMP"
+   }
+  },
+  {
+   "name": "SQLTest_Amazon_Transaction",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Amazon_Transaction.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Amazon_Transaction\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'category': 'VARCHAR', 'product': 'VARCHAR', 'user_id': 'BIGINT', 'spend': 'DOUBLE', 'transaction_date': 'TIMESTAMP', 'rank': 'VARCHAR'})",
+   "cols_hw": {
+    "category": "VARCHAR",
+    "product": "VARCHAR",
+    "user_id": "BIGINT",
+    "spend": "DOUBLE",
+    "transaction_date": "TIMESTAMP",
+    "rank": "VARCHAR"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Amazon_Transaction\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'category': 'VARCHAR', 'product': 'VARCHAR', 'user_id': 'BIGINT', 'spend': 'DOUBLE', 'transaction_date': 'TIMESTAMP', 'rank': 'VARCHAR'})",
+   "cols_cs": {
+    "category": "VARCHAR",
+    "product": "VARCHAR",
+    "user_id": "BIGINT",
+    "spend": "DOUBLE",
+    "transaction_date": "TIMESTAMP",
+    "rank": "VARCHAR"
+   }
+  },
+  {
+   "name": "SQLTest_FAANG_Employee",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_FAANG_Employee.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_FAANG_Employee\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'employee_id': 'BIGINT', 'name': 'VARCHAR', 'salary': 'BIGINT', 'department_id': 'BIGINT', 'manager_id': 'BIGINT'})",
+   "cols_hw": {
+    "employee_id": "BIGINT",
+    "name": "VARCHAR",
+    "salary": "BIGINT",
+    "department_id": "BIGINT",
+    "manager_id": "BIGINT"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_FAANG_Employee\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'employee_id': 'BIGINT', 'name': 'VARCHAR', 'salary': 'BIGINT', 'department_id': 'BIGINT', 'manager_id': 'BIGINT'})",
+   "cols_cs": {
+    "employee_id": "BIGINT",
+    "name": "VARCHAR",
+    "salary": "BIGINT",
+    "department_id": "BIGINT",
+    "manager_id": "BIGINT"
+   }
+  },
+  {
+   "name": "SQLTest_Snapchat_Activities",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Snapchat_Activities.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Snapchat_Activities\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'activity_id': 'BIGINT', 'user_id': 'BIGINT', 'activity_type': 'VARCHAR', 'time_spent': 'DOUBLE', 'activity_date': 'DATE', 'send_perc': 'VARCHAR', 'open_perc': 'VARCHAR'})",
+   "cols_hw": {
+    "activity_id": "BIGINT",
+    "user_id": "BIGINT",
+    "activity_type": "VARCHAR",
+    "time_spent": "DOUBLE",
+    "activity_date": "DATE",
+    "send_perc": "VARCHAR",
+    "open_perc": "VARCHAR"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Snapchat_Activities\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'activity_id': 'BIGINT', 'user_id': 'BIGINT', 'activity_type': 'VARCHAR', 'time_spent': 'DOUBLE', 'activity_date': 'DATE', 'send_perc': 'VARCHAR', 'open_perc': 'VARCHAR'})",
+   "cols_cs": {
+    "activity_id": "BIGINT",
+    "user_id": "BIGINT",
+    "activity_type": "VARCHAR",
+    "time_spent": "DOUBLE",
+    "activity_date": "DATE",
+    "send_perc": "VARCHAR",
+    "open_perc": "VARCHAR"
+   }
+  },
+  {
+   "name": "SQLTest_Snapchat_Age_Group",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Snapchat_Age_Group.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Snapchat_Age_Group\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'age_bucket': 'VARCHAR'})",
+   "cols_hw": {
+    "user_id": "BIGINT",
+    "age_bucket": "VARCHAR"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Snapchat_Age_Group\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'age_bucket': 'VARCHAR'})",
+   "cols_cs": {
+    "user_id": "BIGINT",
+    "age_bucket": "VARCHAR"
+   }
+  },
+  {
+   "name": "SQLTest_Twitter_Tweet_events",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Twitter_Tweet_events.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Twitter_Tweet_events\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'tweet_date': 'DATE', 'tweet_count': 'BIGINT'})",
+   "cols_hw": {
+    "user_id": "BIGINT",
+    "tweet_date": "DATE",
+    "tweet_count": "BIGINT"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Twitter_Tweet_events\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'tweet_date': 'DATE', 'tweet_count': 'BIGINT'})",
+   "cols_cs": {
+    "user_id": "BIGINT",
+    "tweet_date": "DATE",
+    "tweet_count": "BIGINT"
+   }
+  },
+  {
+   "name": "SQLTest_Uber_transactions",
+   "ds": "bt",
+   "file": "data/bt/SQLTest_Uber_transactions.csv",
+   "hw": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Uber_transactions\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'spend': 'DOUBLE', 'transaction_date': 'DATE'})",
+   "cols_hw": {
+    "user_id": "BIGINT",
+    "spend": "DOUBLE",
+    "transaction_date": "DATE"
+   },
+   "cs": "CREATE OR REPLACE TABLE {S}.\"SQLTest_Uber_transactions\" AS SELECT * FROM read_csv('{F}', header=true, nullstr=['NULL',''], columns={'user_id': 'BIGINT', 'spend': 'DOUBLE', 'transaction_date': 'DATE'})",
+   "cols_cs": {
+    "user_id": "BIGINT",
+    "spend": "DOUBLE",
+    "transaction_date": "DATE"
+   }
   }
  ]
 }

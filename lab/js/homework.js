@@ -1,9 +1,9 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=33965c5b57";
-import { MODE } from "./mode.js?v=33965c5b57";
-import * as free from "./free.js?v=33965c5b57";
-import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=33965c5b57";
+import * as engine from "./engine.js?v=0015d894c1";
+import { MODE } from "./mode.js?v=0015d894c1";
+import * as free from "./free.js?v=0015d894c1";
+import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=0015d894c1";
 
 
 const LS = {
@@ -25,7 +25,7 @@ const LEVEL_NAME = { easy: "Easy", mid: "Medium", hard: "Hard" };
 // ---- export: a plain-text summary a student can paste into the homework channel ----
 function buildExport(data, name) {
   const all = data.questions, done = all.filter(q => isDone(q.id)).length, out = [];
-  out.push("TheHauData Lab - Homework export", `Name: ${name || "(not given)"}`, `Date: ${new Date().toISOString().slice(0, 10)}`, `Progress: ${done}/${all.length} questions done`, "");
+  out.push(`TheHauData Lab - ${data.interview ? "Interview Prep" : "Homework"} export`, `Name: ${name || "(not given)"}`, `Date: ${new Date().toISOString().slice(0, 10)}`, `Progress: ${done}/${all.length} questions done`, "");
   for (const n of Object.keys(data.lessons).map(Number)) {
     const rows = [];
     all.filter(q => q.lesson === n).forEach((q, i) => {
@@ -85,16 +85,17 @@ function diagnose(a, b, sSql, mf) {
 }
 
 // Deep links: #homework, #homework/<lesson slug>, #homework/<lesson slug>/<question id>. A lesson number still works in old links.
+let ZONE = "homework";   // "interview" when mounted as the Interview Prep zone (same code, lessons 20 and up)
 const parseRoute = () => {
   const p = (location.hash || "").replace("#", "").split("/");
-  if (p[0] !== "homework") return { lesson: null, q: null };
+  if (p[0] !== ZONE) return { lesson: null, q: null };
   let q = null; try { q = p[2] ? decodeURIComponent(p[2]) : null; } catch (e) { }
   const k = p[1] ? decodeURIComponent(p[1]) : "";
   const hit = Object.keys(LESSONS).find(n => LESSONS[n].slug === k);
   return { lesson: hit ? +hit : (+k || null), q };
 };
 const setRoute = (...parts) => {
-  const h = ["homework", ...parts.map((x, i) => i === 0 ? lessonSlug(x) : x)].map(encodeURIComponent).join("/");
+  const h = [ZONE, ...parts.map((x, i) => i === 0 ? lessonSlug(x) : x)].map(encodeURIComponent).join("/");
   try { history.replaceState(null, "", "#" + h); } catch (e) { }
 };
 
@@ -107,8 +108,10 @@ async function fetchAnswer(id) { if (MODE.free) return free.fetchAnswer(id);
   return r.json();
 }
 
-export function mountHomework({ data, hdr, main, goHome }) {
-  LESSONS = data.lessons;
+export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
+  ZONE = zone; LESSONS = data.lessons;
+  const ivNote = q => q.co || q.mins ? `<p class="ivnote">${q.co ? `Style of a <b>${esc(q.co)}</b> test` : ""}${q.co && q.mins ? " · " : ""}${q.mins ? `target time about ${q.mins} min` : ""}</p>` : "";
+  const IV = zone === "interview", LASTK = IV ? "ilast" : "last";
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const byLesson = n => data.questions.filter(q => q.lesson === n);
   const r0 = parseRoute(), q0 = r0.q && data.questions.find(x => x.id === r0.q && !x.locked);
@@ -118,7 +121,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
   function hub() {
     setRoute();
     const all = data.questions.filter(q => !MODE.free || !q.locked), doneAll = all.filter(q => isDone(q.id)).length, pct = all.length ? Math.round(100 * doneAll / all.length) : 0;
-    const last = all.find(q => q.id === LS.get("last"));
+    const last = all.find(q => q.id === LS.get(LASTK));
     const resume = last && !isDone(last.id) ? last : (doneAll ? all.find(q => !isDone(q.id)) : null);
     const prog = `<div class="card"><h2><small>Your progress</small></h2>
         <p><b>${doneAll} of ${all.length}</b> questions done (${pct}%). Progress is saved in this browser only.</p>
@@ -129,14 +132,17 @@ export function mountHomework({ data, hdr, main, goHome }) {
           <label for="hw-export"><b>Summary to send to your mentor</b></label><textarea id="hw-export" rows="12" readonly style="font-family:var(--mono);font-size:12.5px"></textarea>
           <div class="row2"><button class="btn primary" data-copy>Copy to clipboard</button><button class="btn" data-download>Download .txt</button><span class="note" data-exstatus role="status"></span></div>
           <p class="note">Your SQL and notes are read from this browser. Nothing is sent anywhere until you paste or send the file yourself.</p></div></div>`;
-    hdr.innerHTML = `<div class="eyebrow">Homework</div><h1>Homework, by topic</h1>
+    hdr.innerHTML = IV
+      ? `<div class="eyebrow">Interview Prep</div><h1>Interview Prep: mock rounds and Big Tech SQL</h1>
+      <p>Questions in the style of real analyst tests. Rounds 1 to 3 run on the class tables. Big Tech SQL is a set of 13 classic big-tech SQL screens on small tables of their own. Each question shows the target time an interviewer would expect and the company whose test inspired the style. Work a round in one sitting: a SQL screen, a metrics and ops round, a take-home case, then the Big Tech set. Hints and model answers follow the same rules as Homework.</p>`
+      : `<div class="eyebrow">Homework</div><h1>Homework, by topic</h1>
       <p>The business questions from the course, on the same tables as the class database. Write T-SQL, run it, and check your answer. Some topics also have written analytics tasks: no SQL, you write the answer, then compare it with a model outline. Hints and model answers stay closed until you open them.</p>`;
     const cards = Object.entries(data.lessons).map(([n, l]) => {
       const qs = byLesson(+n), done = qs.filter(q => isDone(q.id)).length; if (MODE.free && qs.length && qs.every(q => q.locked)) return free.lockedLesson(n, l, qs.length);
       return `<button class="cc" data-lesson="${n}"><span class="tag">${esc(l.label !== l.title ? l.label : l.ds)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>
         <span class="row"><span class="tm">${qs.length} questions · ${esc(l.ds)}</span>${done ? `<span class="dn">${done}/${qs.length} done</span>` : ""}</span></button>`;
     }).join("");
-    main.innerHTML = `<div class="hub">${prog}<section><div class="dshead"><h2>Pick a topic</h2><span>Each question names the tables it needs. Table names match SQL Server, so queries paste in unchanged.</span></div><div class="cards">${cards}</div></section>
+    main.innerHTML = `<div class="hub">${prog}<section><div class="dshead"><h2>${IV ? "Pick a round" : "Pick a topic"}</h2><span>Each question names the tables it needs. Table names match SQL Server, so queries paste in unchanged.</span></div><div class="cards">${cards}</div></section>
       <div class="card"><h2><small>How answers are checked</small></h2><ul>
         <li><b>Auto-check:</b> the page compares the rows you return with the model output. Column order, column names and extra columns do not matter.</li>
         <li><b>Compare:</b> when the answer depends on how you define a metric, open the model answer and compare your logic and numbers.</li>
@@ -170,12 +176,12 @@ export function mountHomework({ data, hdr, main, goHome }) {
     if (target && lv !== "all" && levelKey(target.level) !== lv) lv = "all";   // a deep link must not land on a hidden question
     const levels = ["easy", "mid", "hard"].filter(k => all.some(q => levelKey(q.level) === k));
     const shown = all.map((q, i) => ({ q, i })).filter(({ q }) => lv === "all" || levelKey(q.level) === lv);
-    hdr.innerHTML = `<button class="back" id="bk">← All topics</button><div class="eyebrow" style="margin-top:6px">${esc(l.label)} · ${esc(l.ds)}</div><h1>${esc(l.title)}</h1><p>${esc(l.sub)}</p>`;
+    hdr.innerHTML = `<button class="back" id="bk">${IV ? "← All rounds" : "← All topics"}</button><div class="eyebrow" style="margin-top:6px">${esc(l.label)} · ${esc(l.ds)}</div><h1>${esc(l.title)}</h1><p>${esc(l.sub)}</p>`;
     const bar = levels.length > 1 ? `<div class="pgbar" role="group" aria-label="Filter by level">` +
       [["all", "All"], ...levels.map(k => [k, LEVEL_NAME[k]])].map(([k, nm]) => `<button class="chip" data-lv="${k}" aria-pressed="${k === lv}">${nm}${k === "all" ? ` (${all.length})` : ` (${all.filter(q => levelKey(q.level) === k).length})`}</button>`).join("") + `</div>` : "";
     main.innerHTML = `<section class="stack" style="padding-top:20px">` + bar + (shown.length ? "" : `<p class="note">No questions at this level.</p>`) + shown.map(({ q, i }) => `
       <details class="ex" data-q="${q.id}">
-        <summary><span class="tag ${LEVEL_TAG(q.level)}">${esc(q.level)}</span><span class="ex-title">${i + 1}. ${esc(q.title)}</span>
+        <summary><span class="tag ${LEVEL_TAG(q.level)}">${esc(q.level)}</span><span class="ex-title">${i + 1}. ${esc(q.title)}</span>${q.mins ? `<span class="tag">~${q.mins} min</span>` : ""}
           <span class="tag ${q.check === "auto" ? "g" : q.check === "write" ? "" : "o"}">${q.check === "auto" ? "Auto-check" : q.check === "write" ? "Write-up" : "Compare"}</span>
           <span class="dn" data-dn="${q.id}">${isDone(q.id) ? "✓ Done" : ""}</span></summary>
         <div class="ex-body" data-body="${q.id}"></div>
@@ -183,7 +189,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
     $("#bk").onclick = toHub; if (MODE.free) main.insertAdjacentHTML("beforeend", free.courseCard("Keep going with the full homework"));
     $$("[data-lv]", main).forEach(b => b.onclick = () => { LS.set("level", b.dataset.lv); view.q = null; draw(); });
     $$("details.ex", main).forEach(d => d.addEventListener("toggle", () => {
-      if (d.open) { LS.set("last", d.dataset.q); setRoute(n, d.dataset.q); if (!d.dataset.ready) { d.dataset.ready = 1; fill(d); } }
+      if (d.open) { LS.set(LASTK, d.dataset.q); setRoute(n, d.dataset.q); if (!d.dataset.ready) { d.dataset.ready = 1; fill(d); } }
       else if (!$$("details.ex[open]", main).length) setRoute(n);
     }));
     if (target) {
@@ -201,7 +207,7 @@ export function mountHomework({ data, hdr, main, goHome }) {
       ? `<li><button class="btn" type="button" data-golink="${esc(l.hw)}">${esc(byId(l.hw).title)}</button> <span class="note">${esc(l.why)}</span></li>`
       : l.case ? `<li><b>Case Studies:</b> ${esc(l.case)} <span class="note">${esc(l.why)}</span></li>` : "";
     body.innerHTML = `
-      <div class="q" style="white-space:pre-line">${esc(q.story)}</div>
+      ${ivNote(q)}<div class="q" style="white-space:pre-line">${esc(q.story)}</div>
       <div class="mstep"><p><b>Guidelines</b></p><ol>${q.guide.map(g => `<li>${esc(g)}</li>`).join("")}</ol></div>
       <div class="mstep"><label for="nt-${q.id}"><b>Your answer</b></label><textarea id="nt-${q.id}" rows="14" data-note="${q.id}" placeholder="Write your answer here. It is saved in this browser only."></textarea></div>
       <div class="rules" data-rules></div>
@@ -245,9 +251,9 @@ export function mountHomework({ data, hdr, main, goHome }) {
   function fill(d) {
     const q = data.questions.find(x => x.id === d.dataset.q), body = $(`[data-body="${q.id}"]`, d);
     if (q.check === "write") return fillWrite(q, body);
-    const dsName = { adw: "ADW_ tables", crm: "CRM_ tables", gbe: "GBE_ tables" }[q.ds] || (String(q.ds).toUpperCase() + "_ tables");
+    const dsName = { adw: "ADW_ tables", crm: "CRM_ tables", gbe: "GBE_ tables", bt: "SQLTest_ tables" }[q.ds] || (String(q.ds).toUpperCase() + "_ tables");
     body.innerHTML = `
-      <div class="q" style="white-space:pre-line">${esc(q.story)}</div>
+      ${ivNote(q)}<div class="q" style="white-space:pre-line">${esc(q.story)}</div>
       ${q.hint ? `<details class="reveal" data-gate="hint"><summary data-sum="hint">Hint</summary><p style="white-space:pre-line">${esc(q.hint)}</p></details>` : ""}
       <p class="note">Uses the ${dsName}. Write your query below, then ${q.check === "auto" ? "press <b>Check my answer</b>" : "press Run and compare with the model answer"}.</p>
       <div class="panelhost"></div>

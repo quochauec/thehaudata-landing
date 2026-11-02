@@ -1,6 +1,13 @@
 {
- "_note": "Newest first. tag: Case study | Lesson | Homework | Update. go: guides, homework, cases, dictionary, playground (optional). The Home page shows the first 4.",
+ "_note": "Newest first. tag: Case study | Lesson | Homework | Update. go: guides, homework, interview, cases, dictionary, playground (optional). The Home page shows the first 4.",
  "items": [
+  {
+   "date": "2026-11-01",
+   "tag": "Update",
+   "title": "Interview Prep: three mock rounds",
+   "text": "18 questions in the style of real analyst tests: a SQL screen, a metrics and ops round and a take-home case, each with a target time. Hints and model answers now open after 5 different tries, and every question shows the rules.",
+   "go": "interview"
+  },
   {
    "date": "2026-10-29",
    "tag": "Case study",

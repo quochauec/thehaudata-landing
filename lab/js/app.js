@@ -1,15 +1,16 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=33965c5b57";
-import { mountHomework } from "./homework.js?v=33965c5b57";
-import { mountCases } from "./cases.js?v=33965c5b57";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=33965c5b57";
-import * as sync from "./sync.js?v=33965c5b57";
-import { MODE } from "./mode.js?v=33965c5b57";
-import * as free from "./free.js?v=33965c5b57";
+import * as engine from "./engine.js?v=0015d894c1";
+import { mountHomework } from "./homework.js?v=0015d894c1";
+import { mountCases } from "./cases.js?v=0015d894c1";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=0015d894c1";
+import * as sync from "./sync.js?v=0015d894c1";
+import { MODE } from "./mode.js?v=0015d894c1";
+import * as free from "./free.js?v=0015d894c1";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
-const ZONES = ["home", "guides", "homework", "cases", "dictionary", "playground", "setup"];
+const ZONES = ["home", "guides", "homework", "interview", "cases", "dictionary", "playground", "setup"];
+const IV_FROM = 20;   // lessons 20 and up live in the Interview Prep zone, not in Homework
 // Guides are shown by lesson name; the file key (L02 ...) stays internal. `full` is the lesson title, `short` fits a chip.
 const GUIDE_NAMES = {
   L02: { full: "Get into SQL", short: "SQL Basics" }, L03: { full: "Combining Data", short: "Joins and Union" },
@@ -48,9 +49,11 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=33965c5b57");
-  const cs = await json("data/challenges.json?v=33965c5b57"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
-  const done = hwData.questions.filter(q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } }).length;
+  hwData ??= await json("data/homework.json?v=0015d894c1");
+  const cs = await json("data/challenges.json?v=0015d894c1"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
+  const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
+  const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
   hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Think like an analyst. <span class="gt">Solve real business cases</span> with a data-driven mindset and the right tech stack.</h1>
@@ -64,8 +67,10 @@ async function home() {
   main.innerHTML = `<div class="hub">${newsHtml}<div class="cards homecards">
       <button class="cc big" data-go="guides"><span class="tag">SQL, BI and analytics</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
         <span class="row"><span class="tm">${GUIDES.length} guides</span></span></button>
-      <button class="cc big" data-go="homework"><span class="tag">SQL topics</span><b>Homework</b><span class="sk">${hwData.questions.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
-        <span class="row"><span class="tm">${hwData.questions.filter(q => q.check === "auto").length} with auto-check</span>${done ? `<span class="dn">${done}/${hwData.questions.length} done</span>` : ""}</span></button>
+      <button class="cc big" data-go="homework"><span class="tag">SQL topics</span><b>Homework</b><span class="sk">${hwq.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
+        <span class="row"><span class="tm">${hwq.filter(q => q.check === "auto").length} with auto-check</span>${done ? `<span class="dn">${done}/${hwq.length} done</span>` : ""}</span></button>
+      <button class="cc big" data-go="interview"><span class="tag o">3 rounds + Big Tech SQL</span><b>Interview Prep</b><span class="sk">${ivq.length} questions in the style of real analyst tests: a SQL screen, a metrics and ops round, a take-home case and 13 big-tech SQL questions, each with a target time.</span>
+        <span class="row"><span class="tm">About 4 hours in total</span>${ivDone ? `<span class="dn">${ivDone}/${ivq.length} done</span>` : ""}</span></button>
       <button class="cc big" data-go="cases"><span class="tag o">3 steps each</span><b>Case Studies</b><span class="sk">${cs.challenges.length} cases: read the request, plan your approach, then solve, chart and conclude.</span>
         <span class="row"><span class="tm">${live} run live on the real tables</span></span></button>
       <button class="cc big" data-go="dictionary"><span class="tag">Reference</span><b>Data Dictionary</b><span class="sk">Every class table: columns, types, keys, missing values and how the tables join, on a relationship map you can search.</span>
@@ -98,13 +103,20 @@ async function home() {
   $$("[data-go]", main).forEach(b => b.onclick = () => setZone(b.dataset.go, true));
 }
 
+// Homework and Interview Prep share one data file and one mount; each zone sees its own lessons.
+const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
+  return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=33965c5b57");
-  mountHomework({ data: hwData, hdr, main });
+  hwData ??= await json("data/homework.json?v=0015d894c1");
+  mountHomework({ data: hwView(false), hdr, main });
 }
 
+async function interview() {
+  hwData ??= await json("data/homework.json?v=0015d894c1");
+  mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
+}
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=33965c5b57"));
+  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=0015d894c1"));
   casesApp.draw();
 }
 
@@ -156,7 +168,7 @@ async function setup() {
   $("#sframe", main).append(await pageFrame("setup/setup.html", "Installation for mentees"));
 }
 
-const RENDER = { home, setup, guides, homework, cases, dictionary, playground };
+const RENDER = { home, setup, guides, homework, interview, cases, dictionary, playground };
 async function setZone(z, reset = false) {
   if (!ZONES.includes(z)) z = "home";
   current = z;

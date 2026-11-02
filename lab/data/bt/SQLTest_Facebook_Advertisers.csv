@@ -1,0 +1,9 @@
+user_id,status
+bing,NEW
+yahoo,NEW
+alibaba,EXISTING
+baidu,EXISTING
+target,CHURN
+tesla,CHURN
+morgan,RESURRECT
+chase,RESURRECT

@@ -76,6 +76,34 @@
    "slug": "storytelling-bias",
    "sub": "Rates vs totals, Top N + Other, mean vs median, survivorship, like-for-like",
    "ds": "ADW + CRM + GBE"
+  },
+  "20": {
+   "title": "Round 1: SQL screen",
+   "label": "Round 1: SQL screen",
+   "slug": "round-1-sql-screen",
+   "sub": "8 questions, about 45 minutes. Counts, top N, comparisons with an average, windows, anti-joins and a calendar of months.",
+   "ds": "ADW + CRM"
+  },
+  "21": {
+   "title": "Round 2: Metrics and ops",
+   "label": "Round 2: Metrics and ops",
+   "slug": "round-2-metrics-ops",
+   "sub": "6 questions, about 30 minutes. Late rates, before and after, ranking inside groups, side-by-side comparisons.",
+   "ds": "GBE + CRM + ADW"
+  },
+  "22": {
+   "title": "Round 3: Take-home cases",
+   "label": "Round 3: Take-home cases",
+   "slug": "round-3-take-home",
+   "sub": "4 written tasks, about 60 minutes in total. Find the problem, size it, recommend one action and say how you would test it.",
+   "ds": "CRM + ADW"
+  },
+  "23": {
+   "title": "Big Tech SQL",
+   "label": "Big Tech SQL",
+   "slug": "big-tech-sql",
+   "sub": "13 classic big-tech SQL screens on small tables, about 2 hours in total. Self-joins, window functions, ranking, rolling averages and CASE logic.",
+   "ds": "SQLTest_ tables"
   }
  },
  "questions": [
@@ -101,6 +129,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -126,6 +156,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 10,
@@ -186,6 +218,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 10,
@@ -245,6 +279,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1551,
@@ -302,6 +338,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -370,6 +408,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 4,
@@ -435,6 +475,8 @@
    "note": "rows tie on StandardCost at the 10th place, so only the cost column is compared",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 10,
@@ -540,6 +582,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 13,
@@ -601,6 +645,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 432,
@@ -672,6 +718,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 5445,
@@ -740,6 +788,8 @@
    "note": "1674 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1674,
@@ -812,6 +862,8 @@
    "note": "3 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 3,
@@ -865,6 +917,8 @@
    "note": "7 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 7,
@@ -920,6 +974,8 @@
    "note": "6 distinct sectors",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 10,
@@ -1000,6 +1056,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1022,6 +1080,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 646,
@@ -1083,6 +1143,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 6,
@@ -1154,6 +1216,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 160,
@@ -1217,6 +1281,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 2,
@@ -1278,6 +1344,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1479,
@@ -1338,6 +1406,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 9,
@@ -1396,6 +1466,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 72,
@@ -1449,6 +1521,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1471,6 +1545,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1493,6 +1569,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1515,6 +1593,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1537,6 +1617,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1559,6 +1641,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1581,6 +1665,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1606,6 +1692,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1628,6 +1716,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1653,6 +1743,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1677,6 +1769,8 @@
    "note": "Caps, Helmets, Jerseys",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 3,
@@ -1743,6 +1837,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1765,6 +1861,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 6,
@@ -1826,6 +1924,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1848,6 +1948,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1870,6 +1972,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1892,6 +1996,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -1914,6 +2020,8 @@
    "note": "27,659 of 31,465 orders",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -1973,6 +2081,8 @@
    "note": "10 rows, Unknown = 248 products",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 10,
@@ -2031,6 +2141,8 @@
    "note": "85 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 85,
@@ -2090,6 +2202,8 @@
    "note": "4,238 deals, 4,238 with a price, 2,040 above list price",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -2153,6 +2267,8 @@
    "note": "4 groups, 15,266 customers in total",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 4,
@@ -2211,6 +2327,8 @@
    "note": "137 names, each repeat has a different birthday",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 137,
@@ -2273,6 +2391,8 @@
    "note": "1,323 of 31,465 orders",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -2332,6 +2452,8 @@
    "note": "Standard deviation 1,323 orders, IQR 2,127 orders",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -2354,6 +2476,8 @@
    "note": "85 rows, 85 accounts, 0 typos left",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -2421,6 +2545,8 @@
    "note": "19,119 customers",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 19119,
@@ -2488,6 +2614,8 @@
    "note": "19,119 customers",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 19119,
@@ -2555,6 +2683,8 @@
    "note": "5 segments",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 5,
@@ -2621,6 +2751,8 @@
    "note": "Champions AOV 11,035; At Risk 2,652; Loyal 2,509; Promising 606; Hibernating 230",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -2643,6 +2775,8 @@
    "note": "19 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -2665,6 +2799,8 @@
    "note": "19,119 customers",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 19119,
@@ -2723,6 +2859,8 @@
    "note": "38 cohorts",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 38,
@@ -2781,6 +2919,8 @@
    "note": "485 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 485,
@@ -2843,6 +2983,8 @@
    "note": "38 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 38,
@@ -2913,6 +3055,8 @@
    "note": "38 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -2935,6 +3079,8 @@
    "note": "1 row",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -2998,6 +3144,8 @@
    "note": "2 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 2,
@@ -3068,6 +3216,8 @@
    "note": "6 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 6,
@@ -3130,6 +3280,8 @@
    "note": "1 row",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -3213,6 +3365,8 @@
    "note": "8 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 8,
@@ -3278,6 +3432,8 @@
    "note": "8 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 8,
@@ -3358,6 +3514,8 @@
    "note": "8 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -3380,6 +3538,8 @@
    "note": "6 rows",
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -3402,6 +3562,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -3469,6 +3631,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 3,
@@ -3531,6 +3695,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 4,
@@ -3597,6 +3763,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 3,
@@ -3659,6 +3827,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 2,
@@ -3733,6 +3903,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -3804,6 +3976,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 7,
@@ -3874,6 +4048,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 5,
@@ -3940,6 +4116,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 6,
@@ -3998,6 +4176,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4020,6 +4200,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4042,6 +4224,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 1,
@@ -4109,6 +4293,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 7,
@@ -4179,6 +4365,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 4,
@@ -4241,6 +4429,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 2,
@@ -4307,6 +4497,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 7,
@@ -4369,6 +4561,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 4,
@@ -4431,6 +4625,8 @@
    "note": null,
    "guide": [],
    "links": [],
+   "co": null,
+   "mins": null,
    "specs": [
     {
      "n": 7,
@@ -4521,6 +4717,8 @@
      "why": "Define the split before you build the tree"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4568,6 +4766,8 @@
      "why": "Check that a split covers every sale"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4610,6 +4810,8 @@
      "why": "A retention metric (for questions a and b)"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4657,6 +4859,8 @@
      "why": "Revenue split into three inputs, with an index"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4712,6 +4916,8 @@
      "why": "The 80/20 check on real data"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4749,6 +4955,8 @@
      "why": "Framing: which two points does a headline compare?"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4790,6 +4998,8 @@
      "why": "Simpson's paradox: does the pattern hold in every segment?"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
    "approach": []
   },
@@ -4837,7 +5047,1851 @@
      "why": "A headline to defend, with a bias check"
     }
    ],
+   "co": null,
+   "mins": null,
    "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L20-01",
+   "lesson": 20,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "Products still on sale, by product line",
+   "story": "Warm-up question. The product team asks: how many finished products are still on sale in each product line? A product is on sale when it is a finished good and has no sell end date. Return the product line and the number of products, largest line first.",
+   "hint": "In the class database a missing value is often stored as the text 'NULL', so compare with = 'NULL' instead of IS NULL. A product line that is missing is a group of its own.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Trusting Social",
+   "mins": 4,
+   "specs": [
+    {
+     "n": 5,
+     "cols": [
+      "23d98abaa83e3601",
+      "31271af34d8fab3e"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      197
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L20-02",
+   "lesson": 20,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "Average order value in two territories",
+   "story": "Finance wants a quick comparison of Canada and Australia. For each of the two territories, return the number of orders and the average order value (TotalDue).",
+   "hint": "The territory name is in ADW_Dim_Territory. Join it to the orders on TerritoryID, filter with IN, then group by territory.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Trusting Social",
+   "mins": 4,
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "3af1068c78058354",
+      "890a64f3406017e5",
+      "b2f962a1a8754524"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      10910,
+      6250.446767
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L20-03",
+   "lesson": 20,
+   "level": "Easy",
+   "ds": "adw",
+   "title": "The two best-selling products",
+   "story": "The merchandising team wants the two products with the most units sold over the whole period. Return the product ID, the product name and the units sold.",
+   "hint": "Units are OrderQty on ADW_Sales_orders_detail. Group by product, sort the total from high to low, and keep two rows.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Trusting Social",
+   "mins": 5,
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "e6777aad9fb221eb",
+      "3eba3d3009bd02ab",
+      "6a80674494ac7ac7"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      1582,
+      15126
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L20-04",
+   "lesson": 20,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Why online customers buy",
+   "story": "Marketing asks why online customers buy. Among online orders, which three purchase reasons are recorded most often? Return the reason and the number of orders.",
+   "hint": "Reasons sit in ADW_Sales_orders_reasons, one row per order and reason. The channel is OnlineOrderFlag on ADW_Sales_orders, so you need two joins.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Trusting Social",
+   "mins": 6,
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "ad668722167bf2bd",
+      "75c084ccc78f5859"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number"
+     ],
+     "nums": [
+      22734
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L20-05",
+   "lesson": 20,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Months well above the yearly average",
+   "story": "Which months of 2013 had more than 20% more orders than the average month of 2013? Return the month number and its number of orders.",
+   "hint": "Count the orders per month first, in a CTE. Then compare each month with 1.2 times the average of those twelve monthly counts.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Trusting Social",
+   "mins": 7,
+   "specs": [
+    {
+     "n": 6,
+     "cols": [
+      "8753a0f2114379d3",
+      "434b5e32f53e9fb4"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 6,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      57,
+      11441
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,true",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L20-06",
+   "lesson": 20,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "The three biggest orders in each territory",
+   "story": "For every sales territory, list the three biggest orders of 2013 by SubTotal. Return the territory ID, the order ID, the SubTotal and the rank within the territory.",
+   "hint": "Use a window function: ROW_NUMBER() OVER (PARTITION BY TerritoryID ORDER BY SubTotal DESC) inside a CTE. Filter on the rank in the outer query.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Home Credit",
+   "mins": 7,
+   "specs": [
+    {
+     "n": 30,
+     "cols": [
+      "0a2c1e03510e3488",
+      "c86cbfd9503b9115",
+      "d78451146ddd68f5",
+      "225b50ddd805a9d2"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 30,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      165,
+      1602196,
+      3100913.8697000006,
+      60
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L20-07",
+   "lesson": 20,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Finished products that never sold",
+   "story": "The planning team wants the finished products that have never appeared on an order line. Return the product ID and the product name. Then write the same query a second way.",
+   "hint": "This is an anti-join. Three shapes work: NOT EXISTS, LEFT JOIN with IS NULL on the right side, and NOT IN. Write one, check the count, then write another.",
+   "steps": [
+    {
+     "title": "Version 1: NOT EXISTS"
+    },
+    {
+     "title": "Version 2: LEFT JOIN and IS NULL"
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Home Credit",
+   "mins": 8,
+   "specs": [
+    {
+     "n": 29,
+     "cols": [
+      "7cc6a1ac01b0c9e2",
+      "abaf99555cb83cac"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 29,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text"
+     ],
+     "nums": [
+      23183
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L20-08",
+   "lesson": 20,
+   "level": "Hard",
+   "ds": "crm",
+   "title": "One row for every month, even the empty ones",
+   "story": "Sales operations needs a table with exactly 12 rows, one for each month of 2017. For each month, show the number of won deals and their total close value, by close date. A month with no won deals must show 0 and must not be missing.",
+   "hint": "Build the twelve months yourself with VALUES, then LEFT JOIN the deals onto them. Put the Won filter and the year in the ON clause, not in WHERE. Wrap the sum in COALESCE.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Home Credit",
+   "mins": 10,
+   "specs": [
+    {
+     "n": 12,
+     "cols": [
+      "f893f7675c4696d2",
+      "cda80e9c1ff5d737",
+      "eaaac2dc34828a0e"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 12,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      78,
+      4238,
+      10005534
+     ]
+    },
+    "f": {
+     "left": true,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": true
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L21-01",
+   "lesson": 21,
+   "level": "Medium",
+   "ds": "gbe",
+   "title": "Weekly late-delivery rate, with the change from last week",
+   "story": "In the Global Electronics data, online orders have an Order_Date and a Delivery_Date (in-store orders have no delivery date). The promise to customers is delivery within 7 days. An order is late when it is delivered more than 7 days after it was ordered.\n\nFor 2019, report by week of the delivery date: the number of delivered orders, the late rate in % (one decimal), and the change from the previous week in percentage points. Compare your result with the model output.",
+   "hint": "An order has several lines, so first collapse the sales table to one row per Order_Number. Then group by DATEPART(week, delivery date) and compare each week with the previous one using LAG.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Shopee",
+   "mins": 8,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L21-02",
+   "lesson": 21,
+   "level": "Medium",
+   "ds": "gbe",
+   "title": "Did delivery improve after the new carrier?",
+   "story": "Operations switched to a new carrier on 2018-01-01 and wants to know whether delivery got better. Waiting time is the average number of days from order to delivery. The late ratio is the share of delivered orders that arrived more than 7 days after the order.\n\nChoose a fair baseline, compare before and after, and say what you would still check before crediting the carrier. The model answer compares the 12 months of orders before the switch with the 12 months after.",
+   "hint": "Collapse to one row per order first. Use the order date to place each order in the before or the after period, and keep both periods the same length.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "open",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Shopee",
+   "mins": 10,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L21-03",
+   "lesson": 21,
+   "level": "Medium",
+   "ds": "gbe",
+   "title": "Delivery within 5 days, by customer country",
+   "story": "For online orders placed in 2019, which customer countries get their orders within 5 days most often? Return each country, its number of delivered orders and the share delivered within 5 days (one decimal). Keep countries with at least 100 orders and put the highest share first.",
+   "hint": "One row per order first. Then join to GBE_Customers for the country, count the orders delivered within 5 days with CASE WHEN, and filter countries with HAVING.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Shopee",
+   "mins": 8,
+   "specs": [
+    {
+     "n": 5,
+     "cols": [
+      "f80cc9609ccfee49",
+      "0ae5cbc8dd2d9b34",
+      "17edc8b812670734"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      1804,
+      394.09999999999997
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,true",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": true
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L21-04",
+   "lesson": 21,
+   "level": "Hard",
+   "ds": "gbe",
+   "title": "Best and worst category in each country",
+   "story": "For each country that has physical stores, find the best-selling and the worst-selling product category by units sold. Ignore any category with fewer than 500 units in that country. The online store is not a country, so leave it out. Return the country, the category, the units and a label, Best or Worst, so each country has two rows.",
+   "hint": "Aggregate to country and category first and apply the 500-unit rule with HAVING. Then rank twice inside each country, once from the top and once from the bottom, and keep the rows ranked first in either direction.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Kamereo",
+   "mins": 12,
+   "specs": [
+    {
+     "n": 16,
+     "cols": [
+      "bf2cb066d7b70cfd",
+      "d663677e06022c5b",
+      "8848b987ea4cc975",
+      "a0717b4bb9b9d613"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 16,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "number",
+      "text"
+     ],
+     "nums": [
+      44716
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L21-05",
+   "lesson": 21,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Compare three sales offices side by side",
+   "story": "Compare won revenue (close_value of Won deals) by product series for the three offices Central, East and West. Return one row per series with one column for each office, then two difference columns: Central minus East and East minus West. The series is the first part of the product name: GTX, GTK or MG.",
+   "hint": "Pivot with SUM(CASE WHEN regional_office = ... THEN close_value ELSE 0 END). Be careful with the product table: one product is spelled differently there than in the pipeline, so a join to CRM_products silently drops its deals. Read the series from the product name instead.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Kamereo",
+   "mins": 10,
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "b221cb79d55ede6c",
+      "10e3d297829d42e8",
+      "001d5ac8d077eefb",
+      "e86377bbd4ac9b90",
+      "bcc6473d3aca256b",
+      "aa36b1186251185f"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 6,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      3346293,
+      3090594,
+      3568647,
+      255699,
+      -478053
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L21-06",
+   "lesson": 21,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Days between a customer's first and second order",
+   "story": "For customers with at least two orders, how many days pass on average between the first and the second order? Return the number of customers who have at least two orders and the average number of days (one decimal).",
+   "hint": "Number each customer's orders with ROW_NUMBER ordered by OrderDate (add SalesOrderID to break ties). Then join order 1 to order 2 for the same customer, or use LAG. Customers with one order drop out by themselves.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Shopee",
+   "mins": 12,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "67e2819633d20566",
+      "77a5be221fcaaf6c"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number"
+     ],
+     "nums": [
+      7470,
+      373.4
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L22-01",
+   "lesson": 22,
+   "level": "Medium",
+   "ds": "crm",
+   "title": "Where do we lose deals, and what is it worth?",
+   "story": "You are a junior analyst on the sales team. The Head of Sales asks: where are we losing deals, and what does it cost us? Write a one-page answer with your findings, one recommendation and the next step. Use the SQL questions and cases listed in the hint to get your numbers.",
+   "hint": "Start with the overall win rate on closed deals, then split it by product, by agent and by month. The quarter-end pattern and the open pipeline are already worked in the cases listed below.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Define before you count: closed deals are Won plus Lost. Deals still in Prospecting or Engaging are open, not lost.",
+    "Find where the losses concentrate: by product, by agent, by month. Use rates, not totals, because the groups differ in size.",
+    "Put a money figure on the loss and state the assumption behind it.",
+    "Check one thing that could make your finding wrong, such as a join that loses rows or a very small group.",
+    "End with one recommendation, who does it and the number that will show it worked."
+   ],
+   "links": [
+    {
+     "hw": "L15-03",
+     "why": "Win rate by quarter, and the months behind it"
+    },
+    {
+     "hw": "L17-06",
+     "why": "Does the pattern hold in every product?"
+    },
+    {
+     "case": "Deals close better at quarter end. Real pressure or a reporting habit?",
+     "why": "Timing of wins and losses"
+    },
+    {
+     "case": "What is the open pipeline worth in dollars?",
+     "why": "Putting a money figure on deals"
+    }
+   ],
+   "co": "GameLoft",
+   "mins": 20,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L22-02",
+   "lesson": 22,
+   "level": "Medium",
+   "ds": "adw",
+   "title": "Product performance, and how to keep customers",
+   "story": "The Head of Marketing asks three things about AdventureWorks. How is each product category performing? What would you do to sell more? How do we get customers to come back? Write the analysis for a manager, with numbers.",
+   "hint": "Revenue by category and year needs the order, detail, product, sub-category and category tables. Retention is the cohort work: first order month, then customers who are active later.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Say what performance means before you measure it: revenue, share of revenue, growth and number of customers.",
+    "Compare the two full years, 2012 and 2013, for each category.",
+    "For retention, define a repeat customer and the time window you use. Newer customers have had less time to return, so compare like with like.",
+    "Give two actions. For each one, name the metric it should move and the check date."
+   ],
+   "links": [
+    {
+     "hw": "L5-07",
+     "why": "Month-over-month growth by category"
+    },
+    {
+     "hw": "L10-04",
+     "why": "Cohort table, months 0 to 3"
+    },
+    {
+     "hw": "L10-05",
+     "why": "Retention rates and what they show"
+    },
+    {
+     "case": "Revenue grew in 2013: more customers or bigger orders?",
+     "why": "Customers against order size"
+    }
+   ],
+   "co": "ZaloPay",
+   "mins": 20,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L22-03",
+   "lesson": 22,
+   "level": "Hard",
+   "ds": "adw",
+   "title": "Reseller or online: where should the promotion budget go?",
+   "story": "Next year's promotion budget is not fixed yet. The team asks which AdventureWorks channel, reseller or online, should get more of it. Before you answer, list what you would clean or check in the data. Then give a recommendation with numbers and one risk.",
+   "hint": "Online orders have no sales person and some orders have no credit card, so the missing values may describe the channel. Compare the channels with the numbers from the channel questions.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Clean first. List the missing values you find, what each one means, and how you treat it (drop, fill or keep as a category).",
+    "Compare the channels on orders, customers, revenue, average order value and discount cost.",
+    "Say which channel's growth you would pay for, and why.",
+    "State one risk and how you would test the recommendation on a small budget."
+   ],
+   "links": [
+    {
+     "hw": "L15-05",
+     "why": "AdventureWorks channels in numbers"
+    },
+    {
+     "hw": "L15-06",
+     "why": "Orders by sales reason: overlap and gap"
+    },
+    {
+     "hw": "L16-06",
+     "why": "A discount on online clothing"
+    },
+    {
+     "case": "Online has most of the orders. Who brings the money?",
+     "why": "Orders against revenue by channel"
+    }
+   ],
+   "co": "MoMo",
+   "mins": 25,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L22-04",
+   "lesson": 22,
+   "level": "Hard",
+   "ds": "crm",
+   "title": "Three proposals to lift the win rate: choose one",
+   "story": "Three managers want budget to lift the win rate. A: push every deal to close at quarter end. B: coach the five agents with the lowest win rate. C: focus the team on the product with the highest win rate. The Head of Sales gives you ten minutes. Pick one, defend it with numbers, say what you would test before spending and name the metric that shows it worked.",
+   "hint": "The numbers for each proposal are in the win-rate questions of the Structuring Questions and Storytelling and Bias lessons: by month, by product and by agent.",
+   "steps": [],
+   "check": "write",
+   "graded": -1,
+   "req": null,
+   "note": null,
+   "guide": [
+    "Restate the goal as a metric: win rate on closed deals.",
+    "For each proposal, name the number that shows its upside and the number that shows its risk.",
+    "Choose one. Say why the other two lose.",
+    "Describe a small test: who takes part, for how long and compared with whom.",
+    "Name the metric, a target and a check date."
+   ],
+   "links": [
+    {
+     "hw": "L15-03",
+     "why": "Win rate by quarter, and the months behind it"
+    },
+    {
+     "hw": "L17-01",
+     "why": "Leader by total, leader by rate"
+    },
+    {
+     "hw": "L17-06",
+     "why": "Does the pattern hold in every product?"
+    },
+    {
+     "hw": "L17-04",
+     "why": "Winners only: who is missing?"
+    }
+   ],
+   "co": "Home Credit",
+   "mins": 25,
+   "specs": [],
+   "approach": []
+  },
+  {
+   "id": "L23-01",
+   "lesson": 23,
+   "level": "Hard",
+   "ds": "bt",
+   "title": "Activity in the week after a first July sign-in",
+   "story": "The growth team studies early engagement. Take every user whose first sign-in in July 2022 exists. For each of them, count all events (the sign-in included) from that first July sign-in up to, but not including, 7 days later. Return the user ID, the date of that first July sign-in and the number of events. Use event_date; the month column does not always match it.",
+   "hint": "Find each user's first July sign-in in a CTE. Then join the events table back to it and keep events between that timestamp and 7 days later (use DATEADD).",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Facebook",
+   "mins": 15,
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "242eb8a67a63a77d",
+      "10dbf36dd9e56d8b",
+      "1ed83d173f49d3d0"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      1835,
+      4
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": true,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-02",
+   "lesson": 23,
+   "level": "Hard",
+   "ds": "bt",
+   "title": "New, churned, resurrected and existing advertisers",
+   "story": "The ads team compares last year's advertiser list (SQLTest_Facebook_Advertisers, with a status) with today's list of advertisers who paid (SQLTest_Facebook_Daily_Pay). Give every advertiser who appears in either table a new status. NEW: not in last year's list. CHURN: in last year's list but did not pay today. RESURRECT: was CHURN last year and paid today. EXISTING: paid today and was not CHURN last year. Return the user ID and the new status.",
+   "hint": "A FULL OUTER JOIN keeps advertisers who exist on only one side. Then a CASE WHEN checks which side is missing first, and only then looks at last year's status.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Facebook",
+   "mins": 12,
+   "specs": [
+    {
+     "n": 9,
+     "cols": [
+      "f0251d41ece3a805",
+      "9dc12b77c2482a6c"
+     ],
+     "req": [
+      0,
+      1
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 9,
+     "cols": 2,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text"
+     ],
+     "nums": []
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": true
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-03",
+   "lesson": 23,
+   "level": "Hard",
+   "ds": "bt",
+   "title": "Median searches per user from a frequency table",
+   "story": "SQLTest_Google_Users_search says how many users made 1 search, how many made 2 and so on (searches, num_users). Find the median number of searches per user, rounded to one decimal. Do not expand the table into one row per user.",
+   "hint": "Build a running total of num_users ordered by searches. The middle user (or the two middle users when the total is even) sits in the row where the running total first reaches half.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Google",
+   "mins": 15,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "0a83deed3c9b7a76"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      3.5
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,true,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-04",
+   "lesson": 23,
+   "level": "Hard",
+   "ds": "bt",
+   "title": "Every three-topping pizza and its cost",
+   "story": "A pizza shop wants every possible 3-topping pizza from SQLTest_MCKinsey_Pizza_Topping, with the total ingredient cost. Each pizza appears once, with its toppings in alphabetical order (topping_1 before topping_2 before topping_3). Return the three toppings and the total cost rounded to 2 decimals, most expensive pizza first, then alphabetical.",
+   "hint": "Join the table to itself twice. Use < between the topping names instead of =, so every combination appears once and no topping repeats.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "McKinsey",
+   "mins": 12,
+   "specs": [
+    {
+     "n": 120,
+     "cols": [
+      "60164d7071ef55cf",
+      "3e9255dbc8ac9a0e",
+      "3009a8ab1f4928f0",
+      "7a8ec0f55d771fce"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 120,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "text",
+      "number"
+     ],
+     "nums": [
+      125.99999999999999
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-05",
+   "lesson": 23,
+   "level": "Hard",
+   "ds": "bt",
+   "title": "Year-over-year spend growth per product",
+   "story": "For every product in SQLTest_Wayfair_Transactions, return the total spend per year and the year-over-year growth in percent against the previous year, rounded to 2 decimals. The first year of a product has no growth, so leave it empty.",
+   "hint": "Total the spend per product and year first, in a CTE. Then LAG(spend) OVER (PARTITION BY product_id ORDER BY yr) gives the previous year on the same row.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Wayfair",
+   "mins": 12,
+   "specs": [
+    {
+     "n": 12,
+     "cols": [
+      "8f55ea266d4b9124",
+      "ab8579b8c37bcc36",
+      "112525aa5cd35ca5",
+      "14d07c1bd8076f0c"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 12,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 3,
+     "kinds": [
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      3605836,
+      24246,
+      32539.18,
+      299.05
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-06",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Top two products per category by 2022 spend",
+   "story": "For 2022 only, find the two products with the highest total spend in each category of SQLTest_Amazon_Transaction. Return the category, the product, the total spend rounded to 2 decimals and its rank in the category. The table has a column called rank that is empty on purpose, so do not use it.",
+   "hint": "Total the spend per category and product for 2022 in a CTE, rank inside each category with a window function, then keep rank 1 and 2 in the outer query.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Amazon",
+   "mins": 9,
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "b5c0f93bdfefd96d",
+      "260fee3fcef25dbe",
+      "e50f756b71d0d76b",
+      "6ae73e34b6704b7b"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      1694.3400000000001,
+      6
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": true,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-07",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Change in spend between a user's purchases",
+   "story": "For users who bought at least twice in SQLTest_Amazon_Transaction, list every purchase with the previous spend of the same user and the change in spend against it. The first purchase of a user has an empty previous spend. If two purchases share the same timestamp, the cheaper one comes first. Return the user ID, date, product, spend, previous spend and change, rounded to 2 decimals.",
+   "hint": "LAG(spend) OVER (PARTITION BY user_id ORDER BY transaction_date, spend) reads the previous purchase of the same user. Count each user's purchases in the same CTE to drop users with a single purchase.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Amazon",
+   "mins": 9,
+   "specs": [
+    {
+     "n": 10,
+     "cols": [
+      "15bd1d9fe736ec46",
+      "41036d2a90ab125f",
+      "e3c63df1a35d0bf2",
+      "c0a295e7b953925b",
+      "854c2dd07e6e7e3e",
+      "6e0c5b4a61514bd0"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 6,
+     "dups": 0,
+     "nulls": 8,
+     "kinds": [
+      "number",
+      "text",
+      "text",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      1274,
+      1629.7800000000002,
+      1001.17,
+      -38.079999999999984
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-08",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Employees who earn more than their manager",
+   "story": "In SQLTest_FAANG_Employee each employee has a manager_id that points to another employee. Which employees earn more than their manager? Return the employee, their salary, the manager and the manager's salary.",
+   "hint": "Join the table to itself: one copy for the employee, one for the manager, matched on manager_id = employee_id. Then compare the two salaries.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "FAANG",
+   "mins": 6,
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "27f437c4cd48e868",
+      "83dd2427e01c2519",
+      "ce3e1d88bfadb8c0",
+      "4c559e756a67eefc"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      16500,
+      13600
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-09",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Second-highest salary in each department",
+   "story": "Find the employees with the second-highest distinct salary in each department of SQLTest_FAANG_Employee. If two employees share that salary, return both. Return the department, the name and the salary.",
+   "hint": "Rank salaries inside each department. Think about which of ROW_NUMBER, RANK and DENSE_RANK gives the second distinct salary and keeps ties together.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "FAANG",
+   "mins": 8,
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "dbdc659196317f00",
+      "804c376ed5818a22",
+      "f1cb08a836097d39"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      7,
+      27500
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-10",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Time spent sending and opening, by age group",
+   "story": "For each age bucket, what share of time on the app is spent sending snaps and what share opening them? Use SQLTest_Snapchat_Activities and SQLTest_Snapchat_Age_Group. Ignore chat activity, so the two shares add up to 100%. Return the age bucket, the send percentage and the open percentage, rounded to 2 decimals.",
+   "hint": "Join activities to age groups, group by age bucket, and use conditional SUM(CASE WHEN ...) for the send time, the open time and the send plus open total.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Snapchat",
+   "mins": 8,
+   "specs": [
+    {
+     "n": 3,
+     "cols": [
+      "789a25112a902b70",
+      "b0fa802be563284f",
+      "63f254225d8f72d2"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 3,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      174.41,
+      125.58999999999999
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-11",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Three-day rolling average of tweets",
+   "story": "For each user in SQLTest_Twitter_Tweet_events, return the 3-day rolling average of tweets: the average of the current day and the two days before it. For the first days of a user, use the days available. Return the user, date, tweet count and the average rounded to 2 decimals. Each user has one row per day.",
+   "hint": "AVG(...) OVER (PARTITION BY user_id ORDER BY tweet_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) gives a window of the current row and the two before it.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Twitter",
+   "mins": 7,
+   "specs": [
+    {
+     "n": 21,
+     "cols": [
+      "276595df50e69c08",
+      "267beab1697763ca",
+      "0d831b190562d43e",
+      "7589bbfda2e10406"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 21,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "number",
+      "number"
+     ],
+     "nums": [
+      3948,
+      71,
+      70.83
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-12",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Monthly active users and the change from the previous month",
+   "story": "From SQLTest_Uber_transactions, count the distinct active users per month (a user is active in a month with at least one transaction). Also return the change against the previous month in the data. Return the month as YYYYMM, the active users and the change; the first month has an empty change.",
+   "hint": "Count distinct users per month in a CTE, then use LAG over the month to read the previous month's count.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Uber",
+   "mins": 8,
+   "specs": [
+    {
+     "n": 5,
+     "cols": [
+      "9457f4af27abecab",
+      "07cc2fcf83bc48f3",
+      "e677e876399f921c"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 1,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      1011020,
+      9,
+      -2
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": true,
+     "fn": "false,false,true",
+     "group": true,
+     "where": false,
+     "period": true,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L23-13",
+   "lesson": 23,
+   "level": "Medium",
+   "ds": "bt",
+   "title": "Days between a user's first and second transaction",
+   "story": "For every user of SQLTest_Uber_transactions with at least two transactions, return the date of the first transaction, the date of the second and the number of days between them.",
+   "hint": "Number each user's transactions with ROW_NUMBER in a CTE, then join the CTE to itself: row 1 on one side and row 2 on the other. DATEDIFF gives the gap.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": "Uber",
+   "mins": 8,
+   "specs": [
+    {
+     "n": 4,
+     "cols": [
+      "2122cb3525e7affe",
+      "21624ded8cb424e4",
+      "dd6c2ac86764140b",
+      "112859f5ee722608"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 4,
+     "cols": 4,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "text",
+      "number"
+     ],
+     "nums": [
+      640,
+      199
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
    "approach": []
   }
  ]
