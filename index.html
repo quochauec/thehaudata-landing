@@ -101,6 +101,13 @@
   .hero-actions{display:flex;gap:13px;flex-wrap:wrap;animation:fu .6s .32s ease both}
   .btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--grad-hero);color:#fff;font-weight:800;font-size:.95rem;font-family:var(--font-body);padding:13px 30px;border-radius:50px;text-decoration:none;border:none;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(91,33,255,.36);letter-spacing:-.01em}
   .btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(91,33,255,.5)}
+  .btn-lab{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:560px;margin:0 0 16px;padding:20px 32px;border-radius:60px;background:linear-gradient(135deg,#FF6D00 0%,#FF9100 60%,#FFB300 100%);color:#fff;font-family:var(--font-body);font-weight:900;font-size:1.2rem;line-height:1.25;letter-spacing:-.01em;text-decoration:none;box-shadow:0 10px 32px rgba(255,109,0,.45);transition:transform .2s,box-shadow .2s;animation:fu .6s .3s ease both,labPulse 2.4s 1.2s ease-in-out infinite}
+  .btn-lab:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(255,109,0,.6)}
+  .btn-lab small{display:block;font-size:.8rem;font-weight:700;opacity:.92;margin-top:2px}
+  .btn-lab .bl-arrow{font-size:1.5rem;flex-shrink:0}
+  .btn-lab.btn-lab-sm{margin:0 auto 18px;animation:none}
+  @keyframes labPulse{0%,100%{box-shadow:0 10px 32px rgba(255,109,0,.45)}50%{box-shadow:0 10px 44px rgba(255,109,0,.75)}}
+  @media(max-width:600px){.btn-lab{font-size:1.05rem;padding:18px 22px}}
   .btn-s{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:2px solid var(--border);color:var(--ink2);font-weight:700;font-size:.95rem;font-family:var(--font-body);padding:12px 26px;border-radius:50px;text-decoration:none;cursor:pointer;transition:all .2s}
   .btn-s:hover{border-color:var(--violet);color:var(--violet);background:var(--violet-pale)}
   .hero-logos{margin-top:40px;animation:fu .6s .4s ease both}
@@ -726,6 +733,7 @@
       <a class="hero-promo" id="heroPromo" href="#pricing" data-until="2026-11-30">
         <span>🎁 <b>Đăng ký trong tháng 11: giảm thêm 100K</b> · Ưu đãi sinh viên &amp; học viên cũ giới thiệu <span class="hp-go">Xem học phí →</span></span>
       </a>
+      <a class="btn-lab" href="https://thehaudata-open-lab.quochauec.workers.dev/#home" target="_blank" rel="noopener"><span>🚀 Học thử TheHauData Lab miễn phí<small>Lab premium được cấp miễn phí cho mentee khi đăng ký khoá</small></span><span class="bl-arrow">→</span></a>
       <div class="hero-actions">
         <a href="https://forms.gle/oWpGhwvcoZVH1M9H8" target="_blank" class="btn-p">   Đăng ký ngay ✦   </a>
         <a href="#tracks" class="btn-s">Xem chương trình →</a>
@@ -1296,6 +1304,7 @@
     <span class="eyebrow" style="margin:0 auto 14px;display:inline-flex">🚀 Bắt đầu ngay hôm nay</span>
     <h2>Sẵn sàng bắt đầu hành trình<br><span class="gt">Data Analytics</span> của bạn?</h2>
     <p>Lớp học có sĩ số giới hạn. Liên hệ mentor ngay hôm nay để được tư vấn khoá phù hợp và giữ chỗ trước khi hết.</p>
+    <a class="btn-lab btn-lab-sm" href="https://thehaudata-open-lab.quochauec.workers.dev/#home" target="_blank" rel="noopener"><span>🚀 Học thử TheHauData Lab miễn phí</span><span class="bl-arrow">→</span></a>
     <div class="cta-acts">
       <a href="https://zalo.me/0362550761" target="_blank" class="btn-p">Nhắn Zalo cho mentor ✦</a>
       <a href="https://forms.gle/oWpGhwvcoZVH1M9H8" class="btn-s">Đăng ký ngay</a>
@@ -1530,7 +1539,7 @@
   var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(g);
   window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
   gtag('js',new Date());gtag('config',GA_ID);
-  var kinds=[['zalo.me','zalo'],['forms.gle','register'],['docs.google.com/forms','register'],['docs.google.com/document','projects_doc'],['canva.site','feedbacks'],['/lab','lab']];
+  var kinds=[['zalo.me','zalo'],['forms.gle','register'],['docs.google.com/forms','register'],['docs.google.com/document','projects_doc'],['canva.site','feedbacks'],['/lab','lab'],['open-lab','lab']];
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
     var h=a.getAttribute('href')||'';
