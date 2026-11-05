@@ -480,6 +480,29 @@
   .proj-ph{width:100%;height:260px;background:var(--grad-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
   .proj-ph .pi{font-size:2.4rem}
   .proj-ph span{font-size:.79rem;color:var(--muted);font-weight:600;text-align:center;padding:0 12px}
+
+  /* ── MENTEE PROOF TABS ── */
+  .mp-wrap{margin-top:34px}
+  .mp-tabs{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
+  .mp-tab{font-family:var(--font-body);font-weight:800;font-size:.88rem;padding:10px 20px;border-radius:50px;border:2px solid var(--border);background:var(--surface);color:var(--ink2);cursor:pointer;transition:all .2s}
+  .mp-tab:hover{border-color:var(--violet-lite);color:var(--violet)}
+  .mp-tab.active{background:var(--grad-hero);color:#fff;border-color:transparent;box-shadow:0 6px 20px rgba(91,33,255,.3)}
+  .mp-panel{display:none}
+  .mp-panel.active{display:block}
+  .mp-hint{text-align:center;font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:12px}
+  .mp-view{position:relative;max-height:78vh;overflow-y:auto;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);cursor:zoom-in}
+  .mp-view img{display:block;width:100%;height:auto}
+  .mp-zoombtn{position:sticky;top:12px;float:right;margin:12px 12px -48px 0;z-index:3;background:rgba(13,10,40,.78);color:#fff;border:0;border-radius:50px;padding:9px 16px;font-weight:800;font-size:.8rem;font-family:var(--font-body);cursor:pointer}
+  .mz{display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,6,30,.95);flex-direction:column}
+  .mz.open{display:flex}
+  .mz-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;color:#fff;flex-shrink:0}
+  .mz-title{font-family:var(--font-display);font-weight:800;font-size:.95rem}
+  .mz-ctl{display:flex;gap:8px}
+  .mz-ctl button{min-width:40px;height:40px;border-radius:50px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;padding:0 14px;font-family:var(--font-body)}
+  .mz-ctl button:hover{background:rgba(255,255,255,.28)}
+  .mz-body{flex:1;overflow:auto;text-align:center;-webkit-overflow-scrolling:touch}
+  .mz-body img{display:inline-block;max-width:none;height:auto;vertical-align:top}
+  @media(max-width:700px){.mp-tab{font-size:.8rem;padding:9px 14px}.mp-view{max-height:70vh}}
   /* Lightbox */
   .lbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,6,30,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px}
   .lbox.open{display:flex}
@@ -738,7 +761,6 @@
         <a href="https://forms.gle/oWpGhwvcoZVH1M9H8" target="_blank" class="btn-p">   Đăng ký ngay ✦   </a>
         <a href="#tracks" class="btn-s">Xem chương trình →</a>
         <a href="https://zalo.me/0362550761" target="_blank" class="btn-p" style="white-space:nowrap">💬 Nhận tư vấn về khoá</a>
-        <a href="https://thehaudata.my.canva.site/mentee-s-achievements-flexing" target="_blank" class="btn-p" style="white-space:nowrap">Mentees nói gì về khoá học?</a>
       </div>
       <div class="hero-logos">
         <p>Học cùng mentor từng làm việc tại</p>
@@ -1123,7 +1145,20 @@
     <div class="reveal">
       <span class="eyebrow">💬 Thành tích & Feedback</span>
       <h2 class="sec-title">Học viên nói gì về <span class="gt">khoá học?</span></h2>
-       <a href="https://thehaudata.my.canva.site/mentee-s-achievements-flexing" target="_blank" class="btn-p" style="white-space:nowrap">Mentees nói gì về khoá học?</a>
+    </div>
+    <div class="mp-wrap reveal" id="mentee-proof">
+      <p style="font-size:.75rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:13px;text-align:center">📸 Tin nhắn &amp; phản hồi thật từ mentees</p>
+      <div class="mp-tabs" role="tablist">
+        <button class="mp-tab active" role="tab" data-mp="achievements">🎉 Thành tích</button>
+        <button class="mp-tab" role="tab" data-mp="feedbacks">💬 Course Feedbacks</button>
+        <button class="mp-tab" role="tab" data-mp="referral">🤝 Referral từ mentee</button>
+        <button class="mp-tab" role="tab" data-mp="community">☕ Career Support &amp; Community</button>
+      </div>
+      <p class="mp-hint">Cuộn để xem tiếp · Bấm vào ảnh để phóng to, đọc rõ từng tin nhắn</p>
+      <div class="mp-panel active" id="mp-achievements"><div class="mp-view" data-title="Thành tích của mentees"><button class="mp-zoombtn" type="button">🔍 Phóng to</button><img src="images/mentee/achievements.webp" loading="lazy" decoding="async" alt="Thành tích của mentees: offer letter và tin nhắn báo tin vui"></div></div>
+      <div class="mp-panel" id="mp-feedbacks"><div class="mp-view" data-title="Course Feedbacks"><button class="mp-zoombtn" type="button">🔍 Phóng to</button><img data-src="images/mentee/feedbacks.webp" decoding="async" alt="Feedback của mentees về khoá học"></div></div>
+      <div class="mp-panel" id="mp-referral"><div class="mp-view" data-title="Referral từ mentee các khoá"><button class="mp-zoombtn" type="button">🔍 Phóng to</button><img data-src="images/mentee/referral.webp" decoding="async" alt="Mentee giới thiệu bạn bè đến khoá học"></div></div>
+      <div class="mp-panel" id="mp-community"><div class="mp-view" data-title="Career Support, Catchup &amp; Community"><button class="mp-zoombtn" type="button">🔍 Phóng to</button><img data-src="images/mentee/community.webp" decoding="async" alt="Catch-up offline và cộng đồng mentees"></div></div>
     </div>
     <div class="reveal" style="margin:28px 0">
       <p style="font-size:.75rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:13px">🎉 Học viên đã nhận offer tại</p>
@@ -1153,6 +1188,7 @@
       <div class="sat-label">học viên sẵn sàng giới thiệu khoá học cho bạn bè, người thân</div>
       <div class="sat-sub">Khảo sát từ học viên sau khoá Practical SQL K01</div>
     </div>
+
   </div>
 </section>
 
@@ -1228,6 +1264,16 @@
     </div>
   </div>
 </section>
+
+
+<!-- MENTEE PROOF ZOOM -->
+<div class="mz" id="mz" role="dialog" aria-modal="true">
+  <div class="mz-bar">
+    <div class="mz-title" id="mzTitle"></div>
+    <div class="mz-ctl"><button type="button" id="mzOut" aria-label="Thu nhỏ">−</button><button type="button" id="mzReset">100%</button><button type="button" id="mzIn" aria-label="Phóng to">+</button><button type="button" id="mzClose" aria-label="Đóng">✕</button></div>
+  </div>
+  <div class="mz-body" id="mzBody"><img id="mzImg" src="" alt=""></div>
+</div>
 
 <!-- LIGHTBOX MODAL -->
 <div class="lbox" id="lightbox" onclick="closeLboxOutside(event)">
@@ -1451,6 +1497,30 @@
     if (e.key === 'ArrowRight') shiftLbox(1);
     if (e.key === 'ArrowLeft') shiftLbox(-1);
   });
+
+
+  // ── MENTEE PROOF TABS + ZOOM ──
+  (function(){
+    var tabs=document.querySelectorAll('.mp-tab'), panels=document.querySelectorAll('.mp-panel');
+    function loadImgs(p){p.querySelectorAll('img[data-src]').forEach(function(i){i.src=i.dataset.src;i.removeAttribute('data-src')})}
+    tabs.forEach(function(t){t.addEventListener('click',function(){
+      tabs.forEach(function(x){x.classList.toggle('active',x===t)});
+      panels.forEach(function(p){var on=p.id==='mp-'+t.dataset.mp;p.classList.toggle('active',on);if(on){loadImgs(p);var v=p.querySelector('.mp-view');if(v)v.scrollTop=0}});
+    })});
+    var mz=document.getElementById('mz'),img=document.getElementById('mzImg'),body=document.getElementById('mzBody'),title=document.getElementById('mzTitle'),reset=document.getElementById('mzReset');
+    var scale=1;
+    function apply(){var nw=img.naturalWidth||1366;img.style.width=(nw*scale)+'px';reset.textContent=Math.round(scale*100)+'%'}
+    function fit(){scale=1;if(window.innerWidth<700)scale=Math.max(.75,Math.min(1,(window.innerWidth*1.6)/(img.naturalWidth||1366)));apply()}
+    function open(v){var im=v.querySelector('img');title.innerHTML=v.dataset.title||'';img.onload=fit;img.src=im.currentSrc||im.src;if(img.complete&&img.naturalWidth)fit();mz.classList.add('open');document.body.style.overflow='hidden';body.scrollTop=0;body.scrollLeft=0}
+    function close(){mz.classList.remove('open');document.body.style.overflow=''}
+    function zoom(d){scale=Math.max(.4,Math.min(2.5,scale+d));apply()}
+    document.querySelectorAll('.mp-view').forEach(function(v){v.addEventListener('click',function(){open(v)})});
+    document.getElementById('mzIn').onclick=function(){zoom(.25)};
+    document.getElementById('mzOut').onclick=function(){zoom(-.25)};
+    reset.onclick=fit;
+    document.getElementById('mzClose').onclick=close;
+    document.addEventListener('keydown',function(e){if(!mz.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='+'||e.key==='=')zoom(.25);if(e.key==='-')zoom(-.25)});
+  })();
 
   // ── MOBILE NAV TOGGLE ──
   const hamburger = document.getElementById('navHamburger');
