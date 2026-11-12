@@ -169,7 +169,7 @@
   .hoc span{font-size:.71rem;font-weight:700;background:#fff;border:1.5px solid var(--border);border-radius:7px;padding:3px 9px;color:var(--ink2)}
 
   /* ── SHARED ── */
-  section{padding:86px 40px}
+  section{padding:86px 40px;scroll-margin-top:66px}
   .container{max-width:1200px;margin:0 auto}
   .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--violet);margin-bottom:10px;background:var(--violet-pale);border:1.5px solid var(--border);padding:5px 14px;border-radius:40px}
   .sec-title{font-family:var(--font-display);font-weight:900;font-size:clamp(1.9rem,3.5vw,2.75rem);line-height:1.12;letter-spacing:-.03em;color:var(--ink);margin-bottom:13px}
@@ -449,6 +449,13 @@
   .tl-status.full{background:#fee2e2;color:#dc2626;border:1.5px solid #fca5a5}
   .tl-status.cohort{background:var(--amber-lite);color:var(--orange);border:1.5px solid rgba(255,109,0,.3)}
   .tl-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .tl-prog{margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--amber-lite);border:1.5px solid rgba(255,109,0,.3)}
+  .tl-prog-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:.8rem;font-weight:800;color:var(--ink)}
+  .tl-prog-top b{font-family:var(--font-display);font-size:1.05rem;color:var(--orange)}
+  .tl-prog-bar{height:10px;border-radius:10px;background:rgba(255,109,0,.15);margin-top:8px;overflow:hidden}
+  .tl-prog-fill{height:100%;width:60%;border-radius:10px;background:var(--grad-warm);position:relative;overflow:hidden}
+  .tl-prog-fill::after{content:'';position:absolute;top:0;left:-60%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:shimmer 2.8s infinite}
+  .tl-prog-note{font-size:.76rem;font-weight:600;color:var(--ink2);margin-top:8px;line-height:1.5}
   .tl-m{font-size:.74rem;font-weight:700;color:var(--ink2);background:var(--bg);border:1.5px solid var(--border2);border-radius:20px;padding:3px 11px}
   @media(max-width:680px){.timeline::before{left:19px}.tl-dot{width:40px;height:40px;font-size:.88rem}.tl-item{gap:14px}.tl-top{flex-direction:column;gap:8px}#upcoming{padding:58px 20px}}
 
@@ -825,16 +832,20 @@
               <h3 class="tl-title">Pro Analyst Tracks with Agentic AI</h3>
               <p class="tl-desc">Học trực tiếp 100% qua Zoom với mentor. Lớp nhỏ 25–30 người, chấm bài trực tiếp, feedback project live. Phiên bản mới tích hợp Agentic AI vào workflow phân tích.</p>
             </div>
-            <div class="tl-status open">MỞ TUYỂN SINH</div>
+            <div class="tl-status open">MỞ TUYỂN SINH · ĐÃ FILL 60%</div>
           </div>
           <div class="tl-meta">
             <span class="tl-m">📅 Dự kiến khai giảng giữa tháng 12</span>
             <span class="tl-m">🎓 24–26 buổi</span>
             <span class="tl-m">👥 Lớp 25–30 người</span>
             <span class="tl-m">💰 5.500.000 VNĐ (giá sau giảm cho sinh viên &amp; học viên cũ giới thiệu · đăng ký trong tháng 11 giảm thêm 100K)</span>
-            <span class="tl-m" style="background:var(--amber-lite);border-color:rgba(255,109,0,.3);color:var(--orange)">🗓️ Đăng ký sớm để giữ chỗ ưu tiên — lớp giới hạn sĩ số</span>
           </div>
-          <a href="https://zalo.me/0362550761" target="_blank" class="btn-p" style="margin-top:18px;display:inline-flex;font-size:.85rem;padding:10px 22px">💬 Đăng ký Khoá 19 →</a>
+          <div class="tl-prog">
+            <div class="tl-prog-top"><span>🔥 Tiến độ tuyển sinh Khoá 19</span><b>Đã fill 60% slot</b></div>
+            <div class="tl-prog-bar"><div class="tl-prog-fill"></div></div>
+            <p class="tl-prog-note">Còn lại 40% chỗ, lớp giới hạn 25–30 người. Chốt đăng ký sớm để giữ chỗ ưu tiên trước khi lớp full như Khoá 18.</p>
+          </div>
+          <a href="https://zalo.me/0362550761" target="_blank" class="btn-p" style="margin-top:18px;display:inline-flex;font-size:.85rem;padding:10px 22px">💬 Chốt đăng ký sớm, giữ chỗ Khoá 19 →</a>
         </div>
       </div>
 
