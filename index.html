@@ -282,6 +282,9 @@
   .pname{font-family:var(--font-display);font-size:1.45rem;font-weight:900;color:var(--ink);margin-bottom:18px}
   .p-old{text-decoration:line-through;color:var(--subtle);font-size:.97rem;font-weight:600}
   .p-main{font-family:var(--font-display);font-size:2.3rem;font-weight:900;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .p-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:2px}
+  .p-save{display:inline-block;font-size:.72rem;font-weight:900;color:#fff;background:linear-gradient(135deg,#FF3D00,#FF6D00);padding:4px 11px;border-radius:20px;letter-spacing:.03em;box-shadow:0 4px 12px rgba(255,61,0,.3)}
+  .p-limit{display:block;font-size:.78rem;font-weight:800;color:#dc2626;background:#fee2e2;border:1.5px solid #fca5a5;border-radius:8px;padding:6px 10px;margin-bottom:12px;line-height:1.45}
   .p-per{font-size:.86rem;color:var(--muted);font-weight:500;margin-bottom:5px}
   .p-note{font-size:.77rem;color:var(--orange);font-weight:700;margin-bottom:20px;background:var(--amber-lite);border-radius:6px;padding:4px 10px;display:inline-block}
   .pf{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
@@ -838,7 +841,8 @@
             <span class="tl-m">📅 Dự kiến khai giảng giữa tháng 12</span>
             <span class="tl-m">🎓 24–26 buổi</span>
             <span class="tl-m">👥 Lớp 25–30 người</span>
-            <span class="tl-m">💰 5.500.000 VNĐ (giá sau giảm cho sinh viên &amp; học viên cũ giới thiệu · đăng ký trong tháng 11 giảm thêm 100K)</span>
+            <span class="tl-m" style="background:#fee2e2;border-color:#fca5a5;color:#dc2626">💰 <s>6.000.000</s> → 5.500.000 VNĐ · giảm 500K cho sinh viên &amp; học viên cũ giới thiệu (số lượng có giới hạn)</span>
+            <span class="tl-m">🎁 Đăng ký trong tháng 11 giảm thêm 100K</span>
           </div>
           <div class="tl-prog">
             <div class="tl-prog-top"><span>🔥 Tiến độ tuyển sinh Khoá 19</span><b>Đã fill 60% slot</b></div>
@@ -879,7 +883,7 @@
           <div class="tl-meta">
             <span class="tl-m">🎬 30h video + 4 live catch-up sessions</span>
             <span class="tl-m">⏰ Tự học linh hoạt thời gian</span>
-            <span class="tl-m">💰 3.700.000 VNĐ (giá sau giảm cho sinh viên &amp; học viên cũ giới thiệu)</span>
+            <span class="tl-m" style="background:var(--amber-lite);border-color:rgba(255,109,0,.3);color:var(--orange)">💰 <s>4.000.000</s> → 3.700.000 VNĐ · giảm 300K</span>
             <span class="tl-m">💬 Mentor hỗ trợ riêng qua Zalo</span>
           </div>
           <a href="https://zalo.me/0362550761" target="_blank" class="btn-s" style="margin-top:18px;display:inline-flex;font-size:.85rem;padding:10px 22px">Tìm hiểu thêm →</a>
@@ -1079,10 +1083,11 @@
         <div class="pop-badge">⭐ Phổ biến nhất</div>
         <div class="pt">🎥 Hình thức A</div>
         <div class="pname">Khoá Pro Analyst with Agentic AI Support - Học Live Zoom</div>
-        <div class="p-old">8.000.000 VNĐ</div>
+        <div class="p-row"><span class="p-old">6.000.000 VNĐ</span><span class="p-save">🔥 Giảm 500K</span></div>
         <div class="p-main">5.500.000</div>
         <div class="p-per">VNĐ / khoá · 24–26 buổi · Sinh viên được hỗ trợ đóng học phí sau</div>
-        <div class="p-note">🎉 Giá cuối sau giảm cho sinh viên & đăng ký qua học viên cũ giới thiệu · Đăng ký trong tháng 11 giảm thêm 100K</div>
+        <div class="p-limit">⏳ Ưu đãi 500K cho sinh viên &amp; đăng ký qua học viên cũ giới thiệu. Số lượng có giới hạn, hết khi lớp đủ sĩ số (Khoá 19 đã fill 60% slot).</div>
+        <div class="p-note">🎉 Đăng ký trong tháng 11 giảm thêm 100K</div>
         <ul class="pf">
           <li><span class="pfchk">✓</span>Học trực tiếp 90% qua Zoom với mentor + 10% các buổi bổ sung kiến thức</li>
           <li><span class="pfchk">✓</span>Chấm chữa từng bài tập, feedback loop liên tục</li>
@@ -1100,7 +1105,7 @@
         <div class="pop-badge">⭐ Tiết kiệm & linh hoạt nhất</div>
         <div class="pt">💻 Hình thức B</div>
         <div class="pname">Khoá Pro Analyst with Agentic AI Support - Online Hybrid</div>
-        <div class="p-old">6.000.000 VNĐ</div>
+        <div class="p-row"><span class="p-old">4.000.000 VNĐ</span><span class="p-save">🔥 Giảm 300K</span></div>
         <div class="p-main">3.700.000</div>
         <div class="p-per">VNĐ / khoá · 30h video (24-26 lessons) </div>
         <div class="p-note">💡 Giá sau giảm cho sinh viên & học viên cũ giới thiệu · Linh hoạt thời gian, tự học theo lộ trình</div>
@@ -1125,7 +1130,7 @@
         <tbody>
           <tr><td>Hình thức học</td><td>Học trực tiếp 100% qua Zoom với mentor</td><td>Video + Live catch-up 1:1 qua call với mentor khi cần hỗ trợ</td></tr>
           <tr><td>Hỗ trợ từ Mentors</td><td>Chấm chữa từng bài tập, live feedbacks project</td><td>Tự học theo hướng dẫn; hỏi qua Zalo/live catch-up</td></tr>
-          <tr><td>Giá</td><td><span class="cy">5.500.000 VNĐ</span> (giá sau giảm cho sinh viên &amp; học viên cũ giới thiệu; đăng ký trong tháng 11 giảm thêm 100K)</td><td><span class="cy">3.700.000 VNĐ</span> (giá sau giảm cho sinh viên &amp; học viên cũ giới thiệu)</td></tr>
+          <tr><td>Giá</td><td><s style="color:var(--subtle)">6.000.000</s> <span class="cy">5.500.000 VNĐ</span> (giảm 500K cho sinh viên &amp; học viên cũ giới thiệu, số lượng có giới hạn; đăng ký trong tháng 11 giảm thêm 100K)</td><td><s style="color:var(--subtle)">4.000.000</s> <span class="cy">3.700.000 VNĐ</span> (giảm 300K)</td></tr>
           <tr><td>Discord Community</td><td><span class="cy">✓ Có</span></td><td><span class="cy">✓ Có</span></td></tr>
           <tr><td>Hỗ trợ sau khoá</td><td><span class="cy">✓ Có</span></td><td><span class="cy">✓ Có</span></td></tr>
     
