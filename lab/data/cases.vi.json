@@ -1,0 +1,588 @@
+{
+ "adw-category": {
+  "title": "Bikes mang về nhiều revenue. Có mang về nhiều profit không?",
+  "brief": {
+   "subject": "Profit của mình đến từ đâu?",
+   "body": [
+    "Bikes chiếm phần lớn doanh số nên tôi lên ngân sách nhập hàng xoay quanh chúng. Trước khi chốt kế hoạch năm sau, tôi muốn xem từng product category theo hai thước đo: revenue và profit.",
+    "Dùng mọi order line có trong data. Profit của một line bằng line total trừ đi quantity nhân với standard cost của sản phẩm."
+   ],
+   "ask": "Trả lời trong ba câu: category nào tạo ra profit, margin các category so với nhau ra sao, và điều đó có nghĩa gì cho ngân sách.",
+   "facts": [
+    "Revenue là <code>LineTotal</code> trong <code>ADW_Sales_orders_detail</code> (mỗi dòng là một order line, đã trừ discount).",
+    "<code>StandardCost</code> nằm ở <code>ADW_Dim_Product</code>. Tên category cách hai lần JOIN, đi qua bảng subcategory."
+   ]
+  },
+  "questions": [
+   "Category nào mang về nhiều revenue nhất?",
+   "Mỗi category có margin bao nhiêu?",
+   "Thứ hạng có đổi không khi xếp theo profit thay vì revenue?"
+  ],
+  "frame": {
+   "nudge": "Xếp theo revenue và theo profit có thể cho thứ tự category khác nhau. Ngoài giá bán, bạn cần biết thêm gì về mỗi line?",
+   "tree": [
+    "<b>Profit đến từ đâu?</b>",
+    [
+     "Revenue theo category",
+     "Cost theo category (quantity × standard cost)",
+     "Margin = profit ÷ revenue, và share of total profit của từng category"
+    ]
+   ],
+   "hyp": [
+    "Bikes dẫn đầu cả về revenue lẫn profit.",
+    "Một category nhỏ có thể có margin cao hơn bikes khá nhiều."
+   ],
+   "traps": [
+    "Cost tính theo từng đơn vị, nên nhân với <code>OrderQty</code> trước khi trừ.",
+    "Lấy profit chia cho revenue để ra margin. Đừng lấy trung bình margin của từng line.",
+    "Từ product lên category phải qua hai lần JOIN (product, subcategory, category). Thiếu một lần là số dòng nhân lên hoặc biến mất."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một order line, có quantity và line total."
+    ],
+    [
+     null,
+     null,
+     "Standard cost và subcategory của từng product."
+    ],
+    [
+     null,
+     null,
+     "Nối product với category của nó."
+    ],
+    [
+     null,
+     null,
+     "Tên các category."
+    ],
+    [
+     null,
+     null,
+     "Order header; bảng detail đã có sẵn line total."
+    ],
+    [
+     null,
+     null,
+     "Khu vực không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders_detail</code>: mỗi dòng là một order line. Các bảng còn lại đều là bảng tra cứu, mỗi key một dòng, nên JOIN không làm nhân dòng.",
+    "Chuỗi nối: detail → product → subcategory → category."
+   ],
+   "goal": "Mỗi category một dòng: revenue, profit và margin %. Sau đó thêm share of total revenue và share of total profit của từng category.",
+   "watch": [
+    "Trừ unit cost mà không nhân với quantity sẽ làm cost bị thấp đi ở mọi line có nhiều hơn một đơn vị.",
+    "Standard cost ở đây là giá trị hiện tại trên bảng product. Bảng cost history sẽ cho kết quả chính xác hơn."
+   ]
+  },
+  "extra_sql": {
+   "title": "Share of revenue so với share of profit (SUM ... OVER () biến mỗi tổng thành một share; dùng cho chart)"
+  },
+  "metrics": [
+   [
+    null,
+    "Tổng của <code>LineTotal</code>."
+   ],
+   [
+    null,
+    "Tổng line total trừ quantity × standard cost."
+   ],
+   [
+    null,
+    "Profit ÷ revenue."
+   ],
+   [
+    null,
+    "Profit của category ÷ tổng profit."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "title": "Accessories đóng góp profit vượt xa tỷ trọng revenue",
+    "sub": "Share of total revenue và total profit theo category, tất cả các năm.",
+    "why": "Mỗi category có hai share trên cùng một thang: dùng grouped bars. Khoảng cách giữa hai cột chính là câu chuyện."
+   }
+  ],
+  "answer": {
+   "model": [
+    "Bikes tạo ra phần lớn profit: $7.9M trên tổng $9.4M (85%), từ $94.7M revenue.",
+    "Margin của bikes lại mỏng, chỉ 8.4%. Accessories có margin 50% nhưng chỉ chiếm 1.2% revenue, nên đóng góp 6.8% profit. Components là điểm yếu: $11.8M revenue, margin 4.2% và chỉ $0.49M profit, thấp hơn cả accessories.",
+    "Giữ ngân sách nhập hàng cho bikes, và xem lại pricing cũng như cost của components. Có một điều cần kiểm tra trước khi hành động: standard cost là giá trị hiện tại, nên margin sẽ lệch đôi chút nếu dùng cost history."
+   ],
+   "checks": [
+    "Mình đã JOIN đủ bốn bảng và nhân cost với quantity.",
+    "Mình đã so thứ hạng theo revenue với thứ hạng theo profit.",
+    "Mình dùng margin và share of profit, không chỉ nhìn revenue.",
+    "Mình đã nêu một caveat về cost."
+   ]
+  }
+ },
+ "adw-concentration": {
+  "title": "10 khách hàng có đang gánh cả business không?",
+  "context": {
+   "company": "AdventureWorks Cycles bán bikes, parts và clothing cho các cửa hàng (qua sales rep) và cho cá nhân (qua online store).",
+   "situation": "Team finance đang viết phần rủi ro của kế hoạch năm. Một thành viên hội đồng nghe nói rằng \"vài khách hàng lớn đang nuôi cả công ty\".",
+   "decision": "Kế hoạch có cần chương trình bảo vệ key account không, hay revenue đã đủ phân tán để bỏ qua?"
+  },
+  "brief": {
+   "subject": "Mình phụ thuộc bao nhiêu vào những khách hàng lớn nhất?",
+   "body": [
+    "Hội đồng cần một con số cho phần rủi ro: bao nhiêu revenue đến từ nhóm khách hàng lớn nhất. Nếu cao, tôi sẽ đề xuất chương trình key account. Nếu thấp, tôi sẽ không.",
+    "Dùng toàn bộ order trong data và tính revenue bằng <code>SubTotal</code> của order. Cho tôi top 10, 90 khách kế tiếp, 900 khách kế tiếp và phần còn lại, kèm số khách hàng trong mỗi nhóm."
+   ],
+   "ask": "Trả lời trong ba câu: revenue tập trung đến mức nào, đó có phải rủi ro không, và Finance nên làm gì.",
+   "facts": [
+    "Khách hàng được nhận diện bằng <code>CustomerID</code> trong <code>ADW_Sales_orders</code>.",
+    "Data kéo dài từ tháng 5/2011 đến tháng 6/2014."
+   ]
+  },
+  "questions": [
+   "Top 10 và top 100 khách hàng nắm giữ bao nhiêu phần revenue?",
+   "Top 10 là các cửa hàng hay người mua online?",
+   "Mức tập trung này là rủi ro hay là mô hình bình thường?"
+  ],
+  "frame": {
+   "nudge": "Một con số share of revenue không có nhiều ý nghĩa nếu thiếu mốc so sánh. Trước khi chạy gì, hãy quyết định mức share nào sẽ khiến bạn lo và mức nào thì không. Câu trả lời thay đổi quyết định nào?",
+   "tree": [
+    "<b>Revenue có quá tập trung không?</b>",
+    [
+     "Revenue theo từng khách hàng, xếp hạng",
+     "Share của top 10, top 100, top 1,000",
+     "Top customers là ai và họ mua như thế nào"
+    ]
+   ],
+   "hyp": [
+    "Một vài account nắm giữ phần lớn revenue.",
+    "Các account lớn nhất là những cửa hàng đặt hàng thường xuyên."
+   ],
+   "traps": [
+    "Muốn xếp hạng thì phải có một dòng cho mỗi khách hàng trước. Cộng order theo <code>CustomerID</code> rồi mới rank.",
+    "Top 1,000 nắm share lớn là chuyện bình thường khi có 19,000 khách hàng: hãy so share of customers với share of revenue.",
+    "Revenue theo khách hàng chưa phải profit. Nói rõ điều này trong câu trả lời."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một order: ngày, cờ channel, khách hàng, territory, SubTotal."
+    ],
+    [
+     null,
+     null,
+     "Không cần order line: SubTotal đã nằm sẵn trên order."
+    ],
+    [
+     null,
+     null,
+     "Territory không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một order. Cộng SubTotal theo từng khách hàng trước.",
+    "Window function (<code>ROW_NUMBER</code>) xếp hạng khách hàng; <code>CASE WHEN</code> biến thứ hạng thành nhóm."
+   ],
+   "goal": "Mỗi nhóm khách hàng một dòng: số khách, share of customers, revenue và share of revenue.",
+   "watch": [
+    "Nếu bạn rank order thay vì rank khách hàng, một khách có 12 order sẽ chiếm 12 vị trí.",
+    "SUM(SUM(revenue)) OVER () chạy được vì window được tính sau GROUP BY. SUM(revenue) OVER () thông thường thì không."
+   ]
+  },
+  "extra_sql": {
+   "title": "Top 10 là ai? (khách hàng, số order, revenue, có mua online hay không)"
+  },
+  "metrics": [
+   [
+    null,
+    "Phần revenue do top N khách hàng nắm giữ."
+   ],
+   [
+    null,
+    "Số khách trong nhóm ÷ tổng số khách. So sánh với share of revenue."
+   ],
+   [
+    null,
+    "Revenue ÷ số khách trong nhóm. Cho thấy các nhóm cách nhau bao xa."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "title": "Top 100 khách hàng: nửa phần trăm số khách, 42% revenue",
+    "sub": "Share of customers và share of revenue theo nhóm khách hàng, tất cả order.",
+    "why": "Hai share trên cùng các nhóm: paired bars cho thấy nhóm nào có revenue lệch so với số lượng khách."
+   }
+  ],
+  "answer": {
+   "model": [
+    "Chưa đến mức đỉnh. Top 10 chỉ nắm 7.2% revenue, nên mất một khách cũng không đau lắm. Sự tập trung bắt đầu ở tầng thấp hơn, trong top 100.",
+    "Top 10 nắm 7.2% và top 100 nắm 42.3%. Top 1,000 khách (5.3% số khách) nắm 76.6% revenue, đó là dạng long tail bình thường. Cả mười khách hàng đầu đều mua qua sales rep, và họ đặt tổng cộng 116 order.",
+    "Không cần chương trình key account cho từng khách riêng lẻ. Finance nên theo dõi top 100 reseller account như một nhóm, vì họ mang về khoảng hai phần năm revenue, và bổ sung margin theo khách hàng trước khi quyết định bất kỳ chương trình nào. Đây là revenue, chưa phải profit."
+   ],
+   "checks": [
+    "Mình trả lời câu hỏi của hội đồng trước.",
+    "Mình rank khách hàng, không rank order.",
+    "Mình so share of revenue với share of customers.",
+    "Mình nói rõ những gì các con số chưa cho thấy (profit, trend)."
+   ]
+  }
+ },
+ "adw-aovmix": {
+  "title": "Average order value giảm 75%. Khách hàng chi ít đi thật à?",
+  "context": {
+   "company": "AdventureWorks Cycles bán qua hai channel với giỏ hàng rất khác nhau: online (nhỏ) và sales rep (lớn, bán cho cửa hàng).",
+   "situation": "Báo cáo tháng cho thấy average order value (AOV) nửa đầu 2014 thấp hơn rất nhiều so với nửa đầu 2013. Headline trong deck ghi \"khách hàng đang chi tiêu ít đi nhiều\".",
+   "decision": "Chi tiêu mỗi order có thật sự sụp đổ không, hay có thứ gì khác đã thay đổi trong các con số?"
+  },
+  "brief": {
+   "subject": "AOV giảm ba phần tư. Có thật không?",
+   "body": [
+    "AOV của tháng 1 đến tháng 6/2014 chỉ bằng một phần nhỏ so với tháng 1 đến tháng 6/2013. Deck tôi nhận được nói khách hàng chi mỗi order ít hơn nhiều, và team pricing muốn phản ứng ngay.",
+    "Tôi muốn hiểu rõ trước. So sánh đúng sáu tháng đó của hai năm, theo từng channel, kèm share of orders của mỗi channel. Sau đó cho tôi biết bao nhiêu phần của mức giảm đến từ chi tiêu và bao nhiêu phần đến từ thứ khác."
+   ],
+   "ask": "Trả lời trong ba câu: thay đổi thật sự về chi tiêu lớn đến đâu, còn gì khác đã dịch chuyển, và headline của deck nên viết thế nào.",
+   "facts": [
+    "AOV = tổng <code>SubTotal</code> ÷ số order.",
+    "So sánh tháng 1 đến tháng 6 của cả hai năm. Data 2014 kết thúc ngày 30/6."
+   ]
+  },
+  "questions": [
+   "AOV tổng thể của tháng 1 đến tháng 6 mỗi năm là bao nhiêu?",
+   "AOV trong từng channel là bao nhiêu?",
+   "Bao nhiêu phần của mức giảm biến mất khi giữ nguyên channel mix?"
+  ],
+  "frame": {
+   "nudge": "Một con số trung bình của hai nhóm rất khác nhau sẽ dịch chuyển khi quy mô các nhóm thay đổi, dù không ai đổi hành vi. Bạn sẽ kiểm tra gì trước khi đổ lỗi cho khách hàng?",
+   "tree": [
+    "<b>Vì sao AOV giảm?</b>",
+    [
+     "AOV tổng thể, cùng các tháng của hai năm",
+     "AOV trong từng channel",
+     "Share of orders theo channel trong mỗi năm",
+     "AOV tại mix của năm ngoái"
+    ]
+   ],
+   "hyp": [
+    "AOV giảm trong từng channel, nhưng giảm ít hơn mức giảm tổng thể.",
+    "Channel online tăng share of orders."
+   ],
+   "traps": [
+    "So sánh đúng các tháng tương ứng. Tháng 1 đến tháng 12/2013 so với tháng 1 đến tháng 6/2014 là so sánh không cùng điều kiện.",
+    "Đừng lấy trung bình hai AOV của hai channel. Hãy gia quyền theo share of orders.",
+    "Mix effect là sự thay đổi ở việc ai đang mua, không phải ở việc mỗi người mua chi bao nhiêu."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một order: ngày, cờ channel, khách hàng, territory, SubTotal."
+    ],
+    [
+     null,
+     null,
+     "Chi tiết line không cần ở mức order."
+    ],
+    [
+     null,
+     null,
+     "Không dùng geography."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một order. <code>SubTotal / COUNT(*)</code> cho ra AOV của một nhóm.",
+    "Group theo năm và channel; <code>SUM(COUNT(*)) OVER (PARTITION BY year)</code> cho ra share of orders của từng channel trong năm đó."
+   ],
+   "goal": "Mỗi cặp năm và channel một dòng: số order, share of orders của năm đó, AOV.",
+   "watch": [
+    "MONTH(OrderDate) <= 6 giữ lại tháng 1 đến tháng 6 cho cả hai năm.",
+    "AOV là một ratio. Tính SUM / COUNT cho từng nhóm, đừng bao giờ lấy trung bình của các trung bình."
+   ]
+  },
+  "extra_sql": {
+   "title": "AOV tổng thể, con số trong deck"
+  },
+  "metrics": [
+   [
+    null,
+    "Tổng giá trị order ÷ số order."
+   ],
+   [
+    null,
+    "Share of orders của từng channel."
+   ],
+   [
+    null,
+    "Thay đổi của AOV do share các channel thay đổi, giữ nguyên AOV trong từng channel."
+   ],
+   [
+    null,
+    "Thay đổi của AOV do thay đổi bên trong các channel, giữ nguyên share."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "title": "Nếu giữ mix của 2013, AOV 2014 sẽ là $5,272 chứ không phải $1,705",
+    "sub": "AOV tháng 1 đến tháng 6. Cột giữa dùng AOV từng channel của 2014, gia quyền theo share of orders của 2013.",
+    "why": "Ba kịch bản của cùng một metric: cột bắt đầu từ 0, cột giữa tách riêng mix effect."
+   },
+   {
+    "title": "AOV cũng giảm trong cả hai channel, online giảm nhiều nhất, nhưng mix mới là phần lớn nguyên nhân",
+    "sub": "AOV theo channel, tháng 1 đến tháng 6.",
+    "why": "Hai kỳ cho mỗi nhóm: paired bars."
+   }
+  ],
+  "answer": {
+   "model": [
+    "Chỉ một phần. AOV tổng thể giảm 75%, nhưng khoảng 70% mức giảm đó là do thay đổi ở việc ai đang mua: channel online chiếm share of orders lớn hơn hẳn.",
+    "Order online tăng từ 74.6% lên 94.6% tổng số order. Trong từng channel, AOV giảm 56% ở online và 15% ở sales rep. Với mix của 2013, AOV 2014 sẽ là $5,272: rate effect là -$1,542 và mix effect là -$3,567.",
+    "Đổi headline thành \"order online hiện chiếm 95% tổng số order; AOV giảm 56% ở online và 15% ở sales rep\". Từ nay báo cáo AOV theo channel, và hỏi pricing cùng product xem giỏ hàng online đã thay đổi thế nào, vì mức giảm thật nằm ở AOV online. Caveat: tháng 1 đến tháng 6 chỉ là nửa năm, và AOV online có thể vẫn đang ổn định lại."
+   ],
+   "checks": [
+    "Mình so sánh đúng các tháng tương ứng của hai năm.",
+    "Mình tách mix effect khỏi thay đổi bên trong từng channel.",
+    "Mình viết headline không đổ lỗi cho khách hàng vì một sự dịch chuyển mix.",
+    "Mình đề xuất báo cáo AOV theo channel."
+   ]
+  }
+ },
+ "crm-winrate": {
+  "title": "Văn phòng Central có thật sự chốt deal kém nhất không?",
+  "brief": {
+   "subject": "Central nói họ không phải vấn đề. Đúng không?",
+   "body": [
+    "Ba văn phòng khu vực (Central, East và West) bán cùng một dòng sản phẩm. Ở buổi review gần nhất, một manager nói Central chốt ít deal hơn các nơi khác và đề nghị chuyển pipeline sang East và West.",
+    "Trước khi chuyển bất kỳ account nào, tôi cần biết khoảng cách về win rate có thật hay không. Chỉ đếm các deal đã đóng: Won hoặc Lost. Deal đang mở thì chưa có kết quả."
+   ],
+   "ask": "Trả lời trong ba câu: có khoảng cách không, bạn chắc đến đâu, và Sofia nên làm gì.",
+   "facts": [
+    "Win rate = Won ÷ (Won + Lost).",
+    "Mỗi sales agent thuộc một văn phòng khu vực, trong <code>CRM_sales_teams</code>."
+   ]
+  },
+  "questions": [
+   "Win rate của từng văn phòng trên các deal đã đóng là bao nhiêu?",
+   "Mỗi tỷ lệ dựa trên bao nhiêu deal?",
+   "Khoảng cách này có lớn hơn mức dao động bình thường của một tỷ lệ không?"
+  ],
+  "frame": {
+   "nudge": "Khoảng cách nhỏ giữa ba tỷ lệ chỉ có ý nghĩa nếu nó lớn hơn mức dao động bạn mong đợi do ngẫu nhiên. Ngoài bản thân các tỷ lệ, bạn cần thêm gì?",
+   "tree": [
+    "<b>Central có yếu hơn không?</b>",
+    [
+     "Win rate của từng văn phòng trên các deal đã đóng",
+     "Số deal đứng sau mỗi tỷ lệ",
+     "Độ lớn của khoảng cách so với margin of error"
+    ]
+   ],
+   "hyp": [
+    "Tỷ lệ của Central thấp nhất, nhưng chỉ thấp hơn một chút.",
+    "Một khoảng cách nhỏ như vậy có thể chỉ là noise."
+   ],
+   "traps": [
+    "Deal đang mở (Prospecting, Engaging) chưa phải kết quả. Hãy loại ra.",
+    "Tỷ lệ của nhóm nhỏ dao động nhiều hơn tỷ lệ của nhóm lớn, nên hãy đọc số lượng deal.",
+    "Xếp hạng ba con số sát nhau là cơ sở yếu để chuyển pipeline."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một deal kèm stage của nó."
+    ],
+    [
+     null,
+     null,
+     "Nối mỗi agent với một văn phòng khu vực."
+    ],
+    [
+     null,
+     null,
+     "Các công ty khách hàng; không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Danh sách sản phẩm; không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal. Lọc lấy <code>Won</code> và <code>Lost</code>.",
+    "<code>CRM_sales_teams</code>: mỗi dòng là một agent, nên JOIN không làm nhân đôi deal."
+   ],
+   "goal": "Mỗi văn phòng khu vực một dòng: số deal đã đóng, số deal won và win rate.",
+   "watch": [
+    "Để deal đang mở lại trong mẫu số sẽ kéo win rate của mỗi văn phòng xuống với mức khác nhau.",
+    "Sau WHERE, COUNT(*) chỉ đếm deal đã đóng. Kiểm tra xem nó có bằng Won + Lost không."
+   ]
+  },
+  "metrics": [
+   [
+    null,
+    "Deal Won ÷ deal đã đóng (Won + Lost)."
+   ],
+   [
+    null,
+    "Số deal đã đóng của mỗi văn phòng. Nó quyết định một tỷ lệ có thể dao động ngẫu nhiên bao xa."
+   ],
+   [
+    null,
+    "Tỷ lệ cao nhất − tỷ lệ thấp nhất giữa các văn phòng, tính bằng percentage point."
+   ],
+   [
+    null,
+    "Khoảng 2 × √(rate × (1 − rate) ÷ deals). Nếu hai whisker chồng lên nhau, khoảng cách có thể chỉ là ngẫu nhiên."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "title": "Ba văn phòng, một dải chồng lên nhau",
+    "sub": "Win rate trên các deal đã đóng, kèm margin of error dưới dạng whisker.",
+    "why": "Điểm kèm whisker không cần baseline bằng 0. Whisker chồng nhau cho thấy khoảng cách có thể là ngẫu nhiên."
+   }
+  ],
+  "answer": {
+   "model": [
+    "Không. Ba văn phòng có win rate gần như bằng nhau, nên không có lý do để chuyển pipeline khỏi Central.",
+    "Trên 6,711 deal đã đóng, win rate là Central 62.6%, East 63.0%, West 63.9%. Cao nhất và thấp nhất chênh nhau 1.4 point, còn mỗi tỷ lệ có thể dao động khoảng 2 point do ngẫu nhiên, nên các whisker chồng nhau.",
+    "Giữ nguyên cách phân bổ hiện tại và tìm driver thật ở một lát cắt khác, như product hoặc sector. Kết quả này cho biết các văn phòng không khác nhau, chứ chưa cho biết win rate như vậy là tốt."
+   ],
+   "checks": [
+    "Mình trả lời có hoặc không trước.",
+    "Mình chỉ dùng các deal đã đóng.",
+    "Mình so khoảng cách với margin of error.",
+    "Mình không bịa ra một câu chuyện cho một khoảng cách nhỏ."
+   ]
+  }
+ },
+ "gbe-country": {
+  "title": "Revenue theo quốc gia: \"quốc gia\" nghĩa là quốc gia nào?",
+  "context": {
+   "company": "Global Electronics Retailers bán điện thoại, máy tính, audio và đồ gia dụng qua các cửa hàng ở nhiều quốc gia và qua một shop online.",
+   "situation": "COO nhận được hai bảng revenue theo quốc gia từ hai analyst. Tổng hai bảng khớp nhau, nhưng share của United States khác nhau, và một bảng có một dòng tên là Online.",
+   "decision": "Issue tree cho buổi thảo luận mở rộng nên dùng định nghĩa quốc gia nào, và thứ hạng các quốc gia có thay đổi không?"
+  },
+  "brief": {
+   "subject": "Hai bảng theo quốc gia, hai con số share khác nhau cho US",
+   "body": [
+    "Tuần sau tôi thảo luận nên đặt ngân sách mở rộng ở đâu. Có hai bảng trả về cho \"revenue theo quốc gia\". Một bảng tính theo cửa hàng nơi giao dịch diễn ra, bảng kia tính theo quốc gia của khách hàng. Hai bảng không khớp và tôi không biết tin bảng nào.",
+    "Đặt chúng cạnh nhau: với mỗi quốc gia, revenue và share of total theo cả hai định nghĩa. Sau đó cho tôi biết dòng nào chỉ có ở một view, lớn cỡ nào, và bên trong nó có gì."
+   ],
+   "ask": "Trả lời trong ba câu: nên dùng định nghĩa nào, vì sao hai bảng khác nhau, và issue tree nên tách nhánh nào trước.",
+   "facts": [
+    "Revenue = <code>Quantity × Unit_Price_USD</code> trên mọi sales line.",
+    "<code>StoreKey = 0</code> là shop online. Trong <code>GBE_Stores</code>, quốc gia của nó là chữ Online."
+   ]
+  },
+  "questions": [
+   "Mỗi quốc gia nắm bao nhiêu revenue theo store view và theo customer view?",
+   "Dòng nào chỉ xuất hiện ở một view, và nó chiếm bao nhiêu phần revenue?",
+   "Phần revenue đó đi đâu ở view còn lại, và view nào nên đứng ở đỉnh của issue tree?"
+  ],
+  "frame": {
+   "nudge": "Một cách tách chỉ hữu ích khi mỗi giao dịch rơi vào đúng một nhánh. Mọi dòng trong bảng của bạn có đều là tên một quốc gia không? Bạn sẽ gọi những dòng không phải quốc gia là gì?",
+   "tree": [
+    "<b>Mình kiếm tiền ở đâu?</b>",
+    [
+     "Revenue theo quốc gia của cửa hàng, với Online là một dòng riêng",
+     "Revenue theo quốc gia của khách hàng, bao phủ mọi giao dịch",
+     "Đối soát: điều gì giải thích khoảng chênh giữa hai bảng?"
+    ]
+   ],
+   "hyp": [
+    "Cả hai bảng có cùng một tổng.",
+    "Khoảng chênh giữa hai bảng chỉ là shop online.",
+    "Thứ tự các quốc gia không đổi."
+   ],
+   "traps": [
+    "Dòng Online là một channel, không phải quốc gia. Một nhánh trộn hai kiểu tách khác nhau sẽ không qua được kiểm tra MECE.",
+    "Kiểm tra tổng của cả hai view trước. Nếu chúng khác nhau thì có một lần JOIN đã làm rơi dòng.",
+    "Hai cột share đều có thể cộng đủ 100% mà vẫn trả lời hai câu hỏi khác nhau."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một sales line: khách hàng, cửa hàng, sản phẩm, quantity."
+    ],
+    [
+     null,
+     null,
+     "Quốc gia của từng cửa hàng. StoreKey 0 là shop online."
+    ],
+    [
+     null,
+     null,
+     "Quốc gia của từng khách hàng."
+    ],
+    [
+     null,
+     null,
+     "Đơn giá bằng USD."
+    ],
+    [
+     null,
+     null,
+     "Giá đã được quy đổi sang USD."
+    ]
+   ],
+   "grain": [
+    "Tạo một CTE tính revenue cho từng sales line, rồi hai CTE group nó theo quốc gia của cửa hàng và theo quốc gia của khách hàng.",
+    "<code>FULL OUTER JOIN</code> giữ lại quốc gia chỉ tồn tại ở một trong hai view (ở đây là Online)."
+   ],
+   "goal": "Mỗi quốc gia một dòng: revenue và share of total theo store view và customer view.",
+   "watch": [
+    "Nếu dùng INNER JOIN giữa hai view, Online sẽ biến mất và tổng không còn khớp. Hãy so tổng trước khi đọc các share.",
+    "SUM(...) OVER () cho ra tổng của cả cột, nên share không cần thêm một query thứ hai."
+   ]
+  },
+  "extra_sql": {
+   "title": "Bên trong dòng Online có gì: revenue online theo quốc gia của khách hàng"
+  },
+  "metrics": [
+   [
+    null,
+    "Revenue của quốc gia ÷ tổng revenue, theo một định nghĩa."
+   ],
+   [
+    null,
+    "Quốc gia của cửa hàng thực hiện giao dịch. Shop online không có quốc gia riêng."
+   ],
+   [
+    null,
+    "Quốc gia của khách hàng, bất kể channel."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "title": "Online chiếm 20.5% revenue ở store view. US đi từ 42.6% lên 53.6%",
+    "sub": "Share of revenue theo quốc gia, theo cả hai định nghĩa.",
+    "why": "Mỗi quốc gia có hai share: paired bars cho thấy dòng nào khác nhau và khác bao nhiêu."
+   }
+  ],
+  "answer": {
+   "model": [
+    "Dùng customer view cho các câu hỏi về quốc gia. Nó xếp mọi giao dịch vào một trong 8 quốc gia thật, trong khi store view có thêm dòng thứ chín là Online, chiếm 20.5% revenue và là một channel chứ không phải quốc gia.",
+    "Hai bảng khác nhau chỉ vì shop online. Cả hai cùng cộng ra $55.8M, thứ tự các quốc gia giống nhau, và United States đi từ 42.6% (store view) lên 53.6% (customer view) vì khách hàng US đặt $6.1M order online. Một kiểm tra phụ cho thấy cả 49,719 line bán tại cửa hàng đều được bán cho khách ở đúng quốc gia của cửa hàng.",
+    "Với issue tree, tách channel trước (in store và online), rồi tách quốc gia theo khách hàng bên trong từng channel. Cách tách đó đạt MECE: mỗi giao dịch có đúng một channel và một quốc gia của khách hàng. Caveat: quốc gia của khách là nơi họ sống, nên nó không cho biết nên mở cửa hàng mới ở đâu."
+   ],
+   "checks": [
+    "Mình so tổng của hai view trước khi đọc các share.",
+    "Mình nhận ra Online là một channel, không phải quốc gia.",
+    "Mình giải thích khoảng chênh bằng revenue online của từng quốc gia.",
+    "Mình chọn thứ tự tách cho issue tree và nói rõ lý do."
+   ]
+  }
+ }
+}

@@ -1,6 +1,8 @@
-import { mount as mountSql } from "./sqlpanel.js?v=0015d894c1";
-import { MODE } from "./mode.js?v=0015d894c1";
-import * as free from "./free.js?v=0015d894c1";
+import { mount as mountSql } from "./sqlpanel.js?v=ec44d67bb5";
+import { MODE } from "./mode.js?v=ec44d67bb5";
+import * as free from "./free.js?v=ec44d67bb5";
+import { chip, DOMAINS } from "./domains.js?v=ec44d67bb5";
+import { t, getLang } from "./i18n.js?v=ec44d67bb5";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -11,7 +13,7 @@ const fmt=(v,d=2)=>Number(v).toLocaleString('en-US',{minimumFractionDigits:d,max
 const usd=(v,d=2)=>(v<0?'−':'')+'$'+fmt(Math.abs(v),d);
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const CH=DATA.challenges, byId=Object.fromEntries(CH.map(c=>[c.id,c]));
-const RANKS={C:'C · Junior',B:'B · Analyst',A:'A · Senior'};
+const RANKS={get C(){return t('C · Junior')},get B(){return t('B · Analyst')},get A(){return t('A · Senior')}};
 const STEPS=[['Context','~3 min'],['Approach','~4 min'],['Solve & conclude','~10 min']];
 const STRETCH=new Set(['fuzzy','loyalty']);
 let state={view:LS.get('view')||'hub',step:+(LS.get('step')||1)};{const m=(location.hash||'').match(/^#cases\/([\w-]+)/);if(m&&byId[m[1]]&&!byId[m[1]].locked)state={view:m[1],step:1};}
@@ -35,17 +37,17 @@ const li=a=>'<ul>'+a.map(x=>`<li>${x}</li>`).join('')+'</ul>';
 
 /* ---------- hub ---------- */
 function hub(){
-  $('#hdr').innerHTML=`<div class="eyebrow">Case Studies</div><h1>Case Study Practice Zone</h1>
-   <p>Case studies on the class databases, from junior to senior level. Each takes 15 to 30 minutes and has three steps: read the business context, plan your approach, then solve, chart and conclude. Hints, expected SQL and model answers stay closed until you open them. Step 3 has an editor that runs your T-SQL on the real tables.</p>
-   <div class="lead usp"><span><b>What this zone trains: analytical thinking.</b> Every case asks you to name the decision, the metric and the trap before you write any SQL, then compares your thinking with ours. SQL is the tool, the judgment is the skill.</span></div>`;
+  $('#hdr').innerHTML=`<div class="eyebrow">${t('Case Studies')}</div><h1>${t('Case Study Practice Zone')}</h1>
+   <p>${t('Case studies on the class databases, from junior to senior level. Each takes 15 to 30 minutes and has three steps: read the business context, plan your approach, then solve, chart and conclude. Hints, expected SQL and model answers stay closed until you open them. Step 3 has an editor that runs your T-SQL on the real tables.')}</p>
+   <div class="lead usp"><span><b>${t('What this zone trains: analytical thinking.')}</b>${t(' Every case asks you to name the decision, the metric and the trap before you write any SQL, then compares your thinking with ours. SQL is the tool, the judgment is the skill.')}</span></div>`;
   const card=c=>c.locked?free.lockedCard(c,RANKS):`<button class="cc" data-open="${c.id}"><span class="rank ${c.rank}" style="align-self:flex-start">${RANKS[c.rank]}</span><b>${c.title}</b><span class="sk">${c.skills.join(' · ')}</span>
-       <span class="row"><span class="tm">⏱ ${c.minutes} min</span>${isDone(c.id)?'<span class="dn">✓ Done</span>':''}</span></button>`;
+       <span class="row"><span class="tm">${t('⏱ {n} min',{n:c.minutes})}</span>${isDone(c.id)?`<span class="dn">${t('✓ Done')}</span>`:''}</span></button>`;
   const dsOrder=Object.keys(DATA.datasets);
-  let h='<div class="hub"><div class="legend-r"><b>Rank = difficulty:</b> <span class="rank C">C · Junior</span> one or two tables, one clear metric <span class="rank B">B · Analyst</span> a few tables, a judgment call <span class="rank A">A · Senior</span> a trap in the obvious comparison</div>';
+  let h='<div class="hub"><div class="legend-r"><b>'+t('Rank = difficulty:')+'</b> <span class="rank C">'+t('C · Junior')+'</span>'+t(' one or two tables, one clear metric ')+'<span class="rank B">'+t('B · Analyst')+'</span>'+t(' a few tables, a judgment call ')+'<span class="rank A">'+t('A · Senior')+'</span>'+t(' a trap in the obvious comparison')+'</div>';
   [false,true].forEach(stretch=>{
-    if(stretch)h+='<div class="legend-r"><b>More databases:</b> web analytics and loyalty data, too large to load here. Run the SQL in SQL Server; the expected output is shown.</div>';
+    if(stretch)h+='<div class="legend-r"><b>'+t('More databases:')+'</b>'+t(' web analytics and loyalty data, too large to load here. Run the SQL in SQL Server; the expected output is shown.')+'</div>';
     dsOrder.filter(k=>STRETCH.has(k)===stretch).forEach(k=>{const d=DATA.datasets[k], list=CH.filter(c=>c.dataset===k); if(!list.length)return;
-      h+=`<section><div class="dshead"><h2>${d.name}</h2><span>${d.sub} · database ${d.db}${STRETCH.has(k)?' · read-only here':''}</span></div><div class="cards">`+list.map(card).join('')+`</div></section>`;});
+      h+=`<section><div class="dshead"><h2>${d.name}</h2>${chip(k)}<span>${d.sub} · database ${d.db}${STRETCH.has(k)?' · read-only here':''}</span></div><div class="cards">`+list.map(card).join('')+`</div></section>`;});
   });
   h+='</div>';
   $('#main').innerHTML=(MODE.free?free.casesBanner(CH):'')+h;
@@ -55,12 +57,12 @@ function openCh(id){state={view:id,step:1};LS.set('view',id);LS.set('step',1);dr
 function toHub(){state={view:'hub',step:1};LS.set('view','hub');draw();window.scrollTo({top:0});}
 
 /* ---------- step popup: a short thank-you when a mentee finishes a step, once per step per case ---------- */
-const CELE={1:['Context done','You know the ask. Next, plan how you would answer it.'],2:['Plan written','You planned before touching the data. Now test it with SQL.']};
+const CELE=()=>({1:[t('Context done'),t('You know the ask. Next, plan how you would answer it.')],2:[t('Plan written'),t('You planned before touching the data. Now test it with SQL.')]});
 let celeHost=null,celeTimer=0;
 function celebrate(c,step){
   const key='cele:'+c.id+':'+step; if(LS.get(key)==='1')return; LS.set(key,'1');
   const live=CH.filter(x=>['adw','crm','gbe'].includes(x.dataset)), n=live.filter(x=>isDone(x.id)).length;
-  const m=step===3?['Case complete',c.title+'. '+n+' of '+live.length+' cases done.']:CELE[step];
+  const m=step===3?[t('Case complete'),t('{title}. {n} of {m} cases done.',{title:c.title,n:n,m:live.length})]:CELE()[step];
   if(!celeHost){celeHost=document.createElement('div');celeHost.className='cele-host';celeHost.setAttribute('role','status');celeHost.setAttribute('aria-live','polite');document.body.appendChild(celeHost);}
   clearTimeout(celeTimer);
   celeHost.innerHTML='<div class="cele'+(step===3?' big':'')+'"><div class="ic" aria-hidden="true">'+(step===3?'★':'✓')+'</div><div><b>'+esc(m[0])+'</b><span>'+esc(m[1])+'</span></div></div>';
@@ -71,16 +73,17 @@ function celebrate(c,step){
 /* ---------- challenge shell ---------- */
 function challenge(c){
   const d=DATA.datasets[c.dataset];
-  $('#hdr').innerHTML=`<button class="back" id="bk">← All challenges</button><div class="eyebrow" style="margin-top:6px">${d.name} · ${d.db}</div><h1>${c.title}</h1>
-   <div class="metachips"><span class="rank ${c.rank}">${RANKS[c.rank]}</span><span class="metachip">⏱ ${c.minutes} min</span><span class="metachip">${c.skills.join(' · ')}</span></div>
-   <nav class="stepper" role="tablist" id="stp">${STEPS.map((s,i)=>`<button role="tab" data-s="${i+1}" aria-selected="${state.step===i+1}" class="${isDone(c.id)||i+1<state.step?'done':''}"><span class="dot">${isDone(c.id)||i+1<state.step?'✓':i+1}</span>${s[0]} <small>${s[1]}</small></button>`).join('')}</nav>`;
+  $('#hdr').innerHTML=`<button class="back" id="bk">${t('← All challenges')}</button><div class="eyebrow" style="margin-top:6px">${d.name} · ${d.db}</div><h1>${c.title}</h1>
+   ${getLang()==='vi'&&!c.vi&&!c.locked?`<p class="note" style="margin-top:8px">${t('This case is not translated yet, so it shows in English.')}</p>`:''}
+   <div class="metachips"><span class="rank ${c.rank}">${RANKS[c.rank]}</span>${chip(c.dataset)}<span class="metachip">⏱ ${c.minutes} min</span><span class="metachip">${c.skills.join(' · ')}</span></div>
+   <nav class="stepper" role="tablist" id="stp">${STEPS.map((s,i)=>`<button role="tab" data-s="${i+1}" aria-selected="${state.step===i+1}" class="${isDone(c.id)||i+1<state.step?'done':''}"><span class="dot">${isDone(c.id)||i+1<state.step?'✓':i+1}</span>${t(s[0])} <small>${t(s[1])}</small></button>`).join('')}</nav>`;
   $('#bk').onclick=toHub;
   $$('#stp [data-s]').forEach(b=>b.onclick=()=>{state.step=+b.dataset.s;LS.set('step',state.step);draw();window.scrollTo({top:0});});
   const body=[context,approach,solveAll][state.step-1](c);
-  $('#main').innerHTML=`<section class="stack" style="padding-top:20px">${body}</section><div class="nav2">${state.step>1?'<button class="btn" id="pv">← Back</button>':'<span></span>'}${state.step<3?`<button class="btn primary" id="nx">${['Plan the approach →','Solve it →'][state.step-1]}</button>`:'<button class="btn" id="rs">Reset this challenge</button>'}</div>`;
+  $('#main').innerHTML=`<section class="stack" style="padding-top:20px">${body}</section><div class="nav2">${state.step>1?`<button class="btn" id="pv">${t('← Back')}</button>`:'<span></span>'}${state.step<3?`<button class="btn primary" id="nx">${[t('Plan the approach →'),t('Solve it →')][state.step-1]}</button>`:`<button class="btn" id="rs">${t('Reset this challenge')}</button>`}</div>`;
   const go=n=>{state.step=n;LS.set('step',n);draw();window.scrollTo({top:0});};
   if($('#pv'))$('#pv').onclick=()=>go(state.step-1); if($('#nx'))$('#nx').onclick=()=>{if(state.step===1)celebrate(c,1);else if(state.step===2&&(LS.get('n:'+c.id+':f')||'').trim().length>=20)celebrate(c,2);go(state.step+1);};
-  if($('#rs'))$('#rs').onclick=e=>{const b=e.currentTarget; if(!b.dataset.a){b.dataset.a=1;b.textContent='Click again to clear notes and progress';setTimeout(()=>{delete b.dataset.a;b.textContent='Reset this challenge'},4000);return;}
+  if($('#rs'))$('#rs').onclick=e=>{const b=e.currentTarget; if(!b.dataset.a){b.dataset.a=1;b.textContent=t('Click again to clear notes and progress');setTimeout(()=>{delete b.dataset.a;b.textContent=t('Reset this challenge')},4000);return;}
     ['done:'+c.id,'n:'+c.id+':f','n:'+c.id+':a','cele:'+c.id+':1','cele:'+c.id+':2','cele:'+c.id+':3'].forEach(k=>LS.del(k));LS.del('chk:'+c.id);draw();};
   after(c);
 }
@@ -88,25 +91,25 @@ let afterFns=[];const after=c=>{afterFns.forEach(f=>f(c));afterFns=[];if(MODE.fr
 
 /* ---------- 1 context ---------- */
 function context(c){const b=c.brief;
-  const cx=c.context?`<div class="card ctx"><h2><small>Business context</small> Read this before the request</h2><p><b>The business.</b> ${c.context.company}</p><p><b>What is going on.</b> ${c.context.situation}</p><p><b>The decision at stake.</b> ${c.context.decision}</p></div>`:'';
-  return cx+`<div class="card mail"><h2><small>Incoming request</small></h2><div class="hd"><span><b>From:</b> ${b.from_}</span><span><b>To:</b> You, Data Analyst</span><span><b>Subject:</b> ${b.subject}</span></div>
+  const cx=c.context?`<div class="card ctx"><h2><small>${t('Business context')}</small> ${t('Read this before the request')}</h2><p><b>${t('The business.')}</b> ${c.context.company}</p><p><b>${t('What is going on.')}</b> ${c.context.situation}</p><p><b>${t('The decision at stake.')}</b> ${c.context.decision}</p></div>`:'';
+  return cx+`<div class="card mail"><h2><small>${t('Incoming request')}</small></h2><div class="hd"><span><b>${t('From:')}</b> ${b.from_}</span><span><b>${t('To:')}</b> ${t('You, Data Analyst')}</span><span><b>${t('Subject:')}</b> ${b.subject}</span></div>
    ${b.body.map(p=>`<p>${p}</p>`).join('')}</div>
-   <div class="card"><h2><small>Good to know</small></h2>${li(b.facts)}</div>
-   <div class="card"><h2><small>Key questions</small> What you need to answer</h2><ol class="kq">${c.questions.map(q=>`<li>${q}</li>`).join('')}</ol></div>
+   <div class="card"><h2><small>${t('Good to know')}</small></h2>${li(b.facts)}</div>
+   <div class="card"><h2><small>${t('Key questions')}</small> ${t('What you need to answer')}</h2><ol class="kq">${c.questions.map(q=>`<li>${q}</li>`).join('')}</ol></div>
    <div class="ask">${b.ask}</div>`;
 }
 
 /* ---------- 2 approach ---------- */
 function approach(c){const f=c.frame, k='n:'+c.id+':f';
   afterFns.push(()=>{const t=$('#fnote');t.value=LS.get(k)||'';t.oninput=()=>LS.set(k,t.value);setupPicks(c);});
-  return `<div class="lead"><span>Do not touch the data yet. <b>Think first:</b> write your plan below, then open the hints one at a time.</span></div>
-   <div class="card"><h2><small>Your turn</small> Sketch your approach</h2><textarea id="fnote" placeholder="Which decision sits behind this? Which metrics would you compute? Which tables? What could mislead you?"></textarea><p class="note" style="margin-top:6px">Saved only in this browser.</p></div>
-   <div class="card"><h2><small>Hints</small> Open only what you need</h2>
-    <details class="reveal"><summary>Hint 1 · A nudge</summary><p>${f.nudge}</p></details>
-    <details class="reveal"><summary>Hint 2 · How to break it down</summary>${tree(f.tree)}<p style="margin:8px 0 2px"><b>Hypotheses to test</b></p>${li(f.hyp)}</details>
-    <details class="reveal"><summary>Hint 3 · What usually goes wrong</summary>${li(f.traps)}</details>
-    <details class="reveal"><summary>Suggested metrics (define your own first)</summary><div class="tbl-wrap"><table class="j mt"><tr><th>Metric</th><th>Definition</th></tr>${c.metrics.map(m=>`<tr><td><b>${m[0]}</b></td><td>${m[1]}</td></tr>`).join('')}</table></div></details>
-    <details class="reveal"><summary>Suggested tables (pick yours, then check)</summary><div class="picks" id="picks"></div><div style="margin-top:8px"><button class="btn primary" id="chk">Check my choice</button></div><div class="fb" id="pfb" aria-live="polite"></div></details></div>`;
+  return `<div class="lead"><span>${t('Do not touch the data yet. <b>Think first:</b> write your plan below, then open the hints one at a time.')}</span></div>
+   <div class="card"><h2><small>${t('Your turn')}</small> ${t('Sketch your approach')}</h2><textarea id="fnote" placeholder="${t('Which decision sits behind this? Which metrics would you compute? Which tables? What could mislead you?')}"></textarea><p class="note" style="margin-top:6px">${t('Saved only in this browser.')}</p></div>
+   <div class="card"><h2><small>${t('Hints')}</small> ${t('Open only what you need')}</h2>
+    <details class="reveal"><summary>${t('Hint 1 · A nudge')}</summary><p>${f.nudge}</p></details>
+    <details class="reveal"><summary>${t('Hint 2 · How to break it down')}</summary>${tree(f.tree)}<p style="margin:8px 0 2px"><b>${t('Hypotheses to test')}</b></p>${li(f.hyp)}</details>
+    <details class="reveal"><summary>${t('Hint 3 · What usually goes wrong')}</summary>${li(f.traps)}</details>
+    <details class="reveal"><summary>${t('Suggested metrics (define your own first)')}</summary><div class="tbl-wrap"><table class="j mt"><tr><th>${t('Metric')}</th><th>${t('Definition')}</th></tr>${c.metrics.map(m=>`<tr><td><b>${m[0]}</b></td><td>${m[1]}</td></tr>`).join('')}</table></div></details>
+    <details class="reveal"><summary>${t('Suggested tables (pick yours, then check)')}</summary><div class="picks" id="picks"></div><div style="margin-top:8px"><button class="btn primary" id="chk">${t('Check my choice')}</button></div><div class="fb" id="pfb" aria-live="polite"></div></details></div>`;
 }
 
 /* ---------- 3 solve, visualize, conclude ---------- */
@@ -114,12 +117,12 @@ function solveAll(c){
   const d=c.data, R=c.results, k='n:'+c.id+':a', ck='chk:'+c.id; let n=0;
   const LIVE=['adw','crm','gbe'].includes(c.dataset), DS=DATA.datasets[c.dataset];
   afterFns.push(()=>{const host=$('#live');if(!host)return;
-    if(!LIVE){host.innerHTML=`<div class="note-box">This case uses the ${DS.name} database (${DS.db}), which is too large to load here. Run its SQL in SQL Server. The expected query and output below show what you should get.</div>`;return;}
-    const h=mountSql(host,{profile:'cs',datasets:[c.dataset],sql:'-- Write your T-SQL here. Table names match SQL Server.\n'});
+    if(!LIVE){host.innerHTML=`<div class="note-box">${t('This case uses the {name} database ({db}), which is too large to load here. Run its SQL in SQL Server. The expected query and output below show what you should get.',{name:DS.name,db:DS.db})}</div>`;return;}
+    const h=mountSql(host,{profile:'cs',datasets:[c.dataset],sql:t('-- Write your T-SQL here. Table names match SQL Server.\n')});
     $$('pre.sql').forEach(pre=>{if(host.contains(pre)||/_{4,}|\.\.\./.test(pre.textContent))return;
-      const b=document.createElement('button');b.className='btn tryit';b.textContent='Run in the editor';
+      const b=document.createElement('button');b.className='btn tryit';b.textContent=t('Run in the editor');
       b.onclick=()=>{h.setSql(pre.textContent);h.run();host.scrollIntoView({behavior:'smooth',block:'center'});};pre.after(b);});});
-  afterFns.push(()=>{setupQuiz(c);drawCharts(c);$$('[data-tbl]').forEach(b=>b.onclick=()=>{const t=$('#'+b.dataset.tbl),on=t.hidden;t.hidden=!on;b.setAttribute('aria-pressed',on);b.textContent=on?'Hide table':'Show table';});
+  afterFns.push(()=>{setupQuiz(c);drawCharts(c);$$('[data-tbl]').forEach(b=>b.onclick=()=>{const t=$('#'+b.dataset.tbl),on=t.hidden;t.hidden=!on;b.setAttribute('aria-pressed',on);b.textContent=on?t('Hide table'):t('Show table');});
     const t=$('#anote');t.value=LS.get(k)||'';t.oninput=()=>LS.set(k,t.value);
     let saved=[];try{saved=JSON.parse(LS.get(ck)||'[]')}catch(e){}
     $$('#rub input').forEach((x,i)=>{x.checked=!!saved[i];x.onchange=()=>upd(true);});upd();
@@ -127,32 +130,37 @@ function solveAll(c){
       if(m===all.length){LS.set('done:'+c.id,'1');if(user&&!was)celebrate(c,3);}else LS.del('done:'+c.id);$('#closed').classList.toggle('on',m===all.length);}
     if(c.whatif)whatif(c);});
   const pre=d.pre?`<p><b>${d.pre.title}</b></p>${sqlBlock(d.pre.sql)}${table(R[d.pre.result])}`:'';
-  const b1=`<details class="blk" open><summary><span class="n">${++n}</span> Solve it</summary><div class="bd">
-    <p><b>Goal.</b> ${d.goal}</p><p class="note">Write the query yourself first. Open a hint only when you are stuck.</p><div id="live" class="livehost"></div>
-    <details class="reveal"><summary>Hint · Grain and joins</summary>${li(d.grain)}</details>
-    <details class="reveal"><summary>Hint · Query skeleton</summary>${sqlBlock(d.skeleton)}</details>
-    <details class="reveal"><summary>Expected T-SQL and output</summary>${pre}${sqlBlock(d.solution)}<p><b>Expected output</b> <span class="note">(DuckDB run on the CSV files, with the exact query above)</span></p>${table(R[d.result])}${c.extra_sql?`<p><b>${c.extra_sql.title}</b></p>${sqlBlock(c.extra_sql.sql)}${table(R[c.extra_sql.result])}`:''}
-     <div class="card pit"><h2><small>Watch out</small></h2>${li(d.watch)}</div></details></div></details>`;
+  const used=c.data.tables.filter(t=>t[1]), dm=DOMAINS[c.dataset];
+  const plan=(LS.get('n:'+c.id+':f')||'').trim();
+  const left=`<div class="paneh">${t('Context, plan and hints')}</div><p><b>${t('Goal.')}</b> ${d.goal}</p><p class="note">${t('Write the query yourself first. Open a hint only when you are stuck.')}</p>
+    <div class="dataused"><b>${t('Data used')}</b> ${chip(c.dataset,true)}${dm?`<span class="note">${dm.about}.</span>`:''}<ul class="tl">${used.map(t=>`<li><code>${t[0]}</code> <span class="note">${t[2]}</span></li>`).join('')}</ul></div>
+    <details class="reveal"><summary>${t('Key questions')}</summary><ol class="kq">${c.questions.map(q=>`<li>${q}</li>`).join('')}</ol></details>
+    <details class="reveal"><summary>${t('Your plan from step 2')}</summary>${plan?`<p style="white-space:pre-wrap">${esc(plan)}</p>`:`<p class="note">${t('You did not write a plan yet. Go back to step 2 and sketch one.')}</p>`}</details>
+    <details class="reveal"><summary>${t('Hint · Grain and joins')}</summary>${li(d.grain)}</details>
+    <details class="reveal"><summary>${t('Hint · Query skeleton')}</summary>${sqlBlock(d.skeleton)}</details>
+    <details class="reveal"><summary>${t('Expected T-SQL and output')}</summary>${pre}${sqlBlock(d.solution)}<p><b>${t('Expected output')}</b> <span class="note">${t('(DuckDB run on the CSV files, with the exact query above)')}</span></p>${table(R[d.result])}${c.extra_sql?`<p><b>${c.extra_sql.title}</b></p>${sqlBlock(c.extra_sql.sql)}${table(R[c.extra_sql.result])}`:''}
+     <div class="card pit"><h2><small>${t('Watch out')}</small></h2>${li(d.watch)}</div></details>`;
+  const b1=`<details class="blk" open><summary><span class="n">${++n}</span> ${t('Solve it')}</summary><div class="bd"><div class="split"><div class="split-l">${left}</div><div class="split-r"><div class="paneh">${t('SQL editor')}</div><div id="live" class="livehost"></div></div></div></div></details>`;
   const figs=c.viz_specs.map((v,i)=>`<div class="figure"><h3>${v.title}</h3><div class="sub">${v.sub}</div>${v.series.length>1?`<div class="legend">${v.series.map((s,j)=>`<span><i class="${v.type==='bar'?'sq':''}" style="background:var(--c${j+1})"></i>${s.label}</span>`).join('')}</div>`:''}
-    <div class="ch" id="ch${i}"></div><div><button class="btn" data-tbl="tb${i}" aria-pressed="false">Show table</button></div><div class="tbl-wrap" id="tb${i}" hidden>${table(R[v.result])}</div><p class="note" style="margin-top:6px"><b>Why this chart:</b> ${v.why}</p></div>`).join('');
-  const b2=`<details class="blk"><summary><span class="n">${++n}</span> Visualize</summary><div class="bd"><p class="note">Decide which chart you would build before you open ours.</p><details class="reveal"><summary>Show the suggested chart${c.viz_specs.length>1?'s':''}</summary><div class="figs">${figs}</div></details></div></details>`;
+    <div class="ch" id="ch${i}"></div><div><button class="btn" data-tbl="tb${i}" aria-pressed="false">${t('Show table')}</button></div><div class="tbl-wrap" id="tb${i}" hidden>${table(R[v.result])}</div><p class="note" style="margin-top:6px"><b>${t('Why this chart:')}</b> ${v.why}</p></div>`).join('');
+  const b2=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Visualize')}</summary><div class="bd"><p class="note">${t('Decide which chart you would build before you open ours.')}</p><details class="reveal"><summary>${c.viz_specs.length>1?t('Show the suggested charts'):t('Show the suggested chart')}</summary><div class="figs">${figs}</div></details></div></details>`;
   let b3='';
-  if(c.dig){b3+=`<details class="blk"><summary><span class="n">${++n}</span> Dig one level deeper</summary><div class="bd"><p><b>${c.dig.title}</b></p><details class="reveal"><summary>Show the query and output</summary>${sqlBlock(c.dig.sql)}${table(R[c.dig.result])}<p>${c.dig.read}</p></details></div></details>`;}
+  if(c.dig){b3+=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Dig one level deeper')}</summary><div class="bd"><p><b>${c.dig.title}</b></p><details class="reveal"><summary>Show the query and output</summary>${sqlBlock(c.dig.sql)}${table(R[c.dig.result])}<p>${c.dig.read}</p></details></div></details>`;}
   if(c.stats){const s=c.stats;
-    b3+=`<details class="blk"><summary><span class="n">${++n}</span> Test it (statistics)</summary><div class="bd"><p>${s.prompt}</p><div class="check" id="quiz">${s.options.map((o,i)=>`<label><input type="radio" name="qz" value="${i}"> <span>${o[0]}</span></label>`).join('')}</div><div class="fb" id="qfb" aria-live="polite"></div>
+    b3+=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Test it (statistics)')}</summary><div class="bd"><p>${s.prompt}</p><div class="check" id="quiz">${s.options.map((o,i)=>`<label><input type="radio" name="qz" value="${i}"> <span>${o[0]}</span></label>`).join('')}</div><div class="fb" id="qfb" aria-live="polite"></div>
     <div class="stat">${s.tiles.map(t=>`<div class="${t[3]?'neg':''}"><b>${t[0]}</b><span>${t[1]}</span><small>${t[2]}</small></div>`).join('')}</div>${li(s.read)}<div class="card pit"><h2><small>Watch out</small></h2>${li(s.watch)}</div></div></details>`;}
   const wi=c.whatif?`<div class="card"><h2><small>What-if</small> Click price vs profit</h2><label for="cpc" style="font-size:13px;color:var(--muted)">Click price <b id="cpcv" style="color:var(--fg)">$2.50</b></label><input type="range" id="cpc" min="0.5" max="5" step="0.05" value="2.5" style="width:100%"><div class="stat" id="wif" aria-live="polite" style="margin-top:8px"></div></div>`:'';
-  const b4=`<details class="blk"><summary><span class="n">${++n}</span> Conclude</summary><div class="bd">${wi}<p class="note" style="margin:0">Write three sentences: the call, the evidence with numbers, the action and one caveat.</p><textarea id="anote" style="min-height:120px"></textarea>
-    <details class="reveal"><summary>Show the model answer</summary>${c.answer.model.map(p=>`<p>${p}</p>`).join('')}</details>
-    <p style="margin:6px 0 4px"><b>Self-check</b> (tick when your answer does it)</p><div class="check" id="rub">${c.answer.checks.map(x=>`<label><input type="checkbox"> <span>${x}</span></label>`).join('')}</div>
-    <div class="closed" id="closed">✓ Case complete: ${c.title}</div></div></details>`;
+  const b4=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Conclude')}</summary><div class="bd">${wi}<p class="note" style="margin:0">${t('Write three sentences: the call, the evidence with numbers, the action and one caveat.')}</p><textarea id="anote" style="min-height:120px"></textarea>
+    <details class="reveal"><summary>${t('Show the model answer')}</summary>${c.answer.model.map(p=>`<p>${p}</p>`).join('')}</details>
+    <p style="margin:6px 0 4px"><b>${t('Self-check')}</b> ${t('(tick when your answer does it)')}</p><div class="check" id="rub">${c.answer.checks.map(x=>`<label><input type="checkbox"> <span>${x}</span></label>`).join('')}</div>
+    <div class="closed" id="closed">${t('✓ Case complete: {title}',{title:c.title})}</div></div></details>`;
   return b1+b2+b3+b4;
 }
 function setupPicks(c){const sel=new Set(), T=c.data.tables;
   $('#picks').innerHTML=T.map(t=>`<button class="chip" aria-pressed="false" data-t="${t[0]}">${t[0]}</button>`).join('');
   $$('#picks .chip').forEach(b=>b.onclick=()=>{const k=b.dataset.t;sel.has(k)?sel.delete(k):sel.add(k);b.setAttribute('aria-pressed',sel.has(k));});
-  $('#chk').onclick=()=>{$('#pfb').innerHTML=T.map(([n,need,why])=>{const s=sel.has(n),g=(s===!!need);return `<div class="${g?'y':'n'}"><b>${g?'✓':'✗'} ${n}</b> ${s&&!need?'selected, but ':(!s&&need?'missing. ':'')}${why}</div>`;}).join('');};}
-function setupQuiz(c){if(!c.stats)return;$$('#quiz input').forEach(r=>r.onchange=()=>{const o=c.stats.options[+r.value];$('#qfb').innerHTML=`<div class="${o[1]?'y':'n'}"><b>${o[1]?'✓ Right.':'✗ Not quite.'}</b> ${o[2]}</div>`;});}
+  $('#chk').onclick=()=>{$('#pfb').innerHTML=T.map(([n,need,why])=>{const s=sel.has(n),g=(s===!!need);return `<div class="${g?'y':'n'}"><b>${g?'✓':'✗'} ${n}</b> ${s&&!need?t('selected, but '):(!s&&need?t('missing. '):'')}${why}</div>`;}).join('');};}
+function setupQuiz(c){if(!c.stats)return;$$('#quiz input').forEach(r=>r.onchange=()=>{const o=c.stats.options[+r.value];$('#qfb').innerHTML=`<div class="${o[1]?'y':'n'}"><b>${o[1]?t('✓ Right.'):t('✗ Not quite.')}</b> ${o[2]}</div>`;});}
 
 /* ---------- charts ---------- */
 const COL=i=>`var(--c${i+1})`;

@@ -1,11 +1,13 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=0015d894c1";
-import { mountHomework } from "./homework.js?v=0015d894c1";
-import { mountCases } from "./cases.js?v=0015d894c1";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=0015d894c1";
-import * as sync from "./sync.js?v=0015d894c1";
-import { MODE } from "./mode.js?v=0015d894c1";
-import * as free from "./free.js?v=0015d894c1";
+import * as engine from "./engine.js?v=ec44d67bb5";
+import { mountHomework } from "./homework.js?v=ec44d67bb5";
+import { mountCases } from "./cases.js?v=ec44d67bb5";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=ec44d67bb5";
+import * as sync from "./sync.js?v=ec44d67bb5";
+import { MODE } from "./mode.js?v=ec44d67bb5";
+import * as free from "./free.js?v=ec44d67bb5";
+import { chip, DOMAINS } from "./domains.js?v=ec44d67bb5";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=ec44d67bb5";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -41,7 +43,7 @@ if (!MODE.free) await sync.init();
 engine.onStatus(s => {
   const el = $("#eng"); if (!el) return;
   el.dataset.phase = s.phase;
-  el.textContent = MODE.free && s.phase === "idle" ? "SQL loads on first Run" : s.phase === "ready" ? "SQL ready" : s.phase === "error" ? "SQL engine error" : `Loading the SQL engine… ${s.pct || 0}%`;
+  el.textContent = MODE.free && s.phase === "idle" ? t("SQL loads on first Run") : s.phase === "ready" ? t("SQL ready") : s.phase === "error" ? t("SQL engine error") : t("Loading the SQL engine… {n}%", { n: s.pct || 0 });
   el.title = s.message || "";
 });
 // Start the engine as soon as the page opens, then pull the ADW and CRM tables in the background.
@@ -49,57 +51,57 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=0015d894c1");
-  const cs = await json("data/challenges.json?v=0015d894c1"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  hwData ??= await json("data/homework.json?v=ec44d67bb5");
+  const cs = await json("data/challenges.json?v=ec44d67bb5"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
-  hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>Think like an analyst. <span class="gt">Solve real business cases</span> with a data-driven mindset and the right tech stack.</h1>
-    <p>Every exercise starts from a question a business would really ask. You decide what to measure and why, choose the right tool for the job (SQL, Power BI, Python, statistics), and finish with a conclusion you can defend. This Lab is where you practise the SQL part on the class tables.</p>
+  hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>${t("Think like an analyst.")} <span class="gt">${t("Solve real business cases")}</span>${t(" with a data-driven mindset and the right tech stack.")}</h1>
+    <p>${t("Every exercise starts from a question a business would really ask. You decide what to measure and why, choose the right tool for the job (SQL, Power BI, Python, statistics), and finish with a conclusion you can defend. This Lab is where you practise the SQL part on the class tables.")}</p>
     <ul class="usps">
-      <li><b>Real-life case studies</b><span>Requests that come from real companies, solved from brief to recommendation.</span></li>
-      <li><b>Analytical mindset</b><span>Plan the approach and the metrics first. Syntax comes second.</span></li>
-      <li><b>Practical, hands-on</b><span>Run T-SQL in the browser on the same tables used in class.</span></li>
-      <li><b>Try first, then compare</b><span>Hints along the way. Hints and model answers open after 5 different tries.</span></li></ul>`;
-  const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>What's new</small> Latest from the course</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(n.tag)}</span><div><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">Open</button>` : ""}</li>`).join("")}</ul></section>` : "";
+      <li><b>${t("Real-life case studies")}</b><span>${t("Requests that come from real companies, solved from brief to recommendation.")}</span></li>
+      <li><b>${t("Analytical mindset")}</b><span>${t("Plan the approach and the metrics first. Syntax comes second.")}</span></li>
+      <li><b>${t("Practical, hands-on")}</b><span>${t("Run T-SQL in the browser on the same tables used in class.")}</span></li>
+      <li><b>${t("Try first, then compare")}</b><span>${t("Hints along the way. Hints and model answers open after 5 different tries.")}</span></li></ul>`;
+  const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>${t("What's new")}</small> ${t("Latest from the course")}</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(n.tag)}</span><div><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">${t("Open")}</button>` : ""}</li>`).join("")}</ul></section>` : "";
   main.innerHTML = `<div class="hub">${newsHtml}<div class="cards homecards">
-      <button class="cc big" data-go="guides"><span class="tag">SQL, BI and analytics</span><b>Study Guides</b><span class="sk">A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.</span>
-        <span class="row"><span class="tm">${GUIDES.length} guides</span></span></button>
-      <button class="cc big" data-go="homework"><span class="tag">SQL topics</span><b>Homework</b><span class="sk">${hwq.length} business questions from the SQL lessons, with hints, an answer check and the model answer.</span>
-        <span class="row"><span class="tm">${hwq.filter(q => q.check === "auto").length} with auto-check</span>${done ? `<span class="dn">${done}/${hwq.length} done</span>` : ""}</span></button>
-      <button class="cc big" data-go="interview"><span class="tag o">3 rounds + Big Tech SQL</span><b>Interview Prep</b><span class="sk">${ivq.length} questions in the style of real analyst tests: a SQL screen, a metrics and ops round, a take-home case and 13 big-tech SQL questions, each with a target time.</span>
-        <span class="row"><span class="tm">About 4 hours in total</span>${ivDone ? `<span class="dn">${ivDone}/${ivq.length} done</span>` : ""}</span></button>
-      <button class="cc big" data-go="cases"><span class="tag o">3 steps each</span><b>Case Studies</b><span class="sk">${cs.challenges.length} cases: read the request, plan your approach, then solve, chart and conclude.</span>
-        <span class="row"><span class="tm">${live} run live on the real tables</span></span></button>
-      <button class="cc big" data-go="dictionary"><span class="tag">Reference</span><b>Data Dictionary</b><span class="sk">Every class table: columns, types, keys, missing values and how the tables join, on a relationship map you can search.</span>
-        <span class="row"><span class="tm">ADW, CRM, GBE and more</span></span></button>
-      <button class="cc big" data-go="playground"><span class="tag g">Free practice</span><b>Playground</b><span class="sk">An open editor on the AdventureWorks, CRM and Global Electronics tables.</span>
-        <span class="row"><span class="tm">No exercise attached</span></span></button></div>
-    <section class="card guidecard"><h2><small>Learning guidelines</small> How to learn with the Lab</h2>
-      <p class="note">The Lab lets you open hints and model answers while you practise. These guidelines show how to use them so the practice builds your own skill.</p>
+      <button class="cc big" data-go="guides"><span class="tag">${t("SQL, BI and analytics")}</span><b>${t("Study Guides")}</b><span class="sk">${t("A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.")}</span>
+        <span class="row"><span class="tm">${t("{n} guides",{n:GUIDES.length})}</span></span></button>
+      <button class="cc big" data-go="homework"><span class="tag">${t("SQL topics")}</span><b>${t("Homework")}</b><span class="sk">${t("{n} business questions from the SQL lessons, with hints, an answer check and the model answer.",{n:hwq.length})}</span>
+        <span class="row"><span class="tm">${t("{n} with auto-check",{n:hwq.filter(q => q.check === "auto").length})}</span>${done ? `<span class="dn">${t("{n}/{m} done",{n:done,m:hwq.length})}</span>` : ""}</span></button>
+      <button class="cc big" data-go="interview"><span class="tag o">${t("3 rounds + Big Tech SQL")}</span><b>${t("Interview Prep")}</b><span class="sk">${t("{n} questions in the style of real analyst tests: a SQL screen, a metrics and ops round, a take-home case and 13 big-tech SQL questions, each with a target time.",{n:ivq.length})}</span>
+        <span class="row"><span class="tm">${t("About 4 hours in total")}</span>${ivDone ? `<span class="dn">${t("{n}/{m} done",{n:ivDone,m:ivq.length})}</span>` : ""}</span></button>
+      <button class="cc big" data-go="cases"><span class="tag o">${t("3 steps each")}</span><b>${t("Case Studies")}</b><span class="sk">${t("{n} cases: read the request, plan your approach, then solve, chart and conclude.",{n:cs.challenges.length})}</span>
+        <span class="row"><span class="tm">${t("{n} run live on the real tables",{n:live})}</span></span></button>
+      <button class="cc big" data-go="dictionary"><span class="tag">${t("Reference")}</span><b>${t("Data Dictionary")}</b><span class="sk">${t("Every class table: columns, types, keys, missing values and how the tables join, on a relationship map you can search.")}</span>
+        <span class="row"><span class="tm">${t("ADW, CRM, GBE and more")}</span></span></button>
+      <button class="cc big" data-go="playground"><span class="tag g">${t("Free practice")}</span><b>${t("Playground")}</b><span class="sk">${t("An open editor on the AdventureWorks, CRM and Global Electronics tables.")}</span>
+        <span class="row"><span class="tm">${t("No exercise attached")}</span></span></button></div>
+    <section class="card guidecard"><h2><small>${t("Learning guidelines")}</small> ${t("How to learn with the Lab")}</h2>
+      <p class="note">${t("The Lab lets you open hints and model answers while you practise. These guidelines show how to use them so the practice builds your own skill.")}</p>
       <div class="gl">
-        <div><h3>1. How to practise a question</h3><ol>
-          <li>Read the question and write your approach first, on paper or as a comment in the editor: which tables, what one row means (the grain), which metric. Two or three minutes is enough.</li>
-          <li>Write your query and run it. A rough first version is fine.</li>
-          <li>Look at your result before you read any feedback. Check the row count, the columns and a few numbers against what the question asks. If something looks off, try to find out why before you open anything.</li>
-          <li>Press Check my answer (or compare with the expected output on open questions). Keep trying and changing your query: the hint and the model answer open after 5 different tries.</li></ol></div>
-        <div><h3>2. When to open hints and model answers</h3><ul>
-          <li><b>Hints:</b> open one when you have been stuck on the same problem for a while. Go back to your query after each hint and open the next one only if you are still stuck. In the Case Studies, hints come in order: a nudge first, then how to break the problem down, then what usually goes wrong.</li>
-          <li><b>Model answers:</b> open them after you have a result of your own, correct or not. For case studies and written tasks, write your own conclusion first, then compare.</li>
-          <li><b>The 5-try rule:</b> on homework, the hint and the model answer open after 5 different tries (a Run or a Check with a changed query). A query that errors still counts. On written tasks, write a first draft of about 80 characters first.</li>
-          <li><b>Still stuck after that?</b> Send your mentors your query and the point where you got stuck. That message teaches you more than the answer alone.</li></ul></div>
-        <div><h3>3. How to use a model answer</h3><ul>
-          <li>Compare the logic before the syntax: the grain, the joins, the filters and how the metric is defined.</li>
-          <li>If your result matched but your SQL looks different, ask which version a colleague would find easier to read, and which one still works with ten times the data.</li>
-          <li>If your result did not match, find the first line where your logic and the model answer split. Fix your own query from that line and run it again.</li>
-          <li>The next day, close the answer and rewrite the query from memory. Write one line on what you would do differently next time.</li></ul></div>
+        <div><h3>${t("1. How to practise a question")}</h3><ol>
+          <li>${t("Read the question and write your approach first, on paper or as a comment in the editor: which tables, what one row means (the grain), which metric. Two or three minutes is enough.")}</li>
+          <li>${t("Write your query and run it. A rough first version is fine.")}</li>
+          <li>${t("Look at your result before you read any feedback. Check the row count, the columns and a few numbers against what the question asks. If something looks off, try to find out why before you open anything.")}</li>
+          <li>${t("Press Check my answer (or compare with the expected output on open questions). Keep trying and changing your query: the hint and the model answer open after 5 different tries.")}</li></ol></div>
+        <div><h3>${t("2. When to open hints and model answers")}</h3><ul>
+          <li>${t("<b>Hints:</b> open one when you have been stuck on the same problem for a while. Go back to your query after each hint and open the next one only if you are still stuck. In the Case Studies, hints come in order: a nudge first, then how to break the problem down, then what usually goes wrong.")}</li>
+          <li>${t("<b>Model answers:</b> open them after you have a result of your own, correct or not. For case studies and written tasks, write your own conclusion first, then compare.")}</li>
+          <li>${t("<b>The 5-try rule:</b> on homework, the hint and the model answer open after 5 different tries (a Run or a Check with a changed query). A query that errors still counts. On written tasks, write a first draft of about 80 characters first.")}</li>
+          <li>${t("<b>Still stuck after that?</b> Send your mentors your query and the point where you got stuck. That message teaches you more than the answer alone.")}</li></ul></div>
+        <div><h3>${t("3. How to use a model answer")}</h3><ul>
+          <li>${t("Compare the logic before the syntax: the grain, the joins, the filters and how the metric is defined.")}</li>
+          <li>${t("If your result matched but your SQL looks different, ask which version a colleague would find easier to read, and which one still works with ten times the data.")}</li>
+          <li>${t("If your result did not match, find the first line where your logic and the model answer split. Fix your own query from that line and run it again.")}</li>
+          <li>${t("The next day, close the answer and rewrite the query from memory. Write one line on what you would do differently next time.")}</li></ul></div>
       </div></section>
-    <div class="card"><h2><small>Good to know</small></h2><ul>
-      <li>Queries run in your browser. Nothing you type is sent anywhere.</li>
-      <li>Table names match the class SQL Server database (<code>ADW_</code>, <code>CRM_</code>, <code>GBE_</code>), so a query written here pastes into SQL Server unchanged.</li>
-      <li>The first load downloads the SQL engine, about 40 MB. After that it opens from the cache.</li></ul></div></div>`;
+    <div class="card"><h2><small>${t("Good to know")}</small></h2><ul>
+      <li>${t("Queries run in your browser. Nothing you type is sent anywhere.")}</li>
+      <li>${t("Table names match the class SQL Server database (<code>ADW_</code>, <code>CRM_</code>, <code>GBE_</code>), so a query written here pastes into SQL Server unchanged.")}</li>
+      <li>${t("The first load downloads the SQL engine, about 40 MB. After that it opens from the cache.")}</li></ul></div></div>`;
   $$("[data-go]", main).forEach(b => b.onclick = () => setZone(b.dataset.go, true));
 }
 
@@ -107,16 +109,27 @@ async function home() {
 const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
   return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=0015d894c1");
+  hwData ??= await json("data/homework.json?v=ec44d67bb5");
   mountHomework({ data: hwView(false), hdr, main });
 }
 
 async function interview() {
-  hwData ??= await json("data/homework.json?v=0015d894c1");
+  hwData ??= await json("data/homework.json?v=ec44d67bb5");
   mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
 }
+// Vietnamese case prose is a sparse overlay (data/cases.vi.json, keyed by case id) merged over the English case.
+// Arrays merge by index and null keeps the English value, so metric names, SQL and tables stay as they are.
+const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ? a.map((x, i) => mergeVi(x, b[i]))
+  : a && b && typeof a === "object" && typeof b === "object" ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, mergeVi(v, b[k])])) : b;
+async function loadCases() {
+  const d = await json("data/challenges.json?v=ec44d67bb5");
+  if (getLang() !== "vi") return d;
+  const vi = await json("data/cases.vi.json?v=ec44d67bb5").catch(() => ({}));
+  d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
+  return d;
+}
 async function cases() {
-  if (!casesApp) casesApp = mountCases(await json("data/challenges.json?v=0015d894c1"));
+  if (!casesApp) casesApp = mountCases(await loadCases());
   casesApp.draw();
 }
 
@@ -124,10 +137,11 @@ function playground() {
   const DS = { adw: "AdventureWorks (ADW_)", crm: "CRM Sales (CRM_)", gbe: "Global Electronics (GBE_)" };
   const START = { adw: "SELECT TOP 10 *\nFROM ADW_Sales_orders\nORDER BY TotalDue DESC", crm: "SELECT TOP 10 *\nFROM CRM_sales_pipeline\nORDER BY close_value DESC", gbe: "SELECT TOP 10 *\nFROM GBE_Sales\nORDER BY Order_Date DESC" };
   let ds = store.get("pg:ds") || "adw", panel = null, text = null;
-  hdr.innerHTML = `<div class="eyebrow">Playground</div><h1>Free practice</h1><p>An open editor on the class tables, with no exercise attached. Pick a dataset to see its tables.</p>`;
-  main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}</button>`).join("")}</div><div class="card"><div id="pg"></div></div></section>`;
+  hdr.innerHTML = `<div class="eyebrow">Playground</div><h1>${t("Free practice")}</h1><p>${t("An open editor on the class tables, with no exercise attached. Pick a dataset to see its tables.")}</p>`;
+  main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}<span class="dtag">${DOMAINS[k].domain}</span></button>`).join("")}</div><div class="pgabout note" id="pgabout"></div><div class="card"><div id="pg"></div></div></section>`;
   const render = () => {
     $$("[data-ds]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === ds));
+    $("#pgabout", main).innerHTML = chip(ds, true) + " " + DOMAINS[ds].about + ".";
     panel = mountSql($("#pg", main), { profile: "hw", datasets: [ds], sql: text ?? START[ds] });
   };
   $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); text = START[ds]; render(); });
@@ -178,11 +192,15 @@ async function setZone(z, reset = false) {
   if (reset || (location.hash || "").replace("#", "").split("/")[0] !== z) {
     try { history.replaceState(null, "", "#" + z); } catch (e) { try { location.hash = z; } catch (e2) { } }
   }
-  main.innerHTML = `<p class="note" style="padding-top:20px">Loading…</p>`;
-  try { await RENDER[z](); } catch (e) { main.innerHTML = `<div class="card"><h2>Something went wrong</h2><p>${esc(e.message || e)}</p></div>`; }
+  main.innerHTML = `<p class="note" style="padding-top:20px">${t("Loading…")}</p>`;
+  try { await RENDER[z](); } catch (e) { main.innerHTML = `<div class="card"><h2>${t("Something went wrong")}</h2><p>${esc(e.message || e)}</p></div>`; }
   window.scrollTo({ top: 0 });
 }
 $$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone, true));
+// Language switch: relabel the static shell, then redraw the open zone (cases are rebuilt so the overlay applies).
+$$("#langsw [data-l]").forEach(b => b.onclick = () => setLang(b.dataset.l));
+onLang(() => { casesApp = null; if (current) setZone(current); });
+applyStatic();
 // A study guide (iframe) can send the mentee to a lesson's homework.
 window.addEventListener("message", e => {
   const d = e.data;

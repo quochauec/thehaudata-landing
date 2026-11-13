@@ -392,6 +392,34 @@ iframe.embed{display:block;width:100%;height:calc(100vh - 150px);min-height:560p
 @keyframes rflash{0%,60%{box-shadow:0 0 0 3px #C026D3}100%{box-shadow:0 0 0 0 transparent}}
 .ivnote{margin:0 0 8px;font-size:.85rem;color:var(--muted)}
 
+/* business-domain pills */
+.dom{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;line-height:1;padding:4px 10px;border-radius:99px;border:1.5px solid color-mix(in srgb,var(--dc) 45%,transparent);background:color-mix(in srgb,var(--dc) 10%,transparent);color:var(--fg);white-space:nowrap}
+.dom i{width:8px;height:8px;border-radius:50%;background:var(--dc);flex:none}
+.doms{display:flex;gap:6px;flex-wrap:wrap}
+.doms:empty{display:none}
+#hdr .doms{margin-top:10px}
+.dtag{margin-left:8px;font-size:11px;font-weight:700;opacity:.7}
+.pgabout{margin-top:10px}
+
+/* workbench: question and hints on the left, SQL editor on the right */
+.split{display:grid;gap:16px;min-width:0}
+.split-l,.split-r{display:grid;gap:12px;min-width:0;align-content:start}
+.paneh{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--violet)}
+.dataused{border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;background:var(--surface);padding:10px 14px;display:grid;gap:6px;font-size:13.5px}
+.dataused .tl{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.dataused code{font-family:var(--mono);font-size:12px;font-weight:700}
+@media (min-width:980px){
+  .split{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}
+  .split-r{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;padding-right:2px}
+  .split-l{max-height:none}
+}
+
+/* language switcher */
+.langsw{display:inline-flex;border:1.5px solid var(--line);border-radius:99px;overflow:hidden;flex:none}
+.langsw button{font:inherit;font-size:12px;font-weight:800;letter-spacing:.04em;border:0;background:transparent;color:var(--muted);padding:5px 11px;cursor:pointer}
+.langsw button[aria-pressed="true"]{background:var(--violet);color:#fff}
+.langsw button:focus-visible{outline:3px solid var(--orange);outline-offset:-2px}
+
 /* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
    Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
    Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
@@ -602,19 +630,20 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
     <span>TheHau<span class="acc">Data</span></span><span class="lab">Lab</span>
   </a>
   <nav class="zones" id="zones" aria-label="Zones">
-    <button data-zone="home" aria-selected="false">Home</button>
-    <button data-zone="guides" aria-selected="false">Study Guides</button>
-    <button data-zone="homework" aria-selected="false">Homework</button>
-    <button data-zone="interview" aria-selected="false">Interview Prep</button>
-    <button data-zone="cases" aria-selected="false">Case Studies</button>
-    <button data-zone="dictionary" aria-selected="false">Data Dictionary</button>
-    <button data-zone="playground" aria-selected="false">Playground</button>
-    <button data-zone="setup" aria-selected="false">Installation For mentee</button>
+    <button data-zone="home" aria-selected="false" data-i18n>Home</button>
+    <button data-zone="guides" aria-selected="false" data-i18n>Study Guides</button>
+    <button data-zone="homework" aria-selected="false" data-i18n>Homework</button>
+    <button data-zone="interview" aria-selected="false" data-i18n>Interview Prep</button>
+    <button data-zone="cases" aria-selected="false" data-i18n>Case Studies</button>
+    <button data-zone="dictionary" aria-selected="false" data-i18n>Data Dictionary</button>
+    <button data-zone="playground" aria-selected="false" data-i18n>Playground</button>
+    <button data-zone="setup" aria-selected="false" data-i18n>Installation For mentee</button>
   </nav>
   <span class="eng" id="eng" data-phase="idle"></span>
+  <div class="langsw" id="langsw" role="group" aria-label="Language" data-i18n-attr="aria-label|Language"><button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="vi" aria-pressed="false">VI</button></div>
   <a class="nav-cta" href="https://thehaudata.com/" target="_blank" rel="noopener">thehaudata.com ↗</a>
   <!-- Log out exists only on the real site: the login is not part of the artifact preview. -->
-  <a class="nav-out" id="logout" href="logout" hidden>Log out</a>
+  <a class="nav-out" id="logout" href="logout" hidden data-i18n>Log out</a>
   <script>if(/(^|\.)thehaudata\.com$/.test(location.hostname))document.getElementById("logout").hidden=false</script>
 </nav>
 
@@ -627,13 +656,13 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 <footer class="sitefoot">
   <div class="inner footcta">
     <div>
-      <div class="eyebrow">Next step</div>
-      <h3>Want to learn the full data-analytics workflow?</h3>
-      <p>This Lab is one part of the TheHauData course: real-life case studies, a data-driven mindset, and the right tech stack (SQL, Power BI, Python, statistics), with a mentor beside you.</p>
+      <div class="eyebrow" data-i18n>Next step</div>
+      <h3 data-i18n>Want to learn the full data-analytics workflow?</h3>
+      <p data-i18n>This Lab is one part of the TheHauData course: real-life case studies, a data-driven mindset, and the right tech stack (SQL, Power BI, Python, statistics), with a mentor beside you.</p>
     </div>
     <div class="ctabtns">
-      <a class="btn primary" href="https://thehaudata.com/?utm_source=lab&amp;utm_medium=footer&amp;utm_campaign=upcoming-course" target="_blank" rel="noopener">See the upcoming course ↗</a>
-      <a class="btn" href="https://zalo.me/0362550761" target="_blank" rel="noopener">Ask the mentor on Zalo</a>
+      <a class="btn primary" href="https://thehaudata.com/?utm_source=lab&amp;utm_medium=footer&amp;utm_campaign=upcoming-course" target="_blank" rel="noopener" data-i18n>See the upcoming course ↗</a>
+      <a class="btn" href="https://zalo.me/0362550761" target="_blank" rel="noopener" data-i18n>Ask the mentor on Zalo</a>
     </div>
   </div>
   <div class="inner">
@@ -652,24 +681,24 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
         </svg>
         TheHauData Academy
       </a>
-      <p>Real-life case studies and a data-driven mindset, with SQL practice built in. Built for the mentees of the TheHauData Mentoring Program by Quoc-Hau Le.</p>
+      <p data-i18n>Real-life case studies and a data-driven mindset, with SQL practice built in. Built for the mentees of the TheHauData Mentoring Program by Quoc-Hau Le.</p>
     </div>
-    <div><h4>Practice</h4><ul>
-      <li><a href="#guides" data-zone-link="guides">Study Guides</a></li>
-      <li><a href="#homework" data-zone-link="homework">Homework by topic</a></li>
-      <li><a href="#interview" data-zone-link="interview">Interview Prep</a></li>
-      <li><a href="#cases" data-zone-link="cases">Case Studies</a></li>
-      <li><a href="#dictionary" data-zone-link="dictionary">Data Dictionary</a></li>
-      <li><a href="#playground" data-zone-link="playground">Playground</a></li>
-      <li><a href="#setup" data-zone-link="setup">Installation For mentee</a></li></ul></div>
+    <div><h4 data-i18n>Practice</h4><ul>
+      <li><a href="#guides" data-zone-link="guides" data-i18n>Study Guides</a></li>
+      <li><a href="#homework" data-zone-link="homework" data-i18n>Homework by topic</a></li>
+      <li><a href="#interview" data-zone-link="interview" data-i18n>Interview Prep</a></li>
+      <li><a href="#cases" data-zone-link="cases" data-i18n>Case Studies</a></li>
+      <li><a href="#dictionary" data-zone-link="dictionary" data-i18n>Data Dictionary</a></li>
+      <li><a href="#playground" data-zone-link="playground" data-i18n>Playground</a></li>
+      <li><a href="#setup" data-zone-link="setup" data-i18n>Installation For mentee</a></li></ul></div>
     <div><h4>TheHauData</h4><ul>
-      <li><a href="https://thehaudata.com/?utm_source=lab&amp;utm_medium=footer&amp;utm_campaign=courses" target="_blank" rel="noopener">Courses and mentoring</a></li>
-      <li><a href="https://thehaudata.com/" target="_blank" rel="noopener">About the mentor</a></li></ul></div>
+      <li><a href="https://thehaudata.com/?utm_source=lab&amp;utm_medium=footer&amp;utm_campaign=courses" target="_blank" rel="noopener" data-i18n>Courses and mentoring</a></li>
+      <li><a href="https://thehaudata.com/" target="_blank" rel="noopener" data-i18n>About the mentor</a></li></ul></div>
   </div>
-  <div class="legal">© 2026 TheHauData Academy · Quoc-Hau Le · All rights reserved</div>
+  <div class="legal" data-i18n>© 2026 TheHauData Academy · Quoc-Hau Le · All rights reserved</div>
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=0015d894c1"></script>
+<script type="module" src="js/app.js?v=ec44d67bb5"></script>
 
 </body></html>

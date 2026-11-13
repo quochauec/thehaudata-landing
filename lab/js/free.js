@@ -1,7 +1,7 @@
 // Free Lab (practice.thehaudata.com). Everything here runs only when MODE.free is true; the mentee build loads this file but never calls it.
 // The free build is made by tools/build_free.py from the finished mentee dist/: locked cases, lessons and guides arrive as title-only
 // stubs (`locked: true`), and the model answers of the free items are served from data/answers_free.json behind an email gate.
-import { MODE } from "./mode.js?v=0015d894c1";
+import { MODE } from "./mode.js?v=ec44d67bb5";
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const LS = {
@@ -119,7 +119,7 @@ export function gateReveals(root) {
 
 // ---- Home ------------------------------------------------------------------------------------------------
 export function home({ hdr, main, hw, cs, go }) {
-  const t = MODE.totals || {}, freeCases = cs.challenges.filter(c => !c.locked).length, freeHw = hw.questions.filter(q => !q.locked).length;
+  const t = MODE.totals || {}, freeCases = cs.challenges.filter(c => !c.locked).length, hwq = hw.questions.filter(q => +q.lesson < 20), freeHw = hwq.filter(q => !q.locked).length, ivq = hw.questions.filter(q => +q.lesson >= 20);
   hdr.innerHTML = `<div class="eyebrow">TheHauData · Free Lab</div><h1>Think like an analyst. <span class="gt">Practice SQL on real business cases</span></h1>
     <p>Run T-SQL in your browser on real-looking company data. Every exercise starts from a question a business would ask: you choose what to measure and why, then check your thinking against ours. Nothing to install.</p>
     <p class="fvi">Luyện SQL và tư duy phân tích trên case study thực tế, ngay trên trình duyệt. Không cần cài đặt.</p>
@@ -129,7 +129,8 @@ export function home({ hdr, main, hw, cs, go }) {
       <li><b>Try first, then compare</b><span>Hints along the way. Hints and model answers open after 5 different tries.</span></li></ul>`;
   main.innerHTML = `<div class="hub"><div class="cards homecards">
       <button class="cc big" data-go="cases"><span class="tag o">${freeCases} free</span><b>Case Studies</b><span class="sk">Read the request, plan your approach, then solve, chart and conclude. ${freeCases} of ${cs.challenges.length} cases are open.</span><span class="row"><span class="tm">3 steps each</span></span></button>
-      <button class="cc big" data-go="homework"><span class="tag">SQL topics</span><b>Homework</b><span class="sk">Start with SQL basics and joins, with an answer check. ${freeHw} of ${hw.questions.length} questions are open.</span><span class="row"><span class="tm">Auto-check</span></span></button>
+      <button class="cc big" data-go="homework"><span class="tag">SQL topics</span><b>Homework</b><span class="sk">Start with SQL basics and joins, with an answer check. ${freeHw} of ${hwq.length} questions are open.</span><span class="row"><span class="tm">Auto-check</span></span></button>
+      <button class="cc big" data-go="interview"><span class="tag o">Free sample</span><b>Interview Prep</b><span class="sk">Round 1 of the mock interview: ${ivq.length} SQL screen questions in the style of a real analyst test, each with a target time.</span><span class="row"><span class="tm">About 45 minutes</span></span></button>
       <button class="cc big" data-go="guides"><span class="tag">Study Guides</span><b>Get into SQL</b><span class="sk">A one-page recap of the first SQL lesson, with the classwork solved step by step. 1 of ${t.guides || ""} guides is open.</span><span class="row"><span class="tm">Free guide</span></span></button>
       <button class="cc big" data-go="playground"><span class="tag g">Free practice</span><b>Playground</b><span class="sk">An open editor on the AdventureWorks, CRM and Global Electronics tables.</span><span class="row"><span class="tm">No exercise attached</span></span></button>
       <button class="cc big" data-go="dictionary"><span class="tag">Reference</span><b>Data Dictionary</b><span class="sk">Every class table: columns, types, keys and how the tables join.</span><span class="row"><span class="tm">ADW, CRM, GBE</span></span></button></div>

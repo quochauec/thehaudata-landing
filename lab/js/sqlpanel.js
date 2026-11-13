@@ -1,7 +1,8 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=0015d894c1";
-import { MODE } from "./mode.js?v=0015d894c1";
-import { createEditor } from "../vendor/editor.js?v=0015d894c1";
+import * as engine from "./engine.js?v=ec44d67bb5";
+import { MODE } from "./mode.js?v=ec44d67bb5";
+import { createEditor } from "../vendor/editor.js?v=ec44d67bb5";
+import { t } from "./i18n.js?v=ec44d67bb5";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -11,7 +12,7 @@ export function resultTable(out, limit = 200) {
     ? `<td class="nl">NULL</td>` : `<td class="${out.numeric[i] ? "nu" : ""}">${esc(c)}</td>`).join("") + "</tr>").join("");
   return `<table class="res"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
 }
-export const resultMeta = out => `${out.rows.length.toLocaleString()} rows · ${out.ms.toFixed(0)} ms${out.rows.length > 200 ? " · showing the first 200" : ""}`;
+export const resultMeta = out => t("{n} rows · {ms} ms", { n: out.rows.length.toLocaleString(), ms: out.ms.toFixed(0) }) + (out.rows.length > 200 ? t(" · showing the first 200") : "");
 
 // ---- editor highlighting (shared with the model answers) ----
 const KW = "SELECT|FROM|WHERE|GROUP BY|ORDER BY|JOIN|LEFT JOIN|INNER JOIN|OUTER|FULL|CROSS|ON|AND|OR|NOT|IN|EXISTS|AS|WITH|CASE|WHEN|THEN|ELSE|END|IS|NULL|COUNT|SUM|AVG|MIN|MAX|COALESCE|ISNULL|ROUND|DISTINCT|UNION ALL|UNION|YEAR|MONTH|BY|DESC|ASC|TOP|HAVING|OVER|PARTITION|LIKE|BETWEEN|CAST|CONVERT|DATEPART|DATEDIFF|GETDATE|LAG|LEAD|RANK|DENSE_RANK|ROW_NUMBER|NTILE|PERCENT_RANK|TRY_CAST";
@@ -71,19 +72,19 @@ function friendlyError(e) {
 export function mount(root, opts) {
   const id = "sp" + Math.random().toString(36).slice(2, 8);
   root.innerHTML = `<div class="sqlp">
-    <details class="schema"><summary>Tables you can use</summary><div class="schemabody" id="${id}-sch">Loading…</div></details>
+    <details class="schema"><summary>${t("Tables you can use")}</summary><div class="schemabody" id="${id}-sch">${t("Loading…")}</div></details>
     <div class="edwrap"><div class="edstack" id="${id}-ed"></div></div>
     <div class="nextbar" id="${id}-nx"></div>
     <div class="sqlrow">
-      <button class="btn primary" id="${id}-run"${MODE.free ? "" : " disabled"}>Run</button>
-      ${opts.check ? `<button class="btn" id="${id}-chk"${MODE.free ? "" : " disabled"}>Check my answer</button>` : ""}
-      ${opts.draftKey ? `<button class="btn" id="${id}-rst" type="button">Reset to blank</button>` : ""}
+      <button class="btn primary" id="${id}-run"${MODE.free ? "" : " disabled"}>${t("Run")}</button>
+      ${opts.check ? `<button class="btn" id="${id}-chk"${MODE.free ? "" : " disabled"}>${t("Check my answer")}</button>` : ""}
+      ${opts.draftKey ? `<button class="btn" id="${id}-rst" type="button">${t("Reset to blank")}</button>` : ""}
       <span class="verdict" id="${id}-vd" role="status" aria-live="polite"></span>
       <span class="eng" id="${id}-eng"></span>
     </div>
     <div class="fb" id="${id}-fb" aria-live="polite"></div>
-    <div class="note">Ctrl+Enter runs the query. Tab indents; press Esc, then Tab, to move on to the next control.${opts.draftKey ? " Your draft is saved in this browser." : ""}</div>
-    <details class="plain"><summary>See it translated to DuckDB</summary><pre class="duck" id="${id}-duck">Run a query to see the translation.</pre></details>
+    <div class="note">${t("Ctrl+Enter runs the query. Tab indents; press Esc, then Tab, to move on to the next control.")}${opts.draftKey ? t(" Your draft is saved in this browser.") : ""}</div>
+    <details class="plain"><summary>${t("See it translated to DuckDB")}</summary><pre class="duck" id="${id}-duck">${t("Run a query to see the translation.")}</pre></details>
     <div class="resmeta" id="${id}-meta"></div>
     <div class="reserr" id="${id}-err" role="alert"></div>
     <div class="tbl-wrap resgrid" id="${id}-grid"></div>
@@ -114,15 +115,19 @@ export function mount(root, opts) {
 
   const setBusy = b => { runB.disabled = b || !engine.getStatus().ready; if (chkB) chkB.disabled = runB.disabled; };
   const unsub = engine.onStatus(s => {
-    $("eng").textContent = MODE.free && s.phase === "idle" ? "The SQL engine (about 40 MB) loads the first time you press Run." : s.phase === "ready" ? "" : s.phase === "error" ? s.message : `Loading the SQL engine… ${s.pct || 0}%. About 10 seconds the first time.`;
+    $("eng").textContent = MODE.free && s.phase === "idle" ? t("The SQL engine (about 40 MB) loads the first time you press Run.") : s.phase === "ready" ? "" : s.phase === "error" ? s.message : t("Loading the SQL engine… {n}%. About 10 seconds the first time.", { n: s.pct || 0 });
     if (s.ready) { runB.disabled = false; if (chkB) chkB.disabled = false; }
   });
+  const showTables = ts => {
+    editor.setTables(ts);
+    $("sch").innerHTML = ts.map(t => `<details><summary><code>${esc(t.name)}</code></summary><ul class="cols">${Object.entries(t.cols).map(([c, ty]) => `<li><b>${esc(c)}</b> ${esc(ty.toLowerCase())}</li>`).join("")}</ul></details>`).join("");
+  };
+  // The free Lab starts the SQL engine on the first Run, so read the table list straight from schema.json to give table and column hints right away.
+  if (MODE.free) fetch("data/schema.json").then(r => r.json()).then(m => showTables(m.tables.filter(t => opts.datasets.includes(t.ds)).map(t => ({ name: t.name, ds: t.ds, cols: t["cols_" + opts.profile] })))).catch(() => { });
   let startLazy = null; (MODE.free ? new Promise(res => { startLazy = res; }) : engine.ready()).then(async () => {
     try {
       await engine.use(opts.profile, opts.datasets);
-      const ts = engine.tablesFor(opts.profile, opts.datasets);
-      editor.setTables(ts);
-      $("sch").innerHTML = ts.map(t => `<details><summary><code>${esc(t.name)}</code></summary><ul class="cols">${Object.entries(t.cols).map(([c, ty]) => `<li><b>${esc(c)}</b> ${esc(ty.toLowerCase())}</li>`).join("")}</ul></details>`).join("");
+      showTables(engine.tablesFor(opts.profile, opts.datasets));
     } catch (e) { $("err").textContent = friendlyError(e); }
   }).catch(() => {});
 
