@@ -1,9 +1,9 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=1824da2f7f";
-import { MODE } from "./mode.js?v=1824da2f7f";
-import { createEditor } from "../vendor/editor.js?v=1824da2f7f";
-import { t } from "./i18n.js?v=1824da2f7f";
-import { formatSql } from "./sqlformat.js?v=1824da2f7f";
+import * as engine from "./engine.js?v=40b9a0b358";
+import { MODE } from "./mode.js?v=40b9a0b358";
+import { createEditor } from "../vendor/editor.js?v=40b9a0b358";
+import { t } from "./i18n.js?v=40b9a0b358";
+import { formatSql } from "./sqlformat.js?v=40b9a0b358";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 

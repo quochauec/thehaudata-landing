@@ -1,11 +1,11 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=1824da2f7f";
-import { MODE } from "./mode.js?v=1824da2f7f";
-import * as free from "./free.js?v=1824da2f7f";
-import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=1824da2f7f";
-import { chip, chipsFor, DOMAINS } from "./domains.js?v=1824da2f7f";
-import { t } from "./i18n.js?v=1824da2f7f";
+import * as engine from "./engine.js?v=40b9a0b358";
+import { MODE } from "./mode.js?v=40b9a0b358";
+import * as free from "./free.js?v=40b9a0b358";
+import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=40b9a0b358";
+import { chip, chipsFor, DOMAINS } from "./domains.js?v=40b9a0b358";
+import { t } from "./i18n.js?v=40b9a0b358";
 
 
 const LS = {
@@ -183,13 +183,23 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
     hdr.innerHTML = `<button class="back" id="bk">${IV ? t("← All rounds") : t("← All topics")}</button><div class="eyebrow" style="margin-top:6px">${esc(l.label)} · ${esc(l.ds)}</div><h1>${esc(l.title)}</h1><p>${esc(l.sub)}</p><div class="doms">${chipsFor(l.ds)}</div>`;
     const bar = levels.length > 1 ? `<div class="pgbar" role="group" aria-label="Filter by level">` +
       [["all", t("All")], ...levels.map(k => [k, LEVEL_NAME[k]])].map(([k, nm]) => `<button class="chip" data-lv="${k}" aria-pressed="${k === lv}">${nm}${k === "all" ? ` (${all.length})` : ` (${all.filter(q => levelKey(q.level) === k).length})`}</button>`).join("") + `</div>` : "";
-    main.innerHTML = `<section class="stack" style="padding-top:20px">` + bar + (shown.length ? "" : `<p class="note">${t("No questions at this level.")}</p>`) + shown.map(({ q, i }) => `
+    const worked = all.filter(hasWork).length;
+    const clearBar = `<div class="lsbar"><button class="btn" type="button" data-clearall${worked ? "" : " disabled"}>${t("Clear my work in this lesson")}</button><span class="note">${worked ? t("{n} of {m} questions have work saved in this browser.", { n: worked, m: all.length }) : t("Nothing saved yet in this lesson.")}</span></div>`;
+    main.innerHTML = `<section class="stack" style="padding-top:20px">` + bar + clearBar + (shown.length ? "" : `<p class="note">${t("No questions at this level.")}</p>`) + shown.map(({ q, i }) => `
       <details class="ex" data-q="${q.id}">
         <summary><span class="tag ${LEVEL_TAG(q.level)}">${esc(q.level)}</span><span class="ex-title">${i + 1}. ${esc(q.title)}</span>${q.mins ? `<span class="tag">~${q.mins} min</span>` : ""}
           <span class="tag ${q.check === "auto" ? "g" : q.check === "write" ? "" : "o"}">${q.check === "auto" ? t("Auto-check") : q.check === "write" ? t("Write-up") : t("Compare")}</span>
           <span class="dn" data-dn="${q.id}">${isDone(q.id) ? t("✓ Done") : ""}</span></summary>
         <div class="ex-body" data-body="${q.id}"></div>
       </details>`).join("") + `</section>`;
+    $("[data-clearall]", main).onclick = async () => {
+      const mine = all.filter(hasWork);
+      if (!mine.length) return;
+      const yes = await confirmDialog({ title: t("Clear all your work in this lesson?"), body: t("This clears the queries, tries, notes and Done marks of {n} questions in {lesson}, so you can practise the whole lesson again from a blank state. Hints and model answers lock again. Other lessons are not touched.", { n: mine.length, lesson: l.title }), ok: t("Yes, clear this lesson") });
+      if (!yes) return;
+      mine.forEach(q => WORK_KEYS.forEach(k => LS.del(k + ":" + q.id)));
+      view.q = null; draw();
+    };
     $("#bk").onclick = toHub; if (MODE.free) main.insertAdjacentHTML("beforeend", free.courseCard("Keep going with the full homework"));
     $$("[data-lv]", main).forEach(b => b.onclick = () => { LS.set("level", b.dataset.lv); view.q = null; draw(); });
     $$("details.ex", main).forEach(d => d.addEventListener("toggle", () => {
@@ -206,8 +216,10 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
 
   // Back to the blank state: query draft, tries, notes and the Done mark go, then the question is drawn again so the hint and model answer lock.
   const RESET_TEXT = () => ({ title: t("Reset this question?"), body: t("This clears your query, your tries, your notes and the Done mark for this question, so you can practise it again from a blank state. The hint and the model answer lock again."), ok: t("Yes, reset this question") });
+  const WORK_KEYS = ["done", "n", "last", "note", "draft"];
+  const hasWork = q => WORK_KEYS.some(k => LS.get(k + ":" + q.id) !== null);
   function resetQuestion(q, host) {
-    ["done", "n", "last", "note", "draft"].forEach(k => LS.del(k + ":" + q.id));
+    WORK_KEYS.forEach(k => LS.del(k + ":" + q.id));
     const dn = $(`[data-dn="${q.id}"]`); if (dn) dn.textContent = "";
     fill(host);
   }

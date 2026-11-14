@@ -1,8 +1,8 @@
-import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=1824da2f7f";
-import { MODE } from "./mode.js?v=1824da2f7f";
-import * as free from "./free.js?v=1824da2f7f";
-import { chip, DOMAINS } from "./domains.js?v=1824da2f7f";
-import { t, getLang } from "./i18n.js?v=1824da2f7f";
+import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=40b9a0b358";
+import { MODE } from "./mode.js?v=40b9a0b358";
+import * as free from "./free.js?v=40b9a0b358";
+import { chip, DOMAINS } from "./domains.js?v=40b9a0b358";
+import { t, getLang } from "./i18n.js?v=40b9a0b358";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -80,7 +80,7 @@ function challenge(c){
   $('#bk').onclick=toHub;
   $$('#stp [data-s]').forEach(b=>b.onclick=()=>{state.step=+b.dataset.s;LS.set('step',state.step);draw();window.scrollTo({top:0});});
   const body=[context,approach,solveAll][state.step-1](c);
-  $('#main').innerHTML=`<section class="stack" style="padding-top:20px">${body}</section><div class="nav2">${state.step>1?`<button class="btn" id="pv">${t('← Back')}</button>`:'<span></span>'}${state.step<3?`<button class="btn primary" id="nx">${[t('Plan the approach →'),t('Solve it →')][state.step-1]}</button>`:`<button class="btn" id="rs">${t('Reset this challenge')}</button>`}</div>`;
+  $('#main').innerHTML=`<section class="stack" style="padding-top:20px">${body}</section><div class="nav2">${state.step>1?`<button class="btn" id="pv">${t('← Back')}</button>`:'<span></span>'}<span class="nav2r"><button class="btn" id="rs" title="${t('Clears only this case. Other cases are not touched.')}">${t('Reset this challenge')}</button>${state.step<3?`<button class="btn primary" id="nx">${[t('Plan the approach →'),t('Solve it →')][state.step-1]}</button>`:''}</span></div>`;
   const go=n=>{state.step=n;LS.set('step',n);draw();window.scrollTo({top:0});};
   if($('#pv'))$('#pv').onclick=()=>go(state.step-1); if($('#nx'))$('#nx').onclick=()=>{if(state.step===1)celebrate(c,1);else if(state.step===2&&(LS.get('n:'+c.id+':f')||'').trim().length>=20)celebrate(c,2);go(state.step+1);};
   if($('#rs'))$('#rs').onclick=async()=>{
