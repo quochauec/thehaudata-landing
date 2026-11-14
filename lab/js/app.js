@@ -1,14 +1,14 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=56b754604e";
-import { mountHomework } from "./homework.js?v=56b754604e";
-import { mountCases } from "./cases.js?v=56b754604e";
-import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=56b754604e";
-import * as sync from "./sync.js?v=56b754604e";
-import { MODE } from "./mode.js?v=56b754604e";
-import * as free from "./free.js?v=56b754604e";
-import { chip, DOMAINS } from "./domains.js?v=56b754604e";
-import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=56b754604e";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=56b754604e";
+import * as engine from "./engine.js?v=1824da2f7f";
+import { mountHomework } from "./homework.js?v=1824da2f7f";
+import { mountCases } from "./cases.js?v=1824da2f7f";
+import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=1824da2f7f";
+import * as sync from "./sync.js?v=1824da2f7f";
+import { MODE } from "./mode.js?v=1824da2f7f";
+import * as free from "./free.js?v=1824da2f7f";
+import { chip, DOMAINS } from "./domains.js?v=1824da2f7f";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=1824da2f7f";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=1824da2f7f";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -52,8 +52,8 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=56b754604e");
-  const cs = await json("data/challenges.json?v=56b754604e"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  hwData ??= await json("data/homework.json?v=1824da2f7f");
+  const cs = await json("data/challenges.json?v=1824da2f7f"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
@@ -106,12 +106,12 @@ async function home() {
 const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
   return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=56b754604e");
+  hwData ??= await json("data/homework.json?v=1824da2f7f");
   mountHomework({ data: hwView(false), hdr, main });
 }
 
 async function interview() {
-  hwData ??= await json("data/homework.json?v=56b754604e");
+  hwData ??= await json("data/homework.json?v=1824da2f7f");
   mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
 }
 // Vietnamese case prose is a sparse overlay (data/cases.vi.json, keyed by case id) merged over the English case.
@@ -119,9 +119,9 @@ async function interview() {
 const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ? a.map((x, i) => mergeVi(x, b[i]))
   : a && b && typeof a === "object" && typeof b === "object" ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, mergeVi(v, b[k])])) : b;
 async function loadCases() {
-  const d = await json("data/challenges.json?v=56b754604e");
+  const d = await json("data/challenges.json?v=1824da2f7f");
   if (getLang() !== "vi") return d;
-  const vi = await json("data/cases.vi.json?v=56b754604e").catch(() => ({}));
+  const vi = await json("data/cases.vi.json?v=1824da2f7f").catch(() => ({}));
   d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
   return d;
 }
@@ -135,13 +135,32 @@ function playground() {
   const START = { adw: "SELECT TOP 10 *\nFROM ADW_Sales_orders\nORDER BY TotalDue DESC", crm: "SELECT TOP 10 *\nFROM CRM_sales_pipeline\nORDER BY close_value DESC", gbe: "SELECT TOP 10 *\nFROM GBE_Sales\nORDER BY Order_Date DESC" };
   let ds = store.get("pg:ds") || "adw", panel = null, text = null;
   hdr.innerHTML = `<div class="eyebrow">Playground</div><h1>${t("Free practice")}</h1><p>${t("An open editor on the class tables, with no exercise attached. Pick a dataset to see its tables.")}</p>`;
-  main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}<span class="dtag">${DOMAINS[k].domain}</span></button>`).join("")}</div><div class="pgabout note" id="pgabout"></div><div class="card"><div id="pg"></div></div></section>`;
+  main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}<span class="dtag">${DOMAINS[k].domain}</span></button>`).join("")}</div><div class="pgabout note" id="pgabout"></div><div class="card"><div class="pgtabs" id="pgtabs" role="tablist" aria-label="Query tabs"></div><div id="pg"></div></div></section>`;
+  // Up to 4 query tabs per dataset, kept in this browser. Switching a tab swaps the text in the one editor.
+  const MAXTABS = 4;
+  let tabs = [], active = 0;
+  const loadTabs = () => {
+    try { const o = JSON.parse(store.get("pg:tabs:" + ds) || "null"); if (o && Array.isArray(o.t) && o.t.length) { tabs = o.t.slice(0, MAXTABS).map(String); active = Math.min(+o.a || 0, tabs.length - 1); return; } } catch (e) { }
+    tabs = [START[ds]]; active = 0;
+  };
+  const saveTabs = () => store.set("pg:tabs:" + ds, JSON.stringify({ t: tabs, a: active }));
+  const drawTabs = () => {
+    $("#pgtabs", main).innerHTML = tabs.map((_, i) => `<span class="pgtab" data-on="${i === active}"><button type="button" role="tab" aria-selected="${i === active}" data-tab="${i}">${t("Query {n}", { n: i + 1 })}</button>${tabs.length > 1 ? `<button type="button" class="x" data-close="${i}" aria-label="${esc(t("Close tab"))}">×</button>` : ""}</span>`).join("") +
+      (tabs.length < MAXTABS ? `<button type="button" class="pgadd" data-add title="${esc(t("Add query tab"))}" aria-label="${esc(t("Add query tab"))}">+</button>` : "");
+    $$("[data-tab]", main).forEach(b => b.onclick = () => { active = +b.dataset.tab; saveTabs(); drawTabs(); panel.setSql(tabs[active]); });
+    $$("[data-close]", main).forEach(b => b.onclick = () => { const i = +b.dataset.close; tabs.splice(i, 1); active = Math.min(active > i ? active - 1 : active, tabs.length - 1); saveTabs(); drawTabs(); panel.setSql(tabs[active]); });
+    const add = $("[data-add]", main);
+    if (add) add.onclick = () => { tabs.push(START[ds]); active = tabs.length - 1; saveTabs(); drawTabs(); panel.setSql(tabs[active]); };
+  };
   const render = () => {
     $$("[data-ds]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === ds));
     $("#pgabout", main).innerHTML = chip(ds, true) + " " + DOMAINS[ds].about + ".";
-    panel = mountSql($("#pg", main), { profile: "hw", datasets: [ds], sql: text ?? START[ds] });
+    loadTabs();
+    if (panel && panel.destroy) panel.destroy();
+    panel = mountSql($("#pg", main), { profile: "hw", datasets: [ds], sql: tabs[active], onChange: v => { tabs[active] = v; saveTabs(); } });
+    drawTabs();
   };
-  $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); text = START[ds]; render(); });
+  $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); render(); });
   render();
 }
 

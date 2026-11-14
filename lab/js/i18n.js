@@ -28,6 +28,7 @@ export function applyStatic(root = document) {
 document.documentElement.lang = lang;
 
 const VI = {
+  "Format SQL": "Format SQL", "Tidy the keywords and line breaks. Your names and logic stay as they are.": "Viết hoa keyword và xuống dòng cho gọn. Tên bảng, tên cột và logic của bạn giữ nguyên.", "Expand": "Mở rộng", "Close": "Đóng", "Query {n}": "Query {n}", "Close tab": "Đóng tab", "Add query tab": "Thêm tab query",
   "-- Bikes bring the revenue. Do they bring the profit?": "-- Bikes mang về nhiều revenue. Có mang về nhiều profit không?", "Animated example: a SQL query and its result": "Ví dụ động: một query SQL và kết quả của nó",
   "Learning journey": "Hành trình học", "SQL fundamentals": "SQL nền tảng", "Basic statistics": "Thống kê cơ bản", "Data thinking": "Tư duy dữ liệu", "Hypotheses": "Giả thuyết",
   "Cancel": "Huỷ", "Copy result": "Copy kết quả", "Copied · {n} rows": "Đã copy {n} dòng", " (first {m})": " ({m} dòng đầu)", "Copy failed. Select the table and press Ctrl+C.": "Chưa copy được. Bôi đen bảng rồi bấm Ctrl+C nhé.",

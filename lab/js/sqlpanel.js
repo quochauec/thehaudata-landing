@@ -1,8 +1,9 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=56b754604e";
-import { MODE } from "./mode.js?v=56b754604e";
-import { createEditor } from "../vendor/editor.js?v=56b754604e";
-import { t } from "./i18n.js?v=56b754604e";
+import * as engine from "./engine.js?v=1824da2f7f";
+import { MODE } from "./mode.js?v=1824da2f7f";
+import { createEditor } from "../vendor/editor.js?v=1824da2f7f";
+import { t } from "./i18n.js?v=1824da2f7f";
+import { formatSql } from "./sqlformat.js?v=1824da2f7f";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -56,13 +57,19 @@ if (!document.getElementById("sqlpanel-css")) {
   st.textContent = `
 .edwrap{border:1.5px solid var(--ink2);border-radius:16px;overflow:hidden;background:var(--code-bg);box-shadow:var(--shadow-sm)}
 .edwrap:focus-within{outline:3px solid var(--site-orange);outline-offset:1px}
-.edwrap .edstack{position:relative;height:160px;min-height:120px;resize:vertical;overflow:hidden}
+.edwrap .edstack{position:relative;height:280px;min-height:160px;resize:vertical;overflow:hidden}
 .edwrap .cm-editor{height:100%}
 .nextbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);min-height:28px}
 .nextbar:empty{display:none}
+.sqlrow .spx{margin-left:auto}
+.sqlp.full{position:fixed;inset:0;z-index:2000;background:var(--bg,#fff);padding:14px 18px;display:flex;flex-direction:column;gap:10px;overflow:auto}
+.sqlp.full .edwrap{flex:1 1 48%;min-height:200px;display:flex;flex-direction:column}
+.sqlp.full .edwrap .edstack{flex:1;height:auto!important;max-height:none;resize:none}
+.sqlp.full .resgrid{flex:1 1 38%;max-height:none;min-height:140px}
+.sqlp.full .schema,.sqlp.full details.plain,.sqlp.full .note{display:none}
 .resbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .resbar .btn{padding:3px 10px;font-size:12.5px}
-.cfm{position:fixed;inset:0;background:rgba(13,27,42,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:1100}
+.cfm{position:fixed;inset:0;background:rgba(13,27,42,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:3000}
 .cfmbox{background:var(--surface);color:var(--fg);border-radius:18px;max-width:460px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);display:grid;gap:12px}
 .cfmbox h2{margin:0;font-size:1.2rem}.cfmbox p{margin:0;line-height:1.5}
 .cfmrow{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
@@ -118,6 +125,8 @@ export function mount(root, opts) {
       <button class="btn primary" id="${id}-run"${MODE.free ? "" : " disabled"}>${t("Run")}</button>
       ${opts.check ? `<button class="btn" id="${id}-chk"${MODE.free ? "" : " disabled"}>${t("Check my answer")}</button>` : ""}
       ${opts.draftKey || opts.onReset ? `<button class="btn" id="${id}-rst" type="button">${t("Reset to blank")}</button>` : ""}
+      <button class="btn" id="${id}-fmt" type="button" title="${esc(t("Tidy the keywords and line breaks. Your names and logic stay as they are."))}">${t("Format SQL")}</button>
+      <button class="btn spx" id="${id}-exp" type="button" aria-pressed="false">${t("Expand")}</button>
       <span class="verdict" id="${id}-vd" role="status" aria-live="polite"></span>
       <span class="eng" id="${id}-eng"></span>
     </div>
@@ -128,7 +137,8 @@ export function mount(root, opts) {
     <div class="reserr" id="${id}-err" role="alert"></div>
     <div class="tbl-wrap resgrid" id="${id}-grid"></div>
   </div>`;
-  const $ = s => root.querySelector("#" + id + "-" + s);
+  const spRoot = root.querySelector(".sqlp");
+  const $ = s => spRoot.querySelector("#" + id + "-" + s);
   const runB = $("run"), chkB = $("chk");
   const draft = {
     get() { try { return opts.draftKey ? localStorage.getItem(opts.draftKey) : null; } catch (e) { return null; } },
@@ -146,8 +156,31 @@ export function mount(root, opts) {
   const editor = createEditor({
     parent: $("ed"), doc: draft.get() ?? (opts.sql || ""), hints: true, onNext: showNext,
     onRun: () => go(false),
-    onChange: v => { if (opts.draftKey) { if (v === (opts.sql || "")) draft.del(); else draft.set(v); } },
+    onChange: v => { if (opts.draftKey) { if (v === (opts.sql || "")) draft.del(); else draft.set(v); } if (opts.onChange) opts.onChange(v); grow(); },
   });
+  // Taller editor: it grows with the query up to 60% of the window, then scrolls. The drag handle still works.
+  const stack = $("ed");
+  function grow() {
+    if (spRoot.classList.contains("full")) return;
+    const need = editor.view.contentHeight + 16, max = Math.round(window.innerHeight * 0.6);
+    if (need > stack.offsetHeight) stack.style.height = Math.min(need, max) + "px";
+  }
+  // Expand: the editor and the result fill the window. Same editor, so nothing is lost on the way in or out.
+  const expB = $("exp"), onEsc = e => { if (e.key === "Escape" && spRoot.classList.contains("full") && !document.querySelector(".cfm")) setFull(false); };
+  let holder = null, watch = null;
+  function setFull(on) {
+    if (on && !holder) {
+      holder = document.createComment("sqlp"); spRoot.replaceWith(holder); document.body.append(spRoot);
+      watch = setInterval(() => { if (!holder || !holder.isConnected) { clearInterval(watch); spRoot.remove(); } }, 500);   // the zone was left while expanded
+    } else if (!on && holder) {
+      clearInterval(watch); holder.replaceWith(spRoot); holder = null;
+    }
+    spRoot.classList.toggle("full", on); expB.textContent = on ? t("Close") : t("Expand"); expB.setAttribute("aria-pressed", on);
+    editor.view.requestMeasure(); if (!on) grow(); editor.focus();
+  }
+  expB.onclick = () => setFull(!spRoot.classList.contains("full"));
+  document.addEventListener("keydown", onEsc);
+  $("fmt").onclick = () => { const v = formatSql(editor.getValue()); if (v !== editor.getValue()) editor.setValue(v); editor.focus(); };
   // The rest of the panel reads and writes the query as ed.value.
   const ed = { get value() { return editor.getValue(); }, set value(v) { editor.setValue(v); }, focus: () => editor.focus() };
   if ($("rst")) $("rst").onclick = async () => {
@@ -207,5 +240,5 @@ export function mount(root, opts) {
   }
   runB.onclick = () => go(false);
   if (chkB) chkB.onclick = () => go(true);
-  return { setSql(sql) { ed.value = sql; ed.focus(); }, run: () => go(false), destroy: unsub };
+  return { setSql(sql) { ed.value = sql; ed.focus(); }, getSql: () => ed.value, run: () => go(false), destroy: () => { unsub(); document.removeEventListener("keydown", onEsc); if (holder) { clearInterval(watch); spRoot.remove(); holder = null; } } };
 }

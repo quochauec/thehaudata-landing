@@ -1,6 +1,6 @@
 // Home hero pieces shared by the members Lab (app.js) and the free Lab (free.js): the learning journey strip and the animated SQL demo.
-import { esc, hl } from "./sqlpanel.js?v=56b754604e";
-import { t } from "./i18n.js?v=56b754604e";
+import { esc, hl } from "./sqlpanel.js?v=1824da2f7f";
+import { t } from "./i18n.js?v=1824da2f7f";
 
 // Learning journey strip on the home hero (same four steps as the thehaudata.com landing page). Step 3 is the one this Lab trains.
 const STEPS = [
@@ -10,7 +10,7 @@ const STEPS = [
   { ico: "🚀", title: "Hands-on Case Studies & Projects", chips: ["Real-life case studies", "Capstone", "Portfolio"] },
 ];
 export const journey = () => `<div class="jr" role="list" aria-label="${esc(t("Learning journey"))}"><div class="jrh"><span>${t("Learning journey")}</span><i></i></div>
-  <div class="jrt" aria-hidden="true">${STEPS.map((s, i) => `<span class="nd${s.on ? " on" : i < 2 ? " past" : ""}">${s.ico}</span>`).join("")}</div>
+  <div class="jrt" aria-hidden="true">${STEPS.map((s, i) => `<span class="nd${s.on ? " on" : " past"}">${s.ico}</span>`).join("")}</div>
   <div class="jrc">${STEPS.map((s, i) => `<div class="jrk${s.on ? " on" : ""}" role="listitem"><small>0${i + 1}</small><b>${t(s.title)}</b><span class="jch">${s.chips.map(c => `<em>${t(c)}</em>`).join("")}</span></div>`).join("")}</div></div>`;
 
 // Animated SQL example on the home hero. The query is the model solution of the "adw-category" case and the numbers are its stored output, so nothing here is made up.
