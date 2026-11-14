@@ -28,6 +28,7 @@ export function applyStatic(root = document) {
 document.documentElement.lang = lang;
 
 const VI = {
+  "-- Bikes bring the revenue. Do they bring the profit?": "-- Bikes mang về nhiều revenue. Có mang về nhiều profit không?", "Animated example: a SQL query and its result": "Ví dụ động: một query SQL và kết quả của nó",
   "Learning journey": "Hành trình học", "SQL fundamentals": "SQL nền tảng", "Basic statistics": "Thống kê cơ bản", "Data thinking": "Tư duy dữ liệu", "Hypotheses": "Giả thuyết",
   "Cancel": "Huỷ", "Copy result": "Copy kết quả", "Copied · {n} rows": "Đã copy {n} dòng", " (first {m})": " ({m} dòng đầu)", "Copy failed. Select the table and press Ctrl+C.": "Chưa copy được. Bôi đen bảng rồi bấm Ctrl+C nhé.",
   "Reset to blank?": "Làm lại từ đầu?", "This clears your query and the result, and puts the editor back to its blank starting state.": "Query và kết quả hiện tại sẽ bị xoá, editor trở về trạng thái trống ban đầu.", "Yes, reset": "Xoá và làm lại",

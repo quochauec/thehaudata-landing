@@ -440,6 +440,51 @@ iframe.embed{display:block;width:100%;height:calc(100vh - 150px);min-height:560p
 @media(max-width:980px){.jrc{grid-template-columns:1fr 1fr}.jrt{display:none}}
 @media(max-width:560px){.jrc{grid-template-columns:1fr}}
 
+/* Home hero: SQL demo next to the headline, animated journey */
+.hgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:32px;align-items:center}
+.hgrid #hdr h1,.hgrid h1{font-size:clamp(1.9rem,3.3vw,2.7rem)}
+.sqldemo{background:#1A0A4F;color:#EDE9FE;border-radius:18px;box-shadow:0 18px 44px rgba(91,33,255,.28);overflow:hidden;font-family:var(--mono);border:1.5px solid rgba(167,139,250,.35)}
+.sdbar{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(255,255,255,.07);font-size:12px;color:#C9BFF2}
+.sdbar i{width:10px;height:10px;border-radius:50%;background:#E040FB}.sdbar i:nth-child(2){background:#FFB020}.sdbar i:nth-child(3){background:#4ADE80}
+.sdbar span{margin-left:8px;flex:1}
+.sdrun{font-weight:800;font-size:11.5px;color:#fff;background:var(--grad-hero);border-radius:99px;padding:3px 11px;transition:transform .15s,box-shadow .15s}
+.sdrun.press{transform:scale(.88);box-shadow:0 0 0 6px rgba(224,64,251,.35)}
+.sdcode{margin:0;padding:12px 14px;font:12px/1.6 var(--mono);white-space:pre;min-height:calc(9 * 1.6em + 24px);overflow:hidden;color:#EDE9FE}
+.sdcode .k{color:#C084FC;font-weight:700}.sdcode .c{color:#8B80C8}.sdcode .s{color:#86EFAC}
+.sdcaret{display:inline-block;width:7px;height:1.1em;margin-left:1px;vertical-align:text-bottom;background:#E040FB;animation:sdblink 1s steps(1) infinite}
+.sqldemo.ran .sdcaret{opacity:0;animation:none}
+.sdres{border-top:1px solid rgba(255,255,255,.12);padding:8px 10px 12px;min-height:150px}
+.sdres table{width:100%;border-collapse:collapse;font:12px/1.5 var(--mono)}
+.sdres th{text-align:left;color:#A99FD6;font-weight:600;padding:3px 6px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sdres td{padding:3px 6px;white-space:nowrap;color:#EDE9FE}
+.sdres td:nth-child(n+2),.sdres th:nth-child(n+2){text-align:right}
+.sdres tbody tr{opacity:0}
+.sqldemo.ran .sdres tbody tr{animation:sdrow .45s ease-out var(--d) forwards}
+.sdres tr.aha td{color:#F9A8FF;font-weight:700}
+.sdres .mb{display:inline-block;height:6px;border-radius:4px;background:var(--grad-hero);width:0;margin-right:7px;vertical-align:middle}
+.sqldemo.ran .sdres .mb{animation:sdbar .8s ease-out calc(var(--d) + .25s) forwards}
+@keyframes sdblink{50%{opacity:0}}
+@keyframes sdrow{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes sdbar{from{width:0}to{width:calc(var(--w) * .5)}}
+@media(max-width:980px){.hgrid{grid-template-columns:1fr}}
+
+/* journey: the track fills, nodes pop in, the current step pulses, cards rise */
+.jrt::after{transform-origin:left center;animation:jrfill 1.5s cubic-bezier(.4,0,.2,1) .35s both}
+.jrt .nd{animation:jrpop .5s cubic-bezier(.2,1.4,.4,1) both}
+.jrt .nd:nth-child(1){animation-delay:.1s}.jrt .nd:nth-child(2){animation-delay:.75s}.jrt .nd:nth-child(3){animation-delay:1.35s}.jrt .nd:nth-child(4){animation-delay:1.7s}
+.jrt .nd.on{animation:jrpop .5s cubic-bezier(.2,1.4,.4,1) 1.35s both,jrpulse 2.2s ease-out 2s infinite}
+.jrt .nd:nth-child(4){animation:jrpop .5s cubic-bezier(.2,1.4,.4,1) 1.7s both,jrfloat 3s ease-in-out 2.4s infinite}
+.jrk{animation:jrrise .6s ease-out both}
+.jrk:nth-child(1){animation-delay:.2s}.jrk:nth-child(2){animation-delay:.5s}.jrk:nth-child(3){animation-delay:.8s}.jrk:nth-child(4){animation-delay:1.1s}
+.jrk .jch em{animation:jrrise .5s ease-out both}
+.jrk:nth-child(1) em{animation-delay:.5s}.jrk:nth-child(2) em{animation-delay:.8s}.jrk:nth-child(3) em{animation-delay:1.1s}.jrk:nth-child(4) em{animation-delay:1.4s}
+@keyframes jrfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes jrpop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+@keyframes jrrise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes jrpulse{0%{box-shadow:0 0 0 0 rgba(156,39,255,.5)}70%,100%{box-shadow:0 0 0 16px rgba(156,39,255,0)}}
+@keyframes jrfloat{50%{transform:translateY(-5px)}}
+@media(prefers-reduced-motion:reduce){.jrt::after,.jrt .nd,.jrk,.jrk .jch em,.sdcaret{animation:none!important}}
+
 /* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
    Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
    Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
@@ -719,6 +764,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=dd291fda77"></script>
+<script type="module" src="js/app.js?v=56b754604e"></script>
 
 </body></html>

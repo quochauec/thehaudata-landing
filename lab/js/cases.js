@@ -1,8 +1,8 @@
-import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=dd291fda77";
-import { MODE } from "./mode.js?v=dd291fda77";
-import * as free from "./free.js?v=dd291fda77";
-import { chip, DOMAINS } from "./domains.js?v=dd291fda77";
-import { t, getLang } from "./i18n.js?v=dd291fda77";
+import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=56b754604e";
+import { MODE } from "./mode.js?v=56b754604e";
+import * as free from "./free.js?v=56b754604e";
+import { chip, DOMAINS } from "./domains.js?v=56b754604e";
+import { t, getLang } from "./i18n.js?v=56b754604e";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
