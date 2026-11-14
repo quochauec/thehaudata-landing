@@ -748,4 +748,35 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 .db[aria-pressed="true"]{border-color:var(--violet);box-shadow:inset 0 0 0 1.5px var(--violet)}
 header.top h1{font-family:var(--font-display);font-weight:900;letter-spacing:-.02em}
 
+
+/* Table drawer: wider, with room for the column notes. The description column takes the spare width. */
+.drawer{width:min(1320px,100%)}
+.dbody{gap:18px;font-size:15px}
+.dbody > p{font-size:15.5px;max-width:95ch}
+.dhead h2{font-size:20px}
+.dhead .sub{font-size:13px}
+.kpis div b{font-size:20px}
+.kpis div span{font-size:11.5px}
+.warn{font-size:14.5px}
+.joins .jr{font-size:13.5px}
+.jbtn{font-size:12.5px;padding:3px 9px}
+.search{font-size:15px}
+table.cols{min-width:760px;table-layout:fixed}
+table.cols th{font-size:12px;padding:10px 12px}
+table.cols td{padding:11px 12px}
+table.cols th:nth-child(1){width:23%}
+table.cols th:nth-child(2){width:11%}
+table.cols th:nth-child(3){width:96px}
+table.cols th:nth-child(4){width:96px}
+table.cols .cn{font-size:14px;font-weight:600}
+table.cols .ty{font-size:12.5px;white-space:normal;overflow-wrap:anywhere}
+table.cols td.num,table.cols .nb{font-size:13.5px}
+table.cols .nb{width:auto}
+table.cols .cd{gap:6px;font-size:14.5px;line-height:1.55}
+table.cols .meta{font-size:13px}
+.vals{gap:5px}
+.vals span{font-size:12.5px;padding:1px 7px}
+.chip{font-size:11px}
+@media (max-width:720px){table.cols{min-width:640px}}
+.dbody .search{flex:none}
 </style></body></html>

@@ -1,9 +1,9 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=40b9a0b358";
-import { MODE } from "./mode.js?v=40b9a0b358";
-import { createEditor } from "../vendor/editor.js?v=40b9a0b358";
-import { t } from "./i18n.js?v=40b9a0b358";
-import { formatSql } from "./sqlformat.js?v=40b9a0b358";
+import * as engine from "./engine.js?v=bdfa751fe9";
+import { MODE } from "./mode.js?v=bdfa751fe9";
+import { createEditor } from "../vendor/editor.js?v=bdfa751fe9";
+import { t } from "./i18n.js?v=bdfa751fe9";
+import { formatSql } from "./sqlformat.js?v=bdfa751fe9";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -240,5 +240,5 @@ export function mount(root, opts) {
   }
   runB.onclick = () => go(false);
   if (chkB) chkB.onclick = () => go(true);
-  return { setSql(sql) { ed.value = sql; ed.focus(); }, getSql: () => ed.value, run: () => go(false), destroy: () => { unsub(); document.removeEventListener("keydown", onEsc); if (holder) { clearInterval(watch); spRoot.remove(); holder = null; } } };
+  return { setSql(sql) { ed.value = sql; ed.focus(); }, insert(text) { editor.insert(text); editor.focus(); }, getSql: () => ed.value, run: () => go(false), destroy: () => { unsub(); document.removeEventListener("keydown", onEsc); if (holder) { clearInterval(watch); spRoot.remove(); holder = null; } } };
 }

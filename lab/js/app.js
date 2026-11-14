@@ -1,14 +1,14 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=40b9a0b358";
-import { mountHomework } from "./homework.js?v=40b9a0b358";
-import { mountCases } from "./cases.js?v=40b9a0b358";
-import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=40b9a0b358";
-import * as sync from "./sync.js?v=40b9a0b358";
-import { MODE } from "./mode.js?v=40b9a0b358";
-import * as free from "./free.js?v=40b9a0b358";
-import { chip, DOMAINS } from "./domains.js?v=40b9a0b358";
-import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=40b9a0b358";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=40b9a0b358";
+import * as engine from "./engine.js?v=bdfa751fe9";
+import { mountHomework } from "./homework.js?v=bdfa751fe9";
+import { mountCases } from "./cases.js?v=bdfa751fe9";
+import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=bdfa751fe9";
+import * as sync from "./sync.js?v=bdfa751fe9";
+import { MODE } from "./mode.js?v=bdfa751fe9";
+import * as free from "./free.js?v=bdfa751fe9";
+import { chip, DOMAINS } from "./domains.js?v=bdfa751fe9";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=bdfa751fe9";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=bdfa751fe9";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -52,8 +52,8 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=40b9a0b358");
-  const cs = await json("data/challenges.json?v=40b9a0b358"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  hwData ??= await json("data/homework.json?v=bdfa751fe9");
+  const cs = await json("data/challenges.json?v=bdfa751fe9"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
@@ -106,12 +106,12 @@ async function home() {
 const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
   return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=40b9a0b358");
+  hwData ??= await json("data/homework.json?v=bdfa751fe9");
   mountHomework({ data: hwView(false), hdr, main });
 }
 
 async function interview() {
-  hwData ??= await json("data/homework.json?v=40b9a0b358");
+  hwData ??= await json("data/homework.json?v=bdfa751fe9");
   mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
 }
 // Vietnamese case prose is a sparse overlay (data/cases.vi.json, keyed by case id) merged over the English case.
@@ -119,9 +119,9 @@ async function interview() {
 const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ? a.map((x, i) => mergeVi(x, b[i]))
   : a && b && typeof a === "object" && typeof b === "object" ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, mergeVi(v, b[k])])) : b;
 async function loadCases() {
-  const d = await json("data/challenges.json?v=40b9a0b358");
+  const d = await json("data/challenges.json?v=bdfa751fe9");
   if (getLang() !== "vi") return d;
-  const vi = await json("data/cases.vi.json?v=40b9a0b358").catch(() => ({}));
+  const vi = await json("data/cases.vi.json?v=bdfa751fe9").catch(() => ({}));
   d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
   return d;
 }
@@ -130,12 +130,39 @@ async function cases() {
   casesApp.draw();
 }
 
+// Column notes for the Playground's table browser come from the Data Dictionary page (its DATA block), read once.
+let dictCols = null;
+async function loadDictNotes() {
+  if (dictCols) return dictCols;
+  dictCols = {};
+  try {
+    const html = await (await fetch("guides/dictionary.html")).text();
+    const m = html.match(/const DATA = (\{.*\});\s*$/m);
+    if (m) for (const tb of JSON.parse(m[1]).tabs) dictCols[tb.name.toLowerCase()] = { desc: tb.desc, rows: tb.rows, cols: Object.fromEntries(tb.cols.map(c => [c.n.toLowerCase(), c.ds])) };
+  } catch (e) { }
+  return dictCols;
+}
+
+// Playground: the same split as Homework and Case Studies. Dataset and table browser on the left, query tabs and editor on the right.
 function playground() {
   const DS = { adw: "AdventureWorks (ADW_)", crm: "CRM Sales (CRM_)", gbe: "Global Electronics (GBE_)" };
   const START = { adw: "SELECT TOP 10 *\nFROM ADW_Sales_orders\nORDER BY TotalDue DESC", crm: "SELECT TOP 10 *\nFROM CRM_sales_pipeline\nORDER BY close_value DESC", gbe: "SELECT TOP 10 *\nFROM GBE_Sales\nORDER BY Order_Date DESC" };
-  let ds = store.get("pg:ds") || "adw", panel = null, text = null;
+  let ds = store.get("pg:ds") || "adw", panel = null, schema = null;
   hdr.innerHTML = `<div class="eyebrow">Playground</div><h1>${t("Free practice")}</h1><p>${t("An open editor on the class tables, with no exercise attached. Pick a dataset to see its tables.")}</p>`;
-  main.innerHTML = `<section class="stack" style="padding-top:20px"><div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}<span class="dtag">${DOMAINS[k].domain}</span></button>`).join("")}</div><div class="pgabout note" id="pgabout"></div><div class="card"><div class="pgtabs" id="pgtabs" role="tablist" aria-label="Query tabs"></div><div id="pg"></div></div></section>`;
+  main.innerHTML = `<section class="split pgsplit" style="padding-top:20px">
+    <div class="split-l">
+      <div class="paneh">Dataset</div>
+      <div class="pgbar" role="group" aria-label="Dataset">${Object.entries(DS).map(([k, n]) => `<button class="chip" data-ds="${k}" aria-pressed="${k === ds}">${n}<span class="dtag">${DOMAINS[k].domain}</span></button>`).join("")}</div>
+      <div class="pgabout note" id="pgabout"></div>
+      <div class="paneh">${t("Tables")}</div>
+      <input class="pgfind" id="pgfind" type="search" placeholder="${esc(t("Filter tables and columns"))}" aria-label="${esc(t("Filter tables and columns"))}">
+      <div class="note">${t("Click a table or column name to add it to the editor.")}</div>
+      <div class="pgtables" id="pgtables">${t("Loading…")}</div>
+      <button type="button" class="btn pgdict" data-go="dictionary">${t("Open the Data Dictionary")}</button>
+    </div>
+    <div class="split-r"><div class="paneh">${t("SQL editor")}</div><div class="card"><div class="pgtabs" id="pgtabs" role="tablist" aria-label="Query tabs"></div><div id="pg"></div></div></div>
+  </section>`;
+  $("[data-go]", main).onclick = () => setZone("dictionary", true);
   // Up to 4 query tabs per dataset, kept in this browser. Switching a tab swaps the text in the one editor.
   const MAXTABS = 4;
   let tabs = [], active = 0;
@@ -152,15 +179,34 @@ function playground() {
     const add = $("[data-add]", main);
     if (add) add.onclick = () => { tabs.push(START[ds]); active = tabs.length - 1; saveTabs(); drawTabs(); panel.setSql(tabs[active]); };
   };
+  // Table browser: each table of the dataset with its row count and description, and every column with its type and note.
+  const drawTables = () => {
+    const host = $("#pgtables", main); if (!host || !schema) return;
+    const f = $("#pgfind", main).value.trim().toLowerCase(), notes = dictCols || {};
+    const list = schema.tables.filter(tb => tb.ds === ds).map(tb => {
+      const n = notes[tb.name.toLowerCase()] || {}, cols = Object.entries(tb.cols_hw || {}).map(([c, ty]) => ({ c, ty, d: (n.cols || {})[c.toLowerCase()] || "" }));
+      const tHit = !f || tb.name.toLowerCase().includes(f) || (n.desc || "").toLowerCase().includes(f);
+      const shown = tHit ? cols : cols.filter(x => (x.c + " " + x.d).toLowerCase().includes(f));
+      return { tb, n, shown, keep: tHit || shown.length > 0 };
+    }).filter(x => x.keep);
+    host.innerHTML = list.length ? list.map(({ tb, n, shown }) => `<details class="pgt"${f ? " open" : ""}>
+      <summary><button type="button" class="pgins tn" data-ins="${esc(tb.name)}" title="${esc(t("Add to the editor"))}">${esc(tb.name)}</button>${n.rows != null ? `<span class="rc">${t("{n} rows", { n: n.rows.toLocaleString() })}</span>` : ""}</summary>
+      ${n.desc ? `<p class="td">${esc(n.desc)}</p>` : ""}
+      <ul class="pgcols">${shown.map(x => `<li><button type="button" class="pgins cn" data-ins="${esc(x.c)}" title="${esc(t("Add to the editor"))}">${esc(x.c)}</button><span class="ty">${esc(x.ty.toLowerCase())}</span>${x.d ? `<span class="cd">${esc(x.d)}</span>` : ""}</li>`).join("")}</ul>
+    </details>`).join("") : `<div class="note">${t("No table or column matches.")}</div>`;
+  };
+  $("#pgtables", main).addEventListener("click", e => { const b = e.target.closest("[data-ins]"); if (!b) return; e.preventDefault(); if (panel && panel.insert) panel.insert(b.dataset.ins); });
+  $("#pgfind", main).addEventListener("input", drawTables);
+  Promise.all([json("data/schema.json"), loadDictNotes()]).then(([m]) => { schema = m; drawTables(); }).catch(() => { $("#pgtables", main).textContent = ""; });
   const render = () => {
     $$("[data-ds]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === ds));
     $("#pgabout", main).innerHTML = chip(ds, true) + " " + DOMAINS[ds].about + ".";
     loadTabs();
     if (panel && panel.destroy) panel.destroy();
     panel = mountSql($("#pg", main), { profile: "hw", datasets: [ds], sql: tabs[active], onChange: v => { tabs[active] = v; saveTabs(); } });
-    drawTabs();
+    drawTabs(); drawTables();
   };
-  $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); render(); });
+  $$("[data-ds]", main).forEach(b => b.onclick = () => { ds = b.dataset.ds; store.set("pg:ds", ds); $("#pgfind", main).value = ""; render(); });
   render();
 }
 
@@ -186,9 +232,15 @@ async function guides() {
   await show(cur);
 }
 
+// The table drawer lives inside the dictionary's iframe, so Full screen grows the whole frame to the window.
 async function dictionary() {
   hdr.innerHTML = "";
-  main.innerHTML = `<div id="dframe"></div>`;
+  main.innerHTML = `<div class="dwrap" id="dwrap"><div class="embedbar"><span class="lbl">${t("Data Dictionary")}</span><button type="button" class="btn dfull" id="dfull" aria-pressed="false">${t("Full screen")}</button></div><div id="dframe"></div></div>`;
+  const wrap = $("#dwrap", main), btn = $("#dfull", main);
+  const setFull = on => { wrap.classList.toggle("full", on); document.body.classList.toggle("dfull-on", on); btn.setAttribute("aria-pressed", on); btn.textContent = on ? t("Exit full screen") : t("Full screen"); };
+  btn.onclick = () => setFull(!wrap.classList.contains("full"));
+  const onEsc = e => { if (!wrap.isConnected) { document.removeEventListener("keydown", onEsc); document.body.classList.remove("dfull-on"); return; } if (e.key === "Escape" && wrap.classList.contains("full")) setFull(false); };
+  document.addEventListener("keydown", onEsc);
   $("#dframe", main).append(await pageFrame("guides/dictionary.html", "Class data dictionary"));
 }
 
@@ -201,7 +253,7 @@ async function setup() {
 const RENDER = { home, setup, guides, homework, interview, cases, dictionary, playground };
 async function setZone(z, reset = false) {
   if (!ZONES.includes(z)) z = "home";
-  current = z;
+  current = z; document.body.classList.remove("dfull-on");
   $$("#zones [data-zone]").forEach(b => b.setAttribute("aria-selected", b.dataset.zone === z));
   store.set("zone", z);
   // Keep a deep link such as #homework/3/<question> on first load; a nav click always resets to the zone root.

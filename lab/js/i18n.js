@@ -183,5 +183,8 @@ const VI = {
   "This case is not translated yet, so it shows in English.": "Case này chưa có bản tiếng Việt nên đang hiện bản tiếng Anh.",
   "selected, but ": "đã chọn, nhưng ", "missing. ": "thiếu. ", "✓ Right.": "✓ Đúng.", "✗ Not quite.": "✗ Chưa đúng.",
   "Language": "Ngôn ngữ",
+  "Tables": "Bảng", "Filter tables and columns": "Lọc bảng và cột", "Click a table or column name to add it to the editor.": "Bấm vào tên bảng hoặc tên cột để chèn vào editor.",
+  "Open the Data Dictionary": "Mở Data Dictionary", "Add to the editor": "Chèn vào editor", "{n} rows": "{n} dòng", "No table or column matches.": "Không có bảng hay cột nào khớp.",
+  "Full screen": "Toàn màn hình", "Exit full screen": "Thoát toàn màn hình",
   "{n} of {m} cases are open in the free Lab.": "{n}/{m} case được mở trong Lab miễn phí.",
 };

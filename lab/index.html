@@ -501,6 +501,42 @@ iframe.embed{display:block;width:100%;height:calc(100vh - 150px);min-height:560p
 
 .lsbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 
+/* Playground workbench: dataset and table browser on the left, query tabs and editor on the right */
+.pgsplit .pgabout{margin-top:0}
+.pgsplit .sqlp .schema{display:none}   /* the left pane lists the tables, so the panel's own list is not needed */
+.pgfind{width:100%;padding:9px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:14px}
+.pgfind:focus-visible{outline:3px solid var(--violet);outline-offset:1px}
+.pgtables{display:grid;gap:8px}
+details.pgt{border:1.5px solid var(--line);border-radius:12px;background:var(--surface);padding:0 12px}
+details.pgt[open]{border-color:var(--violet)}
+details.pgt summary{display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer;list-style-position:outside}
+details.pgt summary::marker{color:var(--muted)}
+.pgt .rc{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pgt .td{margin:0 0 8px;font-size:13.5px;color:var(--muted)}
+.pgins{font:inherit;border:0;background:none;padding:0;cursor:pointer;color:var(--violet);text-align:left;font-family:var(--mono);overflow-wrap:anywhere}
+.pgins:hover{text-decoration:underline}
+.pgins.tn{font-size:13.5px;font-weight:800}
+ul.pgcols{list-style:none;margin:0 0 10px;padding:0;display:grid;border-top:1px solid var(--line)}
+ul.pgcols li{display:grid;grid-template-columns:minmax(0,auto) auto;column-gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line)}
+ul.pgcols li:last-child{border-bottom:0}
+ul.pgcols .cn{font-size:13px;font-weight:700;justify-self:start}
+ul.pgcols .ty{font-family:var(--mono);font-size:11.5px;color:var(--muted);justify-self:end}
+ul.pgcols .cd{grid-column:1/-1;font-size:13px;color:var(--fg);opacity:.85;line-height:1.45}
+.pgdict{justify-self:start}
+@media (min-width:980px){
+  .pgsplit{grid-template-columns:minmax(0,4fr) minmax(0,7fr)}
+  .pgsplit .split-l{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;padding-right:4px}
+  .pgsplit .split-r{position:static;max-height:none;overflow:visible}
+}
+
+/* Data Dictionary: Full screen grows the frame to the window */
+.dwrap .embedbar{justify-content:space-between}
+.dwrap.full{position:fixed;inset:0;z-index:90;background:var(--bg);padding:10px 14px 14px;display:flex;flex-direction:column}
+.dwrap.full .embedbar{margin-bottom:8px}
+.dwrap.full #dframe{flex:1;min-height:0}
+.dwrap.full iframe.embed{height:100%;min-height:0}
+body.dfull-on{overflow:hidden}
+
 /* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
    Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
    Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
@@ -780,6 +816,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=40b9a0b358"></script>
+<script type="module" src="js/app.js?v=bdfa751fe9"></script>
 
 </body></html>
