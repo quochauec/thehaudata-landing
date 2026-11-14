@@ -1,8 +1,8 @@
-import { mount as mountSql } from "./sqlpanel.js?v=ec44d67bb5";
-import { MODE } from "./mode.js?v=ec44d67bb5";
-import * as free from "./free.js?v=ec44d67bb5";
-import { chip, DOMAINS } from "./domains.js?v=ec44d67bb5";
-import { t, getLang } from "./i18n.js?v=ec44d67bb5";
+import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=dd291fda77";
+import { MODE } from "./mode.js?v=dd291fda77";
+import * as free from "./free.js?v=dd291fda77";
+import { chip, DOMAINS } from "./domains.js?v=dd291fda77";
+import { t, getLang } from "./i18n.js?v=dd291fda77";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -83,7 +83,8 @@ function challenge(c){
   $('#main').innerHTML=`<section class="stack" style="padding-top:20px">${body}</section><div class="nav2">${state.step>1?`<button class="btn" id="pv">${t('← Back')}</button>`:'<span></span>'}${state.step<3?`<button class="btn primary" id="nx">${[t('Plan the approach →'),t('Solve it →')][state.step-1]}</button>`:`<button class="btn" id="rs">${t('Reset this challenge')}</button>`}</div>`;
   const go=n=>{state.step=n;LS.set('step',n);draw();window.scrollTo({top:0});};
   if($('#pv'))$('#pv').onclick=()=>go(state.step-1); if($('#nx'))$('#nx').onclick=()=>{if(state.step===1)celebrate(c,1);else if(state.step===2&&(LS.get('n:'+c.id+':f')||'').trim().length>=20)celebrate(c,2);go(state.step+1);};
-  if($('#rs'))$('#rs').onclick=e=>{const b=e.currentTarget; if(!b.dataset.a){b.dataset.a=1;b.textContent=t('Click again to clear notes and progress');setTimeout(()=>{delete b.dataset.a;b.textContent=t('Reset this challenge')},4000);return;}
+  if($('#rs'))$('#rs').onclick=async()=>{
+    if(!await confirmDialog({title:t('Reset this challenge?'),body:t('This clears your notes, your answers, the checklist and your progress for this case, so you can practise it again from a blank state.'),ok:t('Yes, reset this case')}))return;
     ['done:'+c.id,'n:'+c.id+':f','n:'+c.id+':a','cele:'+c.id+':1','cele:'+c.id+':2','cele:'+c.id+':3'].forEach(k=>LS.del(k));LS.del('chk:'+c.id);draw();};
   after(c);
 }

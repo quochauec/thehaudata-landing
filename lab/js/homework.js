@@ -1,11 +1,11 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=ec44d67bb5";
-import { MODE } from "./mode.js?v=ec44d67bb5";
-import * as free from "./free.js?v=ec44d67bb5";
-import { mount, esc, hl, resultTable, resultMeta } from "./sqlpanel.js?v=ec44d67bb5";
-import { chip, chipsFor, DOMAINS } from "./domains.js?v=ec44d67bb5";
-import { t } from "./i18n.js?v=ec44d67bb5";
+import * as engine from "./engine.js?v=dd291fda77";
+import { MODE } from "./mode.js?v=dd291fda77";
+import * as free from "./free.js?v=dd291fda77";
+import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=dd291fda77";
+import { chip, chipsFor, DOMAINS } from "./domains.js?v=dd291fda77";
+import { t } from "./i18n.js?v=dd291fda77";
 
 
 const LS = {
@@ -204,6 +204,14 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
 
   function markDone(q) { LS.set("done:" + q.id, "1"); const d = $(`[data-dn="${q.id}"]`); if (d) d.textContent = t("✓ Done"); }
 
+  // Back to the blank state: query draft, tries, notes and the Done mark go, then the question is drawn again so the hint and model answer lock.
+  const RESET_TEXT = () => ({ title: t("Reset this question?"), body: t("This clears your query, your tries, your notes and the Done mark for this question, so you can practise it again from a blank state. The hint and the model answer lock again."), ok: t("Yes, reset this question") });
+  function resetQuestion(q, host) {
+    ["done", "n", "last", "note", "draft"].forEach(k => LS.del(k + ":" + q.id));
+    const dn = $(`[data-dn="${q.id}"]`); if (dn) dn.textContent = "";
+    fill(host);
+  }
+
   // Written analytics task: guidelines stay visible; the approach hint and the model outline open after a first draft.
   function fillWrite(q, body) {
     const byId = id => data.questions.find(x => x.id === id);
@@ -213,12 +221,13 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
     body.innerHTML = `
       ${ivNote(q)}<div class="q" style="white-space:pre-line">${esc(q.story)}</div>
       <div class="mstep"><p><b>${t("Guidelines")}</b></p><ol>${q.guide.map(g => `<li>${esc(g)}</li>`).join("")}</ol></div>
-      <div class="mstep"><label for="nt-${q.id}"><b>${t("Your answer")}</b></label><textarea id="nt-${q.id}" rows="14" data-note="${q.id}" placeholder="${t("Write your answer here. It is saved in this browser only.")}"></textarea></div>
+      <div class="mstep"><label for="nt-${q.id}"><b>${t("Your answer")}</b></label><textarea id="nt-${q.id}" rows="14" data-note="${q.id}" placeholder="${t("Write your answer here. It is saved in this browser only.")}"></textarea><div class="row2" style="margin-top:6px"><button class="btn" type="button" data-reset>${t("Reset to blank")}</button></div></div>
       <div class="rules" data-rules></div>
       <details class="reveal" data-gate="hint"><summary data-sum="hint">${t("Approach hint")}</summary><p style="white-space:pre-line">${esc(q.hint)}</p>
         <p><b>Practise this step with SQL</b></p><ul>${q.links.map(link).join("")}</ul></details>
       <details class="reveal ans" data-gate="ans"><summary data-sum="ans">${t("Model outline")}</summary><div class="ansbody"></div></details>`;
     const nt = $(`[data-note="${q.id}"]`, body), names = { hint: t("Approach hint"), ans: t("Model outline") };
+    $("[data-reset]", body).onclick = async () => { if (await confirmDialog(RESET_TEXT())) resetQuestion(q, body.closest("details.ex")); };
     nt.value = LS.get("note:" + q.id) || "";
     const NEED = 80, rules = $("[data-rules]", body);
     const unlocked = () => isDone(q.id) || nt.value.trim().length >= NEED;   // no unlock button; an older "unlock:" mark is ignored
@@ -293,6 +302,7 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
 
     const panel = mount($(".panelhost", body), {
       profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id,
+      resetConfirm: RESET_TEXT(), onReset: () => { try { panel.destroy(); } catch (e) { } resetQuestion(q, d); },
       onAttempt: (kind, sql) => {
         const s = clean(sql).trim();
         if (!s) return;   // an untouched template is not an attempt

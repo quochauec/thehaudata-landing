@@ -1,8 +1,8 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=ec44d67bb5";
-import { MODE } from "./mode.js?v=ec44d67bb5";
-import { createEditor } from "../vendor/editor.js?v=ec44d67bb5";
-import { t } from "./i18n.js?v=ec44d67bb5";
+import * as engine from "./engine.js?v=dd291fda77";
+import { MODE } from "./mode.js?v=dd291fda77";
+import { createEditor } from "../vendor/editor.js?v=dd291fda77";
+import { t } from "./i18n.js?v=dd291fda77";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -13,6 +13,38 @@ export function resultTable(out, limit = 200) {
   return `<table class="res"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
 }
 export const resultMeta = out => t("{n} rows · {ms} ms", { n: out.rows.length.toLocaleString(), ms: out.ms.toFixed(0) }) + (out.rows.length > 200 ? t(" · showing the first 200") : "");
+
+// ---- copy the result grid as tab-separated text (pastes cleanly into Excel and Google Sheets) ----
+export const COPY_MAX = 10000;
+export function resultTSV(out) {
+  const T = String.fromCharCode(9), N = String.fromCharCode(10), R = String.fromCharCode(13), Q = String.fromCharCode(34);
+  const cell = c => { if (c === null || c === undefined) return ""; const v = String(c); return v.includes(T) || v.includes(N) || v.includes(R) || v.includes(Q) ? Q + v.split(Q).join(Q + Q) + Q : v; };
+  return [out.names.map(cell).join(T), ...out.rows.slice(0, COPY_MAX).map(r => r.map(cell).join(T))].join(N);
+}
+export async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) { }
+  try {   // fallback for hosts where the Clipboard API is blocked (sandboxed frames)
+    const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.append(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove(); return ok;
+  } catch (e) { return false; }
+}
+
+// ---- confirmation popup. Resolves true on the confirm button, false on Cancel, Esc or a click outside. ----
+export function confirmDialog({ title, body, ok, cancel }) {
+  return new Promise(res => {
+    const back = document.createElement("div"); back.className = "cfm";
+    back.innerHTML = `<div class="cfmbox" role="alertdialog" aria-modal="true" aria-labelledby="cfm-t" aria-describedby="cfm-b"><h2 id="cfm-t">${esc(title)}</h2><p id="cfm-b">${esc(body)}</p><div class="cfmrow"><button type="button" class="btn" data-c>${esc(cancel || t("Cancel"))}</button><button type="button" class="btn primary danger" data-ok>${esc(ok)}</button></div></div>`;
+    const prev = document.activeElement;
+    const done = v => { document.removeEventListener("keydown", key, true); back.remove(); if (prev && prev.focus) prev.focus(); res(v); };
+    const key = e => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); done(false); } };
+    back.addEventListener("mousedown", e => { if (e.target === back) done(false); });
+    back.querySelector("[data-c]").onclick = () => done(false);
+    back.querySelector("[data-ok]").onclick = () => done(true);
+    document.addEventListener("keydown", key, true);
+    document.body.append(back);
+    back.querySelector("[data-c]").focus();   // the safe choice has focus, so Enter never destroys work by accident
+  });
+}
 
 // ---- editor highlighting (shared with the model answers) ----
 const KW = "SELECT|FROM|WHERE|GROUP BY|ORDER BY|JOIN|LEFT JOIN|INNER JOIN|OUTER|FULL|CROSS|ON|AND|OR|NOT|IN|EXISTS|AS|WITH|CASE|WHEN|THEN|ELSE|END|IS|NULL|COUNT|SUM|AVG|MIN|MAX|COALESCE|ISNULL|ROUND|DISTINCT|UNION ALL|UNION|YEAR|MONTH|BY|DESC|ASC|TOP|HAVING|OVER|PARTITION|LIKE|BETWEEN|CAST|CONVERT|DATEPART|DATEDIFF|GETDATE|LAG|LEAD|RANK|DENSE_RANK|ROW_NUMBER|NTILE|PERCENT_RANK|TRY_CAST";
@@ -28,6 +60,13 @@ if (!document.getElementById("sqlpanel-css")) {
 .edwrap .cm-editor{height:100%}
 .nextbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);min-height:28px}
 .nextbar:empty{display:none}
+.resbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.resbar .btn{padding:3px 10px;font-size:12.5px}
+.cfm{position:fixed;inset:0;background:rgba(13,27,42,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:1100}
+.cfmbox{background:var(--surface);color:var(--fg);border-radius:18px;max-width:460px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);display:grid;gap:12px}
+.cfmbox h2{margin:0;font-size:1.2rem}.cfmbox p{margin:0;line-height:1.5}
+.cfmrow{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.btn.danger{background:var(--warn,#c2410c);border-color:var(--warn,#c2410c);color:#fff}
 .nextbar button{font:inherit;font-family:var(--mono);font-size:12px;font-weight:700;border:1.5px solid var(--line);background:var(--blue-soft);color:var(--blue);border-radius:99px;padding:1px 10px;cursor:pointer}
 .nextbar button:hover{border-color:var(--blue)}
 `;
@@ -78,14 +117,14 @@ export function mount(root, opts) {
     <div class="sqlrow">
       <button class="btn primary" id="${id}-run"${MODE.free ? "" : " disabled"}>${t("Run")}</button>
       ${opts.check ? `<button class="btn" id="${id}-chk"${MODE.free ? "" : " disabled"}>${t("Check my answer")}</button>` : ""}
-      ${opts.draftKey ? `<button class="btn" id="${id}-rst" type="button">${t("Reset to blank")}</button>` : ""}
+      ${opts.draftKey || opts.onReset ? `<button class="btn" id="${id}-rst" type="button">${t("Reset to blank")}</button>` : ""}
       <span class="verdict" id="${id}-vd" role="status" aria-live="polite"></span>
       <span class="eng" id="${id}-eng"></span>
     </div>
     <div class="fb" id="${id}-fb" aria-live="polite"></div>
     <div class="note">${t("Ctrl+Enter runs the query. Tab indents; press Esc, then Tab, to move on to the next control.")}${opts.draftKey ? t(" Your draft is saved in this browser.") : ""}</div>
     <details class="plain"><summary>${t("See it translated to DuckDB")}</summary><pre class="duck" id="${id}-duck">${t("Run a query to see the translation.")}</pre></details>
-    <div class="resmeta" id="${id}-meta"></div>
+    <div class="resbar"><span class="resmeta" id="${id}-meta"></span><button class="btn" id="${id}-cp" type="button" hidden>${t("Copy result")}</button></div>
     <div class="reserr" id="${id}-err" role="alert"></div>
     <div class="tbl-wrap resgrid" id="${id}-grid"></div>
   </div>`;
@@ -111,7 +150,20 @@ export function mount(root, opts) {
   });
   // The rest of the panel reads and writes the query as ed.value.
   const ed = { get value() { return editor.getValue(); }, set value(v) { editor.setValue(v); }, focus: () => editor.focus() };
-  if (opts.draftKey) $("rst").onclick = () => { draft.del(); ed.value = opts.sql || ""; $("vd").textContent = ""; $("err").textContent = ""; $("fb").innerHTML = ""; ed.focus(); };
+  if ($("rst")) $("rst").onclick = async () => {
+    const q = opts.resetConfirm || {};
+    const yes = await confirmDialog({ title: q.title || t("Reset to blank?"), body: q.body || t("This clears your query and the result, and puts the editor back to its blank starting state."), ok: q.ok || t("Yes, reset") });
+    if (!yes) return;
+    draft.del(); ed.value = opts.sql || ""; $("vd").textContent = ""; $("err").textContent = ""; $("fb").innerHTML = ""; $("grid").innerHTML = ""; $("meta").textContent = ""; lastOut = null; $("cp").hidden = true;
+    if (opts.onReset) await opts.onReset(); else ed.focus();
+  };
+  let lastOut = null, cpTimer = null;
+  $("cp").onclick = async () => {
+    if (!lastOut) return;
+    const n = Math.min(lastOut.rows.length, COPY_MAX), ok = await copyText(resultTSV(lastOut)), b = $("cp");
+    b.textContent = ok ? t("Copied · {n} rows", { n: n.toLocaleString() }) + (lastOut.rows.length > COPY_MAX ? t(" (first {m})", { m: COPY_MAX.toLocaleString() }) : "") : t("Copy failed. Select the table and press Ctrl+C.");
+    clearTimeout(cpTimer); cpTimer = setTimeout(() => { b.textContent = t("Copy result"); }, 2500);
+  };
 
   const setBusy = b => { runB.disabled = b || !engine.getStatus().ready; if (chkB) chkB.disabled = runB.disabled; };
   const unsub = engine.onStatus(s => {
@@ -140,6 +192,7 @@ export function mount(root, opts) {
       $("duck").textContent = out.duck;
       $("grid").innerHTML = resultTable(out);
       $("meta").textContent = resultMeta(out);
+      lastOut = out; $("cp").hidden = false; $("cp").textContent = t("Copy result");
       if (check && opts.check) {
         const r = await opts.check(out, ed.value);
         $("vd").className = "verdict " + (r.ok ? "ok" : "no");
@@ -148,7 +201,7 @@ export function mount(root, opts) {
         if (r.ok && opts.onPass) opts.onPass();
       }
     } catch (e) {
-      $("grid").innerHTML = ""; $("meta").textContent = "";
+      $("grid").innerHTML = ""; $("meta").textContent = ""; lastOut = null; $("cp").hidden = true;
       $("err").textContent = friendlyError(e);
     } finally { setBusy(false); }
   }

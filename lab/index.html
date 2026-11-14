@@ -420,6 +420,26 @@ iframe.embed{display:block;width:100%;height:calc(100vh - 150px);min-height:560p
 .langsw button[aria-pressed="true"]{background:var(--violet);color:#fff}
 .langsw button:focus-visible{outline:3px solid var(--orange);outline-offset:-2px}
 
+/* Home hero: learning journey strip */
+.jr{margin-top:26px;display:grid;gap:10px}
+.jrh{display:flex;align-items:center;gap:14px;font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle)}
+.jrh i{flex:1;height:1.5px;background:var(--line)}
+.jrt{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:center;height:48px}
+.jrt::before,.jrt::after{content:"";position:absolute;left:42px;right:42px;top:22px;height:4px;border-radius:4px;background:var(--line)}
+.jrt::after{right:auto;width:calc(2 * ((100% - 48px) / 4 + 16px));background:var(--grad-hero)}
+.jrt .nd{position:relative;z-index:1;margin-left:20px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.25rem;background:var(--surface);border:1.5px solid var(--line)}
+.jrt .nd.past,.jrt .nd.on{background:var(--grad-hero);border-color:transparent;box-shadow:0 6px 16px rgba(91,33,255,.28)}
+.jrt .nd.on{width:50px;height:50px;margin-left:17px;font-size:1.4rem}
+.jrc{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:stretch}
+.jrk{display:grid;gap:8px;align-content:start;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px}
+.jrk.on{border-color:var(--violet);box-shadow:0 8px 24px rgba(91,33,255,.16)}
+.jrk small{font-size:.8rem;font-weight:800;color:var(--violet)}
+.jrk b{font-family:var(--head,inherit);font-size:1.05rem;line-height:1.25;color:var(--ink)}
+.jch{display:flex;flex-wrap:wrap;gap:6px}
+.jch em{font-style:normal;font-size:.8rem;font-weight:700;color:var(--violet);background:var(--violet-pale);border:1.5px solid var(--line);border-radius:99px;padding:3px 10px}
+@media(max-width:980px){.jrc{grid-template-columns:1fr 1fr}.jrt{display:none}}
+@media(max-width:560px){.jrc{grid-template-columns:1fr}}
+
 /* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
    Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
    Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
@@ -699,6 +719,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=ec44d67bb5"></script>
+<script type="module" src="js/app.js?v=dd291fda77"></script>
 
 </body></html>

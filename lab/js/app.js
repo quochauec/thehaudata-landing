@@ -1,13 +1,13 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=ec44d67bb5";
-import { mountHomework } from "./homework.js?v=ec44d67bb5";
-import { mountCases } from "./cases.js?v=ec44d67bb5";
-import { mount as mountSql, esc } from "./sqlpanel.js?v=ec44d67bb5";
-import * as sync from "./sync.js?v=ec44d67bb5";
-import { MODE } from "./mode.js?v=ec44d67bb5";
-import * as free from "./free.js?v=ec44d67bb5";
-import { chip, DOMAINS } from "./domains.js?v=ec44d67bb5";
-import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=ec44d67bb5";
+import * as engine from "./engine.js?v=dd291fda77";
+import { mountHomework } from "./homework.js?v=dd291fda77";
+import { mountCases } from "./cases.js?v=dd291fda77";
+import { mount as mountSql, esc } from "./sqlpanel.js?v=dd291fda77";
+import * as sync from "./sync.js?v=dd291fda77";
+import { MODE } from "./mode.js?v=dd291fda77";
+import * as free from "./free.js?v=dd291fda77";
+import { chip, DOMAINS } from "./domains.js?v=dd291fda77";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=dd291fda77";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -49,24 +49,29 @@ engine.onStatus(s => {
 // Start the engine as soon as the page opens, then pull the ADW and CRM tables in the background.
 if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])).catch(() => { });
 
+// Learning journey strip on the home hero (same four steps as the thehaudata.com landing page). Step 3 is the one this Lab trains.
+const STEPS = [
+  { ico: "🧱", title: "Data Foundation", chips: ["SQL fundamentals", "Basic statistics", "Data thinking"] },
+  { ico: "🛠️", title: "Tech Stacks", chips: ["SQL", "Python", "Power BI", "Looker Studio", "Agentic AI"] },
+  { ico: "🧠", title: "Mindset & Analytical Thinking", chips: ["Issue tree", "Hypotheses", "Storytelling"], on: true },
+  { ico: "🚀", title: "Hands-on Case Studies & Projects", chips: ["Real-life case studies", "Capstone", "Portfolio"] },
+];
+const journey = () => `<div class="jr" role="list" aria-label="${esc(t("Learning journey"))}"><div class="jrh"><span>${t("Learning journey")}</span><i></i></div>
+  <div class="jrt" aria-hidden="true">${STEPS.map((s, i) => `<span class="nd${s.on ? " on" : i < 2 ? " past" : ""}">${s.ico}</span>`).join("")}</div>
+  <div class="jrc">${STEPS.map((s, i) => `<div class="jrk${s.on ? " on" : ""}" role="listitem"><small>0${i + 1}</small><b>${t(s.title)}</b><span class="jch">${s.chips.map(c => `<em>${t(c)}</em>`).join("")}</span></div>`).join("")}</div></div>`;
+
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=ec44d67bb5");
-  const cs = await json("data/challenges.json?v=ec44d67bb5"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  hwData ??= await json("data/homework.json?v=dd291fda77");
+  const cs = await json("data/challenges.json?v=dd291fda77"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
   const live = cs.challenges.filter(c => ["adw", "crm", "gbe"].includes(c.dataset)).length;
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
-  hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>${t("Think like an analyst.")} <span class="gt">${t("Solve real business cases")}</span>${t(" with a data-driven mindset and the right tech stack.")}</h1>
-    <p>${t("Every exercise starts from a question a business would really ask. You decide what to measure and why, choose the right tool for the job (SQL, Power BI, Python, statistics), and finish with a conclusion you can defend. This Lab is where you practise the SQL part on the class tables.")}</p>
-    <ul class="usps">
-      <li><b>${t("Real-life case studies")}</b><span>${t("Requests that come from real companies, solved from brief to recommendation.")}</span></li>
-      <li><b>${t("Analytical mindset")}</b><span>${t("Plan the approach and the metrics first. Syntax comes second.")}</span></li>
-      <li><b>${t("Practical, hands-on")}</b><span>${t("Run T-SQL in the browser on the same tables used in class.")}</span></li>
-      <li><b>${t("Try first, then compare")}</b><span>${t("Hints along the way. Hints and model answers open after 5 different tries.")}</span></li></ul>`;
+  hdr.innerHTML = `<div class="eyebrow">TheHauData Mentoring Program</div><h1>${t("Think like an analyst.")} <span class="gt">${t("Solve real business cases")}</span>${t(" with a data-driven mindset and the right tech stack.")}</h1>${journey()}`;
   const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>${t("What's new")}</small> ${t("Latest from the course")}</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(n.tag)}</span><div><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">${t("Open")}</button>` : ""}</li>`).join("")}</ul></section>` : "";
-  main.innerHTML = `<div class="hub">${newsHtml}<div class="cards homecards">
+  main.innerHTML = `<div class="hub"><div class="cards homecards">
       <button class="cc big" data-go="guides"><span class="tag">${t("SQL, BI and analytics")}</span><b>${t("Study Guides")}</b><span class="sk">${t("A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.")}</span>
         <span class="row"><span class="tm">${t("{n} guides",{n:GUIDES.length})}</span></span></button>
       <button class="cc big" data-go="homework"><span class="tag">${t("SQL topics")}</span><b>${t("Homework")}</b><span class="sk">${t("{n} business questions from the SQL lessons, with hints, an answer check and the model answer.",{n:hwq.length})}</span>
@@ -79,6 +84,7 @@ async function home() {
         <span class="row"><span class="tm">${t("ADW, CRM, GBE and more")}</span></span></button>
       <button class="cc big" data-go="playground"><span class="tag g">${t("Free practice")}</span><b>${t("Playground")}</b><span class="sk">${t("An open editor on the AdventureWorks, CRM and Global Electronics tables.")}</span>
         <span class="row"><span class="tm">${t("No exercise attached")}</span></span></button></div>
+    ${newsHtml}
     <section class="card guidecard"><h2><small>${t("Learning guidelines")}</small> ${t("How to learn with the Lab")}</h2>
       <p class="note">${t("The Lab lets you open hints and model answers while you practise. These guidelines show how to use them so the practice builds your own skill.")}</p>
       <div class="gl">
@@ -109,12 +115,12 @@ async function home() {
 const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
   return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=ec44d67bb5");
+  hwData ??= await json("data/homework.json?v=dd291fda77");
   mountHomework({ data: hwView(false), hdr, main });
 }
 
 async function interview() {
-  hwData ??= await json("data/homework.json?v=ec44d67bb5");
+  hwData ??= await json("data/homework.json?v=dd291fda77");
   mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
 }
 // Vietnamese case prose is a sparse overlay (data/cases.vi.json, keyed by case id) merged over the English case.
@@ -122,9 +128,9 @@ async function interview() {
 const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ? a.map((x, i) => mergeVi(x, b[i]))
   : a && b && typeof a === "object" && typeof b === "object" ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, mergeVi(v, b[k])])) : b;
 async function loadCases() {
-  const d = await json("data/challenges.json?v=ec44d67bb5");
+  const d = await json("data/challenges.json?v=dd291fda77");
   if (getLang() !== "vi") return d;
-  const vi = await json("data/cases.vi.json?v=ec44d67bb5").catch(() => ({}));
+  const vi = await json("data/cases.vi.json?v=dd291fda77").catch(() => ({}));
   d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
   return d;
 }
