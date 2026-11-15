@@ -1,9 +1,9 @@
 // Free Lab (practice.thehaudata.com). Everything here runs only when MODE.free is true; the mentee build loads this file but never calls it.
 // The free build is made by tools/build_free.py from the finished mentee dist/: locked cases, lessons and guides arrive as title-only
 // stubs (`locked: true`), and the model answers of the free items are served from data/answers_free.json behind an email gate.
-import { MODE } from "./mode.js?v=7ba8096f9b";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=7ba8096f9b";
-import { t as tr } from "./i18n.js?v=7ba8096f9b";
+import { MODE } from "./mode.js?v=e58da5bb0b";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=e58da5bb0b";
+import { t as tr } from "./i18n.js?v=e58da5bb0b";
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const LS = {

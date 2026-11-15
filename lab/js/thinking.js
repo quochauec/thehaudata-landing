@@ -1,10 +1,10 @@
 // Analytical Thinking zone: mini cases (read, stop and think, then the data, the trap and our take) and two toolkits of short cards.
 // Content: data/thinking.json (English). Deep links: #thinking, #thinking/case/<id>, #thinking/card/<id>.
 // Teaching notes for the mentor live in 6. Workspace/documents/analytical-thinking/, never in the Lab.
-import { MODE } from "./mode.js?v=7ba8096f9b";
-import * as free from "./free.js?v=7ba8096f9b";
-import { chip } from "./domains.js?v=7ba8096f9b";
-import { t, getLang } from "./i18n.js?v=7ba8096f9b";
+import { MODE } from "./mode.js?v=e58da5bb0b";
+import * as free from "./free.js?v=e58da5bb0b";
+import { chip } from "./domains.js?v=e58da5bb0b";
+import { t, getLang } from "./i18n.js?v=e58da5bb0b";
 
 export function mountThinking({ data, hdr, main, labels, open }) {
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];

@@ -3148,5 +3148,1109 @@
     "why": "Hai cột cho mỗi quốc gia: giai đoạn đầu lớn ở mọi nơi, giai đoạn hai gần bằng không."
    }
   ]
+ },
+ "fuzzy-device": {
+  "title": "Nên dồn ngân sách search tăng thêm vào thiết bị nào?",
+  "brief": {
+   "subject": "+30% cho Google non-brand search: nên dồn vào đâu?",
+   "body": [
+    "Chúng tôi bán thú nhồi bông online. Gần như toàn bộ traffic trả phí đến từ Google non-brand search, và Finance đã duyệt <b>tăng 30% ngân sách</b> ở đó.",
+    "Agency báo giá khoảng <b>$2.50 mỗi click</b>, như nhau trên desktop và mobile. Coi một click là một website session. Dùng <b>6 tháng gần nhất</b> (19/9/2014 đến 18/3/2015): trước đó site đã thay đổi rất nhiều.",
+    "Khoản ngân sách thêm có đáng không, và nên dồn vào thiết bị nào? Tôi có năm phút vào thứ Sáu."
+   ],
+   "ask": "Đưa ra câu trả lời ba câu: quyết định, bằng chứng, hành động.",
+   "facts": [
+    "Kênh: <code>utm_source = 'gsearch'</code> và <code>utm_campaign = 'nonbrand'</code>.",
+    "Giá click $2.50 đến từ Maya, không đến từ database."
+   ]
+  },
+  "frame": {
+   "nudge": "Mỗi click vừa tốn tiền vừa kiếm tiền. Mỗi click mình <i>kiếm</i> được bao nhiêu sau khi trừ product cost và refund, và con số đó có giống nhau với mọi loại khách truy cập không?",
+   "tree": [
+    "<b>Thêm ngân sách có đáng không?</b>",
+    [
+     "Kiếm được mỗi session so với $2.50 trả cho mỗi session",
+     "Mức kiếm được mỗi session có khác nhau theo thiết bị không?",
+     "Khoảng chênh nếu có là thật hay là nhiễu, và có ổn định qua các tháng không?"
+    ]
+   ],
+   "hyp": [
+    "Desktop kiếm được nhiều hơn mobile mỗi session.",
+    "Mobile nằm dưới mức hòa vốn ở $2.50, desktop nằm trên."
+   ],
+   "traps": [
+    "Revenue không phải profit: hãy trừ cost of goods và refund.",
+    "Session không có đơn kiếm $0 nhưng vẫn tốn một click: hãy chia cho tất cả session.",
+    "Ba năm data trộn những phiên bản site rất khác nhau: hãy dùng khoảng thời gian gần đây.",
+    "Text <code>'NULL'</code> trong các cột UTM nghĩa là traffic direct/organic."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi click là một session; chứa channel, campaign và thiết bị."
+    ],
+    [
+     null,
+     null,
+     "Giá và cost của mỗi đơn, liên kết với session."
+    ],
+    [
+     null,
+     null,
+     "Profit không phải revenue: phải trừ refund ra."
+    ],
+    [
+     null,
+     null,
+     "Giá và cost ở cấp đơn đã nằm sẵn trong orders."
+    ],
+    [
+     null,
+     null,
+     "Data funnel; không cần cho kinh tế của click."
+    ]
+   ],
+   "grain": [
+    "<code>website_sessions</code>: mỗi dòng là một lượt truy cập. Bắt đầu từ đây để những người không mua vẫn ở lại.",
+    "<code>orders</code>: tối đa một đơn cho mỗi session. <b>LEFT JOIN</b> từ sessions.",
+    "<code>order_item_refunds</code>: nhiều dòng cho mỗi đơn ở 8 đơn. <b>Tổng hợp trước</b> theo đơn rồi mới join."
+   ],
+   "goal": "Mỗi thiết bị một dòng: session, đơn, conversion rate, revenue và net margin mỗi session.",
+   "watch": [
+    "INNER JOIN với orders làm rơi mọi người không mua, nên conversion đọc ra 100%.",
+    "Chỉ lấy trung bình trên người mua cho ra margin mỗi đơn, không phải mỗi click.",
+    "BETWEEN với ngày kết thúc bỏ sót phần lớn ngày cuối trên kiểu datetime: hãy dùng >= và <."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Có cho desktop, không cho mobile. Ở $2.50 mỗi click desktop có lãi còn mobile lỗ, nên ngân sách thêm chỉ nên dồn vào desktop.",
+    "Một session desktop kiếm $3.87 net margin (sau cost of goods và refund), một session mobile $1.36. Tức lãi $1.37 mỗi click desktop và lỗ $1.14 mỗi click mobile. Desktop chuyển đổi 10.2% số session so với 3.6% ở mobile (chênh 6.6 điểm, 95% CI 6.3 đến 6.9) và dẫn đầu mọi tháng.",
+    "Khoảng 4,029 click thêm mỗi tháng trên desktop đáng giá khoảng $5,510 mỗi tháng, so với $2,375 nếu chia như hiện nay. Hạ giá bid mobile xuống dưới $1.26 mỗi click hoặc tạm dừng mobile. Lưu ý: giá click thường tăng theo khối lượng, nên hãy tăng bid desktop từng bước; mình chưa test vì sao mobile chuyển đổi kém hơn."
+   ],
+   "checks": [
+    "Câu đầu tiên của mình là quyết định (có / không / ở đâu).",
+    "Mình dùng net margin mỗi session trên tất cả session, không dùng revenue.",
+    "Mình so từng thiết bị với giá click $2.50.",
+    "Mình nêu một khoảng tin cậy, và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Theo từng tháng, desktop so với mobile (pivot bằng conditional aggregation, đưa vào line chart)"
+  },
+  "questions": [
+   "Một click kiếm được bao nhiêu sau product cost và refund?",
+   "Con số đó có giống nhau trên desktop và mobile không?",
+   "Khoảng chênh là thật hay là nhiễu?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Đơn ÷ session (cấp độ session)."
+   ],
+   [
+    null,
+    "(Revenue − cost of goods − refund) ÷ <b>tất cả</b> session."
+   ],
+   [
+    null,
+    "Bằng net margin mỗi session: trả ít hơn mức này thì click có lãi."
+   ],
+   [
+    null,
+    "Net margin mỗi session − $2.50."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Net margin mỗi session, 19/9/2014 đến 18/3/2015. Thanh sai số: 95% CI.",
+    "title": "Desktop vượt giá click $2.50; mobile thì không",
+    "why": "Hai giá trị so với một ngưỡng: bar bắt đầu từ zero cộng một đường giá. Thanh sai số cho thấy độ bất định."
+   },
+   {
+    "sub": "Conversion rate theo tháng và thiết bị. Tháng đầu và tháng cuối chưa đầy đủ.",
+    "title": "Khoảng chênh xuất hiện ở mọi tháng",
+    "why": "Thay đổi theo thời gian: line, cùng một màu cho mỗi thiết bị ở cả hai chart."
+   }
+  ]
+ },
+ "fuzzy-refunds": {
+  "title": "Refund tăng vọt vào mùa hè. Nhất thời hay xu hướng, và ở sản phẩm nào?",
+  "brief": {
+   "subject": "Tỷ lệ refund: có gì đó hỏng không?",
+   "body": [
+    "Số refund trông xấu trong buổi rà soát mùa thu, và tôi không phân biệt được đó là một sản phẩm, một tháng tệ hay một trạng thái bình thường mới.",
+    "Hãy kiểm tra <b>từ tháng 5/2014 trở đi</b>. Định nghĩa tỷ lệ refund là <b>số món bị refund ÷ số món đã bán</b>, nhóm theo tháng món đó được mua.",
+    "Nếu có gì hỏng, tôi cần biết sản phẩm nào và khi nào, để đi làm việc với nhà cung cấp."
+   ],
+   "ask": "Đưa ra ba câu: sản phẩm nào, lớn đến đâu và kéo dài bao lâu, và Dan nên làm gì.",
+   "facts": [
+    "Khoảng thời gian: các món được mua từ 1/5/2014 đến 19/3/2015.",
+    "Các bảng chứa món đã bán (<code>order_items</code>), refund và danh sách sản phẩm."
+   ]
+  },
+  "frame": {
+   "nudge": "Trước khi quyết định gì, hãy chia tỷ lệ refund chung theo hai cách: theo sản phẩm và theo tháng. Đó là sản phẩm nào, và từ khi nào?",
+   "tree": [
+    "<b>Tỷ lệ refund có phải là vấn đề không?</b>",
+    [
+     "Sản phẩm nào có tỷ lệ bất thường?",
+     "Nó bắt đầu khi nào và có kéo dài không? (theo từng tháng)",
+     "Cú tăng có lớn hơn những lên xuống bình thường không?"
+    ]
+   ],
+   "hyp": [
+    "Một sản phẩm kéo cú tăng.",
+    "Cú tăng chỉ giới hạn ở vài tháng rồi trở lại bình thường.",
+    "Một sản phẩm có thể có tỷ lệ cao mà không có cú tăng: hãy kiểm tra cả hai góc nhìn."
+   ],
+   "traps": [
+    "Đếm các <i>món</i> bị refund so với các món <i>đã bán</i>, không so với số dòng refund hay số đơn.",
+    "Group theo tháng mua; refund đến sau nhưng thuộc về lần bán.",
+    "So với các sản phẩm khác trong cùng các tháng, không so với một giai đoạn khác.",
+    "Sản phẩm có tỷ lệ tổng cao nhất không nhất thiết là sản phẩm có cú tăng: hãy nhìn tỷ lệ theo thời gian cũng như tổng."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Các món đã bán: sản phẩm và ngày mua."
+    ],
+    [
+     null,
+     null,
+     "Những món nào đã bị refund."
+    ],
+    [
+     null,
+     null,
+     "Tên sản phẩm."
+    ],
+    [
+     null,
+     null,
+     "Cấp header; món mới là grain đúng cho tỷ lệ theo món."
+    ],
+    [
+     null,
+     null,
+     "Data traffic; không cần."
+    ]
+   ],
+   "grain": [
+    "<code>order_items</code>: mỗi dòng là một món đã bán. Đây là <b>mẫu số</b>.",
+    "<code>order_item_refunds</code>: tối đa một dòng cho mỗi món bị refund (<b>LEFT JOIN</b> để giữ các món không bị refund).",
+    "<code>products</code>: join để lấy tên."
+   ],
+   "goal": "Tỷ lệ refund theo sản phẩm, rồi theo tháng cho sản phẩm có vấn đề so với tất cả sản phẩm khác.",
+   "watch": [
+    "INNER JOIN với refunds chỉ giữ các món bị refund, nên tỷ lệ đọc ra 100%.",
+    "COUNT(r.order_item_id) và SUM(CASE...) cho cùng một tử số; chọn một cách và nhất quán.",
+    "Chia cho số đơn thay vì số món làm thay đổi tỷ lệ với các đơn nhiều món."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Đó là một cú nhất thời ở một sản phẩm. The Original Mr. Fuzzy có cú tăng refund vào tháng 8 và tháng 9/2014 và đã trở lại bình thường từ tháng 10.",
+    "Tỷ lệ refund của nó là 13.5% trong hai tháng đó so với 3.6% ở các tháng khác (chênh 9.9 điểm, 95% CI 8.3 đến 11.4). Các sản phẩm khác đi ngang. Riêng The Birthday Sugar Panda có tỷ lệ cao nhất trong cả khoảng thời gian (5.8%) mà không có cú tăng: một mức nền cao hơn đều đặn chứ không phải một sự kiện.",
+    "Không cần sửa gì dài hạn. Hỏi nhà cung cấp về các món Mr. Fuzzy mua vào tháng 8-9/2014 (khoảng 199 refund thêm). Đưa việc rà soát tỷ lệ đều đặn của Panda vào danh sách như một mục riêng. Lưu ý: data không cho thấy nguyên nhân; hãy xác nhận bằng lý do refund nếu Ops có."
+   ],
+   "checks": [
+    "Mình đã gọi tên sản phẩm và các tháng.",
+    "Mình đã so cú tăng với mức nền của chính sản phẩm đó.",
+    "Mình đã nói nó có kéo dài không.",
+    "Mình cho Dan một bước tiếp theo và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Theo từng tháng (pivot bằng conditional aggregation)"
+  },
+  "questions": [
+   "Sản phẩm nào có tỷ lệ refund bất thường?",
+   "Cú tăng bắt đầu khi nào, và có kéo dài không?",
+   "Cú tăng có lớn hơn những lên xuống bình thường không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Số món bị refund ÷ số món đã bán, theo tháng mua."
+   ],
+   [
+    null,
+    "Tỷ lệ ở các tháng không có cú tăng, của cùng sản phẩm."
+   ],
+   [
+    null,
+    "(Tỷ lệ lúc tăng − mức nền) × số món đã bán trong các tháng tăng."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Tỷ lệ refund theo tháng mua, từ tháng 5/2014.",
+    "title": "Một sản phẩm, hai tháng",
+    "why": "Thay đổi theo thời gian cho hai nhóm: hai đường line. Một bảng 11 tháng sẽ che mất hình dạng."
+   }
+  ]
+ },
+ "fuzzy-sources": {
+  "title": "Nguồn traffic nào mang về người mua?",
+  "brief": {
+   "subject": "Người mua của mình đến từ đâu?",
+   "body": [
+    "Tôi đọc báo cáo traffic mỗi sáng thứ Hai và nó xếp hạng các kênh theo lượt truy cập. Kênh lớn nhất chưa chắc là kênh tốt nhất. Tôi muốn một góc nhìn theo kênh cho thấy lượt truy cập, đơn hàng và order rate.",
+    "Dùng các session từ 1/1/2014, khi cả hai social pilot đang chạy hoặc sắp chạy. Tách traffic không gắn tag thành Direct (không tag, không referrer) và Organic search (không tag, nhưng khách đến từ một công cụ tìm kiếm)."
+   ],
+   "ask": "Trả lời trong ba câu: kênh nào chuyển đổi tốt nhất, kênh nào trông yếu và vì sao bạn tin điều đó, và còn thiếu gì trước khi mình chuyển ngân sách.",
+   "facts": [
+    "Một session là một lượt truy cập. Order rate là đơn ÷ session.",
+    "Traffic không gắn tag có text <code>'NULL'</code> trong <code>utm_source</code> và <code>utm_campaign</code> (giá trị thiếu sau khi load). Tag search của shop là <code>gsearch</code> và <code>bsearch</code>; <code>socialbook</code> là đối tác social media."
+   ]
+  },
+  "context": {
+   "company": "Fuzzy Factory là một shop online bán thú nhồi bông. Shop bắt đầu với một sản phẩm, The Original Mr. Fuzzy, vào tháng 3/2012 và hiện bán bốn sản phẩm. Mọi giao dịch diễn ra trên website của chính shop.",
+   "situation": "Marketing mua traffic từ hai công cụ tìm kiếm (Google, Bing) và chạy hai social media pilot nhỏ. Một số khách đến mà không có tag nào: họ gõ địa chỉ hoặc đến từ một kết quả organic search.",
+   "decision": "Kênh nào xứng đáng được chú ý hơn, kênh nào trông yếu, và bạn còn cần biết gì trước khi chuyển ngân sách?"
+  },
+  "frame": {
+   "nudge": "Một kênh có nhiều session không phải lúc nào cũng mang về nhiều đơn. Có kênh lớn và trung bình, có kênh nhỏ và rất tốt, có kênh nhỏ và kém. Bạn cần phân biệt những loại nào, và với 5,000 session thì bạn chắc chắn được đến đâu?",
+   "tree": [
+    "<b>Kênh nào xứng đáng được chú ý?</b>",
+    [
+     "Session và đơn theo kênh",
+     "Order rate và revenue mỗi session",
+     "Cỡ mẫu đứng sau mỗi tỷ lệ",
+     "Data không bao gồm gì (cost)"
+    ]
+   ],
+   "hyp": [
+    "Brand search chuyển đổi tốt hơn non-brand search.",
+    "Các social pilot chuyển đổi kém hơn search."
+   ],
+   "traps": [
+    "INNER JOIN với orders làm rơi những khách không mua và biến mọi tỷ lệ thành 100%.",
+    "Traffic không gắn tag là hai thứ. Direct và organic search hành xử khác nhau.",
+    "Chi phí mỗi click không có trong data: một order rate cao vẫn có thể là một khoản return tệ."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một lượt truy cập: nguồn, campaign, thiết bị, có phải là lượt quay lại không."
+    ],
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn, liên kết với session."
+    ],
+    [
+     null,
+     null,
+     "Data cấp trang; không cần cho tổng theo nguồn."
+    ],
+    [
+     null,
+     null,
+     "Các món đã nằm sẵn trong đơn."
+    ],
+    [
+     null,
+     null,
+     "Refund được đề cập ở một case khác."
+    ]
+   ],
+   "grain": [
+    "<code>website_sessions</code>: mỗi dòng là một lượt truy cập. Bắt đầu từ đây để những người không mua vẫn ở lại.",
+    "<code>orders</code>: tối đa một đơn cho mỗi session. <b>LEFT JOIN</b> từ sessions, rồi <code>COUNT(o.order_id)</code> chỉ đếm người mua."
+   ],
+   "goal": "Mỗi kênh một dòng: session, đơn, order rate và revenue mỗi session, từ 1/1/2014.",
+   "watch": [
+    "Lặp lại CASE trong GROUP BY (T-SQL không group được theo alias).",
+    "COUNT(o.order_id) bỏ qua NULL: nó đếm đơn. COUNT(*) đếm session."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Các kênh lớn chuyển đổi giống nhau: mọi kênh có hơn 20,000 session đều nằm giữa 7.5% và 7.8%. Chỉ bsearch brand tốt hơn (9.5%, trên 5,731 session nhỏ) và hai social media pilot kém hơn (5.2% và 1.1%).",
+    "Non-brand search mang về nhiều lượt truy cập nhất (164,296 session trên Google) ở mức 7.5%, gần bằng organic search (7.8%) và direct (7.5%), nên order rate không phân biệt được chúng và chi phí mỗi click mới làm được. Social pilot đầu tiên tạo 55 đơn từ 5,095 session; pilot nhắm vào desktop tạo 288 đơn từ 5,590. Cả hai đều thấp hơn nhiều so với mức trung bình 7.5% của site với đủ session để khoảng chênh là thật, không phải nhiễu.",
+    "Đừng chuyển ngân sách chỉ dựa vào order rate. Giữ các kênh search, tạm dừng social pilot kiểu đầu tiên, và chỉ tài trợ phiên bản nhắm vào desktop nếu giá click của nó thấp hơn hẳn search. Lưu ý: order rate không phải profit, và chi phí mỗi click theo kênh là con số còn thiếu."
+   ],
+   "checks": [
+    "Mình dùng LEFT JOIN từ sessions.",
+    "Mình tách traffic không gắn tag thành direct và organic search.",
+    "Mình đọc số session cạnh mỗi tỷ lệ.",
+    "Mình nói còn thiếu gì trước khi chuyển ngân sách (cost)."
+   ]
+  },
+  "questions": [
+   "Mỗi kênh có bao nhiêu session và đơn?",
+   "Kênh nào chuyển đổi tốt hơn hoặc kém hơn mức trung bình của site?",
+   "Bạn chắc chắn đến đâu về kênh yếu nhất?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Đơn ÷ session."
+   ],
+   [
+    null,
+    "Revenue của đơn ÷ tất cả session, kể cả những session không mua."
+   ],
+   [
+    null,
+    "Session trong kênh. Nó quyết định một tỷ lệ có thể dao động bao xa chỉ do may rủi."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Order rate theo kênh từ 1/1/2014, với khoảng tin cậy 95%.",
+    "title": "Search, organic và direct chuyển đổi giống nhau ở khoảng 7.5%; các social pilot nằm thấp hơn nhiều",
+    "why": "Một tỷ lệ cho mỗi nhóm kèm độ bất định: bar bắt đầu từ zero, thanh sai số cho may rủi, một đường cho mức trung bình của site."
+   }
+  ]
+ },
+ "fuzzy-repeat": {
+  "title": "Khách quay lại có mua nhiều hơn khách lần đầu không?",
+  "brief": {
+   "subject": "Khách quay lại có đáng để theo đuổi không?",
+   "body": [
+    "CRM manager nói khách quay lại \"chuyển đổi tốt hơn nhiều\" và muốn có ngân sách retargeting. Tôi muốn xem con số trước.",
+    "So sánh lượt truy cập đầu tiên với lượt truy cập lặp lại trên cả ba năm: session, đơn, order rate và giá trị đơn trung bình. Sau đó kiểm tra xem khác biệt có đúng bên trong từng nguồn traffic không, để biết nó không chỉ là hiệu ứng của cơ cấu nguồn."
+   ],
+   "ask": "Trả lời trong ba câu: khách quay lại chuyển đổi tốt hơn bao nhiêu, điều đó có đúng ở mọi nguồn không, và bạn sẽ làm gì (và không nên khẳng định gì).",
+   "facts": [
+    "<code>is_repeat_session = 1</code> đánh dấu lượt truy cập của một người dùng đã từng vào site.",
+    "Các lượt truy cập không có tag (nguồn <code>'NULL'</code>) là traffic direct hoặc organic."
+   ]
+  },
+  "context": {
+   "company": "Fuzzy Factory là một shop online bán thú nhồi bông. Shop bắt đầu với một sản phẩm, The Original Mr. Fuzzy, vào tháng 3/2012 và hiện bán bốn sản phẩm. Mọi giao dịch diễn ra trên website của chính shop.",
+   "situation": "Khoảng một trong sáu lượt truy cập là lượt lặp lại. CRM manager muốn tài trợ một chương trình email và retargeting nhắm vào những người đã ghé một lần.",
+   "decision": "Một khách quay lại có đáng giá hơn một khách lần đầu không, và điều đó có đúng ở mọi nguồn traffic không?"
+  },
+  "frame": {
+   "nudge": "Một khách quay lại là người đã chọn quay lại. Điều đó nói gì về họ trước khi họ thấy bất kỳ email nào, và bạn cần gì để khẳng định retargeting tạo ra khác biệt?",
+   "tree": [
+    "<b>Khách quay lại có đáng giá hơn không?</b>",
+    [
+     "Order rate theo loại lượt truy cập",
+     "Giá trị đơn theo loại lượt truy cập",
+     "Khoảng chênh bên trong từng nguồn",
+     "Phép so sánh này không chứng minh được gì"
+    ]
+   ],
+   "hyp": [
+    "Khách quay lại chuyển đổi tốt hơn khoảng một hoặc hai điểm.",
+    "Giá trị đơn gần như như nhau."
+   ],
+   "traps": [
+    "So sánh hai nhóm không cho thấy cái này gây ra cái kia. Khách quay lại vốn đã quan tâm.",
+    "Một khoảng chênh chung có thể đến từ cơ cấu nguồn. Hãy kiểm tra bên trong từng nguồn.",
+    "Giá trị đơn trung bình chỉ tồn tại với session có đơn: chia cho số đơn, không chia cho session."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một lượt truy cập: nguồn, campaign, thiết bị, có phải lượt quay lại không."
+    ],
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn, liên kết với session."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>website_sessions</code>: mỗi dòng là một lượt truy cập; <code>is_repeat_session</code> chia các nhóm.",
+    "<code>orders</code>: LEFT JOIN từ sessions để các lượt truy cập không có đơn vẫn được tính trong mẫu số."
+   ],
+   "goal": "Mỗi loại lượt truy cập một dòng: session, đơn, order rate và giá trị đơn trung bình.",
+   "watch": [
+    "AVG trên tất cả session sẽ chia revenue cho session, không chia cho đơn. Dùng SUM / COUNT(order_id).",
+    "Kiểm tra rằng session cộng lại khớp tổng của bảng (472,871)."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Khách quay lại chuyển đổi tốt hơn, 7.8% so với 6.6%, nhưng họ chi tiêu như nhau mỗi đơn ($60.54 so với $59.86). Mức tăng là khiêm tốn 1.2 điểm.",
+    "Khoảng chênh là 1.2 điểm (khoảng tin cậy 95% từ 1.0 đến 1.4) và nó đúng bên trong mọi nguồn có đủ lượt quay lại (từ 0.9 đến 2.1 điểm), nên cơ cấu nguồn không giải thích được nó. Lượt quay lại chiếm 17% session và 19% đơn.",
+    "Một test retargeting khiêm tốn là hợp lý, nhắm vào khách quay lại đã rời đi mà không mua. Đừng lập ngân sách chỉ dựa trên phép so sánh này: khách quay lại vốn đã muốn quay lại, nên nó không cho thấy email hay retargeting tạo ra các đơn thêm. Hãy chạy một holdout test với một nhóm không nhận retargeting."
+   ],
+   "checks": [
+    "Mình dùng LEFT JOIN từ sessions.",
+    "Mình kiểm tra khoảng chênh bên trong từng nguồn.",
+    "Mình không khẳng định retargeting gây ra khoảng chênh.",
+    "Mình đề xuất một holdout test."
+   ]
+  },
+  "extra_sql": {
+   "title": "Khoảng chênh có đúng bên trong từng nguồn không? (tỷ lệ lượt đầu tiên so với lượt lặp lại)"
+  },
+  "questions": [
+   "Order rate của lượt truy cập đầu tiên và lượt lặp lại là bao nhiêu?",
+   "Khách quay lại có chi tiêu nhiều hơn mỗi đơn không?",
+   "Khoảng chênh có giống nhau ở mọi nguồn traffic không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Đơn ÷ session."
+   ],
+   [
+    null,
+    "Revenue của đơn ÷ số đơn."
+   ],
+   [
+    null,
+    "So sánh cùng hai nhóm đó bên trong từng nguồn traffic để xem khoảng chênh có còn không."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Order rate theo loại lượt truy cập, tất cả session, với khoảng tin cậy 95%.",
+    "title": "Lượt quay lại chuyển đổi tốt hơn 1.2 điểm",
+    "why": "Hai nhóm kèm độ bất định: bar bắt đầu từ zero với thanh sai số."
+   },
+   {
+    "sub": "Order rate theo nguồn và loại lượt truy cập (các nguồn có hơn 1,000 lượt quay lại).",
+    "title": "Khoảng chênh xuất hiện ở mọi nguồn",
+    "why": "Cùng phép so sánh theo từng segment: bar ghép đôi cho thấy khoảng chênh có còn hay không."
+   }
+  ]
+ },
+ "fuzzy-funnel": {
+  "title": "Khách rời đi ở đâu trên đường đến một đơn hàng?",
+  "brief": {
+   "subject": "Mình nên sửa bước nào trước?",
+   "body": [
+    "Khách vào site, xem, thêm vào giỏ, và checkout qua các trang shipping và billing. Quý tới tôi chỉ chạy được một test và muốn chọn bước có lý lẽ mạnh nhất.",
+    "Đếm số session đã đến từng bước: landing page, danh sách sản phẩm, một trang sản phẩm, cart, shipping, billing, và trang xác nhận đơn. Cho tôi số session, tỷ lệ so với bước trước, và tỷ lệ so với tất cả session ở mỗi bước."
+   ],
+   "ask": "Trả lời trong ba câu: khách bị mất ở đâu, bạn sẽ test bước nào trước, và vì sao mức mất lớn nhất có thể không phải là test tốt nhất.",
+   "facts": [
+    "Dùng <code>website_pageviews</code>: một session 'đã đến' một bước nếu nó mở trang đó ít nhất một lần.",
+    "Trang xác nhận là <code>/thank-you-for-your-order</code>. Trang sản phẩm là bốn URL sản phẩm. Billing có hai phiên bản: <code>/billing</code> và <code>/billing-2</code>."
+   ]
+  },
+  "context": {
+   "company": "Fuzzy Factory là một shop online bán thú nhồi bông. Shop bắt đầu với một sản phẩm, The Original Mr. Fuzzy, vào tháng 3/2012 và hiện bán bốn sản phẩm. Mọi giao dịch diễn ra trên website của chính shop.",
+   "situation": "Team site chỉ có thời gian cho một conversion test vào quý tới. Nhiều người đề xuất các trang khác nhau để cải thiện, mỗi trang đều có một câu chuyện hay.",
+   "decision": "Bước nào trên đường từ landing page đến đơn hàng là ứng viên tốt nhất cho test tiếp theo?"
+  },
+  "frame": {
+   "nudge": "Một funnel có hai kiểu 'rơi lớn nhất': số lượng mất nhiều nhất và tỷ lệ đi qua thấp nhất. Trước khi nhìn, hãy quyết định bạn sẽ theo kiểu nào, và bạn vẫn cần biết thêm gì.",
+   "tree": [
+    "<b>Nên test bước nào trước?</b>",
+    [
+     "Session ở từng bước",
+     "Tỷ lệ đi qua từ bước này sang bước kế",
+     "Mức mất tuyệt đối ở từng bước",
+     "Một mức tăng 10% ở một bước tác động thế nào đến số đơn"
+    ]
+   ],
+   "hyp": [
+    "Mức mất lớn nhất về số lượng là bước đầu tiên sau landing page.",
+    "Mức cải thiện 10% ở bất kỳ bước nào có cùng tác động lên số đơn."
+   ],
+   "traps": [
+    "Số đếm của một bước là các session từng đến trang đó, không phải một chuỗi chặt chẽ.",
+    "Tỷ lệ 80% trên một bước rất lớn có thể ít quan trọng hơn 45% trên một bước cỡ vừa.",
+    "Các bước nhân với nhau: cải thiện bất kỳ bước nào 10% đều nâng số đơn cuối thêm 10%, nên lựa chọn nằm ở chi phí và xác suất thành công."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một trang được mở, với session và URL."
+    ],
+    [
+     null,
+     null,
+     "Thuộc tính của session không cần để đếm các bước."
+    ],
+    [
+     null,
+     null,
+     "Trang thank-you đánh dấu một đơn."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>website_pageviews</code>: nhiều dòng cho mỗi session. Gộp về một dòng mỗi session bằng các cờ <code>MAX(CASE WHEN ...)</code> trước.",
+    "Sau đó cộng các cờ theo từng bước và xếp chồng các bước bằng <code>UNION ALL</code>. <code>LAG</code> cho bước trước, <code>FIRST_VALUE</code> cho bước đầu."
+   ],
+   "goal": "Mỗi bước một dòng: session, tỷ lệ so với bước trước, tỷ lệ so với tất cả session.",
+   "watch": [
+    "Đếm một session một lần cho mỗi bước: dùng cờ MAX, không dùng COUNT của pageview.",
+    "Dòng đầu tiên không có bước trước, nên tỷ lệ đi qua của nó là NULL theo thiết kế."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Khách bị mất ở mọi nơi, nhưng Cart có tỷ lệ đi qua thấp nhất (45% đi tiếp) và Products list đứng kế (55%). Hãy test một trong hai bước đó trước.",
+    "Mức mất lớn nhất về số lượng nằm giữa landing page và products list (mất 211,640 session), và chỉ 55% session mở products list. Tổng cộng 6.8% trong 472,871 session kết thúc bằng một đơn. Vì các bước nhân với nhau, mức tăng 10% ở bất kỳ bước nào đều đáng giá cùng 3,231 đơn, nên hãy chọn test rẻ nhất để chạy và có khả năng hiệu quả nhất.",
+    "Test một thay đổi ở bước yếu nhất (ví dụ một trang cart rõ ràng hơn) với chia 50/50, và đo số đơn mỗi session cũng như tỷ lệ đi qua của bước đó. Lưu ý: các số đếm này trộn ba năm của một site đã thay đổi rất nhiều; hãy chạy lại trên sáu tháng gần nhất trước khi lên kế hoạch."
+   ],
+   "checks": [
+    "Mình đếm một session một lần cho mỗi bước.",
+    "Mình tách tỷ lệ đi qua khỏi mức mất tuyệt đối.",
+    "Mình lưu ý rằng các bước nhân với nhau.",
+    "Mình đề xuất một test với kết quả đo được."
+   ]
+  },
+  "questions": [
+   "Có bao nhiêu session đến từng bước?",
+   "Bước nào mất tỷ lệ khách cao nhất, và bước nào mất số lượng cao nhất?",
+   "Nếu bạn cải thiện được một bước 10%, chọn bước nào có quan trọng không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Một session đã mở trang của bước đó ít nhất một lần."
+   ],
+   [
+    null,
+    "Session ở bước này ÷ session ở bước trước."
+   ],
+   [
+    null,
+    "Session ở bước trước − session ở bước này."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Tỷ lệ session đi tiếp từ bước trước, tất cả session.",
+    "title": "Cart có tỷ lệ đi qua thấp nhất: 45%",
+    "why": "Tỷ lệ theo từng bước theo thứ tự funnel: bar bắt đầu từ zero, bước yếu nhất được làm nổi bật."
+   }
+  ]
+ },
+ "fuzzy-billing": {
+  "title": "Trang billing mới đã được test. Nó có thắng không?",
+  "brief": {
+   "subject": "Việc thiết kế lại trang billing có đáng không?",
+   "body": [
+    "Bản thiết kế lại đã chạy nhiều năm và không ai viết lại kết quả test. CEO hỏi liệu nó có hiệu quả không. Nếu tôi nói có, cùng team đó sẽ muốn thiết kế lại trang shipping tiếp theo.",
+    "Khách đến billing được cho xem một trong hai trang. Với các tuần mà cả hai trang cùng chạy (10/9/2012 đến 5/1/2013), so sánh tỷ lệ session billing kết thúc bằng một đơn và revenue mỗi session billing. Trước hết hãy kiểm tra rằng cả hai trang đã chạy song song trong khoảng đó."
+   ],
+   "ask": "Trả lời trong ba câu: trang nào thắng, khác biệt lớn đến đâu kèm khoảng tin cậy, và lưu ý.",
+   "facts": [
+    "Một session đến billing nếu nó mở <code>/billing</code> hoặc <code>/billing-2</code>. Không session nào thấy cả hai.",
+    "Đơn liên kết với session qua <code>website_session_id</code>."
+   ]
+  },
+  "context": {
+   "company": "Fuzzy Factory là một shop online bán thú nhồi bông. Shop bắt đầu với một sản phẩm, The Original Mr. Fuzzy, vào tháng 3/2012 và hiện bán bốn sản phẩm. Mọi giao dịch diễn ra trên website của chính shop.",
+   "situation": "Vào tháng 9/2012 shop ra mắt một trang billing được thiết kế lại, /billing-2, trong khi trang /billing cũ vẫn phục vụ một số khách. Vào tháng 1/2013 mọi người chuyển sang trang mới.",
+   "decision": "Trang mới có chuyển đổi nhiều khách đến billing hơn không, và mình chắc chắn đến đâu rằng đó là do trang chứ không phải do thời điểm?"
+  },
+  "frame": {
+   "nudge": "Một phép so sánh trước/sau trộn trang với mọi thứ khác đã thay đổi theo thời gian. Ở đây cả hai trang chạy trong cùng các tuần, nên bạn so sánh chúng cạnh nhau được. Điều gì phải đúng để phép so sánh đó công bằng?",
+   "tree": [
+    "<b>Trang billing mới có thắng không?</b>",
+    [
+     "Cả hai trang cùng chạy trong những tuần giống nhau",
+     "Order rate trên mỗi session billing ở từng trang",
+     "Độ lớn của khoảng chênh so với may rủi",
+     "Revenue mỗi session billing"
+    ]
+   ],
+   "hyp": [
+    "Trang mới chuyển đổi nhiều hơn rõ rệt.",
+    "Hai trang chạy với số lượng gần bằng nhau."
+   ],
+   "traps": [
+    "Sau 5/1/2013 chỉ còn trang mới. Đừng so nó với các tháng trước đó của trang cũ.",
+    "Một khoảng chênh cần cùng các tuần cho cả hai trang, vì conversion vốn tăng theo thời gian.",
+    "Một khoảng chênh có ý nghĩa thống kê không cho biết vì sao. Hai trang có thể khác nhau ở nhiều điểm."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Session thấy trang billing nào, và khi nào."
+    ],
+    [
+     null,
+     null,
+     "Session có kết thúc bằng một đơn không, và giá của nó."
+    ],
+    [
+     null,
+     null,
+     "Thuộc tính của session không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>website_pageviews</code>: nhiều dòng cho mỗi session. Lấy một dòng cho mỗi session billing bằng <code>MIN(pageview_url)</code> trong khoảng test.",
+    "<code>orders</code>: <b>LEFT JOIN</b> từ các session billing để những session không có đơn vẫn ở lại."
+   ],
+   "goal": "Mỗi trang billing một dòng: session, đơn, order rate và revenue mỗi session billing, trong khoảng chung.",
+   "watch": [
+    "BETWEEN với ngày kết thúc bỏ sót ngày cuối trên timestamp: hãy dùng >= và <.",
+    "Đếm đơn bằng COUNT(o.order_id), không dùng COUNT(*)."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Có, trang billing mới thắng rõ ràng: 62.1% session billing đặt đơn so với 45.1% ở trang cũ.",
+    "Cả hai trang chạy song song từ 10/9/2012 đến 5/1/2013, với 1,657 và 1,663 session billing. Khoảng chênh là 17.0 điểm (khoảng tin cậy 95% từ 13.7 đến 20.3), và một session billing ở trang mới kiếm $31.04 so với $22.55. So sánh mọi năm sẽ cho 63% so với 45%: tương tự, nhưng không công bằng, vì nó trộn các giai đoạn khác nhau.",
+    "Ghi công cho bản thiết kế lại và chạy test tiếp theo theo cùng cách: hai phiên bản chạy trong cùng các tuần, một kết quả được thống nhất từ trước, và một khoảng tin cậy. Lưu ý: điều này cho biết trang chạy tốt hơn, không cho biết thay đổi nào gây ra, và nó chỉ bao gồm những khách đã đến billing."
+   ],
+   "checks": [
+    "Mình xác nhận cả hai trang chạy trong cùng các tuần.",
+    "Mình dùng LEFT JOIN để người không mua vẫn ở lại.",
+    "Mình nêu khoảng chênh kèm khoảng tin cậy.",
+    "Mình nói điều test không thể cho thấy."
+   ]
+  },
+  "extra_sql": {
+   "title": "Cả hai trang có chạy song song không? (lượt xem trang billing theo tháng)"
+  },
+  "questions": [
+   "Cả hai trang có chạy song song trong khoảng đó không?",
+   "Bao nhiêu phần trăm session billing đặt đơn ở mỗi trang?",
+   "Khác biệt có lớn hơn may rủi không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Đơn ÷ session đã đến trang billing."
+   ],
+   [
+    null,
+    "Revenue của đơn ÷ session billing, kể cả những session không có đơn."
+   ],
+   [
+    null,
+    "Các tuần mà cả hai trang cùng chạy, để các thay đổi theo thời gian tác động lên cả hai."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Đơn ÷ session billing, 10/9/2012 đến 5/1/2013, với khoảng tin cậy 95%.",
+    "title": "Trang mới chuyển đổi 62% session billing, trang cũ 45%",
+    "why": "Hai nhóm kèm độ bất định: bar bắt đầu từ zero với thanh sai số; hai khoảng tin cậy không chạm nhau."
+   },
+   {
+    "sub": "Lượt xem trang billing theo tháng. Trang cũ kết thúc vào đầu tháng 1/2013.",
+    "title": "Cả hai trang cùng chạy từ tháng 9 đến những ngày đầu tháng 1",
+    "why": "Hai series theo thời gian: đường line cho thấy các trang chạy cùng nhau, rồi trang cũ biến mất."
+   }
+  ]
+ },
+ "fuzzy-growth": {
+  "title": "Revenue tăng mỗi năm. Động lực nào làm nên chuyện?",
+  "brief": {
+   "subject": "Điều gì thúc đẩy ba năm tăng trưởng?",
+   "body": [
+    "Revenue tăng mỗi năm và team nào cũng nói là nhờ mình: marketing nói traffic, team tôi nói conversion, merchandising nói giỏ hàng lớn hơn. Tôi muốn data quyết định.",
+    "Data chạy từ 19/3/2012 đến 19/3/2015, cho ba giai đoạn 12 tháng đầy đủ. Định nghĩa chúng là Year 1 (đến 18/3/2013), Year 2 (đến 18/3/2014) và Year 3 (đến 19/3/2015). Với mỗi năm cho session, đơn, order rate, giá trị đơn trung bình và revenue.",
+    "Sau đó tách tăng trưởng giữa Year 1 và 2, và Year 2 và 3, thành traffic, order rate và giá trị đơn."
+   ],
+   "ask": "Trả lời trong ba câu: động lực nào quan trọng nhất ở từng năm, bức tranh thay đổi ra sao, và điều đó có nghĩa gì cho kế hoạch năm tới.",
+   "facts": [
+    "Revenue = tổng <code>price_usd</code> của đơn. Nó không trừ refund hay cost.",
+    "Revenue = session × order rate × giá trị đơn trung bình, nên tăng trưởng nhân qua ba động lực."
+   ]
+  },
+  "context": {
+   "company": "Fuzzy Factory là một shop online bán thú nhồi bông. Shop bắt đầu với một sản phẩm, The Original Mr. Fuzzy, vào tháng 3/2012 và hiện bán bốn sản phẩm. Mọi giao dịch diễn ra trên website của chính shop.",
+   "situation": "Revenue khoảng gấp đôi hoặc hơn mỗi năm kể từ khi ra mắt. Ban lãnh đạo chia kế hoạch năm tới giữa traffic, conversion của site và quy mô giỏ hàng, và chưa có quan điểm thống nhất về điều gì đã thúc đẩy tăng trưởng trong quá khứ.",
+   "decision": "Động lực nào giải thích phần lớn tăng trưởng ở từng năm, và điều đó có thay đổi không?"
+  },
+  "frame": {
+   "nudge": "Revenue là tích của ba con số. Bạn sẽ quyết định thế nào xem bao nhiêu phần tăng trưởng đến từ mỗi con số? Hãy nghĩ theo tỷ lệ (gấp x lần) và log.",
+   "tree": [
+    "<b>Điều gì thúc đẩy tăng trưởng?</b>",
+    [
+     "Các năm dài bằng nhau tính từ ngày đầu tiên",
+     "Session, order rate, giá trị đơn theo năm",
+     "Hệ số tăng trưởng giữa các năm",
+     "Tỷ trọng của từng động lực trong tổng tăng trưởng"
+    ]
+   ],
+   "hyp": [
+    "Traffic thúc đẩy phần lớn tăng trưởng.",
+    "Order rate quan trọng hơn ở những năm đầu."
+   ],
+   "traps": [
+    "Năm theo lịch ở đây không đều (2012 bắt đầu từ tháng 3, 2015 kết thúc vào tháng 3). Hãy dùng các giai đoạn 12 tháng.",
+    "Tăng trưởng revenue mang tính nhân. Hãy tách nó bằng tỷ lệ hoặc log, không phải bằng cách trừ các phần trăm.",
+    "Giá trị đơn là một mức trung bình trên các đơn; đừng lấy trung bình nó trên session."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một lượt truy cập: nguồn, campaign, thiết bị, có phải lượt quay lại không."
+    ],
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn, liên kết với session."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần ở cấp đơn."
+    ],
+    [
+     null,
+     null,
+     "Refund không dùng ở đây."
+    ]
+   ],
+   "grain": [
+    "<code>website_sessions</code>: mỗi dòng là một lượt truy cập, kèm ngày của nó. Gắn nhãn năm kinh doanh cho từng session trong một CTE.",
+    "<code>orders</code>: LEFT JOIN từ sessions. <code>COUNT(order_id)</code> đếm đơn; <code>SUM(price_usd) / COUNT(order_id)</code> là giá trị đơn trung bình."
+   ],
+   "goal": "Mỗi năm kinh doanh một dòng: session, đơn, order rate, giá trị đơn trung bình và revenue.",
+   "watch": [
+    "Đừng dùng YEAR(created_at): các năm theo lịch ở đây có độ dài khác nhau.",
+    "Giá trị đơn trung bình là revenue ÷ đơn, không bao giờ ÷ session."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Traffic là động lực lớn nhất ở cả hai năm, nhưng cơ cấu đã thay đổi. Giữa Year 1 và 2 revenue tăng gấp 2.68 lần: 55% từ traffic, 36% từ order rate và 9% từ giá trị đơn.",
+    "Giữa Year 2 và 3 revenue tăng gấp 2.51 lần: 69% từ traffic, 16% từ order rate và 15% từ giá trị đơn. Session tăng gấp 1.88 lần, trong khi order rate tăng từ 6.60% lên 7.64% và đơn trung bình từ $55.50 lên $63.79.",
+    "Hãy lên kế hoạch dựa vào traffic để mở rộng quy mô, nhưng nhớ rằng mức tăng order rate của Year 2 đã chậm lại và mức tăng giỏ hàng của Year 3 trùng với các sản phẩm mới (case Mini Bear xem xét một trong số đó). Hỏi từng team đòn bẩy nào của họ vẫn chưa được dùng. Lưu ý: đây là revenue trước refund và cost, và traffic là mua về, nên tăng trưởng traffic không miễn phí."
+   ],
+   "checks": [
+    "Mình dùng các năm kinh doanh dài bằng nhau.",
+    "Mình tách tăng trưởng bằng tỷ lệ hoặc log, không bằng cách trừ phần trăm.",
+    "Mình so hai giai đoạn.",
+    "Mình nói rằng revenue không phải profit."
+   ]
+  },
+  "questions": [
+   "Session, order rate và giá trị đơn thay đổi thế nào mỗi năm?",
+   "Động lực nào giải thích phần lớn tăng trưởng revenue ở từng năm?",
+   "Điều đó gợi ý gì cho năm tới?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Đơn ÷ session."
+   ],
+   [
+    null,
+    "Revenue ÷ đơn."
+   ],
+   [
+    null,
+    "ln(hệ số tăng của động lực) ÷ ln(hệ số tăng của revenue). Ba tỷ trọng cộng lại bằng 100%."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Index của từng động lực, năm trước = 100.",
+    "title": "Traffic tăng nhanh nhất, nhưng order rate và giá trị đơn đều dịch chuyển",
+    "why": "Bốn tỷ lệ trong hai giai đoạn: bar ghép đôi so với đường 100 cho thấy cái gì tăng và cái gì không."
+   },
+   {
+    "sub": "Tỷ trọng tăng trưởng revenue được giải thích bởi từng động lực.",
+    "title": "Ở Year 2 conversion làm một phần ba công việc; ở Year 3 traffic làm hai phần ba",
+    "why": "Các phần của một tổng trong hai giai đoạn: grouped bar so sánh trực tiếp các tỷ trọng."
+   }
+  ]
+ },
+ "fuzzy-launch": {
+  "title": "Mini Bear đã ra mắt. Tiền mới hay là cannibalisation?",
+  "brief": {
+   "subject": "Mini Bear: thêm vào hay thay thế?",
+   "body": [
+    "Tôi muốn một câu trả lời thẳng cho board. Mini Bear ra mắt vào 5/2/2014. So sánh tám tuần trước (11/12/2013 đến 4/2/2014) với tám tuần sau (5/2 đến 1/4/2014): session, đơn, order rate, số món mỗi đơn, giá trị đơn trung bình và net margin mỗi session (giá trừ cost trừ refund, chia cho tất cả session).",
+    "Sau đó xem các món được mua thế nào: là món chính của một đơn hay là món mua kèm. Nếu Mini Bear phần lớn là món chính thì nó cạnh tranh với các con gấu khác. Nếu nó là món mua kèm thì nó làm giỏ hàng lớn thêm."
+   ],
+   "ask": "Trả lời trong bốn câu: lần ra mắt có tạo thêm giá trị không, bạn biết nó không thay thế các doanh số khác bằng cách nào, bạn chắc chắn đến đâu, và lưu ý quan trọng nhất.",
+   "facts": [
+    "<code>is_primary_item = 1</code> đánh dấu món đầu tiên trong một đơn; món mua kèm có giá trị 0.",
+    "Hai khoảng có cùng độ dài (56 ngày). Khoảng trước bao gồm cuối tháng 12."
+   ]
+  },
+  "context": {
+   "company": "Fuzzy Factory là một shop online bán thú nhồi bông. Shop bắt đầu với một sản phẩm, The Original Mr. Fuzzy, vào tháng 3/2012 và hiện bán bốn sản phẩm. Mọi giao dịch diễn ra trên website của chính shop. Vào 5/2/2014 shop ra mắt sản phẩm thứ tư, The Hudson River Mini bear, giá $29.99, rẻ nhất trong dòng.",
+   "situation": "Merchandising nói Mini Bear làm giỏ hàng lớn hơn. Finance lo rằng nó chỉ thay thế doanh số của các con gấu khác ở biên thấp hơn ($20.50 mỗi món so với $30 đến $37).",
+   "decision": "Lần ra mắt đã thêm tiền cho business, hay chỉ chuyển tiền từ các sản phẩm khác?"
+  },
+  "frame": {
+   "nudge": "Một phép so sánh trước/sau có thể cho thấy một thay đổi, nhưng tự nó không cho thấy nguyên nhân. Bạn sẽ liệt kê những cách giải thích nào khác (mùa vụ, traffic, các lần ra mắt khác), và data cấp món giúp loại trừ một cách thế nào?",
+   "tree": [
+    "<b>Mini Bear có tạo thêm giá trị không?</b>",
+    [
+     "Order rate, số món mỗi đơn và margin mỗi session trước và sau",
+     "Cơ cấu món chính so với món mua kèm",
+     "Doanh số mua kèm của các sản phẩm khác",
+     "Margin mỗi món và refund",
+     "Điều gì khác đã thay đổi trong cùng những tuần đó"
+    ]
+   ],
+   "hyp": [
+    "Quy mô giỏ hàng tăng nhưng order rate thì không.",
+    "Mini Bear chỉ được bán như món mua kèm, nên nó không thay thế được một món chính."
+   ],
+   "traps": [
+    "Dùng các khoảng có cùng độ dài: tám tuần so với tám tuần, không phải tám tuần so với một năm.",
+    "Giá trị đơn trung bình có thể tăng trong khi profit giảm. Hãy dùng net margin mỗi session.",
+    "Cuối tháng 12 nằm trong khoảng trước: conversion có thể cao theo mùa ở đó."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một lượt truy cập: nguồn, campaign, thiết bị, có phải lượt quay lại không."
+    ],
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn, liên kết với session."
+    ],
+    [
+     null,
+     null,
+     "Mỗi dòng là một món trong một đơn, với cờ món chính, giá và cost."
+    ],
+    [
+     null,
+     null,
+     "Các món bị refund."
+    ],
+    [
+     null,
+     null,
+     "Tên sản phẩm cho cách cắt theo món."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>website_sessions</code> LEFT JOIN <code>orders</code>: một dòng cho mỗi lượt truy cập với tối đa một đơn. Refund phải được cộng theo từng đơn trước khi join.",
+    "<code>order_items</code>: mỗi dòng là một món. Tách món chính và món mua kèm bằng <code>is_primary_item</code>."
+   ],
+   "goal": "Mỗi giai đoạn một dòng: session, đơn, order rate, số món mỗi đơn, giá trị đơn trung bình và net margin mỗi session.",
+   "watch": [
+    "Net margin mỗi session chia cho tất cả session, không chia cho đơn.",
+    "Nếu bạn join refund mà không cộng theo từng đơn, một đơn có hai refund sẽ bị đếm hai lần."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Data chỉ về tiền được thêm vào, không phải thay thế. Số món mỗi đơn tăng từ 1.13 lên 1.34 và net margin mỗi session từ $2.31 lên $2.53 (9%).",
+    "Cả 412 Mini Bear bán được trong khoảng đó đều là món mua kèm và không có cái nào là món chính, nên nó không thể lấy một lần bán chính từ con gấu khác. Món mua kèm của các sản phẩm khác cũng tăng, từ 229 lên 268. Order rate là 6.83% trước và 6.52% sau (chênh -0.31 điểm, khoảng tin cậy 95% từ -0.72 đến 0.11), nên lần ra mắt không mang thêm đơn, chỉ làm đơn đầy hơn.",
+    "Mini Bear mang về khoảng $8.4K margin trong tám tuần (khoảng 11% margin trong khoảng sau), với tỷ lệ refund 1.3%. Lưu ý: khoảng trước bao gồm cuối tháng 12, traffic và mùa vụ khác nhau, và đây là phép so sánh các giai đoạn, không phải một thí nghiệm. Một holdout (ẩn món mua kèm với một số khách) sẽ giải quyết dứt điểm."
+   ],
+   "checks": [
+    "Mình dùng các khoảng có độ dài bằng nhau.",
+    "Mình so order rate và giỏ hàng một cách riêng.",
+    "Mình tách món chính khỏi món mua kèm.",
+    "Mình nói rằng đây không phải một thí nghiệm."
+   ]
+  },
+  "extra_sql": {
+   "title": "Món chính so với món mua kèm, theo sản phẩm và giai đoạn"
+  },
+  "questions": [
+   "Điều gì đã thay đổi giữa tám tuần trước và sau?",
+   "Mini Bear được bán như món chính hay như món mua kèm?",
+   "Doanh số mua kèm của các sản phẩm khác có giảm không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Số món đã bán ÷ đơn."
+   ],
+   [
+    null,
+    "(Giá − cost − refund) ÷ tất cả session."
+   ],
+   [
+    null,
+    "Một món không phải là món đầu tiên của đơn (<code>is_primary_item = 0</code>)."
+   ],
+   [
+    null,
+    "Doanh số của một sản phẩm lẽ ra thuộc về sản phẩm khác."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Tám tuần trước và sau lần ra mắt.",
+    "title": "Giá trị đơn trung bình tăng 12%, từ $57.45 lên $64.54",
+    "why": "So sánh hai giai đoạn: bar bắt đầu từ zero."
+   },
+   {
+    "sub": "Đơn ÷ session, tám tuần mỗi bên.",
+    "title": "Order rate không tăng: 6.83% trước, 6.52% sau",
+    "why": "Hiệu ứng nằm ở giỏ hàng, không nằm ở số lượt truy cập kết thúc bằng một đơn."
+   },
+   {
+    "sub": "Các món mua kèm theo giai đoạn, tám tuần mỗi bên.",
+    "title": "Món mua kèm: Mini Bear nằm trên các món khác, không thay thế chúng",
+    "why": "Hai phần mỗi giai đoạn: grouped bar cho thấy món mới nằm trên một nền không đổi."
+   }
+  ]
+ },
+ "loyalty-promo": {
+  "title": "Chương trình khuyến mãi 2018: có mang về thành viên ở lại không?",
+  "brief": {
+   "subject": "Khuyến mãi 2018: nó có hiệu quả không?",
+   "body": [
+    "Trong 2018 chúng tôi chạy một khuyến mãi đã ghi danh 971 thành viên. Dashboard nói <b>11.8%</b> trong số họ đã hủy so với <b>12.4%</b> thành viên standard, nên tôi được báo rằng khuyến mãi tốt ngang với ghi danh standard.",
+    "Tôi muốn lặp lại nó vào năm tới. Phép so sánh có công bằng không, và thành viên promo có trung thành như thành viên standard không?"
+   ],
+   "ask": "Đưa ra ba câu: phép so sánh trên dashboard có đúng không, bức tranh thật là gì, Ana nên làm gì.",
+   "facts": [
+    "Churn = thành viên có năm hủy.",
+    "Bảng: <code>ALT_Customer_Loyalty_History</code> (mỗi dòng là một thành viên)."
+   ]
+  },
+  "frame": {
+   "nudge": "Những thành viên 'standard' được đem ra so sánh là ai? Họ tham gia khi nào, và họ đã có cơ hội hủy trong bao lâu?",
+   "tree": [
+    "<b>Khuyến mãi có tốt ngang standard không?</b>",
+    [
+     "Dashboard đang so sánh gì, và có so sánh những thứ tương đương không?",
+     "Churn là bao nhiêu khi cả hai nhóm cùng tham gia trong một năm?",
+     "Khác biệt có lớn hơn may rủi không?"
+    ]
+   ],
+   "hyp": [
+    "Thành viên standard bao gồm nhiều năm ghi danh cũ hơn với nhiều thời gian hơn để hủy.",
+    "So trong nội bộ 2018, thành viên promo hủy thường xuyên hơn nhiều."
+   ],
+   "traps": [
+    "Thành viên ghi danh năm 2012 có nhiều hơn sáu năm để hủy so với thành viên ghi danh năm 2018.",
+    "So sánh các nhóm có cùng thời gian tiếp xúc: lọc về cùng năm ghi danh.",
+    "Một mức trung bình chung che giấu cơ cấu cohort."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Có loại ghi danh, năm ghi danh và năm hủy cho mỗi thành viên."
+    ],
+    [
+     null,
+     null,
+     "Hành vi bay; không cần để đo churn."
+    ],
+    [
+     null,
+     null,
+     "Date dimension; các năm đã nằm sẵn trên dòng của thành viên."
+    ]
+   ],
+   "grain": [
+    "<code>ALT_Customer_Loyalty_History</code>: mỗi dòng là một thành viên.",
+    "Đã hủy = <code>Cancellation_Year IS NOT NULL</code>.",
+    "<code>Enrollment_Type</code> có hai giá trị: Standard và 2018 Promotion."
+   ],
+   "goal": "Churn rate theo loại ghi danh, trước hết trên toàn bộ (dashboard), rồi trong cùng năm ghi danh.",
+   "watch": [
+    "Query đầu tiên tái hiện dashboard: phép tính đúng nhưng phép so sánh sai.",
+    "Thành viên promo chỉ tồn tại cho 2018, nên phép kiểm tra tương đương là cặp dòng của 2018."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Không. Thành viên promo kém trung thành hơn nhiều, và dashboard đã che giấu điều đó bằng cách so họ với các thành viên standard cũ hơn vốn có nhiều năm hơn để hủy.",
+    "Trên toàn bộ, 11.8% thành viên promo và 12.4% thành viên standard đã hủy. Trong cohort 2018, nơi cả hai nhóm có cùng thời gian, thành viên promo hủy ở mức 11.8% so với 2.2% (chênh 9.7 điểm, 95% CI 7.6 đến 11.8).",
+    "Đừng lặp lại khuyến mãi theo thiết kế hiện tại. Hãy test một phiên bản có yếu tố giữ chân (ví dụ một quyền lợi năm thứ hai) và so với các thành viên standard của cùng tháng. Lưu ý: thành viên promo có thể khác ở những điểm khác; một test ngẫu nhiên sẽ giải quyết dứt điểm."
+   ],
+   "checks": [
+    "Mình giải thích vì sao phép so sánh trên dashboard không công bằng.",
+    "Mình so các nhóm trong cùng năm ghi danh.",
+    "Mình nêu khoảng chênh và khoảng tin cậy của nó.",
+    "Mình đề xuất một test tiếp theo."
+   ]
+  },
+  "questions": [
+   "Dashboard có đang so những thứ tương đương không?",
+   "Churn rate là bao nhiêu khi cả hai nhóm cùng tham gia trong một năm?",
+   "Khoảng chênh có lớn hơn may rủi không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Thành viên có năm hủy ÷ thành viên."
+   ],
+   [
+    null,
+    "Tất cả thành viên ghi danh trong cùng một năm."
+   ],
+   [
+    null,
+    "So promo và standard chỉ trong năm ghi danh 2018."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Cancel rate theo loại ghi danh. Các cột 'All enrollees' là phép so sánh trên dashboard.",
+    "title": "So sánh công bằng: thành viên promo hủy thường xuyên gấp năm lần",
+    "why": "Hai nhóm ở hai phạm vi: grouped bar. Bước nhảy giữa hai phạm vi chính là câu chuyện."
+   }
+  ]
  }
 }

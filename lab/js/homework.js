@@ -1,12 +1,12 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=7ba8096f9b";
-import { MODE } from "./mode.js?v=7ba8096f9b";
-import * as free from "./free.js?v=7ba8096f9b";
-import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=7ba8096f9b";
-import { chip, chipsFor, DOMAINS } from "./domains.js?v=7ba8096f9b";
-import { t, getLang } from "./i18n.js?v=7ba8096f9b";
-import { resizable } from "./splitter.js?v=7ba8096f9b";
+import * as engine from "./engine.js?v=e58da5bb0b";
+import { MODE } from "./mode.js?v=e58da5bb0b";
+import * as free from "./free.js?v=e58da5bb0b";
+import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=e58da5bb0b";
+import { chip, chipsFor, DOMAINS } from "./domains.js?v=e58da5bb0b";
+import { t, getLang } from "./i18n.js?v=e58da5bb0b";
+import { resizable } from "./splitter.js?v=e58da5bb0b";
 
 
 const LS = {
