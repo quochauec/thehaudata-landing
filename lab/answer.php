@@ -32,4 +32,9 @@ if (!$allowed) {
     exit;
 }
 audit("answer $id", $user);
-echo json_encode($all[$id], JSON_UNESCAPED_UNICODE);
+// Optional Vietnamese layer (lab-data/answers_vi.json, from private/answers.vi.json): approach text and step titles, never SQL.
+// The page merges it when the mentee has the Vietnamese switch on. Missing file or id = English only.
+$out = $all[$id];
+$vi = store_read('answers_vi');
+if (isset($vi[$id])) { $out['vi'] = $vi[$id]; }
+echo json_encode($out, JSON_UNESCAPED_UNICODE);

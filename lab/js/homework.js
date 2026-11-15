@@ -1,12 +1,12 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=8c134396d0";
-import { MODE } from "./mode.js?v=8c134396d0";
-import * as free from "./free.js?v=8c134396d0";
-import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=8c134396d0";
-import { chip, chipsFor, DOMAINS } from "./domains.js?v=8c134396d0";
-import { t } from "./i18n.js?v=8c134396d0";
-import { resizable } from "./splitter.js?v=8c134396d0";
+import * as engine from "./engine.js?v=7ba8096f9b";
+import { MODE } from "./mode.js?v=7ba8096f9b";
+import * as free from "./free.js?v=7ba8096f9b";
+import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=7ba8096f9b";
+import { chip, chipsFor, DOMAINS } from "./domains.js?v=7ba8096f9b";
+import { t, getLang } from "./i18n.js?v=7ba8096f9b";
+import { resizable } from "./splitter.js?v=7ba8096f9b";
 
 
 const LS = {
@@ -65,25 +65,25 @@ const totalGap = (a, b) => {
 // b = model output stats and mf = model query features, both precomputed at build time (the model SQL itself is not shipped to the page).
 function diagnose(a, b, sSql, mf) {
   const s = clean(sSql), lines = [], nudge = [];
-  if (a.cols < b.cols) lines.push(`The model answer has ${b.cols} columns (${b.kinds.join(", ")}). You returned ${a.cols}.`);
-  if (a.dups > 0 && b.dups === 0) lines.push(`${a.dups.toLocaleString()} of your rows are exact repeats of another row.`);
-  if (a.nulls !== b.nulls) lines.push(`Your result has ${a.nulls.toLocaleString()} NULL cells. The model answer has a different number.`);
+  if (a.cols < b.cols) lines.push(t("The model answer has {n} columns ({kinds}). You returned {m}.", { n: b.cols, kinds: b.kinds.join(", "), m: a.cols }));
+  if (a.dups > 0 && b.dups === 0) lines.push(t("{n} of your rows are exact repeats of another row.", { n: a.dups.toLocaleString() }));
+  if (a.nulls !== b.nulls) lines.push(t("Your result has {n} NULL cells. The model answer has a different number.", { n: a.nulls.toLocaleString() }));
   const gap = totalGap(a, b);
-  if (gap === null) lines.push("The model answer has a numeric column and yours has none.");
-  else if (gap > 0.005) lines.push(gap >= 1 ? "At least one total is far off, more than 100%." : `At least one total is about ${Math.max(1, Math.round(gap * 100))}% off.`);
+  if (gap === null) lines.push(t("The model answer has a numeric column and yours has none."));
+  else if (gap > 0.005) lines.push(gap >= 1 ? t("At least one total is far off, more than 100%.") : t("At least one total is about {p}% off.", { p: Math.max(1, Math.round(gap * 100)) }));
   const T = (x, re) => re.test(x);
   const sLeft = T(s, /\bLEFT\s+(OUTER\s+)?JOIN\b/i), mLeft = mf.left, sJoin = T(s, /\bJOIN\b/i);
-  if (a.rows < b.rows && !sLeft && mLeft) nudge.push("Rows are missing. Should every row of the first table stay in the result, even with no match? Think about LEFT JOIN against INNER JOIN.");
-  if (a.rows < b.rows && sLeft && T(s, /\bWHERE\b/i)) nudge.push("A WHERE condition on the right-hand table of a LEFT JOIN drops the unmatched rows again. Would it work in the ON clause?");
-  if (a.rows > b.rows && sJoin && !T(s, /\bDISTINCT\b|\bGROUP\s+BY\b/i)) nudge.push("More rows than expected. A join repeats rows when the key is not unique. Do you need DISTINCT, a GROUP BY, or to aggregate before joining?");
+  if (a.rows < b.rows && !sLeft && mLeft) nudge.push(t("Rows are missing. Should every row of the first table stay in the result, even with no match? Think about LEFT JOIN against INNER JOIN."));
+  if (a.rows < b.rows && sLeft && T(s, /\bWHERE\b/i)) nudge.push(t("A WHERE condition on the right-hand table of a LEFT JOIN drops the unmatched rows again. Would it work in the ON clause?"));
+  if (a.rows > b.rows && sJoin && !T(s, /\bDISTINCT\b|\bGROUP\s+BY\b/i)) nudge.push(t("More rows than expected. A join repeats rows when the key is not unique. Do you need DISTINCT, a GROUP BY, or to aggregate before joining?"));
   const cd = x => T(x, /COUNT\s*\(\s*DISTINCT/i);
-  if (mf.cd !== cd(s)) nudge.push("Are you counting rows or counting different things? Compare COUNT(*) with COUNT(DISTINCT ...).");
+  if (mf.cd !== cd(s)) nudge.push(t("Are you counting rows or counting different things? Compare COUNT(*) with COUNT(DISTINCT ...)."));
   const fn = x => ["SUM", "AVG", "COUNT"].map(f => T(x, new RegExp("\\b" + f + "\\s*\\(", "i"))).join();
-  if (mf.fn !== fn(s)) nudge.push("Check the aggregate. Is the question asking for a total, an average, or a count?");
-  if (mf.group && !T(s, /\bGROUP\s+BY\b/i)) nudge.push("The question wants one row per group. What should you group by?");
-  if (mf.where && !T(s, /\bWHERE\b/i)) nudge.push("Does the question limit the rows, by period, status or category? Check your filter.");
-  if (mf.period && !T(s, /\b(YEAR|MONTH|DATEPART|DATEDIFF)\s*\(/i)) nudge.push("Check the period. Does the question ask about one year or month?");
-  if (a.nulls !== b.nulls && mf.nullfn && !T(s, /COALESCE|ISNULL|IS\s+(NOT\s+)?NULL/i)) nudge.push("NULLs may need handling here. Should they be replaced, excluded or counted?");
+  if (mf.fn !== fn(s)) nudge.push(t("Check the aggregate. Is the question asking for a total, an average, or a count?"));
+  if (mf.group && !T(s, /\bGROUP\s+BY\b/i)) nudge.push(t("The question wants one row per group. What should you group by?"));
+  if (mf.where && !T(s, /\bWHERE\b/i)) nudge.push(t("Does the question limit the rows, by period, status or category? Check your filter."));
+  if (mf.period && !T(s, /\b(YEAR|MONTH|DATEPART|DATEDIFF)\s*\(/i)) nudge.push(t("Check the period. Does the question ask about one year or month?"));
+  if (a.nulls !== b.nulls && mf.nullfn && !T(s, /COALESCE|ISNULL|IS\s+(NOT\s+)?NULL/i)) nudge.push(t("NULLs may need handling here. Should they be replaced, excluded or counted?"));
   return lines.concat(nudge.slice(0, 3));
 }
 
@@ -103,12 +103,17 @@ const setRoute = (...parts) => {
 };
 
 // The model answer is not in homework.json. It comes from the server one question at a time (answer.php), capped per login.
-async function fetchAnswer(id) { if (MODE.free) return free.fetchAnswer(id);
+// The server (answer.php) or answers_free.json may attach a Vietnamese layer as `vi` ({approach, steps:[{title}]}); SQL is never translated.
+const localize = a => {
+  const v = getLang() === "vi" && a && a.vi; if (!v) return a;
+  return { ...a, approach: (a.approach || []).map((x, i) => v.approach?.[i] ?? x), steps: (a.steps || []).map((st, i) => v.steps?.[i]?.title != null ? { ...st, title: v.steps[i].title } : st) };
+};
+async function fetchAnswer(id) { if (MODE.free) return localize(await free.fetchAnswer(id));
   const r = await fetch("answer?id=" + encodeURIComponent(id), { credentials: "same-origin" });
   if (r.status === 429) throw new Error((await r.json()).error);
-  if (r.status === 401) throw new Error("Your session ended. Reload the page and sign in again.");
-  if (!r.ok) throw new Error("The model answer is only available on thehaudata.com/lab.");
-  return r.json();
+  if (r.status === 401) throw new Error(t("Your session ended. Reload the page and sign in again."));
+  if (!r.ok) throw new Error(t("The model answer is only available on thehaudata.com/lab."));
+  return localize(await r.json());
 }
 
 export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
@@ -136,10 +141,10 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
           <div class="row2"><button class="btn primary" data-copy>${t("Copy to clipboard")}</button><button class="btn" data-download>${t("Download .txt")}</button><span class="note" data-exstatus role="status"></span></div>
           <p class="note">Your SQL and notes are read from this browser. Nothing is sent anywhere until you paste or send the file yourself.</p></div></div>`;
     hdr.innerHTML = IV
-      ? MODE.free ? `<div class="eyebrow">Interview Prep · Free sample</div><h1>Interview Prep: Round 1, the SQL screen</h1>
-      <p>Eight SQL questions in the style of a real analyst screen, on the class tables. Each question shows the target time an interviewer would expect. Work them in one sitting, about 45 minutes. Hints and model answers follow the same rules as Homework.</p>`
-      : `<div class="eyebrow">Interview Prep</div><h1>Interview Prep: mock rounds and Big Tech SQL</h1>
-      <p>Questions in the style of real analyst tests. Rounds 1 to 3 run on the class tables. Big Tech SQL is a set of 13 classic big-tech SQL screens on small tables of their own. Each question shows the target time an interviewer would expect and the company whose test inspired the style. Work a round in one sitting: a SQL screen, a metrics and ops round, a take-home case, then the Big Tech set. Hints and model answers follow the same rules as Homework.</p>`
+      ? MODE.free ? `<div class="eyebrow">${t("Interview Prep · Free sample")}</div><h1>${t("Interview Prep: Round 1, the SQL screen")}</h1>
+      <p>${t("Eight SQL questions in the style of a real analyst screen, on the class tables. Each question shows the target time an interviewer would expect. Work them in one sitting, about 45 minutes. Hints and model answers follow the same rules as Homework.")}</p>`
+      : `<div class="eyebrow">${t("Interview Prep")}</div><h1>${t("Interview Prep: mock rounds and Big Tech SQL")}</h1>
+      <p>${t("Questions in the style of real analyst tests. Rounds 1 to 3 run on the class tables. Big Tech SQL is a set of 13 classic big-tech SQL screens on small tables of their own. Each question shows the target time an interviewer would expect and the company whose test inspired the style. Work a round in one sitting: a SQL screen, a metrics and ops round, a take-home case, then the Big Tech set. Hints and model answers follow the same rules as Homework.")}</p>`
       : `<div class="eyebrow">${t("Homework")}</div><h1>${t("Homework, by topic")}</h1>
       <p>${t("The business questions from the course, on the same tables as the class database. Write T-SQL, run it, and check your answer. Some topics also have written analytics tasks: no SQL, you write the answer, then compare it with a model outline. Hints and model answers stay closed until you open them.")}</p>`;
     const cards = Object.entries(data.lessons).map(([n, l]) => {
@@ -159,13 +164,13 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
     nm.oninput = refreshExport;
     $("[data-copy]", main).onclick = async () => {
       try { await navigator.clipboard.writeText(ta.value); st.textContent = t("Copied."); }
-      catch (e) { ta.select(); st.textContent = "Select all and copy with Ctrl+C."; }
+      catch (e) { ta.select(); st.textContent = t("Select all and copy with Ctrl+C."); }
     };
     $("[data-download]", main).onclick = () => {
       try {
         const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([ta.value], { type: "text/plain" }));
         a.download = "homework-" + (nm.value.trim().replace(/\s+/g, "-").toLowerCase() || "export") + ".txt"; a.click(); URL.revokeObjectURL(a.href); st.textContent = t("Downloaded.");
-      } catch (e) { st.textContent = "Download is blocked here. Use Copy instead."; }
+      } catch (e) { st.textContent = t("Download is blocked here. Use Copy instead."); }
     };
     const rb = $("[data-resume]", main);
     if (rb) rb.onclick = () => { const q = all.find(x => x.id === rb.dataset.resume); view = { lesson: q.lesson, q: q.id }; draw(); };
@@ -237,7 +242,7 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
       <div class="mstep"><label for="nt-${q.id}"><b>${t("Your answer")}</b></label><textarea id="nt-${q.id}" rows="14" data-note="${q.id}" placeholder="${t("Write your answer here. It is saved in this browser only.")}"></textarea><div class="row2" style="margin-top:6px"><button class="btn" type="button" data-reset>${t("Reset to blank")}</button></div></div>
       <div class="rules" data-rules></div>
       <details class="reveal" data-gate="hint"><summary data-sum="hint">${t("Approach hint")}</summary><p style="white-space:pre-line">${esc(q.hint)}</p>
-        <p><b>Practise this step with SQL</b></p><ul>${q.links.map(link).join("")}</ul></details>
+        <p><b>${t("Practise this step with SQL")}</b></p><ul>${q.links.map(link).join("")}</ul></details>
       <details class="reveal ans" data-gate="ans"><summary data-sum="ans">${t("Model outline")}</summary><div class="ansbody"></div></details>`;
     const nt = $(`[data-note="${q.id}"]`, body), names = { hint: t("Approach hint"), ans: t("Model outline") };
     $("[data-reset]", body).onclick = async () => { if (await confirmDialog(RESET_TEXT())) resetQuestion(q, body.closest("details.ex")); };
@@ -265,7 +270,7 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
       try {
         const a = await fetchAnswer(q.id); shown = true;
         ans.innerHTML = `<ul>${a.approach.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
-          <label class="check" style="margin-top:8px"><span><input type="checkbox" data-self="${q.id}"> I wrote my answer and compared it with the model outline</span></label>`;
+          <label class="check" style="margin-top:8px"><span><input type="checkbox" data-self="${q.id}"> ${t("I wrote my answer and compared it with the model outline")}</span></label>`;
         const self = $(`[data-self="${q.id}"]`, ans);
         self.checked = isDone(q.id);
         self.onchange = () => { if (self.checked) markDone(q); else { LS.del("done:" + q.id); $(`[data-dn="${q.id}"]`).textContent = ""; } };
@@ -278,7 +283,7 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
     const q = data.questions.find(x => x.id === d.dataset.q), body = $(`[data-body="${q.id}"]`, d);
     if (q.check === "write") return fillWrite(q, body);
     const dsName = { adw: "ADW_ tables", crm: "CRM_ tables", gbe: "GBE_ tables", bt: "SQLTest_ tables" }[q.ds] || (String(q.ds).toUpperCase() + "_ tables");
-    const dm = DOMAINS[q.ds], dataCard = dm ? `<div class="dataused"><b>${t("Data used")}</b> ${chip(q.ds, true)}<span class="note">${esc(dm.about)}. Tables start with ${esc(dsName.replace(" tables", ""))}. Full list under "Tables you can use" in the editor.</span></div>` : "";
+    const dm = DOMAINS[q.ds], dataCard = dm ? `<div class="dataused"><b>${t("Data used")}</b> ${chip(q.ds, true)}<span class="note">${esc(dm.about)}. ${t('Tables start with {p}. Full list under "Tables you can use" in the editor.', { p: esc(dsName.replace(" tables", "")) })}</span></div>` : "";
     body.innerHTML = `<div class="split">
       <div class="split-l"><div class="paneh">${t("Question, hint and answer")}</div>
         ${ivNote(q)}<div class="q" style="white-space:pre-line">${esc(q.story)}</div>
@@ -315,7 +320,7 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
     refreshLocks();
 
     const panel = mount($(".panelhost", body), {
-      profile: "hw", datasets: [q.ds], sql: "-- Write your query here\n", draftKey: "hw:draft:" + q.id,
+      profile: "hw", datasets: [q.ds], sql: t("-- Write your query here\n"), draftKey: "hw:draft:" + q.id,
       resetConfirm: RESET_TEXT(), onReset: () => { try { panel.destroy(); } catch (e) { } resetQuestion(q, d); },
       onAttempt: (kind, sql) => {
         const s = clean(sql).trim();
@@ -335,8 +340,8 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
         let lines = [];
         try { if (q.profile) lines = diagnose(stats(out), q.profile.s, sql, q.profile.f); } catch (e) { }
         return { ok: false, lines, text: best.rowsOk
-          ? `The row count is right (${best.got}), but ${best.need - best.found} of ${best.need} key columns do not match.`
-          : `You returned ${best.got.toLocaleString()} rows. The model answer returns ${best.want.toLocaleString()}.` };
+          ? t("The row count is right ({got}), but {a} of {b} key columns do not match.", { got: best.got, a: best.need - best.found, b: best.need })
+          : t("You returned {got} rows. The model answer returns {want}.", { got: best.got.toLocaleString(), want: best.want.toLocaleString() }) };
       } : null,
       onPass: () => { markDone(q); refreshLocks(); },
     });
@@ -348,14 +353,14 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
     const renderAnswer = a => {
       steps = a.steps;
       ans.innerHTML = (a.approach.length ? `<ul>${a.approach.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : "") +
-        a.steps.map((st, i) => `<div class="mstep"><p><b>${st.title ? esc(st.title) : (a.steps.length > 1 ? t("Step {n}", { n: i + 1 }) : t("Model query"))}</b>${q.note && i === (q.graded ?? a.steps.length - 1) ? ` <span class="note">(expected: ${esc(q.note)})</span>` : ""}</p>
+        a.steps.map((st, i) => `<div class="mstep"><p><b>${st.title ? esc(st.title) : (a.steps.length > 1 ? t("Step {n}", { n: i + 1 }) : t("Model query"))}</b>${q.note && i === (q.graded ?? a.steps.length - 1) ? ` <span class="note">${t("(expected: {x})", { x: esc(q.note) })}</span>` : ""}</p>
           <pre class="sql">${hl(st.sql)}</pre>
           <div class="row2"><button class="btn" data-load="${i}">${t("Copy into the editor")}</button><button class="btn" data-runm="${i}">${t("Run the model query")}</button></div>
           <div class="tbl-wrap mout" data-mout="${i}"></div></div>`).join("") +
-        (q.check === "open" ? `<label class="check" style="margin-top:8px"><span><input type="checkbox" data-self="${q.id}"> I compared my logic and numbers with the model answer</span></label>` : "");
+        (q.check === "open" ? `<label class="check" style="margin-top:8px"><span><input type="checkbox" data-self="${q.id}"> ${t("I compared my logic and numbers with the model answer")}</span></label>` : "");
       $$("[data-load]", ans).forEach(b => b.onclick = () => panel.setSql(steps[+b.dataset.load].sql));
       $$("[data-runm]", ans).forEach(b => b.onclick = async () => {
-        const i = +b.dataset.runm, host = $(`[data-mout="${i}"]`, ans); b.disabled = true; host.textContent = "Running…";
+        const i = +b.dataset.runm, host = $(`[data-mout="${i}"]`, ans); b.disabled = true; host.textContent = t("Running…");
         try { await engine.ready(); const out = await engine.run(steps[i].sql, "hw", [q.ds]); host.innerHTML = `<p class="note">${resultMeta(out)}</p>` + resultTable(out, 50); }
         catch (e) { host.innerHTML = `<p class="reserr">${esc(e.message || e)}</p>`; }
         b.disabled = false;

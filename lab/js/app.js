@@ -1,19 +1,20 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=8c134396d0";
-import { mountHomework } from "./homework.js?v=8c134396d0";
-import { mountCases } from "./cases.js?v=8c134396d0";
-import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=8c134396d0";
-import * as sync from "./sync.js?v=8c134396d0";
-import { MODE } from "./mode.js?v=8c134396d0";
-import * as free from "./free.js?v=8c134396d0";
-import { resizable } from "./splitter.js?v=8c134396d0";
-import { chip, DOMAINS } from "./domains.js?v=8c134396d0";
-import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=8c134396d0";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=8c134396d0";
+import * as engine from "./engine.js?v=7ba8096f9b";
+import { mountHomework } from "./homework.js?v=7ba8096f9b";
+import { mountCases } from "./cases.js?v=7ba8096f9b";
+import { mountThinking } from "./thinking.js?v=7ba8096f9b";
+import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=7ba8096f9b";
+import * as sync from "./sync.js?v=7ba8096f9b";
+import { MODE } from "./mode.js?v=7ba8096f9b";
+import * as free from "./free.js?v=7ba8096f9b";
+import { resizable } from "./splitter.js?v=7ba8096f9b";
+import { chip, DOMAINS } from "./domains.js?v=7ba8096f9b";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=7ba8096f9b";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=7ba8096f9b";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
-const ZONES = ["home", "guides", "homework", "interview", "cases", "dictionary", "playground", "setup"];
+const ZONES = ["home", "guides", "homework", "interview", "cases", "thinking", "dictionary", "playground", "setup"];
 const IV_FROM = 20;   // lessons 20 and up live in the Interview Prep zone, not in Homework
 // Guides are shown by lesson name; the file key (L02 ...) stays internal. `full` is the lesson title, `short` fits a chip.
 const GUIDE_NAMES = {
@@ -36,7 +37,7 @@ const store = {
 };
 const json = async url => { const r = await fetch(url); if (!r.ok) throw new Error(url + ": HTTP " + r.status); return r.json(); };
 
-let hwData = null, casesApp = null, current = null;
+let hwData = null, casesApp = null, current = null, atData = null;
 
 // Pull the signed-in login's saved progress into this browser before anything draws. Does nothing without a login.
 if (!MODE.free) await sync.init();
@@ -53,8 +54,8 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=8c134396d0");
-  const cs = await json("data/challenges.json?v=8c134396d0"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  await loadHw();
+  const cs = await json("data/challenges.json?v=7ba8096f9b"); atData ??= await json("data/thinking.json?v=7ba8096f9b").catch(() => null); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
@@ -62,7 +63,7 @@ async function home() {
   const news = await json("data/whatsnew.json").then(d => d.items.slice(0, 4)).catch(() => []);
   hdr.innerHTML = `<div class="hgrid"><div class="hl"><div class="eyebrow">TheHauData Mentoring Program</div><h1>${t("Think like an analyst.")} <span class="gt">${t("Solve real business cases")}</span>${t(" with a data-driven mindset and the right tech stack.")}</h1></div>${sqlDemoHtml()}</div>${journey()}`;
   startSqlDemo($(".sqldemo", hdr));
-  const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>${t("What's new")}</small> ${t("Latest from the course")}</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(n.tag)}</span><div><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">${t("Open")}</button>` : ""}</li>`).join("")}</ul></section>` : "";
+  const newsHtml = news.length ? `<section class="card whatsnew"><h2><small>${t("What's new")}</small> ${t("Latest from the course")}</h2><ul>${news.map(n => `<li><span class="nd">${esc(n.date)}</span><span class="tag${n.tag === "Case study" ? " o" : n.tag === "Update" ? " g" : ""}">${esc(t(n.tag))}</span><div><b>${esc(t(n.title))}</b><span>${esc(t(n.text))}</span></div>${n.go ? `<button class="btn" data-go="${esc(n.go)}">${t("Open")}</button>` : ""}</li>`).join("")}</ul></section>` : "";
   main.innerHTML = `<div class="hub"><div class="cards homecards">
       <button class="cc big" data-go="guides"><span class="tag">${t("SQL, BI and analytics")}</span><b>${t("Study Guides")}</b><span class="sk">${t("A one-page recap of each lesson, then the classwork and homework solved step by step, with small labs to try.")}</span>
         <span class="row"><span class="tm">${t("{n} guides",{n:GUIDES.length})}</span></span></button>
@@ -72,6 +73,8 @@ async function home() {
         <span class="row"><span class="tm">${t("About 4 hours in total")}</span>${ivDone ? `<span class="dn">${t("{n}/{m} done",{n:ivDone,m:ivq.length})}</span>` : ""}</span></button>
       <button class="cc big" data-go="cases"><span class="tag o">${t("3 steps each")}</span><b>${t("Case Studies")}</b><span class="sk">${t("{n} cases: read the request, plan your approach, then solve, chart and conclude.",{n:cs.challenges.length})}</span>
         <span class="row"><span class="tm">${t("{n} run live on the real tables",{n:live})}</span></span></button>
+      <button class="cc big" data-go="thinking"><span class="tag o">${t("Read and discuss")}</span><b>${t("Analytical Thinking")}</b><span class="sk">${t("Mini cases on the class data, each built around one common trap, plus short cards on framing questions, choosing metrics and junior statistics.")}</span>
+        <span class="row"><span class="tm">${t("{n} mini cases · {m} cards",{n:atData?.cases.length||0,m:atData?.cards.length||0})}</span></span></button>
       <button class="cc big" data-go="dictionary"><span class="tag">${t("Reference")}</span><b>${t("Data Dictionary")}</b><span class="sk">${t("Every class table: columns, types, keys, missing values and how the tables join, on a relationship map you can search.")}</span>
         <span class="row"><span class="tm">${t("ADW, CRM, GBE and more")}</span></span></button>
       <button class="cc big" data-go="playground"><span class="tag g">${t("Free practice")}</span><b>${t("Playground")}</b><span class="sk">${t("An open editor on the AdventureWorks, CRM and Global Electronics tables.")}</span>
@@ -107,28 +110,65 @@ async function home() {
 const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
   return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=8c134396d0");
+  await loadHw();
   mountHomework({ data: hwView(false), hdr, main });
 }
 
 async function interview() {
-  hwData ??= await json("data/homework.json?v=8c134396d0");
+  await loadHw();
   mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
 }
 // Vietnamese case prose is a sparse overlay (data/cases.vi.json, keyed by case id) merged over the English case.
 // Arrays merge by index and null keeps the English value, so metric names, SQL and tables stay as they are.
 const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ? a.map((x, i) => mergeVi(x, b[i]))
   : a && b && typeof a === "object" && typeof b === "object" ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, mergeVi(v, b[k])])) : b;
+// Homework in Vietnamese: data/homework.vi.json is a sparse overlay ({lessons:{n:{...}}, questions:{id:{...}}}) merged over the English data.
+// Lesson names stay English (they match the slides); descriptions, round names, stories, hints and guidelines are translated. Model answers
+// get their Vietnamese layer from the answer itself (see localize() in homework.js).
+async function loadHw() {
+  if (hwData) return hwData;
+  const d = await json("data/homework.json?v=7ba8096f9b");
+  if (getLang() === "vi") {
+    const vi = await json("data/homework.vi.json?v=7ba8096f9b").catch(() => ({}));
+    for (const [n, l] of Object.entries(vi.lessons || {})) if (d.lessons[n]) Object.assign(d.lessons[n], l);
+    d.questions = d.questions.map(q => vi.questions?.[q.id] && !q.locked ? { ...mergeVi(q, vi.questions[q.id]), vi: true } : q);
+  }
+  return hwData = d;
+}
 async function loadCases() {
-  const d = await json("data/challenges.json?v=8c134396d0");
+  const d = await json("data/challenges.json?v=7ba8096f9b");
   if (getLang() !== "vi") return d;
-  const vi = await json("data/cases.vi.json?v=8c134396d0").catch(() => ({}));
+  const vi = await json("data/cases.vi.json?v=7ba8096f9b").catch(() => ({}));
   d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
   return d;
 }
 async function cases() {
   if (!casesApp) casesApp = mountCases(await loadCases());
   casesApp.draw();
+}
+
+// Analytical Thinking: reading cases and toolkit cards. Links out to Case Studies and Homework go through the normal deep links.
+async function thinking() {
+  atData ??= await json("data/thinking.json?v=7ba8096f9b");
+  // Vietnamese: same sparse overlay as the cases (data/thinking.vi.json, keyed by id); an item without a translation stays English.
+  let view = atData;
+  if (getLang() === "vi") {
+    const vi = await json("data/thinking.vi.json?v=7ba8096f9b").catch(() => ({}));
+    const tr = x => vi[x.id] && !x.locked ? { ...mergeVi(x, vi[x.id]), vi: true } : x;
+    view = { ...atData, cards: atData.cards.map(tr), cases: atData.cases.map(tr) };
+  }
+  const cs = await loadCases(); await loadHw();
+  const csBy = Object.fromEntries(cs.challenges.map(c => [c.id, c])), lessonBy = Object.fromEntries(Object.values(hwData.lessons).map(l => [l.slug, l]));
+  const labels = l => l.t === "case" ? { kind: "Case Study", title: csBy[l.id]?.title || l.id, locked: !!csBy[l.id]?.locked }
+    : l.t === "hw" ? { kind: "Homework", title: lessonBy[l.id]?.title || l.id, locked: false }
+    : l.t === "mini" ? { kind: "Mini case", title: view.cases.find(c => c.id === l.id)?.title || l.id }
+    : { kind: "Card", title: view.cards.find(c => c.id === l.id)?.title || l.id };
+  const open = l => {
+    try { history.replaceState(null, "", "#" + (l.t === "case" ? "cases/" : "homework/") + l.id); } catch (e) { }
+    if (l.t === "case") casesApp = null;   // the cases zone reads its deep link when it mounts
+    setZone(l.t === "case" ? "cases" : "homework");
+  };
+  mountThinking({ data: view, hdr, main, labels, open }).draw();
 }
 
 // Column notes for the Playground's table browser come from the Data Dictionary page (its DATA block), read once.
@@ -223,7 +263,7 @@ async function pageFrame(file, title) {
 async function guides() {
   hdr.innerHTML = "";
   let cur = store.get("guide"); if (!GUIDES.includes(cur) || (MODE.free && !free.GUIDES_OPEN.includes(cur))) cur = GUIDES[0];
-  main.innerHTML = `<div class="embedbar" role="group" aria-label="Study guide"><span class="lbl">Guide</span>${GUIDES.map(k => `<button class="chip" data-g="${k}" aria-pressed="false" title="${esc(GUIDE_NAMES[k].full)}">${MODE.free && !free.GUIDES_OPEN.includes(k) ? "🔒 " : ""}${esc(GUIDE_NAMES[k].short)}</button>`).join("")}</div><div id="gframe"></div>`;
+  main.innerHTML = `<div class="embedbar" role="group" aria-label="${esc(t("Study guide"))}"><span class="lbl">${t("Guide")}</span>${GUIDES.map(k => `<button class="chip" data-g="${k}" aria-pressed="false" title="${esc(GUIDE_NAMES[k].full)}">${MODE.free && !free.GUIDES_OPEN.includes(k) ? "🔒 " : ""}${esc(GUIDE_NAMES[k].short)}</button>`).join("")}</div><div id="gframe"></div>`;
   const show = async k => {
     cur = k; store.set("guide", k);
     $$("[data-g]", main).forEach(b => b.setAttribute("aria-pressed", b.dataset.g === k));
@@ -252,7 +292,7 @@ async function setup() {
   $("#sframe", main).append(await pageFrame("setup/setup.html", "Installation for mentees"));
 }
 
-const RENDER = { home, setup, guides, homework, interview, cases, dictionary, playground };
+const RENDER = { home, setup, guides, homework, interview, cases, thinking, dictionary, playground };
 async function setZone(z, reset = false) {
   if (!ZONES.includes(z)) z = "home";
   current = z; document.body.classList.remove("dfull-on");
@@ -269,7 +309,7 @@ async function setZone(z, reset = false) {
 $$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone, true));
 // Language switch: relabel the static shell, then redraw the open zone (cases are rebuilt so the overlay applies).
 $$("#langsw [data-l]").forEach(b => b.onclick = () => setLang(b.dataset.l));
-onLang(() => { casesApp = null; if (current) setZone(current); });
+onLang(() => { casesApp = null; hwData = null; atData = null; if (current) setZone(current); });
 applyStatic();
 // A study guide (iframe) can send the mentee to a lesson's homework.
 window.addEventListener("message", e => {

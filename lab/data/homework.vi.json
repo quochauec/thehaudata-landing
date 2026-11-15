@@ -1,0 +1,956 @@
+{
+ "lessons": {
+  "2": {
+   "sub": "SELECT, WHERE, ORDER BY, TOP, DISTINCT, toán tử"
+  },
+  "3": {
+   "sub": "JOIN và UNION"
+  },
+  "4": {
+   "sub": "CASE WHEN, aggregation, thứ tự thực thi"
+  },
+  "5": {
+   "sub": "Dùng chung với bài Built-in Functions and Optimisation"
+  },
+  "8": {
+   "sub": "Missing value, lỗi chính tả, dữ liệu trùng, outlier và chuyển đổi ngày"
+  },
+  "9": {
+   "sub": "Recency, frequency, monetary, điểm theo percentile và các segment"
+  },
+  "10": {
+   "sub": "Tháng mua đầu tiên, số tháng kể từ đơn đầu, bảng retention"
+  },
+  "12": {
+   "sub": "Giỏ hàng hợp lệ, đếm cặp sản phẩm, support, confidence, lift và độ mạnh của luật"
+  },
+  "15": {
+   "sub": "Định nghĩa metric, issue tree, kiểm tra MECE, số liệu của business model"
+  },
+  "16": {
+   "sub": "Input metrics, drill-down, 80/20, đóng góp vào thay đổi, what-if"
+  },
+  "17": {
+   "sub": "Tỷ lệ so với tổng, Top N + Other, mean so với median, survivorship, like-for-like"
+  },
+  "20": {
+   "title": "Vòng 1: SQL screen",
+   "label": "Vòng 1: SQL screen",
+   "sub": "8 câu, khoảng 45 phút. Đếm, top N, so sánh với mức trung bình, window, anti-join và lịch các tháng."
+  },
+  "21": {
+   "title": "Vòng 2: Metrics và ops",
+   "label": "Vòng 2: Metrics và ops",
+   "sub": "6 câu, khoảng 30 phút. Tỷ lệ trễ, trước và sau, xếp hạng trong từng nhóm, so sánh song song."
+  },
+  "22": {
+   "title": "Vòng 3: Take-home case",
+   "label": "Vòng 3: Take-home case",
+   "sub": "4 bài viết, tổng khoảng 60 phút. Tìm ra vấn đề, ước lượng quy mô, đề xuất một hành động và nói cách bạn sẽ kiểm tra nó."
+  },
+  "23": {
+   "sub": "13 bài SQL screen kinh điển của các công ty công nghệ lớn trên các bảng nhỏ, tổng khoảng 2 giờ. Self-join, window function, xếp hạng, trung bình trượt và logic CASE."
+  }
+ },
+ "questions": {
+  "L2-01": {
+   "title": "Các dòng sản phẩm chính",
+   "story": "AdventureWorks bán những dòng sản phẩm nào? Liệt kê các category và sub-category."
+  },
+  "L2-02": {
+   "title": "Công ty hoạt động ở đâu",
+   "story": "AdventureWorks hoạt động ở những nơi nào? Trả về territory, quốc gia và nhóm khu vực."
+  },
+  "L2-03": {
+   "title": "Vì sao khách hàng mua",
+   "story": "Vì sao khách hàng mua hàng của AdventureWorks? Liệt kê các lý do mua hàng."
+  },
+  "L2-04": {
+   "title": "Sản phẩm bị gán sai giá",
+   "story": "Đồng nghiệp tên Peter đã nhập sai giá cho một số sản phẩm đã được bán. Giá sai là đơn giá lớn hơn 3,500. Liệt kê các đơn hàng có chứa những sản phẩm này để team sản phẩm kiểm tra lại."
+  },
+  "L2-05": {
+   "title": "Hoàn tiền cho khách hàng 29641",
+   "story": "Khách hàng 29641 gọi tới và muốn được hoàn tiền cho đơn hàng giao ngày 2013-06-06. Hãy kiểm tra giá trị đơn hàng (SubTotal) để team chăm sóc khách hàng xử lý ticket."
+  },
+  "L2-06": {
+   "title": "Thẻ có đuôi 9916",
+   "story": "Đối tác thẻ báo rằng các thẻ có đuôi 9916 là thẻ gian lận. Liệt kê các đơn hàng được thanh toán bằng những thẻ này để team rủi ro kiểm tra.",
+   "hint": "Số thẻ nằm ở cột CardNumber của bảng ADW_Dim_CreditCard. Hãy làm qua hai bước."
+  },
+  "L2-07": {
+   "title": "Standard cost cao nhất",
+   "story": "Team Finance đang rà soát chi phí sản xuất. Liệt kê 10 sản phẩm có standard cost cao nhất và hiển thị tỷ lệ standard cost trên giá niêm yết của từng sản phẩm.",
+   "note": "có nhiều dòng bằng nhau về StandardCost ở vị trí thứ 10, nên chỉ so sánh cột cost"
+  },
+  "L2-08": {
+   "title": "Khuyến mãi cho đại lý",
+   "story": "Mình đang chạy những chương trình khuyến mãi nào cho đại lý? Trả về ID của special offer và mô tả của nó."
+  },
+  "L2-09": {
+   "title": "Hai nhóm khách hàng trong một query",
+   "story": "Team Customer Research đang nghiên cứu khách hàng ở các khu vực khác nhau. Tìm những khách hàng đã mua trong năm 2012 và thuộc một trong hai nhóm sau:\n- Khách mua online ở Canada hoặc France, với giá trị đơn từ 1,000 trở lên.\n- Khách mua offline ở US hoặc Australia, với giá trị đơn từ 600 đến 1,000.\nTrả về CustomerID, TerritoryID, ngày giao hàng, giá trị đơn và cờ online/offline.",
+   "hint": "Cả hai nhóm phải trả về từ cùng một query."
+  },
+  "L2-10": {
+   "title": "Online quý 4/2013 hoặc offline quý 1/2012",
+   "story": "Team Customer Research muốn so sánh khách mua online và offline. Tìm những khách hàng đã mua offline trong quý 1/2012, hoặc mua online trong quý 4/2013. Trả về CustomerID, năm đặt hàng, quý đặt hàng và cờ online/offline."
+  },
+  "L3-01": {
+   "title": "Deal thắng có giá trị cao hơn giá niêm yết",
+   "story": "Liệt kê các deal thắng trong năm 2017 có giá trị chốt cao hơn giá niêm yết của sản phẩm.",
+   "note": "1674 dòng"
+  },
+  "L3-02": {
+   "title": "Các khu vực mất deal trong quý 1/2017",
+   "story": "Những khu vực nào có agent bị mất deal trong ba tháng đầu năm 2017?",
+   "note": "3 dòng"
+  },
+  "L3-03": {
+   "title": "Sản phẩm bán cho khối marketing",
+   "story": "Những sản phẩm nào đã được bán cho các công ty thuộc sector marketing, trong các deal thắng năm 2017?",
+   "note": "7 dòng"
+  },
+  "L3-04": {
+   "title": "Sector của 10 deal lớn nhất",
+   "story": "10 deal có giá trị cao nhất mọi thời đại thuộc về những sector nào?",
+   "note": "6 sector khác nhau"
+  },
+  "L3-05": {
+   "title": "Deal chốt nhanh nhất và chậm nhất",
+   "story": "10 deal nào chốt nhanh nhất và 10 deal nào chốt chậm nhất?"
+  },
+  "L3-06": {
+   "title": "Khách hàng châu Âu dùng Vista hoặc SuperiorCard",
+   "story": "Team Payment đang chạy một khảo sát ở châu Âu. Liệt kê những khách hàng đã mua ở châu Âu trong quý 3/2013 và thanh toán bằng thẻ Vista hoặc SuperiorCard. Trả về CustomerID và loại thẻ.",
+   "hint": "Khi câu hỏi chỉ nói về đơn hàng, ADW_Sales_orders là bảng gốc."
+  },
+  "L3-07": {
+   "title": "Mountain Bike màu Black hoặc Silver có cost từ 1,000 đến 1,500",
+   "story": "Team Product muốn có danh sách các Mountain Bike màu Black hoặc Silver với standard cost từ 1,000 đến 1,500. Hiển thị thêm tỷ lệ standard cost trên giá niêm yết của từng sản phẩm."
+  },
+  "L3-08": {
+   "title": "Đơn hàng của top 10 khách hàng 2011 và 2012",
+   "story": "Công ty muốn cảm ơn những khách chi nhiều nhất năm 2011 và 2012. Lấy mọi đơn hàng (mã đơn, mã khách và tổng tiền phải trả) của top 10 khách hàng mỗi năm.",
+   "hint": "Danh sách khách hàng nằm trong các bảng ADW_Top_10_spending_cust_2011 và ADW_Top_10_spending_cust_2012."
+  },
+  "L3-09": {
+   "title": "Khách hàng có mặt ở top 10 cả hai năm",
+   "story": "Có bao nhiêu khách hàng nằm trong top 10 chi tiêu của cả năm 2011 lẫn 2012?"
+  },
+  "L3-10": {
+   "title": "Đơn hàng mua vì chất lượng hoặc uy tín nhà cung cấp",
+   "story": "Công ty muốn nghiên cứu hành vi mua hàng. Tìm các đơn hàng được đặt với lý do Quality hoặc Manufacturer (uy tín nhà cung cấp) trong năm 2012 và 2013."
+  },
+  "L3-11": {
+   "title": "Bán với giá trên 2,000 và có special offer",
+   "story": "Team Business muốn thiết kế một chương trình khuyến mãi cho các giao dịch giá trị cao. Tìm các sản phẩm từng được bán với đơn giá trên 2,000 và có kèm special offer. Trả về ProductID và ProductName."
+  },
+  "L3-12": {
+   "title": "Bikes và Clothing bán theo Volume Discount",
+   "story": "Hai category Bikes và Clothing dự kiến dùng cho một chiến dịch cross-sell. Tìm tên các sản phẩm thuộc hai category này đã được bán theo ưu đãi Volume Discount."
+  },
+  "L4-01": {
+   "title": "Báo cáo doanh thu và lợi nhuận theo tháng",
+   "story": "Hội đồng quản trị muốn có bức tranh tổng quan về doanh thu, lợi nhuận, biên lợi nhuận và số khách hàng theo từng tháng và từng năm, trong bốn năm công ty đã hoạt động. Hãy dựng báo cáo này."
+  },
+  "L4-02": {
+   "title": "Hiệu quả theo quốc gia",
+   "story": "Dựng báo cáo tương tự theo quốc gia và năm: doanh thu, lợi nhuận, số khách hàng và biên lợi nhuận. Quốc gia nào hoạt động tốt nhất và ổn định nhất?"
+  },
+  "L4-03": {
+   "title": "Doanh thu theo phương thức thanh toán",
+   "story": "Mỗi phương thức thanh toán mang về bao nhiêu doanh thu, ở từng quốc gia?"
+  },
+  "L4-04": {
+   "title": "Tỷ trọng doanh thu online, 2013 so với 2014",
+   "story": "So sánh tỷ trọng doanh thu đến từ kênh online ở từng quốc gia trong năm 2013 và 2014. Online hoạt động tốt nhất ở đâu?",
+   "hint": "Dùng conditional aggregation để tính doanh thu online dưới dạng tỷ trọng trên tổng doanh thu."
+  },
+  "L4-05": {
+   "title": "Ngày thường và cuối tuần ở Mỹ",
+   "story": "Công ty muốn so sánh doanh số ngày thường với cuối tuần ở Mỹ. Với từng territory của Mỹ, hãy so sánh số lượng bán trung bình (OrderQty) mỗi ngày và mỗi khách hàng giữa ngày thường và cuối tuần. Bạn nhận thấy điều gì trong các con số?",
+   "hint": "Dùng DATEPART kết hợp CASE WHEN để gắn nhãn từng ngày là ngày thường hay cuối tuần."
+  },
+  "L4-06": {
+   "title": "Hành vi mua hàng, Mỹ so với EU",
+   "story": "Team Customer Research muốn so sánh hành vi mua hàng ở Mỹ và EU. Hãy so sánh tần suất mua (số đơn trên mỗi khách) và số lượng trung bình mỗi đơn. Khu vực nào làm tốt hơn?"
+  },
+  "L4-07": {
+   "title": "Nên đẩy category nào ở châu Âu",
+   "story": "Nếu công ty muốn đẩy mạnh một category ở châu Âu, thì nên chọn category nào?",
+   "hint": "Đây là câu hỏi mở. Hãy nhìn từ nhiều góc, ví dụ doanh thu, lợi nhuận và biên lợi nhuận."
+  },
+  "L5-01": {
+   "title": "Khách hàng có AOV cao hơn AOV của khách ở Mỹ",
+   "story": "Công ty muốn nhắm tới những khách hàng có giá trị đơn trung bình (AOV) cao hơn AOV của khách mua ở Mỹ, để nghiên cứu cách nâng AOV. Liệt kê những khách hàng này.",
+   "hint": "AOV = tổng giá trị của mọi đơn hàng chia cho số đơn hàng."
+  },
+  "L5-02": {
+   "title": "Chỉ mua Bikes, chỉ mua Clothing, hay mua cả hai",
+   "story": "Chia khách hàng thành ba nhóm và so sánh giá trị đơn trung bình (AOV) của các lần mua Bikes và Clothing.\n- Nhóm 1: chỉ mua Bikes.\n- Nhóm 2: mua cả Bikes và Clothing.\n- Nhóm 3: chỉ mua Clothing."
+  },
+  "L5-03": {
+   "title": "Tăng trưởng theo năm của từng quốc gia",
+   "story": "Tính tăng trưởng doanh thu theo năm (% YoY) của từng quốc gia cho giai đoạn 2012 đến 2014. Quốc gia nào tăng nhanh nhất?"
+  },
+  "L5-04": {
+   "title": "Sub-category có chi phí khuyến mãi tăng dần",
+   "story": "Công ty đang rà soát tổng chi phí khuyến mãi của các sub-category. Liệt kê những sub-category có tổng chi phí khuyến mãi tăng hai năm liên tiếp.",
+   "hint": "Cách làm giống câu về tăng trưởng theo năm (HW 3).",
+   "note": "Caps, Helmets, Jerseys"
+  },
+  "L5-05": {
+   "title": "Doanh thu lũy kế theo category",
+   "story": "Xem doanh thu lũy kế (running) của từng category, theo từng tháng trong mỗi năm. Hãy dựng báo cáo này.",
+   "hint": "Dùng một aggregate window function."
+  },
+  "L5-06": {
+   "title": "Sản phẩm bán chạy nhất theo quốc gia",
+   "story": "Sản phẩm nào bán được nhiều đơn vị nhất ở từng quốc gia?"
+  },
+  "L5-07": {
+   "title": "Tăng trưởng theo tháng của từng category",
+   "story": "Tính tăng trưởng doanh thu theo tháng (MoM) của từng category qua các năm. Tháng 1 phải được so với tháng 12 liền trước."
+  },
+  "L5-08": {
+   "title": "Chi tiêu trên mức median của Clothing",
+   "story": "Tìm những khách hàng có tổng chi tiêu ở mọi category cao hơn percentile thứ 50 của chi tiêu trong nhóm khách mua Clothing.",
+   "hint": "Bước 1: tìm percentile thứ 50 của chi tiêu trong nhóm khách mua Clothing (kết quả mong đợi: một con số) bằng PERCENT_RANK().\nBước 2: tính tổng chi tiêu của từng khách ở mọi category và giữ lại những khách cao hơn con số ở bước 1."
+  },
+  "L5-09": {
+   "title": "Phương thức thanh toán phổ biến nhất",
+   "story": "Phương thức thanh toán nào phổ biến nhất theo số đơn ở từng quốc gia và năm? Nếu xếp hạng theo tổng doanh thu thay vì số đơn, thứ tự có đổi không?"
+  },
+  "L5-10": {
+   "title": "Top 5 sản phẩm khuyến mãi theo territory",
+   "story": "Rà soát chương trình khuyến mãi của từng territory. Với mỗi territory, liệt kê 5 sản phẩm có tỷ trọng số lượng bán kèm khuyến mãi cao nhất."
+  },
+  "L8-01": {
+   "title": "Đơn hàng không có salesperson",
+   "story": "Team Finance muốn biết có bao nhiêu đơn hàng được đặt mà không có salesperson, để xem bao nhiêu doanh thu đến từ bán hàng trực tiếp. Trả về số đơn không có salesperson và tổng số đơn.",
+   "hint": "Hãy chạy SELECT DISTINCT SalesPersonID FROM ADW_Sales_orders trước và đọc các giá trị. Trong database này, salesperson bị thiếu được lưu dưới dạng chuỗi 'NULL', nên IS NULL không tìm thấy gì.",
+   "note": "27,659 trên 31,465 đơn"
+  },
+  "L8-02": {
+   "title": "Sản phẩm không có màu",
+   "story": "Team sản phẩm muốn xem có bao nhiêu sản phẩm ở mỗi màu. Sản phẩm bị thiếu màu phải hiển thị là 'Unknown'. Trả về màu và số sản phẩm.",
+   "hint": "Giống câu trước, màu bị thiếu là chuỗi 'NULL'. Thay nó bằng CASE WHEN, rồi group theo cột mới.",
+   "note": "10 dòng, Unknown = 248 sản phẩm"
+  },
+  "L8-03": {
+   "title": "Sửa lỗi chính tả trong danh sách account",
+   "story": "Sales Ops phát hiện lỗi chính tả trong danh sách account. Trả về mọi account với sector và vị trí văn phòng đã được làm sạch. Đổi 'technolgy' thành 'technology' và 'Philipines' thành 'Philippines', các giá trị khác giữ nguyên.",
+   "hint": "Hãy chạy SELECT DISTINCT sector FROM CRM_Accounts và SELECT DISTINCT office_location FROM CRM_Accounts trước, rồi đọc kỹ từng danh sách.",
+   "note": "85 dòng"
+  },
+  "L8-04": {
+   "title": "Deal bị mất khi join",
+   "story": "Ở bài Combining Data, bạn đã liệt kê các deal thắng năm 2017 có giá cao hơn giá niêm yết và ra con số 1,674. Con số đó bỏ sót deal, vì pipeline ghi một sản phẩm là 'GTXPro' còn danh sách sản phẩm ghi là 'GTX Pro'. Hãy sửa tên và join lại. Với các deal thắng chốt trong năm 2017, trả về ba con số: có bao nhiêu deal, bao nhiêu deal tìm được giá niêm yết, và bao nhiêu deal chốt cao hơn giá niêm yết.",
+   "hint": "Dùng REPLACE(product, 'GTXPro', 'GTX Pro') trong điều kiện join. Sau khi sửa, số deal tìm được giá phải bằng số deal thắng.",
+   "note": "4,238 deal, 4,238 deal có giá, 2,040 deal cao hơn giá niêm yết"
+  },
+  "L8-05": {
+   "title": "Khách hàng theo nhóm tuổi",
+   "story": "Team Marketing lên kế hoạch cho một chiến dịch theo độ tuổi. Trong GBE_Customers, ngày sinh được lưu dưới dạng chuỗi, ví dụ 7/3/1939. Hãy chuyển nó sang kiểu ngày và tính tuổi của từng khách hàng tại ngày 2020-01-01. Sau đó đếm khách hàng theo bốn nhóm: Under 30, 30-49, 50-69 và 70+. Trả về tên nhóm và số khách hàng.",
+   "hint": "CONVERT(date, Birthday, 101) chuyển chuỗi như 7/3/1939 thành ngày. CAST(Birthday AS DATE) không chạy được với định dạng này ở đây.",
+   "note": "4 nhóm, tổng 15,266 khách hàng"
+  },
+  "L8-06": {
+   "title": "Tên khách hàng bị lặp",
+   "story": "Team data nghi ngờ GBE_Customers có khách hàng trùng, vì 15,266 khách hàng chỉ có 15,118 tên khác nhau. Hãy kiểm tra. Với mỗi tên xuất hiện nhiều hơn một lần, trả về tên đó, số lần nó xuất hiện trong danh sách, và số ngày sinh khác nhau của nó.",
+   "hint": "GROUP BY Name với HAVING COUNT(*) > 1. COUNT(DISTINCT Birthday) đếm số ngày sinh khác nhau.",
+   "note": "137 tên, mỗi tên lặp đều có ngày sinh khác nhau"
+  },
+  "L8-07": {
+   "title": "Đơn hàng cao hơn hẳn mức trung bình",
+   "story": "Team Finance muốn rà soát những đơn hàng lớn bất thường trước báo cáo tháng. Đánh dấu một đơn là outlier khi TotalDue của nó cao hơn mức trung bình TotalDue của mọi đơn hơn 2 độ lệch chuẩn. Trả về số đơn bị đánh dấu và tổng số đơn.",
+   "hint": "STDEV(TotalDue) cho ra độ lệch chuẩn. Tính trung bình và STDEV trong một CTE hoặc subquery, rồi so từng đơn với trung bình + 2 x STDEV.",
+   "note": "1,323 trên 31,465 đơn"
+  },
+  "L8-08": {
+   "title": "Hai cách tìm outlier",
+   "story": "Lặp lại việc kiểm tra outlier bằng quy tắc IQR. Một đơn là outlier khi TotalDue cao hơn Q3 + 1.5 x IQR, với IQR = Q3 - Q1. So sánh số đơn bị đánh dấu với phương pháp độ lệch chuẩn ở câu trước. Phương pháp nào đánh dấu nhiều đơn hơn, và vì sao? Bạn có loại bỏ những đơn này không? Hãy viết kết luận của bạn bên dưới.",
+   "hint": "PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY TotalDue) OVER () cho ra Q1. Dùng 0.75 cho Q3.",
+   "note": "Độ lệch chuẩn 1,323 đơn, IQR 2,127 đơn"
+  },
+  "L8-09": {
+   "title": "Kiểm tra danh sách account đã làm sạch",
+   "story": "Trước khi chia sẻ danh sách account đã làm sạch từ câu sửa lỗi chính tả, hãy kiểm tra nó. Trả về một dòng với bốn con số: tổng số dòng, số account khác nhau, số dòng mà sector vẫn là 'technolgy', và số dòng mà vị trí văn phòng vẫn là 'Philipines'.",
+   "hint": "Dựng lại danh sách đã làm sạch trong một CTE, rồi đếm trên đó. Việc kiểm tra phải chạy trên dữ liệu đã làm sạch, không phải trên CRM_Accounts.",
+   "note": "85 dòng, 85 account, không còn lỗi chính tả nào"
+  },
+  "L9-01": {
+   "title": "R, F và M của từng khách hàng",
+   "story": "Team Marketing muốn phân khúc khách hàng theo mức độ gần đây, tần suất và giá trị họ mua. Hãy bắt đầu từ các con số thô. Với mỗi khách hàng trong ADW_Sales_orders, trả về Recency (số ngày từ đơn cuối của khách đến 2014-07-01), Frequency (số đơn) và Monetary (tổng TotalDue).",
+   "hint": "DATEDIFF(day, MAX(OrderDate), '2014-07-01'), COUNT(DISTINCT SalesOrderID) và SUM(TotalDue), tất cả group theo CustomerID.",
+   "note": "19,119 khách hàng"
+  },
+  "L9-02": {
+   "title": "Chấm điểm từng khách hàng từ 1 đến 5",
+   "story": "Biến ba con số thành điểm. Với mỗi khách hàng, tính PERCENT_RANK cho Recency, Frequency và Monetary, rồi cắt mỗi percentile thành năm khoảng: đến 0.2 là 1, đến 0.4 là 2, đến 0.6 là 3, đến 0.8 là 4, và trên 0.8 là 5. Khách mới mua gần đây phải có điểm Recency cao, nên hãy xếp hạng Recency từ nhiều ngày nhất đến ít ngày nhất (ORDER BY Recency DESC). Trả về CustomerID, R_score, F_score và M_score.",
+   "hint": "Đặt phần tính R, F và M của câu trước vào một CTE. Sau đó dùng ba cột PERCENT_RANK() OVER (ORDER BY ...) và một CASE WHEN cho từng khoảng điểm.",
+   "note": "19,119 khách hàng"
+  },
+  "L9-03": {
+   "title": "Quy mô và giá trị của từng segment",
+   "story": "Team Marketing cần một danh sách segment đơn giản. Dùng điểm ở câu trước, xếp mỗi khách hàng vào segment đầu tiên mà họ phù hợp:\n- Champions: điểm R, F và M đều là 4 hoặc 5.\n- Loyal: điểm F là 4 hoặc 5.\n- Promising: điểm R là 4 hoặc 5.\n- At Risk: điểm M là 4 hoặc 5.\n- Hibernating: tất cả những khách còn lại.\nVới mỗi segment, trả về số khách hàng, số đơn hàng và tổng doanh thu (TotalDue).",
+   "hint": "CASE WHEN kiểm tra các điều kiện từ trên xuống dưới, điều kiện đúng đầu tiên sẽ được chọn. Join các segment lại với ADW_Sales_orders theo CustomerID để đếm đơn và cộng doanh thu.",
+   "note": "5 segment"
+  },
+  "L9-04": {
+   "title": "Cách mỗi segment mua hàng",
+   "story": "Team CRM hỏi liệu có hành vi mua hàng nào đáng chú ý ở từng segment không. Với mỗi segment ở câu trước, trả về giá trị đơn trung bình (AOV), số đơn trên mỗi khách hàng và tỷ lệ đơn đặt online. Sau đó viết hai phát hiện và một hành động cho team.",
+   "hint": "AOV = tổng TotalDue chia cho số đơn. Tỷ lệ online dùng OnlineOrderFlag, bằng 1 với đơn online.",
+   "note": "Champions AOV 11,035; At Risk 2,652; Loyal 2,509; Promising 606; Hibernating 230"
+  },
+  "L9-05": {
+   "title": "Category yêu thích của từng segment",
+   "story": "Category nào mang về nhiều doanh thu nhất ở mỗi segment? Trả về segment, category, doanh thu (LineTotal) và tỷ trọng của category trong doanh thu của segment, xếp hạng trong từng segment. Có segment nào mua khác với các segment còn lại không?",
+   "hint": "Join các segment với đơn hàng, chi tiết đơn hàng, sản phẩm, sub-category và category. Dùng SUM(LineTotal) OVER (PARTITION BY segment) để tính tỷ trọng.",
+   "note": "19 dòng"
+  },
+  "L10-01": {
+   "title": "Tháng mua hàng đầu tiên",
+   "story": "Phân tích retention bắt đầu bằng việc xếp mỗi khách hàng vào một cohort, là tháng của đơn hàng đầu tiên. Với mỗi khách hàng trong ADW_Sales_orders, trả về CustomerID và CohortMonth: ngày đầu tiên của tháng chứa OrderDate đầu tiên của khách.",
+   "hint": "MIN(OrderDate) theo từng khách cho ra đơn đầu tiên. DATEFROMPARTS(YEAR(x), MONTH(x), 1) biến một ngày thành ngày đầu tiên của tháng đó.",
+   "note": "19,119 khách hàng"
+  },
+  "L10-02": {
+   "title": "Quy mô từng cohort",
+   "story": "Mỗi cohort theo tháng có bao nhiêu khách hàng mới? Trả về CohortMonth và số khách hàng.",
+   "hint": "Dùng query ở câu trước làm CTE, rồi COUNT(*) group theo CohortMonth.",
+   "note": "38 cohort"
+  },
+  "L10-03": {
+   "title": "Khách hàng active theo số tháng kể từ đơn đầu",
+   "story": "Với mỗi cohort, đếm số khách hàng có đặt hàng ở từng tháng sau tháng đầu tiên của họ. Trả về CohortMonth, MonthsSinceFirst (0 cho tháng đầu) và số khách hàng active khác nhau.",
+   "hint": "Liệt kê các tháng mà mỗi khách hàng có đặt hàng (DISTINCT khách và tháng), join với tháng đơn đầu tiên, và dùng DATEDIFF(month, tháng cohort, tháng đặt hàng).",
+   "note": "485 dòng"
+  },
+  "L10-04": {
+   "title": "Bảng cohort, tháng 0 đến 3",
+   "story": "Định dạng lại kết quả trước thành một bảng cohort: mỗi cohort một dòng với bốn cột, month0, month1, month2 và month3. Mỗi cột chứa số khách hàng khác nhau đã đặt hàng sau đơn đầu tiên đúng ngần ấy tháng.",
+   "hint": "Conditional aggregation: COUNT(DISTINCT CASE WHEN MonthsSinceFirst = 1 THEN CustomerID END) cho từng cột.",
+   "note": "38 dòng"
+  },
+  "L10-05": {
+   "title": "Tỷ lệ retention và điều chúng cho thấy",
+   "story": "Thêm tỷ lệ retention vào bảng cohort. Trả về CohortMonth, quy mô cohort và tỷ lệ retention của tháng 1, 2 và 3 dưới dạng phần trăm của quy mô cohort, làm tròn 1 chữ số thập phân. Dữ liệu kết thúc vào 2014-06-30, nên tháng nào chưa xảy ra phải hiển thị NULL, không phải 0. Sau đó trả lời: với từng cohort, có điều gì đặc biệt không?",
+   "hint": "Tỷ lệ retention = số khách active trong tháng đó / quy mô cohort (month0). Chỉ hiển thị tỷ lệ khi tháng cohort cộng số tháng nằm vào hoặc trước 2014-06-01, ngược lại để CASE không có ELSE.",
+   "note": "38 dòng"
+  },
+  "L12-01": {
+   "title": "Đơn hàng nào có thể thành một basket?",
+   "story": "Team Merchandising muốn chạy phân tích market basket trên AdventureWorks. Một basket là một đơn hàng, và đơn chỉ có một sản phẩm thì không cho biết sản phẩm nào hay được bán cùng nhau. Trả về số đơn hàng, số đơn có ít nhất 2 sản phẩm khác nhau (đơn hợp lệ) và tỷ trọng đơn hợp lệ trên tổng số đơn dưới dạng phần trăm, làm tròn 1 chữ số thập phân.",
+   "hint": "Đếm DISTINCT ProductID theo từng SalesOrderID trong một CTE, rồi đếm các đơn có từ 2 sản phẩm trở lên.",
+   "note": "1 dòng"
+  },
+  "L12-02": {
+   "title": "Basket của khách online và đại lý",
+   "story": "Khách online và đại lý có chất đầy giỏ hàng theo cùng một cách không? Với mỗi kênh (OnlineOrderFlag = 1 là Online, còn lại là Reseller), trả về số đơn hàng, số sản phẩm khác nhau trung bình mỗi đơn (2 chữ số thập phân), số đơn hợp lệ và tỷ trọng đơn hợp lệ dưới dạng phần trăm, làm tròn 1 chữ số thập phân.",
+   "hint": "Dùng lại CTE basket ở câu trước và join ADW_Sales_orders để lấy OnlineOrderFlag. Dùng AVG(1.0 * products) để giá trị trung bình giữ được phần thập phân.",
+   "note": "2 dòng"
+  },
+  "L12-03": {
+   "title": "Mỗi sản phẩm phổ biến đến mức nào?",
+   "story": "Trước khi đánh giá một cặp sản phẩm, bạn cần biết tần suất nền của từng sản phẩm. Trong các đơn hợp lệ (từ 2 sản phẩm khác nhau trở lên), liệt kê 6 sản phẩm xuất hiện trong nhiều đơn nhất. Trả về tên sản phẩm, số đơn hợp lệ có chứa nó và tỷ trọng của nó trên tổng số đơn hợp lệ dưới dạng phần trăm, làm tròn 1 chữ số thập phân.",
+   "hint": "Dựng các đơn hợp lệ trong một CTE, đếm DISTINCT SalesOrderID theo ProductID, và xếp hạng sản phẩm bằng ROW_NUMBER() OVER (ORDER BY n DESC).",
+   "note": "6 dòng"
+  },
+  "L12-04": {
+   "title": "Một luật, từng bước",
+   "story": "Hãy kiểm tra một luật trước khi dựng tất cả: Water Bottle - 30 oz. và Mountain Bottle Cage. Trong các đơn hợp lệ, trả về số đơn hợp lệ, số đơn có bình nước, số đơn có giá đỡ, số đơn có cả hai, support dưới dạng phần trăm (2 chữ số thập phân), confidence từ bình nước sang giá đỡ và từ giá đỡ sang bình nước dưới dạng phần trăm (1 chữ số thập phân) và lift (2 chữ số thập phân).",
+   "hint": "Gắn cờ cho từng đơn bằng MAX(CASE WHEN ProductName = '...' THEN 1 ELSE 0 END) cho bình nước và cho giá đỡ, rồi SUM các cờ. SUM(has_bottle * has_cage) đếm các đơn có cả hai.",
+   "note": "1 dòng"
+  },
+  "L12-05": {
+   "title": "Các cặp sản phẩm xuất hiện cùng nhau",
+   "story": "Giờ hãy tìm các cặp một cách tự động. Trong các đơn hợp lệ, trả về mọi cặp sản phẩm khác nhau xuất hiện cùng nhau trong ít nhất 950 đơn. Hiển thị tên cả hai sản phẩm, số đơn chứa cặp đó (pair_count) và support dưới dạng phần trăm trên tổng số đơn hợp lệ, làm tròn 2 chữ số thập phân. Cặp xuất hiện nhiều nhất đứng đầu, và mỗi cặp chỉ xuất hiện một lần.",
+   "hint": "Self-join ADW_Sales_orders_detail theo SalesOrderID với a.ProductID < b.ProductID. Đếm DISTINCT a.SalesOrderID cho từng cặp và giữ các cặp có từ 950 đơn trở lên.",
+   "note": "8 dòng"
+  },
+  "L12-06": {
+   "title": "Luật theo cả hai chiều",
+   "story": "Biến 8 cặp thành các luật. Với mỗi cặp có ít nhất 950 đơn, trả về tên hai sản phẩm, pair count, support dưới dạng phần trăm (2 chữ số thập phân), confidence từ sản phẩm đầu sang sản phẩm sau và chiều ngược lại dưới dạng phần trăm (1 chữ số thập phân), lift (2 chữ số thập phân) và một nhãn rule_strength: Very Strong (lift từ 5 trở lên và confidence A sang B từ 50% trở lên), Strong (3 và 30%), Moderate (2 và 15%), Weak Positive (lift từ 1 trở lên), còn lại là No Association. Cặp xuất hiện nhiều nhất đứng đầu.",
+   "hint": "Dùng lại pair count ở câu trước và thêm số đơn hợp lệ của từng sản phẩm (số đếm đơn lẻ). Khi đó confidence = pair_count / n(A) và lift = pair_count x N / (n(A) x n(B)). Kiểm tra các nhãn từ điều kiện chặt nhất trở xuống bằng CASE WHEN.",
+   "note": "8 dòng"
+  },
+  "L12-07": {
+   "title": "Luật nào đáng để hành động?",
+   "story": "Một danh sách luật toàn các cặp hiếm thì vô dụng. Trong các cặp có ít nhất 10 đơn, hãy xem 8 luật có lift cao nhất và có ít nhất 500 đơn. Trả về tên hai sản phẩm, pair count, confidence từ sản phẩm đầu sang sản phẩm sau (1 chữ số thập phân), lift (2 chữ số thập phân) và nhãn rule_strength của câu trước, lift cao nhất đứng đầu. Sau đó trả lời: bạn sẽ dùng những luật nào cho chiến dịch cross-sell, và loại luật nào ra?",
+   "hint": "Tính support, confidence và lift cho các cặp có từ 10 đơn trở lên trong một CTE. Sau đó giữ các cặp có từ 500 đơn trở lên, đánh số bằng ROW_NUMBER() OVER (ORDER BY lift DESC) và giữ 8 cặp đầu.",
+   "note": "8 dòng"
+  },
+  "L12-08": {
+   "title": "Luật của kênh online hay đại lý",
+   "story": "Cửa hàng online và team bán cho đại lý có nên dùng chung các luật cross-sell không? Lặp lại phân tích trong từng kênh (OnlineOrderFlag = 1 là Online, còn lại là Reseller), chỉ dùng các đơn hợp lệ của kênh đó. Với mỗi kênh, trả về 3 cặp xuất hiện trong nhiều đơn nhất: channel, rank_in_channel, tên hai sản phẩm, pair count, support dưới dạng phần trăm trên các đơn hợp lệ của kênh đó (1 chữ số thập phân), confidence từ sản phẩm đầu sang sản phẩm sau (1 chữ số thập phân) và lift (2 chữ số thập phân). Sau đó viết một đề xuất cho mỗi kênh.",
+   "hint": "Thêm kênh vào mọi CTE: các đơn hợp lệ, các tổng, số đếm đơn lẻ và pair count. Xếp hạng các cặp bằng ROW_NUMBER() OVER (PARTITION BY channel ORDER BY pair_count DESC).",
+   "note": "6 dòng"
+  },
+  "L15-01": {
+   "title": "Hai kiểu win rate",
+   "story": "Sales Director nói win rate trông có vẻ thấp. Trước khi phân tích bất cứ gì, hãy chốt định nghĩa. Trả về số deal đã đóng (stage Won hoặc Lost), số deal thắng, win rate tính theo phần trăm deal đã đóng và win rate tính theo phần trăm toàn bộ deal trong pipeline, cả hai làm tròn 1 chữ số thập phân. Sau đó viết dòng metric trong câu hỏi phân tích của bạn: bạn sẽ dùng tỷ lệ nào, và vì sao?",
+   "hint": "Một deal đã đóng có stage là Won hoặc Lost. Các deal Engaging và Prospecting vẫn còn mở: chúng nằm trong mẫu số thứ hai nhưng không nằm trong mẫu số thứ nhất."
+  },
+  "L15-02": {
+   "title": "Cách chia nào bao phủ mọi deal?",
+   "story": "Bạn dự định dựng ba nhánh cho một issue tree trên pipeline: theo sales team (join với CRM_sales_teams qua agent), theo sector của account (join với CRM_Accounts qua account) và theo danh sách sản phẩm (join với CRM_products qua tên sản phẩm). Một nhánh chỉ hữu ích khi nó bao phủ mọi deal. Với mỗi cách chia, trả về tên cách chia, số deal nó bao phủ được và số deal nó bỏ sót, trên tổng số deal trong CRM_sales_pipeline. Những nhánh nào cùng nhau bao phủ đầy đủ (collectively exhaustive)?",
+   "hint": "Đếm số dòng sau mỗi lần inner join rồi lấy tổng số deal trong pipeline trừ đi."
+  },
+  "L15-03": {
+   "title": "Win rate theo quý, và các tháng đứng sau nó",
+   "story": "Director nói: \"Win rate quý đầu rất tốt và từ đó thấp hơn.\" Với mỗi quý của năm 2017 (theo ngày chốt), trả về số tháng khác nhau có deal đã đóng trong quý đó, số deal đã đóng và win rate (phần trăm deal đã đóng, 1 chữ số thập phân). Chỉ đếm deal đã đóng. Có thể so quý đầu với các quý còn lại không?",
+   "hint": "Dùng CASE WHEN trên MONTH(close_date) để tạo quý. T-SQL không cho dùng lại alias của SELECT trong GROUP BY, nên hãy lặp lại CASE hoặc dựng nó trong một CTE."
+  },
+  "L15-04": {
+   "title": "Bước nhảy tháng 3 có giống nhau ở mọi văn phòng không?",
+   "story": "Một issue tree cho câu hỏi \"vì sao win rate tháng 3 khác?\" có một nhánh segment (ai bán) và một nhánh thời gian (khi nào deal được chốt). Hãy kiểm tra nhánh segment. Với mỗi văn phòng khu vực (CRM_sales_teams, join qua agent), trả về win rate trong tháng 3 và win rate từ tháng 4 đến tháng 12, cả hai tính theo phần trăm deal đã đóng, làm tròn 1 chữ số thập phân. Khoảng chênh có đến từ một văn phòng không?",
+   "hint": "Hai conditional aggregation cho mỗi văn phòng: một cho tháng 3, một cho các tháng sau. Chia mỗi cái cho số deal đã đóng của cùng giai đoạn, không chia cho tất cả deal đã đóng."
+  },
+  "L15-05": {
+   "title": "Các kênh của AdventureWorks bằng con số",
+   "story": "Bạn được giao nghiên cứu AdventureWorks trước khi phân tích. Hãy điền data vào các khối kênh và doanh thu của một Business Model Canvas. Một đơn là online khi OnlineOrderFlag = 1, và do sales rep bán trong các trường hợp còn lại. Với mỗi kênh, trả về số đơn, phần trăm trên tổng số đơn, doanh thu (tổng SubTotal), phần trăm trên tổng doanh thu và giá trị đơn trung bình (doanh thu chia số đơn). Làm tròn phần trăm 1 chữ số thập phân và giá trị trung bình 0 chữ số thập phân.",
+   "hint": "Một window trên một aggregate cho ra phần trăm trên tổng: SUM(COUNT(*)) OVER () là tổng số đơn."
+  },
+  "L15-06": {
+   "title": "Đơn hàng theo lý do mua: chồng lấn và thiếu sót",
+   "story": "Một đồng nghiệp muốn chia nhỏ đơn hàng theo lý do mua (ADW_Sales_orders_reasons, mỗi dòng là một đơn và một lý do). Trước khi vẽ chart, hãy kiểm tra cách chia này. Trả về tổng số đơn, số dòng trong bảng lý do, số đơn có ít nhất một lý do, số đơn không có lý do nào và số đơn có từ hai lý do trở lên. \"Đơn hàng theo lý do mua\" có MECE không?",
+   "hint": "Bốn subquery nhỏ. Dùng COUNT(DISTINCT SalesOrderID) cho các đơn có lý do, và GROUP BY ... HAVING COUNT(*) > 1 cho các đơn có nhiều lý do."
+  },
+  "L16-01": {
+   "title": "Tách giá trị thắng thành các input metric",
+   "story": "Giá trị thắng là một output metric. Sales Director muốn biết các input metric đứng sau nó. Với mỗi sản phẩm, trong các deal đã đóng, trả về số deal đã đóng, win rate (phần trăm, 1 chữ số thập phân), giá trị trung bình của một deal thắng (0 chữ số thập phân) và tổng giá trị thắng. Sau đó so sánh GTXPro với GTX Basic: hai sản phẩm thắng gần như cùng tỷ lệ deal, nhưng GTXPro kiếm được nhiều hơn rất nhiều. Input metric nào giải thích điều đó?",
+   "hint": "Giá trị thắng = số deal đã đóng x win rate x giá trị thắng trung bình. Tính ba input và output trong một query có group."
+  },
+  "L16-02": {
+   "title": "Phần chi tiết có đi theo tổng không?",
+   "story": "Doanh thu (tổng LineTotal) tăng từ 2012 đến 2013. Mọi category có tăng cùng tốc độ không? Trả về một dòng cho mỗi category cộng thêm một dòng tên 'All categories', với doanh thu năm 2012, doanh thu năm 2013 (0 chữ số thập phân) và mức tăng theo phần trăm (1 chữ số thập phân).",
+   "hint": "Dựng một CTE với category, năm và line total cho 2012 và 2013, rồi tổng hợp nó hai lần: theo category, và cho dòng tổng. Join các dòng chi tiết với header đơn hàng để lấy ngày, và đi theo chuỗi bảng sản phẩm để lấy category."
+  },
+  "L16-03": {
+   "title": "Mỗi dimension trả về bao nhiêu nhóm?",
+   "story": "Trước khi group, hãy đoán xem sẽ có bao nhiêu dòng trả về. Rồi kiểm tra các dự đoán của bạn. Trả về số nhóm của từng dimension sau, mỗi dimension một dòng với các cột dimension và groups: product category, product sub-category, sản phẩm đã bán (trong chi tiết đơn hàng), sales territory, khách hàng (trong đơn hàng) và năm-tháng của đơn hàng. Cái nào là dimension, và cái nào là key?",
+   "hint": "COUNT(DISTINCT column) cho từng dimension, xếp chồng bằng UNION ALL. Với năm-tháng, đếm distinct YEAR(OrderDate) * 100 + MONTH(OrderDate)."
+  },
+  "L16-04": {
+   "title": "Kiểm tra 80/20 theo sub-category",
+   "story": "Hãy làm việc ở nơi có khối lượng lớn. Xếp hạng các product sub-category theo doanh thu (tổng LineTotal, 0 chữ số thập phân). Trả về sub-category, doanh thu, phần trăm trên tổng doanh thu và phần trăm lũy kế (cả hai 1 chữ số thập phân), từ lớn nhất đến nhỏ nhất. Cần bao nhiêu sub-category để tạo nên 80% doanh thu?",
+   "hint": "Tổng lũy kế cần một window: SUM(revenue) OVER (ORDER BY revenue DESC). Chia cho SUM(revenue) OVER () để ra tỷ trọng trên tổng."
+  },
+  "L16-05": {
+   "title": "Tăng trưởng nửa đầu năm đến từ đâu?",
+   "story": "So sánh nửa đầu năm 2014 (tháng 1 đến tháng 6) với nửa đầu năm 2013 theo sales territory, dùng tổng SubTotal. Trả về territory, doanh thu của từng giai đoạn, mức thay đổi, và tỷ trọng của từng territory trong tổng mức thay đổi (phần trăm, 1 chữ số thập phân). Territory nào đóng góp nhiều nhất, và tổng có đang đi cùng chiều với các phần lớn nhất của nó không?",
+   "hint": "Tổng hợp doanh thu theo territory cho từng nửa năm bằng các SUM có điều kiện, rồi dùng window SUM trên các mức thay đổi để ra tỷ trọng trong tổng mức thay đổi."
+  },
+  "L16-06": {
+   "title": "Giảm giá cho quần áo bán online",
+   "story": "Team Marketing đề xuất giảm giá 10% cho toàn bộ Clothing bán online. Lấy năm 2013 làm mốc. Trả về một dòng với doanh thu (tổng LineTotal), chi phí (tổng OrderQty x StandardCost từ ADW_Dim_Product), lợi nhuận gộp, và mức tăng số lượng theo phần trăm (1 chữ số thập phân) mà đợt giảm giá cần có để giữ nguyên lợi nhuận gộp. Làm tròn tiền 0 chữ số thập phân. Bạn có đề xuất làm không?",
+   "hint": "Sau khi giảm giá 10%, doanh thu mỗi đơn vị bằng 0.9 lần giá trị cũ còn chi phí mỗi đơn vị không đổi. Mức tăng hòa vốn = (lợi nhuận gộp cũ) / (lợi nhuận gộp mới trên mỗi đơn vị gốc) - 1."
+  },
+  "L15-07": {
+   "title": "BookMe: canvas và issue tree cho mục tiêu +30%",
+   "story": "BookMe là một nền tảng đặt chỗ du lịch, chủ yếu bán vé xe buýt. Sau buổi bàn chiến lược, ban lãnh đạo nói trọng tâm năm tới là tăng doanh thu ít nhất 30% so với năm nay. Thị trường của loại hình kinh doanh này tăng khoảng 15% mỗi năm. Bạn đang phỏng vấn vị trí data analyst của BookMe.\n\nPhần 1: vẽ một Business Model Canvas cho thấy BookMe kiếm tiền như thế nào.\nPhần 2: dựng một issue tree cho câu hỏi \"Làm sao tăng doanh thu BookMe ít nhất 30% vào năm tới?\"\n\nViết cả hai dưới dạng văn bản ở đây. Với cái cây, dùng các dòng thụt lề là được. Cái cây phải MECE và sâu ít nhất 3 cấp.",
+   "hint": "Hãy nghĩ mỗi lá của cây là một query bạn có thể chạy. Các câu SQL trong bài này cho thấy cách làm: một nhánh phải bao phủ mọi dòng (\"Cách chia nào bao phủ mọi deal?\"), một nhánh cho kết quả phẳng vẫn là một phát hiện (\"Bước nhảy tháng 3 có giống nhau ở mọi văn phòng không?\"), và các ô của canvas lấy con số từ data (\"Các kênh của AdventureWorks bằng con số\"). Với phép chia volume so với price ở đỉnh cái cây, hãy xem case về số khách hàng so với quy mô đơn hàng.",
+   "guide": [
+    "Làm phép tính trước. Thị trường cho +15%, mục tiêu là +30%, nên BookMe phải tăng nhanh gấp 1.30 / 1.15 = 1.13 lần thị trường, tức khoảng 13% hơn so với chỉ riêng thị trường. Viết một dòng nói bao nhiêu phần của mức +30% đến từ thị trường và BookMe phải giành thêm bao nhiêu từ đối thủ.",
+    "Canvas: điền vào những ô bạn nói được từ những gì mình biết về doanh nghiệp: phân khúc khách hàng, value proposition, kênh, nguồn doanh thu, đối tác chính, chi phí. Đặt dấu hỏi ở mọi ô bạn đang đoán và viết câu hỏi bạn sẽ đặt ra.",
+    "Bắt đầu cây bằng một công thức, vì phép chia bằng toán thì MECE ngay từ cấu trúc: Doanh thu = số vé bán x doanh thu mỗi vé. Rồi tách tiếp từng phần: số vé bán = số người mua x số vé mỗi người mua, doanh thu mỗi vé = giá vé x take rate.",
+    "Khi công thức hết đường đi, hãy chia theo một lát cắt kinh doanh, như người mua mới so với người mua quay lại, hoặc theo tuyến đường hay theo kênh. Mỗi cấp dùng một kiểu chia.",
+    "Kiểm tra từng cấp hai lần. Chồng lấn: một mục có thể nằm ở hai nhánh không? Bao phủ đầy đủ: mọi mục đều rơi vào một nhánh chứ? Đổi tên hoặc bỏ những nhánh không đạt.",
+    "Kết thúc mỗi nhánh bằng một lá có thể đo được và gọi tên metric. \"Cải thiện marketing\" không phải là một lá. \"Số người mua mới từ paid search mỗi tháng\" thì có.",
+    "Nêu các giả định của bạn và một nguồn cho mỗi giả định (báo cáo thường niên, bài báo, ghi chú thị trường). Không có một cái cây đúng duy nhất."
+   ],
+   "links": [
+    {
+     "why": "Kiểm tra một nhánh có bao phủ mọi dòng không"
+    },
+    {
+     "why": "Kiểm tra một nhánh của cây bằng data"
+    },
+    {
+     "why": "Đưa con số vào các ô của canvas"
+    },
+    {
+     "why": "Phép chia volume và price trên data thật"
+    },
+    {
+     "why": "Định nghĩa cách chia trước khi dựng cây"
+    }
+   ]
+  },
+  "L15-08": {
+   "title": "ShopSmart: một cái cây khác cho mục tiêu +45%",
+   "story": "ShopSmart là một nền tảng eCommerce bán đồ gia dụng và nội thất. Sau một buổi bàn chiến lược, ban lãnh đạo đặt mục tiêu tăng doanh thu ít nhất 45% so với năm ngoái. Thị trường eCommerce được dự báo tăng 20% mỗi năm.\n\nPhần 1: vẽ một Business Model Canvas cho ShopSmart.\nPhần 2: dựng một issue tree cho câu hỏi \"Làm sao tăng doanh thu ShopSmart ít nhất 45% vào năm tới?\"\nPhần 3: đặt cái cây của bạn cạnh cái cây BookMe (hoặc tưởng tượng một cái) và viết hai dòng về điều gì thay đổi và vì sao.",
+   "hint": "Bắt đầu bằng định nghĩa, như trong \"Hai kiểu win rate\": quyết định cái gì được tính là một khách hàng và một đơn mua lại trước khi chia. Sau đó dùng cùng thói quen với data như các case AdventureWorks: tách khách mới khỏi khách quay lại, và kiểm tra xem giá trị đơn trung bình có thay đổi không trước khi đổ lỗi cho hành vi khách hàng.",
+   "guide": [
+    "Làm phép tính trước: 1.45 / 1.20 = 1.21, nên ShopSmart phải vượt thị trường khoảng 21%. So với 13% của BookMe. Mục tiêu nào khó hơn, và điều đó nói gì về việc tăng trưởng phải đến từ đâu?",
+    "Canvas: hãy nghĩ nội thất khác biệt ở điểm nào. Giá cao, mỗi khách mua ít lần, giao hàng cồng kềnh, đổi trả, và quá trình tìm hiểu trước khi mua kéo dài. Hãy để những điều đó hiện ra trong các ô (kênh, chi phí, hoạt động chính).",
+    "Cố ý dùng cách chia đỉnh khác với cây BookMe. Thử bắt đầu từ khách hàng: khách mới so với khách quay lại, rồi đơn hàng và giá trị đơn trong từng nhóm. Hoặc dùng funnel: lượt truy cập x tỷ lệ chuyển đổi x giá trị đơn.",
+    "Đi sâu ít nhất ba cấp. Mỗi cấp dùng một kiểu chia (công thức, rồi segment, rồi driver).",
+    "Chạy hai phép thử MECE trên từng cấp và sửa các nhánh không đạt. Kiểm tra các nhánh cộng lại ra toàn bộ mục tiêu, không phải chỉ một phần của nó.",
+    "Kết thúc mỗi nhánh bằng một metric bạn có thể tính. Với nội thất, hãy hỏi liệu mua lại có phải là một nhánh thực tế hay là nhánh nên bỏ, và nói vì sao.",
+    "Với Phần 3, viết những phần nào giống nhau ở hai cái cây (công thức doanh thu) và phần nào đặc thù cho từng doanh nghiệp."
+   ],
+   "links": [
+    {
+     "why": "Chốt định nghĩa metric trước khi dựng cây"
+    },
+    {
+     "why": "Chia kênh với con số thật"
+    },
+    {
+     "why": "Nhánh khách mới so với khách quay lại trên data"
+    },
+    {
+     "why": "Khi nhánh giá trị đơn che giấu một thay đổi về mix"
+    },
+    {
+     "why": "Kiểm tra một cách chia có bao phủ mọi giao dịch không"
+    }
+   ]
+  },
+  "L16-07": {
+   "title": "Tách một câu hỏi thành năm phần",
+   "story": "Ba câu hỏi sản phẩm được viết thành một câu dài. Với từng câu, hãy điền năm phần của một câu hỏi phân tích: Problem và context, What/How/Why, Metrics, Action, Goal. Ở phần Metrics, liệt kê metric chính và các sub-metric của nó. Viết ba câu trả lời dưới dạng ba khối ngắn hoặc một bảng.\n\na. \"Our platform is experiencing a decline in new user retention rates after 1-2 weeks on the platform. How can we determine if implementing a personalized onboarding process improves new user retention rates so that we can achieve a 25% increase in active users by the end of Q3 2025?\"\n\nb. \"We are facing increased competition in our market segment. How can we analyze user engagement metrics to determine if our new loyalty program increases customer loyalty, aiming for a 30% growth in repeat purchases by the end of 2024?\"\n\nc. \"Customer feedback indicates dissatisfaction with our delivery times. How can we evaluate the impact of optimizing our delivery logistics on customer satisfaction scores to achieve a 20% increase in positive feedback by the end of 2025?\"",
+   "hint": "Dòng metric là chỗ hầu hết các câu trả lời đi sai, nên hãy dựng nó trước. \"Hai kiểu win rate\" cho thấy một từ có thể chỉ hai con số khác nhau. \"Tách giá trị thắng thành các input metric\" cho thấy một metric ở tầng trên cùng được tách thành các sub-metric bạn tính được. Với metric về thời lượng ở câu (c), nhớ rằng số ngày trung bình có thể đánh lừa; các câu về retention (a) và (b) có ví dụ data trong các case liệt kê bên dưới.",
+   "guide": [
+    "Tìm Goal trước. Đó là con số và ngày nằm ở cuối mỗi câu hỏi. Chép nguyên như đã viết.",
+    "Problem và context là điều đang xảy ra hiện tại, trước dấu hỏi. Thêm baseline bạn cần để đo nó (ví dụ mức giảm được đo trong giai đoạn nào).",
+    "What/How/Why: bạn muốn biết điều gì, sẽ kiểm tra bằng cách nào, và vì sao nó quan trọng. Viết dưới dạng một phép so sánh: nhóm A so với nhóm B, trong một giai đoạn.",
+    "Action là thay đổi mà doanh nghiệp thực hiện nếu câu trả lời là có. Nếu câu hỏi không nêu hành động nào, hãy viết hành động bạn sẽ đề xuất và nói rằng câu hỏi đã bỏ sót nó.",
+    "Metrics: một metric chính kèm định nghĩa bằng lời (đếm cái gì, trên ai, trong giai đoạn nào). Sau đó là hai đến bốn sub-metric. Sub-metric là một input giải thích metric chính, một lát cắt segment, hoặc một guardrail không được tệ đi.",
+    "Kiểm tra metric chính bằng một câu hỏi: hai analyst chạy nó có ra cùng một con số không? Nếu không, tức là định nghĩa còn thiếu một phần."
+   ],
+   "links": [
+    {
+     "why": "Viết định nghĩa vào dòng metric"
+    },
+    {
+     "why": "Tách một metric chính thành các sub-metric"
+    },
+    {
+     "why": "Một metric về thời lượng (cho câu c)"
+    },
+    {
+     "why": "Một metric về retention (cho câu a và b)"
+    }
+   ]
+  },
+  "L16-08": {
+   "title": "North Star Metric cho bảy công ty",
+   "story": "Hãy định nghĩa một North Star Metric (NSM) cho từng công ty sau, dựa trên nghiên cứu của riêng bạn: Canva, Pinterest, Twitter, Shopify, TikTok, Coursera, Shopee.\n\nVới mỗi công ty hãy viết: NSM thành một câu có đơn vị và khoảng thời gian, một dòng giải thích vì sao nó cho thấy giá trị đối với khách hàng, và một input metric mà một team có thể tác động. Sau đó chọn hai công ty và thêm One Metric That Matters (OMTM) mà bạn sẽ giao cho một team trong năm đầu tiên.",
+   "hint": "Hãy luyện điều này trên data bạn query được. \"Tách giá trị thắng thành các input metric\" biến một output thành các input bằng một phép nhân phải cộng lại khớp. \"Phần chi tiết có đi theo tổng không?\" kiểm tra các phần có giải thích được toàn bộ hay không. Các case về tăng trưởng doanh thu làm cùng phép tách đó trên AdventureWorks và một web store, và hỏi input nào tạo ra tăng trưởng.",
+   "guide": [
+    "Bắt đầu từ giá trị mà khách hàng nhận được. Hỏi hành động nào duy nhất cho thấy khách hàng đã nhận được điều họ tìm đến.",
+    "Viết NSM theo dạng số đếm + đối tượng + khoảng thời gian. Ví dụ trong khoá học cho một dịch vụ thanh toán hoá đơn là \"số người dùng trả tiền hoạt động mỗi tháng\". Doanh thu là NSM yếu nhất: nó đo cái khách hàng trả, trong khi NSM nên đo cái họ nhận được.",
+    "Thử từng ứng viên bằng bốn câu hỏi. Nó có cho thấy giá trị đã được trao không? Doanh thu có theo sau nó vài tháng không? Một team có tác động được vào nó không? Bạn có tính được nó từ data công ty đang có không?",
+    "Các nền tảng hai phía (Shopee, Shopify) nên đếm một lần trao đổi hoàn tất, không phải một lượt truy cập. Các sản phẩm nội dung (Pinterest, TikTok, Twitter, Canva, Coursera) nên đếm một hành động có tương tác hoặc đã hoàn tất, vì chỉ một lượt mở thì nói được rất ít.",
+    "Tách NSM bằng toán để tìm input metric, ví dụ NSM = số người dùng hoạt động x số hành động mỗi người dùng hoạt động. Chọn một input cho mỗi công ty.",
+    "OMTM khác với NSM. Đó là con số duy nhất một team tập trung trong một giai đoạn, được chọn theo giai đoạn của sản phẩm (ví dụ người dùng mới lúc đầu, churn về sau).",
+    "Có nhiều đáp án hợp lệ. Điểm dành cho bốn phép thử và lập luận của bạn."
+   ],
+   "links": [
+    {
+     "why": "Tách một output thành các input metric"
+    },
+    {
+     "why": "Kiểm tra các input của bạn có giải thích được toàn bộ không"
+    },
+    {
+     "why": "Input nào đã làm output thay đổi"
+    },
+    {
+     "why": "Cùng ý tưởng đó trên data của một web store"
+    },
+    {
+     "why": "Doanh thu tách thành ba input, kèm một chỉ số index"
+    }
+   ]
+  },
+  "L16-09": {
+   "title": "MeStyle: từ mục tiêu đến issue tree và metrics",
+   "story": "MeStyle là một cửa hàng thời trang online quy mô vừa, thành lập năm 2021. Đến năm 2024 doanh số giảm, nhiều giỏ hàng bị bỏ dở và team không giải thích được hành vi khách hàng. Ban quản lý muốn dùng e-commerce analytics để (1) giảm tỷ lệ bỏ giỏ hàng và (2) hiểu hành vi cùng sở thích của khách hàng để marketing hiệu quả hơn. Bạn là data analyst mới.\n\n1. Vẽ một Business Model Canvas cho MeStyle: công ty kiếm tiền như thế nào?\n2. Chọn ít nhất một trong hai mục tiêu và viết câu hỏi phân tích theo năm phần (Problem và context, What/How/Why, Metrics, Action, Goal). Giả định một mục tiêu bằng số, ví dụ +20% retention khách hàng so với năm trước.\n3. Dựng một issue tree cho câu hỏi của bạn: MECE, ít nhất 3 cấp.\n4. Liệt kê các metric và dimension bạn sẽ phân tích từ cái cây và nói vì sao bạn chọn từng cái.",
+   "hint": "Mỗi bước của bài này đều có một câu SQL tương ứng trong bài học: kiểm tra phần chi tiết có đi theo tổng không, đếm mỗi dimension trả về bao nhiêu nhóm, chạy kiểm tra 80/20, tìm xem một thay đổi đến từ đâu, và ước lượng một tác động bằng what-if. Case về funnel của web store là case khớp nhất với cái cây của bạn.",
+   "guide": [
+    "Canvas trước, và giữ nó đặc thù cho thời trang online: doanh thu từ bán sản phẩm, giá vốn, vận chuyển, đổi trả và quảng cáo, cùng các kênh khách hàng đi vào. Đánh dấu những ô bạn đang đoán.",
+    "Chọn một mục tiêu. Viết câu hỏi năm phần với một mục tiêu bằng số và nói rõ mục tiêu đó là giả định của bạn.",
+    "Dùng funnel làm xương sống của cái cây nếu bạn chọn bỏ giỏ hàng: tỷ lệ bỏ giỏ = 1 - số đơn / số giỏ được tạo, và một phiên rời đi đúng ở một bước cuối (giỏ hàng, checkout, thanh toán, xác nhận). Như vậy các bước sẽ MECE.",
+    "Dưới mỗi bước, chia theo nhóm nguyên nhân: bất ngờ về giá hoặc phí vận chuyển, ma sát (biểu mẫu, phương thức thanh toán), niềm tin, lỗi kỹ thuật, không có ý định mua. Mỗi cấp giữ một kiểu chia.",
+    "Với mỗi lá, chọn một metric và các dimension bạn sẽ cắt theo (thiết bị, nguồn traffic, khách mới so với khách quay lại, category, ngày). Với mỗi dimension, viết quyết định mà nó giúp đưa ra.",
+    "Đo quy mô các dimension trước khi cắt. Một dimension có 2 giá trị thì nhìn là hiểu, một dimension có 2,000 giá trị cần Top N. Bắt đầu từ nơi có khối lượng lớn (kiểm tra 80/20) và báo cáo kết quả phẳng như một phát hiện.",
+    "Kết thúc bằng một what-if: nếu tỷ lệ bỏ giỏ giảm từ X% xuống Y%, sẽ có thêm bao nhiêu đơn và bao nhiêu doanh thu? Ghi rõ X và Y là giả định."
+   ],
+   "links": [
+    {
+     "why": "Kiểm tra mỗi cấp của cây cộng lại ra cấp phía trên"
+    },
+    {
+     "why": "Đo quy mô mọi dimension trước khi cắt"
+    },
+    {
+     "why": "Tìm nơi có khối lượng lớn"
+    },
+    {
+     "why": "Tìm nhánh nào đã tạo ra thay đổi"
+    },
+    {
+     "why": "Ước lượng quy mô lợi ích bằng what-if"
+    },
+    {
+     "why": "Một funnel trên data của web store"
+    },
+    {
+     "why": "Kiểm tra 80/20 trên data thật"
+    }
+   ]
+  },
+  "L17-01": {
+   "title": "Dẫn đầu theo tổng, dẫn đầu theo tỷ lệ",
+   "story": "Một slide sẽ xếp hạng sản phẩm theo giá trị thắng. Hãy kiểm tra xem thứ hạng có đổi khi dùng win rate không. Với mỗi sản phẩm, trong các deal đã đóng, trả về tổng giá trị thắng, win rate (phần trăm, 1 chữ số thập phân), hạng theo giá trị thắng và hạng theo win rate (hạng 1 là cao nhất). Bạn sẽ đặt sản phẩm nào lên đầu một slide về hiệu quả bán hàng?",
+   "hint": "Tính giá trị thắng và win rate trong một CTE, rồi thêm hai cột RANK() OVER với ORDER BY khác nhau."
+  },
+  "L17-02": {
+   "title": "Top 3 category và Other",
+   "story": "Một chart về số lượng bán theo product category có tám cột. Hãy làm nó dễ đọc hơn cho một slide. Trả về ba category bán được nhiều đơn vị nhất, cộng thêm một dòng tên 'Other' cho tất cả phần còn lại. Hiển thị số đơn vị và phần trăm trên tổng số đơn vị (1 chữ số thập phân). Đặt ba category lên trước, từ lớn đến nhỏ, và 'Other' ở cuối.",
+   "hint": "Tính số đơn vị theo category trước, xếp hạng, rồi gắn nhãn 'Other' cho mọi thứ dưới hạng 3 và cộng lại lần nữa."
+  },
+  "L17-03": {
+   "title": "Giá trị đơn hàng: mean hay median?",
+   "story": "Báo cáo nói \"giá trị đơn hàng trung bình năm 2013 là X\". Với mỗi kênh (online, sales rep), trả về số đơn đặt trong năm 2013, SubTotal trung bình (mean) và SubTotal median (0 chữ số thập phân). Nếu hai số lệch nhau, bạn sẽ đưa số nào lên slide?",
+   "hint": "Median là dòng ở giữa khi các đơn được sắp xếp. Đánh số dòng cho mỗi kênh bằng ROW_NUMBER() OVER (PARTITION BY ... ORDER BY SubTotal), đếm số dòng mỗi kênh, rồi lấy trung bình của một hoặc hai dòng ở giữa (rn * 2 IN (n, n + 1, n + 2))."
+  },
+  "L17-04": {
+   "title": "Chỉ nhìn người thắng: ai bị thiếu?",
+   "story": "Một slide nói \"giá trị deal trung bình là X\" cho từng sản phẩm. Hãy kiểm tra con số trung bình đó bao gồm những gì. Với mỗi sản phẩm, trả về giá trị trung bình của các deal thắng (0 chữ số thập phân) và giá trị trung bình trên tất cả deal đã đóng, tính deal thua theo giá trị đã lưu (0 chữ số thập phân). Con số đầu tiên bỏ sót điều gì?",
+   "hint": "AVG bỏ qua NULL, nên AVG(CASE WHEN deal_stage = 'Won' THEN close_value END) chỉ lấy trung bình các deal thắng. AVG(close_value) thông thường trên các deal đã đóng thì bao gồm cả deal thua."
+  },
+  "L17-05": {
+   "title": "Hai headline cho năm 2014",
+   "story": "Data kết thúc vào 2014-06-30. Với mỗi product category, trả về hai con số: mức thay đổi doanh thu (tổng LineTotal) theo phần trăm (1 chữ số thập phân) từ cả năm 2013 sang cả năm 2014, và mức thay đổi từ tháng 1 đến tháng 6 năm 2013 sang tháng 1 đến tháng 6 năm 2014. Sau đó viết headline bạn sẽ đặt trên slide, và ghi chú bạn sẽ thêm bên dưới.",
+   "hint": "Một CTE gồm category, năm, tháng và line total. Sau đó dùng SUM có điều kiện: cả năm cho mức thay đổi đầu tiên, tháng 1 đến tháng 6 cho mức thay đổi thứ hai."
+  },
+  "L17-06": {
+   "title": "Quy luật có đúng ở mọi sản phẩm không?",
+   "story": "Trước khi trình bày \"deal được chốt với win rate cao hơn ở các tháng cuối quý\", hãy kiểm tra xu hướng bên trong từng segment. Với mỗi sản phẩm, trong các deal đã đóng, trả về win rate ở các tháng cuối quý (tháng 3, 6, 9, 12), win rate ở các tháng còn lại (phần trăm, 1 chữ số thập phân) và một cột tên quarter_end_higher với giá trị 'Yes' hoặc 'No'. Quy luật tổng thể có phải là Simpson's paradox không?",
+   "hint": "Hai tỷ lệ có điều kiện cho mỗi sản phẩm trong một CTE, rồi một CASE WHEN so sánh chúng."
+  },
+  "L17-07": {
+   "title": "Gọi tên bias: năm tình huống cần phán đoán",
+   "story": "Gọi tên bias trong từng tình huống, dùng bảy bias trong bài (confirmation, framing, availability, sampling, survivorship, outliers, Simpson's paradox). Với mỗi tình huống, viết bằng chứng trong một dòng và cách sửa.\n\na. Một công ty rà soát chiến dịch marketing. Team chỉ nhấn mạnh mức tăng doanh số ở nhóm nhân khẩu học khớp với điều họ kỳ vọng.\nb. Một hiring manager ưu ái ứng viên đến từ trường danh tiếng và bỏ qua những ứng viên có trình độ tương đương từ các trường ít tên tuổi hơn.\nc. Một công ty báo cáo 85% khách hàng hài lòng và gọi đó là kết quả cực kỳ tích cực, mà không nói rằng rất ít khách hàng trả lời khảo sát.\nd. Một nhóm nghiên cứu nhấn mạnh những phát hiện ủng hộ giả thuyết của mình về sở thích người tiêu dùng và gạt đi data cho thấy một xu hướng khác.\ne. Một đối thủ ra mắt sản phẩm. Công ty chỉ đọc các review tiêu cực của sản phẩm đó, cho rằng nó sẽ thất bại, và bỏ qua doanh số đầu kỳ rất tốt.",
+   "hint": "Hai câu SQL trong bài này cho thấy cùng những bias đó trong data. \"Hai headline cho năm 2014\" là framing: một dataset, hai headline đều trung thực. \"Chỉ nhìn người thắng: ai bị thiếu?\" cho thấy một góc nhìn một chiều bỏ sót điều gì. Hãy nghĩ xem bạn sẽ cho thấy từng tình huống bằng con số như thế nào, rồi hãy gọi tên nó.",
+   "guide": [
+    "Đọc từng tình huống và hỏi câu cảnh báo của ba cognitive bias. Confirmation: có ai tìm bằng chứng chống lại ý tưởng không? Framing: quyết định có đổi không nếu cùng một sự thật được diễn đạt theo cách ngược lại? Availability: điều này phổ biến thật, hay chỉ dễ nhớ?",
+    "Viết tên bias, rồi một dòng bằng chứng lấy từ văn bản: những từ nào trong tình huống cho thấy nó.",
+    "Nếu hai bias cùng khớp, gọi tên bias chính và nhắc bias thứ hai. Nói mỗi bias thuộc nhóm nào (cognitive hay statistical).",
+    "Cách sửa phải là một hành động: kiểm tra điều ngược lại, cho cả số tuyệt đối lẫn số tương đối, dùng base rate và cả giai đoạn đầy đủ.",
+    "Kiểm tra cách sửa của bạn với sáu câu hỏi trước khi chia sẻ (alternatives, comparisons, base rate, sample, missing, shape)."
+   ],
+   "links": [
+    {
+     "why": "Framing: một dataset, hai headline"
+    },
+    {
+     "why": "Góc nhìn một chiều bỏ sót điều gì"
+    },
+    {
+     "why": "Framing: một headline so sánh hai điểm nào với nhau?"
+    }
+   ]
+  },
+  "L17-08": {
+   "title": "Gọi tên bias: năm con số gây hiểu lầm",
+   "story": "Gọi tên bias trong từng tình huống, dùng các bias thống kê (sampling, survivorship, outliers, Simpson's paradox). Với mỗi tình huống, viết bằng chứng trong một dòng và nói bạn sẽ chạy query hay phép so sánh nào để cho thấy nó.\n\na. Một công ty chạy khảo sát mức độ hài lòng, nhưng chỉ những người dùng đã mở email mới trả lời được.\nb. Một công ty đầu tư đánh giá danh mục của mình chỉ bằng cách nhìn các quỹ còn đang hoạt động.\nc. Một team sales thấy vài sales rep vượt xa mọi người và kết luận rằng việc đào tạo bán hàng có hiệu quả.\nd. Một công ty so sánh hai khu vực. Khu vực A có tổng doanh số cao hơn, nhưng tính trên đầu người thì khu vực B tốt hơn.\ne. Một doanh nghiệp nghiên cứu nhân khẩu học của những khách hàng trung thành nhất và kết luận rằng marketing chỉ nên nhắm vào nhóm đó.",
+   "hint": "Bốn câu SQL trong bài này chạy các phép so sánh đó trên bảng thật: trung bình chỉ của deal thắng so với trung bình mọi deal đã đóng, mean so với median, tổng so với tỷ lệ, và một quy luật được kiểm tra bên trong từng sản phẩm. Tìm câu khớp với từng tình huống và dùng lại cách so sánh của nó.",
+   "guide": [
+    "Dùng câu cảnh báo của từng bias thống kê. Sampling: ai nằm trong mẫu của mình và ai không? Survivorship: ai đang bị thiếu trong data này? Outliers: median có kể cùng một câu chuyện với mean không? Simpson's paradox: xu hướng có đúng trong từng segment không?",
+    "Gọi tên nhóm đang bị thiếu hoặc con số đang bị kéo giãn, và dùng đó làm dòng bằng chứng.",
+    "Với mỗi tình huống, viết phép so sánh sẽ cho thấy vấn đề: một nhóm thứ hai, một tỷ lệ thay vì một tổng, một median đặt cạnh mean, một con số đếm những người đã rời đi.",
+    "Nếu một tình huống khớp hai bias, gọi tên bias chính và ghi chú bias còn lại.",
+    "Nói bạn sẽ báo cáo điều gì thay thế, trong một câu mà manager dùng được."
+   ],
+   "links": [
+    {
+     "why": "Survivorship: ai bị thiếu?"
+    },
+    {
+     "why": "Outliers: mean hay median?"
+    },
+    {
+     "why": "Tổng hay tỷ lệ: ai dẫn đầu?"
+    },
+    {
+     "why": "Simpson's paradox: quy luật có đúng ở mọi segment không?"
+    }
+   ]
+  },
+  "L17-09": {
+   "title": "Biến một phân tích thành deck 5 đến 7 slide",
+   "story": "Lấy một phân tích mà bạn đã có kết quả. Trong lớp, dùng phân tích mà mentor chia sẻ. Khi luyện tập trong Lab, dùng một case trong tab Case Studies, hoặc câu trả lời của bạn cho \"Hai headline cho năm 2014\".\n\nChọn một hoặc hai chủ đề trong đó (xu hướng chung, tăng trưởng, sản phẩm, địa điểm, khách hàng) và viết một deck 5 đến 7 slide cho một manager chỉ có ba phút. Với mỗi slide, viết: số slide, tiêu đề là một câu takeaway đầy đủ có con số và dấu chấm, chart bạn sẽ dùng, và một dòng thông điệp. Kết thúc bằng phần kiểm tra bias: bias nào trong bảy bias có thể làm yếu luận điểm chính của bạn, và bạn đã làm gì với nó.",
+   "hint": "Các câu trả lời SQL của bạn đã chứa sẵn các slide. \"Hai headline cho năm 2014\" là lựa chọn framing cho slide 2. \"Top 3 category và Other\" là lựa chọn chart cho slide 4 và 5. \"Quy luật có đúng ở mọi sản phẩm không?\" là phần kiểm tra bias cho slide 7. Chọn một phát hiện và dựng deck quanh nó.",
+   "guide": [
+    "Chọn một hoặc hai chủ đề. Năm đến bảy slide không chở nổi nhiều hơn thế.",
+    "Viết câu trả lời trước, trong một câu. Rồi hai hoặc ba lập luận ủng hộ nó. Rồi data dưới mỗi lập luận. Đây là Pyramid Principle, và nó chính là slide 2.",
+    "Một deck chạy tốt: 1 tiêu đề với câu hỏi và câu trả lời, 2 tóm tắt (câu trả lời, các ý chính, bạn đề nghị điều gì), 3 bối cảnh và định nghĩa metric (situation, complication, question, answer), 4 và 5 mỗi slide một insight, 6 đề xuất kèm quy mô lợi ích và các bước tiếp theo, 7 tùy chọn: rủi ro và phần kiểm tra bias.",
+    "Viết mọi tiêu đề thành một takeaway: điều gì đã xảy ra, con số và giai đoạn. \"Online chiếm 88% số đơn nhưng 27% doanh thu\" là một tiêu đề. \"Đơn hàng theo kênh\" chỉ là một nhãn.",
+    "Mỗi slide một chart và mỗi chart một thông điệp. Dùng tỷ lệ khi các nhóm khác nhau về quy mô, và dùng Top 3 cộng Other khi một chart có nhiều category.",
+    "Kết thúc với sáu câu hỏi: alternatives, comparisons, base rate, sample, missing, shape. Viết một dòng cho mỗi câu áp dụng được.",
+    "Đọc to cả deck. Nếu mất hơn ba phút, hãy cắt bớt một slide."
+   ],
+   "links": [
+    {
+     "why": "Hai headline: một lựa chọn framing"
+    },
+    {
+     "why": "Một chart dễ đọc cho nhiều category"
+    },
+    {
+     "why": "Slide kiểm tra bias"
+    },
+    {
+     "why": "Một phân tích đầy đủ để trình bày"
+    },
+    {
+     "why": "Một headline cần bảo vệ, kèm kiểm tra bias"
+    }
+   ]
+  },
+  "L20-01": {
+   "title": "Sản phẩm còn đang bán, theo product line",
+   "story": "Câu khởi động. Team sản phẩm hỏi: mỗi product line có bao nhiêu thành phẩm còn đang bán? Một sản phẩm đang bán khi nó là thành phẩm (finished good) và không có ngày ngừng bán. Trả về product line và số sản phẩm, line lớn nhất đứng đầu.",
+   "hint": "Trong database của lớp, giá trị bị thiếu thường được lưu dưới dạng chuỗi 'NULL', nên hãy so sánh với = 'NULL' thay vì IS NULL. Một product line bị thiếu cũng tạo thành một nhóm riêng."
+  },
+  "L20-02": {
+   "title": "Giá trị đơn hàng trung bình ở hai territory",
+   "story": "Finance muốn một so sánh nhanh giữa Canada và Australia. Với mỗi territory trong hai territory này, trả về số đơn hàng và giá trị đơn hàng trung bình (TotalDue).",
+   "hint": "Tên territory nằm ở ADW_Dim_Territory. Join nó với bảng đơn hàng qua TerritoryID, lọc bằng IN, rồi group theo territory."
+  },
+  "L20-03": {
+   "title": "Hai sản phẩm bán chạy nhất",
+   "story": "Team merchandising muốn biết hai sản phẩm có số đơn vị bán ra nhiều nhất trong toàn bộ giai đoạn. Trả về ID sản phẩm, tên sản phẩm và số đơn vị đã bán.",
+   "hint": "Số đơn vị là OrderQty trên ADW_Sales_orders_detail. Group theo sản phẩm, sắp xếp tổng từ cao đến thấp và giữ lại hai dòng."
+  },
+  "L20-04": {
+   "title": "Vì sao khách online mua hàng",
+   "story": "Marketing hỏi vì sao khách online mua hàng. Trong các đơn online, ba lý do mua nào được ghi nhận nhiều nhất? Trả về lý do và số đơn hàng.",
+   "hint": "Các lý do nằm ở ADW_Sales_orders_reasons, mỗi dòng là một đơn và một lý do. Kênh là OnlineOrderFlag trên ADW_Sales_orders, nên bạn cần hai lần join."
+  },
+  "L20-05": {
+   "title": "Các tháng cao hơn hẳn mức trung bình cả năm",
+   "story": "Những tháng nào của năm 2013 có số đơn nhiều hơn mức trung bình tháng của năm 2013 trên 20%? Trả về số tháng và số đơn hàng của tháng đó.",
+   "hint": "Đếm số đơn theo tháng trước, trong một CTE. Sau đó so từng tháng với 1.2 lần trung bình của mười hai số đếm theo tháng đó."
+  },
+  "L20-06": {
+   "title": "Ba đơn hàng lớn nhất ở mỗi territory",
+   "story": "Với mỗi sales territory, liệt kê ba đơn hàng lớn nhất của năm 2013 theo SubTotal. Trả về territory ID, order ID, SubTotal và thứ hạng trong territory.",
+   "hint": "Dùng window function: ROW_NUMBER() OVER (PARTITION BY TerritoryID ORDER BY SubTotal DESC) bên trong một CTE. Lọc theo thứ hạng ở query bên ngoài."
+  },
+  "L20-07": {
+   "title": "Thành phẩm chưa từng bán được",
+   "story": "Team planning muốn danh sách các thành phẩm chưa từng xuất hiện trong một dòng đơn hàng nào. Trả về ID sản phẩm và tên sản phẩm. Sau đó viết cùng query này theo một cách thứ hai.",
+   "hint": "Đây là anti-join. Có ba dạng dùng được: NOT EXISTS, LEFT JOIN với IS NULL ở phía bên phải, và NOT IN. Viết một cách, kiểm tra số lượng, rồi viết cách khác."
+  },
+  "L20-08": {
+   "title": "Mỗi tháng một dòng, kể cả tháng trống",
+   "story": "Sales operations cần một bảng có đúng 12 dòng, mỗi tháng của năm 2017 một dòng. Với mỗi tháng, hiển thị số deal thắng và tổng giá trị chốt của chúng, theo ngày chốt. Tháng nào không có deal thắng phải hiển thị 0 và không được biến mất.",
+   "hint": "Tự dựng mười hai tháng bằng VALUES, rồi LEFT JOIN các deal vào đó. Đặt điều kiện Won và năm trong mệnh đề ON, không đặt trong WHERE. Bọc phép tổng bằng COALESCE."
+  },
+  "L21-01": {
+   "title": "Tỷ lệ giao trễ theo tuần, kèm mức thay đổi so với tuần trước",
+   "story": "Trong data Global Electronics, đơn online có Order_Date và Delivery_Date (đơn mua tại cửa hàng không có ngày giao). Cam kết với khách hàng là giao trong vòng 7 ngày. Một đơn bị trễ khi nó được giao sau ngày đặt hơn 7 ngày.\n\nCho năm 2019, báo cáo theo tuần của ngày giao: số đơn đã giao, tỷ lệ trễ theo % (một chữ số thập phân), và mức thay đổi so với tuần trước tính bằng điểm phần trăm. So sánh kết quả của bạn với kết quả mẫu.",
+   "hint": "Một đơn có nhiều dòng, nên hãy gộp bảng sales về một dòng cho mỗi Order_Number trước. Sau đó group theo DATEPART(week, ngày giao) và so từng tuần với tuần trước bằng LAG."
+  },
+  "L21-02": {
+   "title": "Việc giao hàng có tốt hơn sau khi đổi carrier không?",
+   "story": "Bộ phận Operations chuyển sang carrier mới từ 2018-01-01 và muốn biết việc giao hàng có tốt lên không. Thời gian chờ là số ngày trung bình từ lúc đặt đến lúc giao. Late ratio là tỷ lệ đơn đã giao đến sau ngày đặt hơn 7 ngày.\n\nChọn một baseline công bằng, so sánh trước và sau, và nói bạn còn muốn kiểm tra điều gì trước khi ghi công cho carrier. Kết quả mẫu so sánh 12 tháng đơn hàng trước khi chuyển với 12 tháng sau đó.",
+   "hint": "Gộp về một dòng cho mỗi đơn trước. Dùng ngày đặt để xếp từng đơn vào giai đoạn trước hoặc sau, và giữ hai giai đoạn dài bằng nhau."
+  },
+  "L21-03": {
+   "title": "Giao trong 5 ngày, theo quốc gia của khách hàng",
+   "story": "Với các đơn online đặt trong năm 2019, những quốc gia nào của khách hàng nhận đơn trong vòng 5 ngày thường xuyên nhất? Trả về từng quốc gia, số đơn đã giao và tỷ lệ giao trong 5 ngày (một chữ số thập phân). Giữ các quốc gia có ít nhất 100 đơn và đặt tỷ lệ cao nhất lên đầu.",
+   "hint": "Gộp về một dòng cho mỗi đơn trước. Sau đó join với GBE_Customers để lấy quốc gia, đếm các đơn giao trong 5 ngày bằng CASE WHEN và lọc quốc gia bằng HAVING."
+  },
+  "L21-04": {
+   "title": "Category tốt nhất và kém nhất ở mỗi quốc gia",
+   "story": "Với mỗi quốc gia có cửa hàng thực, tìm product category bán chạy nhất và bán kém nhất theo số đơn vị bán ra. Bỏ qua mọi category có dưới 500 đơn vị ở quốc gia đó. Cửa hàng online không phải là một quốc gia nên loại nó ra. Trả về quốc gia, category, số đơn vị và một nhãn, Best hoặc Worst, để mỗi quốc gia có hai dòng.",
+   "hint": "Tổng hợp theo quốc gia và category trước và áp dụng quy tắc 500 đơn vị bằng HAVING. Sau đó xếp hạng hai lần trong mỗi quốc gia, một lần từ trên xuống và một lần từ dưới lên, rồi giữ các dòng đứng hạng nhất ở một trong hai hướng."
+  },
+  "L21-05": {
+   "title": "So sánh ba văn phòng bán hàng cạnh nhau",
+   "story": "So sánh doanh thu thắng (close_value của các deal Won) theo product series cho ba văn phòng Central, East và West. Trả về một dòng cho mỗi series với một cột cho mỗi văn phòng, rồi hai cột chênh lệch: Central trừ East và East trừ West. Series là phần đầu của tên sản phẩm: GTX, GTK hoặc MG.",
+   "hint": "Pivot bằng SUM(CASE WHEN regional_office = ... THEN close_value ELSE 0 END). Cẩn thận với bảng sản phẩm: có một sản phẩm được viết khác ở đó so với trong pipeline, nên join với CRM_products sẽ làm rơi các deal của nó mà không báo lỗi nào. Hãy lấy series từ tên sản phẩm thay vì join."
+  },
+  "L21-06": {
+   "title": "Số ngày giữa đơn đầu tiên và đơn thứ hai của khách hàng",
+   "story": "Với các khách hàng có ít nhất hai đơn, trung bình mất bao nhiêu ngày giữa đơn đầu tiên và đơn thứ hai? Trả về số khách hàng có ít nhất hai đơn và số ngày trung bình (một chữ số thập phân).",
+   "hint": "Đánh số các đơn của từng khách hàng bằng ROW_NUMBER sắp theo OrderDate (thêm SalesOrderID để phá thế hòa). Sau đó join đơn 1 với đơn 2 của cùng khách hàng, hoặc dùng LAG. Khách hàng chỉ có một đơn sẽ tự rơi ra."
+  },
+  "L22-01": {
+   "title": "Mình mất deal ở đâu, và nó đáng giá bao nhiêu?",
+   "story": "Bạn là junior analyst của team sales. Head of Sales hỏi: mình đang mất deal ở đâu, và nó tốn của mình bao nhiêu? Viết một câu trả lời dài một trang gồm các phát hiện, một đề xuất và bước tiếp theo. Dùng các câu SQL và case được liệt kê trong phần hint để lấy số.",
+   "hint": "Bắt đầu từ win rate chung trên các deal đã đóng, rồi chia theo sản phẩm, theo agent và theo tháng. Quy luật cuối quý và pipeline đang mở đã được làm sẵn trong các case liệt kê bên dưới.",
+   "guide": [
+    "Định nghĩa trước khi đếm: deal đã đóng là Won cộng Lost. Deal còn ở Prospecting hoặc Engaging là đang mở, chưa phải đã mất.",
+    "Tìm xem các khoản mất tập trung ở đâu: theo sản phẩm, theo agent, theo tháng. Dùng tỷ lệ, không dùng tổng, vì các nhóm khác nhau về quy mô.",
+    "Đặt một con số tiền cho khoản mất và nêu giả định đứng sau nó.",
+    "Kiểm tra một điều có thể làm phát hiện của bạn sai, như một phép join làm rơi dòng hoặc một nhóm rất nhỏ.",
+    "Kết thúc bằng một đề xuất, ai làm và con số sẽ cho thấy nó có hiệu quả."
+   ],
+   "links": [
+    {
+     "why": "Win rate theo quý, và các tháng đứng sau nó"
+    },
+    {
+     "why": "Quy luật có đúng ở mọi sản phẩm không?"
+    },
+    {
+     "why": "Thời điểm thắng và thua"
+    },
+    {
+     "why": "Đặt một con số tiền cho các deal"
+    }
+   ]
+  },
+  "L22-02": {
+   "title": "Hiệu quả sản phẩm, và cách giữ chân khách hàng",
+   "story": "Head of Marketing hỏi ba điều về AdventureWorks. Mỗi product category đang hoạt động thế nào? Bạn sẽ làm gì để bán thêm? Làm sao để khách hàng quay lại? Viết phần phân tích cho một manager, kèm con số.",
+   "hint": "Doanh thu theo category và năm cần các bảng đơn hàng, chi tiết, sản phẩm, sub-category và category. Retention là công việc theo cohort: tháng đặt đơn đầu tiên, rồi những khách hàng còn hoạt động về sau.",
+   "guide": [
+    "Nói rõ hiệu quả nghĩa là gì trước khi đo: doanh thu, tỷ trọng doanh thu, tăng trưởng và số khách hàng.",
+    "So sánh hai năm đầy đủ, 2012 và 2013, cho từng category.",
+    "Với retention, định nghĩa thế nào là khách hàng quay lại và khung thời gian bạn dùng. Khách hàng mới có ít thời gian hơn để quay lại, nên hãy so sánh những nhóm tương đương.",
+    "Đưa ra hai hành động. Với mỗi hành động, nêu metric nó cần làm thay đổi và ngày kiểm tra."
+   ],
+   "links": [
+    {
+     "why": "Tăng trưởng theo tháng của từng category"
+    },
+    {
+     "why": "Bảng cohort, tháng 0 đến tháng 3"
+    },
+    {
+     "why": "Tỷ lệ retention và nó cho thấy điều gì"
+    },
+    {
+     "why": "Khách hàng so với quy mô đơn hàng"
+    }
+   ]
+  },
+  "L22-03": {
+   "title": "Reseller hay online: nên dồn ngân sách khuyến mãi vào đâu?",
+   "story": "Ngân sách khuyến mãi năm tới chưa được chốt. Team hỏi kênh nào của AdventureWorks, reseller hay online, nên được nhiều hơn. Trước khi trả lời, hãy liệt kê những gì bạn sẽ làm sạch hoặc kiểm tra trong data. Sau đó đưa ra một đề xuất kèm con số và một rủi ro.",
+   "hint": "Đơn online không có salesperson và một số đơn không có thẻ tín dụng, nên giá trị bị thiếu có thể đang mô tả chính kênh. So sánh các kênh bằng những con số từ các câu hỏi về kênh.",
+   "guide": [
+    "Làm sạch trước. Liệt kê các giá trị thiếu bạn tìm thấy, mỗi cái có nghĩa là gì và bạn xử lý ra sao (bỏ, điền hoặc giữ như một category).",
+    "So sánh các kênh theo số đơn, số khách hàng, doanh thu, giá trị đơn trung bình và chi phí giảm giá.",
+    "Nói bạn sẽ trả tiền cho sự tăng trưởng của kênh nào, và vì sao.",
+    "Nêu một rủi ro và cách bạn kiểm tra đề xuất đó với một ngân sách nhỏ."
+   ],
+   "links": [
+    {
+     "why": "Các kênh của AdventureWorks bằng con số"
+    },
+    {
+     "why": "Đơn hàng theo lý do mua: chồng lấn và thiếu sót"
+    },
+    {
+     "why": "Giảm giá cho quần áo bán online"
+    },
+    {
+     "why": "Số đơn so với doanh thu theo kênh"
+    }
+   ]
+  },
+  "L22-04": {
+   "title": "Ba đề xuất để nâng win rate: chọn một",
+   "story": "Ba manager muốn có ngân sách để nâng win rate. A: ép mọi deal chốt vào cuối quý. B: coach năm agent có win rate thấp nhất. C: dồn team vào sản phẩm có win rate cao nhất. Head of Sales cho bạn mười phút. Chọn một đề xuất, bảo vệ nó bằng con số, nói bạn sẽ kiểm tra điều gì trước khi chi tiền và gọi tên metric cho thấy nó có hiệu quả.",
+   "hint": "Các con số cho từng đề xuất nằm trong những câu hỏi về win rate ở các bài Structuring Questions và Storytelling and Bias: theo tháng, theo sản phẩm và theo agent.",
+   "guide": [
+    "Viết lại mục tiêu thành một metric: win rate trên các deal đã đóng.",
+    "Với mỗi đề xuất, gọi tên con số cho thấy phần lợi và con số cho thấy phần rủi ro.",
+    "Chọn một. Nói vì sao hai cái còn lại thua.",
+    "Mô tả một bài test nhỏ: ai tham gia, trong bao lâu và so với ai.",
+    "Gọi tên metric, một mục tiêu và ngày kiểm tra."
+   ],
+   "links": [
+    {
+     "why": "Win rate theo quý, và các tháng đứng sau nó"
+    },
+    {
+     "why": "Dẫn đầu theo tổng, dẫn đầu theo tỷ lệ"
+    },
+    {
+     "why": "Quy luật có đúng ở mọi sản phẩm không?"
+    },
+    {
+     "why": "Chỉ nhìn người thắng: ai bị thiếu?"
+    }
+   ]
+  },
+  "L23-01": {
+   "title": "Hoạt động trong tuần sau lần đăng nhập đầu tiên của tháng 7",
+   "story": "Team growth nghiên cứu mức độ tương tác ban đầu. Lấy mọi user có lần đăng nhập đầu tiên trong tháng 7/2022. Với mỗi user, đếm tất cả event (gồm cả lần đăng nhập đó) từ lần đăng nhập đầu tiên của tháng 7 cho đến trước thời điểm 7 ngày sau đó. Trả về user ID, ngày của lần đăng nhập đầu tiên tháng 7 và số event. Dùng event_date; cột month không phải lúc nào cũng khớp với nó.",
+   "hint": "Tìm lần đăng nhập đầu tiên của tháng 7 cho từng user trong một CTE. Sau đó join bảng events trở lại với nó và giữ các event nằm giữa mốc thời gian đó và 7 ngày sau (dùng DATEADD)."
+  },
+  "L23-02": {
+   "title": "Advertiser mới, rời đi, quay lại và hiện hữu",
+   "story": "Team ads so sánh danh sách advertiser năm ngoái (SQLTest_Facebook_Advertisers, có status) với danh sách advertiser đã trả tiền hôm nay (SQLTest_Facebook_Daily_Pay). Gán một status mới cho mọi advertiser xuất hiện ở một trong hai bảng. NEW: không có trong danh sách năm ngoái. CHURN: có trong danh sách năm ngoái nhưng hôm nay không trả tiền. RESURRECT: năm ngoái là CHURN và hôm nay đã trả tiền. EXISTING: hôm nay đã trả tiền và năm ngoái không phải CHURN. Trả về user ID và status mới.",
+   "hint": "FULL OUTER JOIN giữ lại các advertiser chỉ có ở một phía. Sau đó dùng CASE WHEN kiểm tra phía nào bị thiếu trước, rồi mới xét status năm ngoái."
+  },
+  "L23-03": {
+   "title": "Median số lần tìm kiếm mỗi user từ một bảng tần suất",
+   "story": "SQLTest_Google_Users_search cho biết có bao nhiêu user tìm 1 lần, bao nhiêu user tìm 2 lần và tiếp tục như vậy (searches, num_users). Tìm median số lần tìm kiếm mỗi user, làm tròn một chữ số thập phân. Không được bung bảng ra thành một dòng cho mỗi user.",
+   "hint": "Dựng một tổng lũy kế của num_users sắp theo searches. User ở giữa (hoặc hai user ở giữa khi tổng chẵn) nằm ở dòng mà tổng lũy kế lần đầu đạt đến một nửa."
+  },
+  "L23-04": {
+   "title": "Mọi chiếc pizza ba topping và chi phí của nó",
+   "story": "Một tiệm pizza muốn có mọi chiếc pizza 3 topping có thể làm từ SQLTest_MCKinsey_Pizza_Topping, kèm tổng chi phí nguyên liệu. Mỗi chiếc pizza xuất hiện một lần, với các topping theo thứ tự bảng chữ cái (topping_1 trước topping_2 trước topping_3). Trả về ba topping và tổng chi phí làm tròn 2 chữ số thập phân, pizza đắt nhất đứng đầu, rồi đến thứ tự bảng chữ cái.",
+   "hint": "Self-join bảng hai lần. Dùng < giữa các tên topping thay vì =, để mỗi tổ hợp chỉ xuất hiện một lần và không topping nào lặp lại."
+  },
+  "L23-05": {
+   "title": "Tăng trưởng chi tiêu theo năm của từng sản phẩm",
+   "story": "Với mỗi sản phẩm trong SQLTest_Wayfair_Transactions, trả về tổng chi tiêu theo năm và tăng trưởng theo năm (YoY) tính bằng phần trăm so với năm trước, làm tròn 2 chữ số thập phân. Năm đầu tiên của một sản phẩm không có tăng trưởng, nên để trống.",
+   "hint": "Tính tổng chi tiêu theo sản phẩm và năm trước, trong một CTE. Sau đó LAG(spend) OVER (PARTITION BY product_id ORDER BY yr) cho ra năm trước ngay trên cùng một dòng."
+  },
+  "L23-06": {
+   "title": "Top hai sản phẩm mỗi category theo chi tiêu năm 2022",
+   "story": "Chỉ với năm 2022, tìm hai sản phẩm có tổng chi tiêu cao nhất trong mỗi category của SQLTest_Amazon_Transaction. Trả về category, sản phẩm, tổng chi tiêu làm tròn 2 chữ số thập phân và thứ hạng của nó trong category. Bảng có một cột tên rank cố ý để trống, nên đừng dùng nó.",
+   "hint": "Tính tổng chi tiêu theo category và sản phẩm cho năm 2022 trong một CTE, xếp hạng trong từng category bằng window function, rồi giữ hạng 1 và 2 ở query bên ngoài."
+  },
+  "L23-07": {
+   "title": "Mức thay đổi chi tiêu giữa các lần mua của một user",
+   "story": "Với những user đã mua ít nhất hai lần trong SQLTest_Amazon_Transaction, liệt kê mọi lần mua kèm chi tiêu của lần mua trước của cùng user và mức thay đổi chi tiêu so với lần đó. Lần mua đầu tiên của một user có chi tiêu trước để trống. Nếu hai lần mua có cùng timestamp, lần rẻ hơn đứng trước. Trả về user ID, ngày, sản phẩm, chi tiêu, chi tiêu trước và mức thay đổi, làm tròn 2 chữ số thập phân.",
+   "hint": "LAG(spend) OVER (PARTITION BY user_id ORDER BY transaction_date, spend) đọc lần mua trước của cùng user. Đếm số lần mua của mỗi user trong cùng CTE để loại những user chỉ mua một lần."
+  },
+  "L23-08": {
+   "title": "Nhân viên có lương cao hơn quản lý của mình",
+   "story": "Trong SQLTest_FAANG_Employee, mỗi nhân viên có một manager_id trỏ đến một nhân viên khác. Những nhân viên nào có lương cao hơn quản lý của mình? Trả về nhân viên, lương của họ, quản lý và lương của quản lý.",
+   "hint": "Self-join bảng: một bản cho nhân viên, một bản cho quản lý, khớp trên manager_id = employee_id. Sau đó so sánh hai mức lương."
+  },
+  "L23-09": {
+   "title": "Mức lương cao thứ hai ở mỗi department",
+   "story": "Tìm những nhân viên có mức lương cao thứ hai (tính theo giá trị khác nhau) trong mỗi department của SQLTest_FAANG_Employee. Nếu hai nhân viên cùng mức lương đó, trả về cả hai. Trả về department, tên và mức lương.",
+   "hint": "Xếp hạng mức lương trong từng department. Hãy nghĩ xem trong ROW_NUMBER, RANK và DENSE_RANK, hàm nào cho ra mức lương khác nhau thứ hai và giữ các trường hợp hòa lại cùng nhau."
+  },
+  "L23-10": {
+   "title": "Thời gian gửi và mở snap, theo nhóm tuổi",
+   "story": "Với mỗi nhóm tuổi, bao nhiêu phần trăm thời gian dùng app dành cho việc gửi snap và bao nhiêu phần trăm cho việc mở chúng? Dùng SQLTest_Snapchat_Activities và SQLTest_Snapchat_Age_Group. Bỏ qua hoạt động chat, để hai tỷ lệ cộng lại đúng 100%. Trả về nhóm tuổi, phần trăm gửi và phần trăm mở, làm tròn 2 chữ số thập phân.",
+   "hint": "Join activities với age group, group theo nhóm tuổi, và dùng SUM(CASE WHEN ...) có điều kiện cho thời gian gửi, thời gian mở và tổng gửi cộng mở."
+  },
+  "L23-11": {
+   "title": "Trung bình trượt ba ngày của số tweet",
+   "story": "Với mỗi user trong SQLTest_Twitter_Tweet_events, trả về trung bình trượt 3 ngày của số tweet: trung bình của ngày hiện tại và hai ngày trước đó. Với những ngày đầu của một user, dùng những ngày hiện có. Trả về user, ngày, số tweet và giá trị trung bình làm tròn 2 chữ số thập phân. Mỗi user có một dòng cho mỗi ngày.",
+   "hint": "AVG(...) OVER (PARTITION BY user_id ORDER BY tweet_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) cho một cửa sổ gồm dòng hiện tại và hai dòng trước nó."
+  },
+  "L23-12": {
+   "title": "Monthly active user và mức thay đổi so với tháng trước",
+   "story": "Từ SQLTest_Uber_transactions, đếm số user active khác nhau mỗi tháng (một user active trong một tháng nếu có ít nhất một giao dịch). Đồng thời trả về mức thay đổi so với tháng trước đó trong data. Trả về tháng dạng YYYYMM, số user active và mức thay đổi; tháng đầu tiên có mức thay đổi để trống.",
+   "hint": "Đếm distinct user theo tháng trong một CTE, rồi dùng LAG theo tháng để đọc số đếm của tháng trước."
+  },
+  "L23-13": {
+   "title": "Số ngày giữa giao dịch đầu tiên và thứ hai của user",
+   "story": "Với mọi user của SQLTest_Uber_transactions có ít nhất hai giao dịch, trả về ngày của giao dịch đầu tiên, ngày của giao dịch thứ hai và số ngày giữa chúng.",
+   "hint": "Đánh số các giao dịch của từng user bằng ROW_NUMBER trong một CTE, rồi self-join CTE đó: dòng 1 ở một bên và dòng 2 ở bên kia. DATEDIFF cho ra khoảng cách."
+  }
+ }
+}

@@ -552,6 +552,26 @@ ul.pgcols .cd{grid-column:1/-1;font-size:13px;color:var(--fg);opacity:.85;line-h
 .dwrap.full iframe.embed{height:100%;min-height:0}
 body.dfull-on{overflow:hidden}
 
+/* ---- Analytical Thinking zone ---- */
+.attabs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 8px}
+.attabs .chip small{opacity:.7;font-weight:600;margin-left:2px}
+.atsub{margin:0 0 14px}
+.atthink textarea{width:100%;min-height:110px;margin-top:10px;box-sizing:border-box}
+.atgo{margin-top:10px}
+.atstack,#atrest{grid-template-columns:minmax(0,1fr)}
+#atrest{display:grid;gap:14px}
+#atrest[hidden]{display:none}
+.attbl td,.attbl th{white-space:nowrap}
+.attbl td:not(:first-child),.attbl th:not(:first-child){text-align:right}
+.attrap{border-left:4px solid var(--orange)}
+.atex{background:var(--blue-soft)}
+:root[data-theme="dark"] .atex{background:rgba(167,139,250,.12)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .atex{background:rgba(167,139,250,.12)}}
+.atlinks{display:flex;flex-wrap:wrap;gap:8px}
+.atlink{text-align:left;white-space:normal;line-height:1.35}
+.atlink .atk{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.65;margin-right:4px}
+.atcard .card p:last-child{margin-bottom:0}
+
 /* TheHauData Lab theme = the current thehaudata.com look (snapshot 2026-10-23, see websites/thehaudata-com/live-snapshot-2026-10-23.html).
    Violet to pink gradient, white blurred top nav, pill buttons, 20px cards with violet shadows, Nunito + Plus Jakarta Sans.
    Loaded last: it redefines the shared tokens, so the case and homework components pick the new look up without edits.
@@ -767,6 +787,7 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
     <button data-zone="homework" aria-selected="false" data-i18n>Homework</button>
     <button data-zone="interview" aria-selected="false" data-i18n>Interview Prep</button>
     <button data-zone="cases" aria-selected="false" data-i18n>Case Studies</button>
+    <button data-zone="thinking" aria-selected="false" data-i18n>Analytical Thinking</button>
     <button data-zone="dictionary" aria-selected="false" data-i18n>Data Dictionary</button>
     <button data-zone="playground" aria-selected="false" data-i18n>Playground</button>
     <button data-zone="setup" aria-selected="false" data-i18n>Installation For mentee</button>
@@ -820,6 +841,7 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
       <li><a href="#homework" data-zone-link="homework" data-i18n>Homework by topic</a></li>
       <li><a href="#interview" data-zone-link="interview" data-i18n>Interview Prep</a></li>
       <li><a href="#cases" data-zone-link="cases" data-i18n>Case Studies</a></li>
+      <li><a href="#thinking" data-zone-link="thinking" data-i18n>Analytical Thinking</a></li>
       <li><a href="#dictionary" data-zone-link="dictionary" data-i18n>Data Dictionary</a></li>
       <li><a href="#playground" data-zone-link="playground" data-i18n>Playground</a></li>
       <li><a href="#setup" data-zone-link="setup" data-i18n>Installation For mentee</a></li></ul></div>
@@ -831,6 +853,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=8c134396d0"></script>
+<script type="module" src="js/app.js?v=7ba8096f9b"></script>
 
 </body></html>

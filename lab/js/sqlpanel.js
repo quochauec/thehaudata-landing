@@ -1,9 +1,9 @@
 // Shared SQL editor + result grid. Used by Homework, Case Studies and the Playground.
-import * as engine from "./engine.js?v=8c134396d0";
-import { MODE } from "./mode.js?v=8c134396d0";
-import { createEditor } from "../vendor/editor.js?v=8c134396d0";
-import { t } from "./i18n.js?v=8c134396d0";
-import { formatSql } from "./sqlformat.js?v=8c134396d0";
+import * as engine from "./engine.js?v=7ba8096f9b";
+import { MODE } from "./mode.js?v=7ba8096f9b";
+import { createEditor } from "../vendor/editor.js?v=7ba8096f9b";
+import { t } from "./i18n.js?v=7ba8096f9b";
+import { formatSql } from "./sqlformat.js?v=7ba8096f9b";
 
 export const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -82,26 +82,26 @@ if (!document.getElementById("sqlpanel-css")) {
 
 // ---- errors in plain words. The engine is DuckDB, so its messages are mapped to what a T-SQL learner needs to fix. ----
 const FRIENDLY = [
-  [/Table with name (\S+) does not exist/i, m => `The table ${m[1]} was not found. Check the spelling and the ADW_, CRM_ or GBE_ prefix. "Tables you can use" lists every name.`],
-  [/Referenced table "([^"]+)" not found/i, m => `The alias ${m[1]} is not defined. Check the alias you gave after FROM or JOIN.`],
-  [/Referenced column "([^"]+)" not found/i, m => `The column ${m[1]} was not found. Check the spelling and which table it belongs to.`],
-  [/Ambiguous reference to column name "([^"]+)"/i, m => `${m[1]} exists in more than one table. Put the table alias in front of it, for example o.${m[1]}.`],
-  [/column "([^"]+)" must appear in the GROUP BY clause/i, m => `${m[1]} is in the SELECT but not in the GROUP BY. Add it to GROUP BY, or wrap it in an aggregate such as SUM or MAX.`],
-  [/WHERE clause cannot contain aggregates/i, () => "Aggregates such as SUM or COUNT cannot go in WHERE. Use HAVING, or calculate them in a subquery or CTE first."],
-  [/aggregate function calls cannot be nested/i, () => "An aggregate sits inside another aggregate. Calculate the inner one in a subquery or CTE first."],
-  [/syntax error at end of input/i, () => "The query ends too early. Check for a missing table name, closing bracket or condition."],
-  [/syntax error at or near "([^"]*)"/i, m => `There is a syntax error near "${m[1]}". Check commas, brackets and the order of keywords just before it.`],
-  [/invalid date field format: "([^"]*)"/i, m => `The text "${m[1]}" is not in the year-month-day format that CAST expects. For text such as 7/3/1939 use CONVERT(date, column, 101).`],
-  [/No function matches the given name and argument types '\+\(INTEGER_LITERAL, INTERVAL\)'/i, () => "Date arithmetic with 0 as a date is not supported here. To get the first day of a month, use DATEFROMPARTS(YEAR(x), MONTH(x), 1)."],
-  [/Scalar Function with name (\w+) does not exist/i, m => `The function ${m[1].toUpperCase()} is not available in this practice engine. Check the spelling, or use another function that does the same job (for example STDEV instead of STDEVP).`],
-  [/Could not convert string '([^']*)'/i, m => `The value '${m[1]}' cannot be converted to a number or date. Check the column type, or use TRY_CAST.`],
+  [/Table with name (\S+) does not exist/i, m => t('The table {x} was not found. Check the spelling and the ADW_, CRM_ or GBE_ prefix. "Tables you can use" lists every name.', { x: m[1] })],
+  [/Referenced table "([^"]+)" not found/i, m => t("The alias {x} is not defined. Check the alias you gave after FROM or JOIN.", { x: m[1] })],
+  [/Referenced column "([^"]+)" not found/i, m => t("The column {x} was not found. Check the spelling and which table it belongs to.", { x: m[1] })],
+  [/Ambiguous reference to column name "([^"]+)"/i, m => t("{x} exists in more than one table. Put the table alias in front of it, for example o.{x}.", { x: m[1] })],
+  [/column "([^"]+)" must appear in the GROUP BY clause/i, m => t("{x} is in the SELECT but not in the GROUP BY. Add it to GROUP BY, or wrap it in an aggregate such as SUM or MAX.", { x: m[1] })],
+  [/WHERE clause cannot contain aggregates/i, () => t("Aggregates such as SUM or COUNT cannot go in WHERE. Use HAVING, or calculate them in a subquery or CTE first.")],
+  [/aggregate function calls cannot be nested/i, () => t("An aggregate sits inside another aggregate. Calculate the inner one in a subquery or CTE first.")],
+  [/syntax error at end of input/i, () => t("The query ends too early. Check for a missing table name, closing bracket or condition.")],
+  [/syntax error at or near "([^"]*)"/i, m => t('There is a syntax error near "{x}". Check commas, brackets and the order of keywords just before it.', { x: m[1] })],
+  [/invalid date field format: "([^"]*)"/i, m => t('The text "{x}" is not in the year-month-day format that CAST expects. For text such as 7/3/1939 use CONVERT(date, column, 101).', { x: m[1] })],
+  [/No function matches the given name and argument types '\+\(INTEGER_LITERAL, INTERVAL\)'/i, () => t("Date arithmetic with 0 as a date is not supported here. To get the first day of a month, use DATEFROMPARTS(YEAR(x), MONTH(x), 1).")],
+  [/Scalar Function with name (\w+) does not exist/i, m => t("The function {x} is not available in this practice engine. Check the spelling, or use another function that does the same job (for example STDEV instead of STDEVP).", { x: m[1].toUpperCase() })],
+  [/Could not convert string '([^']*)'/i, m => t("The value '{x}' cannot be converted to a number or date. Check the column type, or use TRY_CAST.", { x: m[1] })],
 ];
 function friendlyError(e) {
   const raw = String(e && e.message || e), lines = raw.split("\n").filter(l => l.trim());
   const own = lines.find(l => l.startsWith("ValueError: "));
-  if (own) return own.slice(12);
+  if (own) { const o = own.slice(12), m = o.match(/^T-SQL syntax error near '([^']*)' \(line (\w+), col (\w+)\)\.\s*(.*)$/s); return m ? t("T-SQL syntax error near '{x}' (line {l}, col {c}).", { x: m[1], l: m[2], c: m[3] }) + (m[4] ? " " + m[4] : "") : o; }
   const plain = (lines[0] && lines[0].startsWith("Traceback") ? lines.slice(-1) : lines.slice(0, 3)).join(" ");
-  for (const [re, f] of FRIENDLY) { const m = raw.match(re); if (m) return f(m) + "\n\nEngine message: " + plain; }
+  for (const [re, f] of FRIENDLY) { const m = raw.match(re); if (m) return f(m) + "\n\n" + t("Engine message:") + " " + plain; }
   return plain;
 }
 

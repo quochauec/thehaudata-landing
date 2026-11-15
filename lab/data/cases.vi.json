@@ -584,5 +584,2569 @@
     "Mình chọn thứ tự tách cho issue tree và nói rõ lý do."
    ]
   }
+ },
+ "adw-territory": {
+  "title": "Territory nào tăng trưởng nhanh nhất năm 2013?",
+  "brief": {
+   "subject": "Tăng trưởng theo territory, 2013 so với 2012",
+   "body": [
+    "Tôi đang chia target bán hàng của năm tới theo từng territory và muốn bắt đầu từ những nơi đã tăng trưởng năm ngoái. Hãy so sánh 2013 với 2012 cho từng territory trong mười territory.",
+    "Dùng revenue (<code>SubTotal</code>) và chỉ so các năm đầy đủ."
+   ],
+   "ask": "Trả lời trong ba câu: ai tăng nhanh nhất, bạn đo bằng cách nào, và territory nào cần chú ý.",
+   "facts": [
+    "<code>ADW_Sales_orders</code> có <code>TerritoryID</code> trên mỗi đơn. Tên nằm ở <code>ADW_Dim_Territory</code>.",
+    "Growth % = (2013 − 2012) ÷ 2012."
+   ]
+  },
+  "frame": {
+   "nudge": "Territory tăng nhanh nhất theo phần trăm và territory thêm được nhiều đô la nhất có thể là hai territory khác nhau. Bạn nên dùng cái nào để đặt target?",
+   "tree": [
+    "<b>Ai đã tăng trưởng trong 2013?</b>",
+    [
+     "Revenue của từng territory năm 2012 và năm 2013",
+     "Tăng trưởng theo phần trăm và theo đô la",
+     "Territory nào nằm dưới không"
+    ]
+   ],
+   "hyp": [
+    "Những territory tăng nhanh nhất nằm ngoài Mỹ.",
+    "Mức tăng phần trăm lớn nhất đến từ một nền xuất phát nhỏ."
+   ],
+   "traps": [
+    "Lọc về hai năm đầy đủ. 2011 và 2014 chỉ là một phần năm và sẽ làm lệch phép so sánh.",
+    "Phần trăm tăng trưởng che mất quy mô ban đầu. Hãy đặt mức tăng bằng đô la cạnh nó.",
+    "Dùng <code>&gt;=</code> và <code>&lt;</code> trên ngày thay vì BETWEEN với một ngày kết thúc."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn với ngày, territory và subtotal."
+    ],
+    [
+     null,
+     null,
+     "Tên các territory."
+    ],
+    [
+     null,
+     null,
+     "Cấp độ dòng; header của đơn đã có sẵn subtotal."
+    ],
+    [
+     null,
+     null,
+     "Sản phẩm không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một đơn, nên SUM(SubTotal) theo territory là an toàn.",
+    "<code>ADW_Dim_Territory</code>: mỗi territory một dòng, nên JOIN vẫn giữ một dòng cho mỗi đơn."
+   ],
+   "goal": "Mỗi territory một dòng: revenue năm 2012, revenue năm 2013, mức tăng bằng đô la và growth %, tốt nhất đứng đầu.",
+   "watch": [
+    "Pivot bằng CASE WHEN đặt cả hai năm trên một dòng, nên tăng trưởng chỉ là một phép trừ đơn giản.",
+    "Nếu không có bộ lọc ngày, các đơn 2011 và 2014 được cộng vào một cột nào đó không ai thấy nhưng vẫn khiến bạn mất thời gian giải thích."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Germany tăng nhanh nhất theo phần trăm (+366%), tiếp theo là France (+144%), United Kingdom (+130%) và Australia (+99%).",
+    "Germany xuất phát từ $0.55M, nên mức tăng $2.02M của nó tương đương ba territory còn lại. Tính theo đô la, France thêm được nhiều nhất (+$2.25M). Northeast (-9%) và Southeast (-19%) giảm, và Central đi ngang.",
+    "Hãy đặt target cho Europe và Australia từ mức tăng bằng đô la thay vì phần trăm, và hỏi team Northeast và Southeast xem điều gì đã thay đổi. Một lưu ý: đây chỉ là hai năm, và tăng trưởng nhanh ở một thị trường nhỏ không tự nó kéo dài về sau."
+   ],
+   "checks": [
+    "Mình chỉ so các năm đầy đủ.",
+    "Mình nhìn phần trăm và đô la cùng nhau.",
+    "Mình nêu tên các territory bị giảm.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "questions": [
+   "Territory nào tăng nhanh nhất theo phần trăm?",
+   "Territory nào thêm được nhiều đô la nhất?",
+   "Có territory nào bị giảm không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Tổng <code>SubTotal</code> theo territory và năm."
+   ],
+   [
+    null,
+    "Revenue 2013 − revenue 2012."
+   ],
+   [
+    null,
+    "Mức tăng bằng đô la ÷ revenue 2012."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Tăng trưởng revenue 2013 so với 2012 theo territory.",
+    "title": "Europe và Australia tăng nhanh nhất, hai territory ở Mỹ bị giảm",
+    "why": "Một giá trị cho mỗi nhóm, có xếp hạng: dùng bar bắt đầu từ đường zero, để các territory bị giảm hướng xuống dưới."
+   },
+   {
+    "sub": "Revenue tăng thêm của 2013 so với 2012, $M.",
+    "title": "Tính theo đô la, các mức tăng khá gần nhau",
+    "why": "Cùng bảng xếp hạng đó tính bằng đô la cho thấy mức tăng nào lớn thật và mức nào đến từ một nền nhỏ."
+   }
+  ]
+ },
+ "adw-channel": {
+  "title": "Online có phần lớn số đơn. Ai mang về tiền?",
+  "brief": {
+   "subject": "Online đã là kênh chính chưa?",
+   "body": [
+    "Dashboard cho thấy số đơn online nhiều hơn hẳn đơn của sales rep, và team online muốn thêm ngân sách. Trước khi trả lời, tôi muốn xem cả hai kênh theo số đơn và theo revenue.",
+    "Hãy cho thấy luôn cách tỷ lệ này thay đổi qua từng năm."
+   ],
+   "ask": "Trả lời trong ba câu: kênh nào mang về revenue, vì sao số đơn dễ gây hiểu lầm, và nên làm gì với ngân sách.",
+   "facts": [
+    "<code>OnlineOrderFlag</code> trong <code>ADW_Sales_orders</code>: 1 = online, 0 = sales rep.",
+    "Mỗi dòng là một đơn. Revenue = <code>SubTotal</code>."
+   ]
+  },
+  "frame": {
+   "nudge": "Nếu một kênh có 90% số đơn, nó có 90% revenue không? Con số nào nối hai điều đó với nhau?",
+   "tree": [
+    "<b>Kênh nào mang về business?</b>",
+    [
+     "Số đơn và revenue theo kênh",
+     "Giá trị đơn trung bình theo kênh",
+     "Cùng cách chia đó theo năm"
+    ]
+   ],
+   "hyp": [
+    "Online thắng về số đơn nhưng sales rep thắng về revenue.",
+    "Tỷ trọng revenue của online đang tăng."
+   ],
+   "traps": [
+    "Một cờ 0 và 1 không đọc được trong báo cáo: hãy gắn nhãn bằng CASE WHEN.",
+    "So sánh tỷ trọng trên tổng, không so số đếm thô.",
+    "2011 bắt đầu từ tháng 5 và 2014 kết thúc vào tháng 6, nên hãy đánh giá xu hướng theo năm bằng tỷ trọng, không bằng tổng."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mọi thứ đều nằm trên header của đơn: cờ, ngày và subtotal."
+    ],
+    [
+     null,
+     null,
+     "Cấp độ dòng; không cần cho tổng theo kênh."
+    ],
+    [
+     null,
+     null,
+     "Territory không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một đơn. <code>COUNT(*)</code> là số đơn, <code>SUM(SubTotal)</code> là revenue.",
+    "Không cần join. Toàn bộ câu trả lời đến từ một bảng."
+   ],
+   "goal": "Mỗi kênh một dòng: số đơn, % số đơn, revenue, % revenue, giá trị đơn trung bình.",
+   "watch": [
+    "GROUP BY phải lặp lại biểu thức CASE, không phải alias, trong SQL Server.",
+    "SUM(COUNT(*)) OVER () là tổng của các số đếm đã group. Nó không cần một query thứ hai."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Sales rep mang về revenue: họ viết 12% số đơn nhưng tạo 73% revenue.",
+    "Một đơn sales rep trung bình trị giá $21,148, so với $1,061 ở online, nên 20 đơn online bằng một đơn của rep. Tỷ trọng revenue của online giảm còn 19% trong 2012, rồi tăng lên 25% trong 2013 và 42% trong nửa đầu 2014, nhưng sales rep dẫn đầu mọi năm.",
+    "Đừng chuyển ngân sách dựa trên số đơn. Hãy giữ ngân sách cho kênh rep và hỏi team online họ định nâng quy mô giỏ hàng bằng cách nào. Data không cho biết hai kênh có phục vụ cùng một loại khách hàng không, nên phép so sánh này mới chỉ là cái nhìn đầu tiên."
+   ],
+   "checks": [
+    "Mình đã so tỷ trọng số đơn với tỷ trọng revenue.",
+    "Mình dùng giá trị đơn trung bình để giải thích khoảng chênh.",
+    "Mình nhìn xu hướng theo năm.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Cùng cách chia đó theo năm"
+  },
+  "questions": [
+   "Online chiếm bao nhiêu phần trăm số đơn, và bao nhiêu phần trăm revenue?",
+   "Một đơn trung bình ở mỗi kênh lớn đến đâu?",
+   "Cách chia này có đang thay đổi qua từng năm không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Số đơn của kênh ÷ tất cả đơn."
+   ],
+   [
+    null,
+    "Revenue của kênh ÷ tất cả revenue."
+   ],
+   [
+    null,
+    "Revenue ÷ số đơn."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Tỷ trọng số đơn và revenue theo kênh, tất cả các năm.",
+    "title": "Online là 88% số đơn và 27% revenue",
+    "why": "Hai tỷ trọng cho mỗi kênh: dùng grouped bar. Việc hai cột đảo vị trí chính là toàn bộ thông điệp."
+   },
+   {
+    "sub": "Revenue theo kênh và năm, $M. 2011 bắt đầu từ tháng 5 và 2014 dừng ở tháng 6.",
+    "title": "Sales rep dẫn đầu ở mọi năm",
+    "why": "Hai nhóm qua bốn năm: dùng grouped bar, cùng một màu cho mỗi kênh."
+   }
+  ]
+ },
+ "adw-growth": {
+  "title": "Revenue tăng trong 2013: do nhiều khách hơn hay đơn lớn hơn?",
+  "brief": {
+   "subject": "Điều gì đã thúc đẩy 2013, và 2014 có phải là sụt giảm không?",
+   "body": [
+    "Revenue năm 2013 cao hơn 2012 khoảng 30%, nhưng đơn trung bình trông lại nhỏ hơn. Tôi cần biết tăng trưởng đến từ đâu: nhiều khách hơn, khách đặt đơn thường xuyên hơn, hay đơn lớn hơn.",
+    "Dashboard cũng cho thấy 2014 rơi tự do. Tuần sau tôi trình bày với board và tôi không muốn giải thích một cú sụp đổ không có thật."
+   ],
+   "ask": "Trả lời trong ba câu: động lực chính, vì sao giá trị đơn giảm, và nên nói gì về 2014.",
+   "facts": [
+    "Revenue là <code>SubTotal</code> trong <code>ADW_Sales_orders</code> (trước thuế và phí vận chuyển).",
+    "Bảng đó có một dòng cho mỗi đơn."
+   ]
+  },
+  "frame": {
+   "nudge": "Revenue là tích của những phần đơn giản hơn. Bạn đo được những phần nào, và chúng có thể di chuyển ngược chiều nhau không?",
+   "tree": [
+    "<b>Điều gì thúc đẩy revenue 2013?</b>",
+    [
+     "Revenue = khách hàng × số đơn mỗi khách × giá trị đơn trung bình",
+     "Phần nào dịch chuyển nhiều nhất từ 2012 sang 2013",
+     "Mỗi năm trong data có đầy đủ không"
+    ]
+   ],
+   "hyp": [
+    "Số khách hàng tăng rất nhiều.",
+    "Giá trị đơn giảm vì cơ cấu dịch chuyển sang các đơn online nhỏ hơn."
+   ],
+   "traps": [
+    "Kiểm tra khoảng ngày trước khi so các năm. Một năm chưa đầy đủ trông giống như sụt giảm.",
+    "Chia mỗi tổng cho đúng số đếm: khách hàng cho số đơn mỗi khách, số đơn cho giá trị đơn.",
+    "Một mức trung bình có thể giảm vì cơ cấu đơn thay đổi, ngay cả khi không đơn nào nhỏ đi."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn với ngày, khách hàng, cờ kênh và giá trị."
+    ],
+    [
+     null,
+     null,
+     "Cấp độ dòng; tổng của đơn đã nằm sẵn trên header."
+    ],
+    [
+     null,
+     null,
+     "Không cần cho góc nhìn toàn công ty."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một đơn, nên <code>COUNT(*)</code> là số đơn và <code>COUNT(DISTINCT CustomerID)</code> là số khách hàng.",
+    "<code>OnlineOrderFlag</code>: 1 = online, 0 = sales rep."
+   ],
+   "goal": "Mỗi năm một dòng: số đơn, khách hàng, số đơn mỗi khách, giá trị đơn trung bình, revenue. Hãy kiểm tra khoảng ngày trước.",
+   "watch": [
+    "Số đơn mỗi khách chia số đơn cho khách hàng <i>distinct</i>, không chia cho số dòng.",
+    "2011 bắt đầu từ tháng 5 và 2014 kết thúc vào tháng 6. Chỉ so các năm đầy đủ (2012 với 2013)."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Khách hàng thúc đẩy tăng trưởng: năm 2013 có gấp 3.5 lần so với 2012, trong khi giá trị đơn trung bình giảm còn 36% mức của 2012.",
+    "Revenue tăng từ $33.5M lên $43.6M. Số đơn mỗi khách gần như không đổi (103% của 2012). Các đơn online, vốn nhỏ (khoảng $853), tăng từ 70% lên 89% tổng số đơn và kéo mức trung bình xuống.",
+    "2014 không phải là một sự sụp đổ. Data dừng ở ngày 30/6/2014, nên năm đó chỉ có sáu tháng. Hãy so tháng 1 đến tháng 6 năm 2014 với tháng 1 đến tháng 6 năm 2013 trước khi đưa lên board. Điều này cho thấy cái gì đã thay đổi, không cho thấy vì sao nhiều khách hàng hơn đã đến."
+   ],
+   "checks": [
+    "Mình đã tách revenue thành khách hàng × tần suất × giá trị đơn.",
+    "Mình đã kiểm tra khoảng ngày trước khi so các năm.",
+    "Mình giải thích mức trung bình thấp hơn bằng cơ cấu.",
+    "Mình đã nói nên làm gì với 2014."
+   ]
+  },
+  "extra_sql": {
+   "title": "Index của 2013 so với 2012 (đưa vào chart)"
+  },
+  "questions": [
+   "Trong khách hàng, số đơn mỗi khách và giá trị đơn, cái nào dịch chuyển nhiều nhất giữa 2012 và 2013?",
+   "Vì sao giá trị đơn trung bình giảm?",
+   "Mức giảm của 2014 có thật không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Số khách hàng distinct có ít nhất một đơn trong năm."
+   ],
+   [
+    null,
+    "Số đơn ÷ khách hàng distinct."
+   ],
+   [
+    null,
+    "Revenue ÷ số đơn."
+   ],
+   [
+    null,
+    "Giá trị 2013 ÷ giá trị 2012 × 100. Revenue là tích của ba động lực."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "2013 dưới dạng index của 2012 (2012 = 100).",
+    "title": "Khách hàng thúc đẩy tăng trưởng và giá trị đơn giảm",
+    "why": "Bốn tỷ lệ so với một mốc: bar có đường tham chiếu ở mức 100."
+   }
+  ]
+ },
+ "adw-discounts": {
+  "title": "Special offer: giảm giá nào tốn kém nhất?",
+  "brief": {
+   "subject": "Các special offer thực sự tốn của mình bao nhiêu?",
+   "body": [
+    "Mỗi năm mình gia hạn khoảng một chục special offer. Chúng trông rất hào phóng, và chưa ai kiểm tra chúng tốn bao nhiêu. Tôi muốn gia hạn những cái xứng đáng và bỏ phần còn lại.",
+    "Với mỗi loại offer, hãy cho tôi biết nó chạm đến bao nhiêu order line, giá trị niêm yết, số tiền đã xuất hóa đơn, mức giảm giá đã cho đi, và mức giảm đó là bao nhiêu phần trăm giá trị niêm yết. Offer 1 là \"No Discount\": bỏ nó ra khỏi bảng, nhưng cho tôi biết phần business có giảm giá lớn đến đâu so với mọi thứ còn lại."
+   ],
+   "ask": "Trả lời trong ba câu: các offer lớn đến đâu, loại nào tốn nhất, và bạn sẽ gia hạn cái nào.",
+   "facts": [
+    "Giá trị niêm yết = <code>OrderQty × UnitPrice</code>. Đã xuất hóa đơn = <code>LineTotal</code> (đã trừ giảm giá).",
+    "<code>SpecialOfferID = 1</code> nghĩa là không giảm giá."
+   ]
+  },
+  "context": {
+   "company": "AdventureWorks Cycles bán xe đạp và phụ tùng cho các cửa hàng (sales rep) và cho cá nhân (online). Khách reseller nhận special offer: giảm theo khối lượng, xả hàng, khuyến mãi sản phẩm mới.",
+   "situation": "Team commercial gia hạn lịch offer mỗi năm. Chưa ai cộng lại xem các offer tốn bao nhiêu.",
+   "decision": "Loại offer nào nên giữ trên lịch và loại nào nên cắt hoặc định giá lại?"
+  },
+  "frame": {
+   "nudge": "Một offer lớn tính bằng đô la và một offer sâu tính bằng phần trăm là hai chuyện khác nhau. Cái nào trả lời câu hỏi của Daniel, và bạn muốn đặt gì cạnh nó?",
+   "tree": [
+    "<b>Offer nào đáng gia hạn?</b>",
+    [
+     "Quy mô business có giảm giá so với toàn bộ business",
+     "Mức giảm giá tính bằng đô la, theo loại offer",
+     "Độ sâu giảm giá tính bằng phần trăm giá trị niêm yết"
+    ]
+   ],
+   "hyp": [
+    "Một vài loại offer chiếm phần lớn mức giảm giá đã cho.",
+    "Các offer xả hàng là sâu nhất."
+   ],
+   "traps": [
+    "<code>LineTotal</code> đã là sau giảm giá. Hãy tính giá trị niêm yết từ quantity và price.",
+    "Bỏ offer 1 (không giảm giá) ra khỏi bảng giảm giá, nếu không mọi mức trung bình đều bị loãng.",
+    "Mức giảm đã cho cho thấy chi phí của một offer. Nó không cho thấy offer đó có mang về doanh số thêm hay không."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một order line: quantity, giá niêm yết, giảm giá, LineTotal, special offer."
+    ],
+    [
+     null,
+     null,
+     "Mô tả từng offer: loại, phần trăm giảm giá, phạm vi sản phẩm."
+    ],
+    [
+     null,
+     null,
+     "Ngày đặt hàng và kênh không cần cho cách cắt này."
+    ],
+    [
+     null,
+     null,
+     "Chi tiết sản phẩm không cần ở cấp độ loại offer."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders_detail</code>: mỗi dòng là một order line, có <code>SpecialOfferID</code>.",
+    "<code>ADW_Dim_SpecialOffer</code>: mỗi offer một dòng. JOIN là nhiều dòng về một offer, nên các dòng không bị nhân bản."
+   ],
+   "goal": "Mỗi loại offer một dòng (không gồm no discount): số dòng, giá trị niêm yết, revenue, mức giảm đã cho và phần trăm giảm trên giá niêm yết.",
+   "watch": [
+    "Phần trăm trên giá niêm yết là mức giảm ÷ giá trị niêm yết, không phải mức giảm ÷ revenue. Revenue vốn đã là con số nhỏ hơn.",
+    "Một loại có ít dòng có thể trông cực đoan theo phần trăm. Hãy đọc số dòng đi kèm."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Các offer chỉ là một phần nhỏ của revenue (6.8%) nhưng tốn tiền thật: khoảng $528K giảm giá, giảm 7% so với giá niêm yết trên các dòng có giảm giá.",
+    "New Product cho đi nhiều nhất ($224K), trong khi Discontinued Product sâu nhất với mức giảm 36% so với giá niêm yết. Volume discount chạm đến nhiều dòng nhất ở mức nông.",
+    "Gia hạn volume discount. Định giá lại các offer xả hàng và khuyến mãi sâu hoặc giới hạn thời gian cho chúng, và kiểm tra xem những offer đó có mang về thêm số lượng không: data này cho thấy chi phí, không cho thấy mức lift."
+   ],
+   "checks": [
+    "Mình đặt quy mô business có giảm giá cạnh tổng revenue.",
+    "Mình tính giá trị niêm yết từ quantity và price.",
+    "Mình xem cả đô la lẫn phần trăm, và nói rằng chúng xếp hạng khác nhau.",
+    "Mình nêu điều còn thiếu (offer có làm tăng doanh số không?)."
+   ]
+  },
+  "extra_sql": {
+   "title": "Các dòng có giảm giá lớn đến đâu so với phần còn lại?"
+  },
+  "questions": [
+   "Bao nhiêu phần revenue nằm trên các dòng có giảm giá?",
+   "Mình đã cho đi bao nhiêu giảm giá, và ở loại offer nào?",
+   "Loại offer nào sâu nhất so với những gì nó bán được?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Quantity × đơn giá niêm yết, trước mọi giảm giá."
+   ],
+   [
+    null,
+    "Giá trị niêm yết − revenue đã xuất hóa đơn (<code>LineTotal</code>)."
+   ],
+   [
+    null,
+    "Mức giảm đã cho ÷ giá trị niêm yết."
+   ],
+   [
+    null,
+    "Revenue trên các dòng có giảm giá ÷ tất cả revenue."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Mức giảm giá đã cho theo loại offer, tất cả đơn, tính bằng nghìn đô la.",
+    "title": "New Product cho đi nhiều nhất: $224K",
+    "why": "Một giá trị cho mỗi nhóm, có xếp hạng: bar đơn giản bắt đầu từ zero."
+   },
+   {
+    "sub": "Mức giảm giá đã cho tính bằng phần trăm giá trị niêm yết, theo loại offer.",
+    "title": "Discontinued Product sâu nhất: giảm 36% so với giá niêm yết",
+    "why": "Một metric thứ hai trên cùng các nhóm. Thứ hạng thay đổi, và đó chính là điểm cần thấy."
+   }
+  ]
+ },
+ "adw-seasonality": {
+  "title": "Đơn online đạt đỉnh ở Q4. Đó là mùa vụ hay là tăng trưởng?",
+  "brief": {
+   "subject": "Có nên lên kế hoạch cho một Q4 lớn mỗi năm không?",
+   "body": [
+    "Số đơn online trong ba tháng cuối năm 2013 nhiều hơn hơn sáu lần so với ba tháng đầu năm. Sếp tôi nói đó là Giáng sinh và muốn mình thuê nhân viên thời vụ vào Q4 hằng năm.",
+    "Trước khi ký một kế hoạch nhân sự, tôi muốn biết bao nhiêu phần của cú nhảy đó là do mùa vụ. Chỉ nhìn đơn online, cho 2012 và 2013, theo quý."
+   ],
+   "ask": "Trả lời trong ba câu: có đỉnh Q4 không, phần mùa vụ lớn đến đâu, và Linh nên lên kế hoạch thế nào.",
+   "facts": [
+    "Đơn online có <code>OnlineOrderFlag = 1</code> trong <code>ADW_Sales_orders</code>.",
+    "Dùng số đơn. Đơn của sales rep theo một nhịp khác và bị loại ra."
+   ]
+  },
+  "context": {
+   "company": "AdventureWorks Cycles chạy một cửa hàng online bên cạnh mảng reseller. Đơn online là các giỏ hàng nhỏ (khoảng $1,000) và chiếm phần lớn số đơn.",
+   "situation": "Team online đang lên kế hoạch nhân sự và hàng tồn cho năm tới. Q4 năm ngoái trông rất lớn, nên một manager muốn \"lên kế hoạch cho một Q4 lớn mỗi năm\".",
+   "decision": "Có thật là có một đỉnh Q4 mà mình nên chuẩn bị nhân sự không, và nó lớn đến đâu?"
+  },
+  "frame": {
+   "nudge": "Một năm data không tách được mùa vụ khỏi tăng trưởng. Bạn cần so sánh gì, và một quy luật mùa vụ thật sẽ trông thế nào ở năm thứ hai?",
+   "tree": [
+    "<b>Q4 có phải là đỉnh mùa vụ không?</b>",
+    [
+     "Q4 so với Q1 trong 2013",
+     "Q4 so với Q1 trong 2012",
+     "Hình dạng theo từng tháng của cả hai năm"
+    ]
+   ],
+   "hyp": [
+    "Q4 cao hơn Q1 ở cả hai năm.",
+    "Cú nhảy của 2013 quá lớn để chỉ là mùa vụ."
+   ],
+   "traps": [
+    "Một năm tăng trưởng trông giống một mùa vụ. Hãy so cùng các quý giữa các năm.",
+    "Tăng trưởng có thể đến dưới dạng một bước nhảy. Hãy nhìn các tháng cũng như các quý.",
+    "Số đơn tăng nói lên rất ít về quy mô giỏ hàng."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn: ngày, cờ kênh, khách hàng, territory, SubTotal."
+    ],
+    [
+     null,
+     null,
+     "Không cần các dòng của đơn để đếm số đơn."
+    ],
+    [
+     null,
+     null,
+     "Không có yếu tố địa lý trong câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một đơn. <code>COUNT(*)</code> đếm số đơn.",
+    "Dựng quý bằng <code>CASE WHEN</code> trên <code>MONTH(OrderDate)</code>, rồi pivot hai năm bằng <code>SUM</code> có điều kiện."
+   ],
+   "goal": "Mỗi quý một dòng: số đơn online trong 2012 và trong 2013.",
+   "watch": [
+    "T-SQL không cho GROUP BY dùng alias của SELECT, nên hãy lặp lại CASE.",
+    "Q4 năm 2013 so với Q1 năm 2013 trộn mùa vụ với một năm tăng trưởng. Hãy so với cùng các quý của 2012 thay vào đó."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Có một mức nâng mùa vụ nhỏ, khoảng 30%, nhưng phần lớn cú nhảy Q4 của 2013 là tăng trưởng, không phải mùa vụ. Hãy lên kế hoạch cho một đỉnh Q4 vừa phải, không phải gấp sáu lần.",
+    "Trong 2013, đơn online tăng từ 852 ở Q1 lên 5,674 ở Q4 (+566%). Trong 2012, cùng hai quý đó là 594 và 771 (+30%). Đường của 2013 nằm giữa 251 và 333 đơn mỗi tháng cho đến tháng 5, rồi leo lên: 533 vào tháng 6 và 1,564 vào tháng 7, khoảng 1,757 mỗi tháng cho phần còn lại của năm. Mức đó được giữ trong nửa đầu 2014 (khoảng 1,855 mỗi tháng).",
+    "Hãy chuẩn bị nhân sự cho mức mới, vốn đã được giữ trong một năm, và thêm một khoản đệm mùa vụ khoảng một phần ba cho Q4. Hỏi marketing xem điều gì đã thay đổi vào giữa 2013, và chạy lại khi 2014 có một năm đầy đủ. Lưu ý: hai năm chỉ cho một quan sát về mùa vụ, không phải một quy luật."
+   ],
+   "checks": [
+    "Mình đã so cùng các quý qua hai năm.",
+    "Mình đã tách phần mùa vụ khỏi bước nhảy của mức nền.",
+    "Mình đưa ra quyết định về nhân sự kèm quy mô.",
+    "Mình nói hai năm không chứng minh được điều gì."
+   ]
+  },
+  "extra_sql": {
+   "title": "Theo từng tháng (đưa vào line chart)"
+  },
+  "questions": [
+   "Q4 lớn hơn Q1 bao nhiêu trong 2013?",
+   "Q4 có lớn hơn Q1 ở năm 2012 không?",
+   "Nếu hai năm không khớp nhau, điều gì khác đã thay đổi trong 2013?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Đơn Q4 ÷ đơn Q1 − 1, trong cùng một năm."
+   ],
+   [
+    null,
+    "Một tháng hoặc quý tính theo tỷ trọng so với mức trung bình của cùng năm. Chỉ có ý nghĩa khi năm đó đi ngang."
+   ],
+   [
+    null,
+    "Một cú nhảy đột ngột và kéo dài của mức nền. Mùa vụ thì lên rồi lại xuống."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Đơn online, Q4 so với Q1 của cùng năm.",
+    "title": "Q4 hơn Q1 30% trong 2012 và 566% trong 2013",
+    "why": "So sánh hai giá trị: dùng bar bắt đầu từ zero. Khoảng cách giữa chúng là thông điệp."
+   },
+   {
+    "sub": "Đơn online theo tháng. Các tháng được vẽ cùng thứ tự cho cả hai năm.",
+    "title": "2013 leo lên theo từng bước: tháng 6 và tháng 7 phá vỡ quy luật",
+    "why": "Thay đổi theo thời gian, hai series: đường line cho thấy chỗ đường của 2013 rời khỏi đường của 2012."
+   }
+  ]
+ },
+ "adw-newreturning": {
+  "title": "Revenue 2013: khách mới hay khách quay lại?",
+  "brief": {
+   "subject": "Revenue 2013 đến từ đâu?",
+   "body": [
+    "Phần lớn khách hàng đặt đơn trong 2013 chưa từng đặt đơn trước đó. Tôi muốn chuyển ngân sách từ retention sang acquisition, và tôi muốn kiểm tra revenue trước khi làm.",
+    "Chia 2013 thành <b>khách mới</b> (đơn đầu tiên trong đời nằm ở 2013) và <b>khách quay lại</b> (đơn đầu tiên trước 2013). Cho tôi số khách hàng, số đơn, revenue, revenue mỗi khách và tỷ trọng revenue của từng nhóm."
+   ],
+   "ask": "Trả lời trong ba câu: nhóm nào kiếm nhiều hơn, các số liệu theo từng khách nói lên điều gì, và điều đó có nghĩa gì với ngân sách.",
+   "facts": [
+    "Đơn đầu tiên của một khách hàng là <code>OrderDate</code> sớm nhất trong mọi năm.",
+    "Revenue là <code>SubTotal</code> của đơn."
+   ]
+  },
+  "context": {
+   "company": "AdventureWorks Cycles chi tiền vào hai việc: tìm khách hàng mới và giữ khách hàng hiện có. Ngân sách marketing được chia giữa hai việc này.",
+   "situation": "2013 là năm tốt nhất từ trước đến nay. CMO muốn chuyển ngân sách từ retention sang acquisition vì \"phần lớn khách hàng của mình là khách mới\".",
+   "decision": "Revenue 2013 đến từ đâu, và điều đó có ủng hộ việc chuyển ngân sách sang acquisition không?"
+  },
+  "frame": {
+   "nudge": "Số khách hàng và đô la revenue chỉ về hai hướng khác nhau ở đây. Cái nào nên dẫn dắt một quyết định về ngân sách, và điều gì làm phép so sánh công bằng?",
+   "tree": [
+    "<b>Revenue 2013 đến từ đâu?</b>",
+    [
+     "Ngày đơn đầu tiên của mỗi khách hàng",
+     "Khách hàng, đơn và revenue theo loại",
+     "Revenue mỗi khách",
+     "Cơ cấu kênh có che giấu quy luật không"
+    ]
+   ],
+   "hyp": [
+    "Khách mới là đa số theo số lượng.",
+    "Khách quay lại kiếm nhiều hơn tính theo đầu người."
+   ],
+   "traps": [
+    "Tìm đơn đầu tiên trên <b>mọi</b> năm. Nếu chỉ nhìn 2013, ai trông cũng là khách mới.",
+    "Một khách mới có thể đặt nhiều đơn trong 2013. Họ vẫn là khách mới.",
+    "So sánh các số liệu theo từng khách trước khi so tổng."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn: ngày, cờ kênh, khách hàng, territory, SubTotal."
+    ],
+    [
+     null,
+     null,
+     "Không cần các dòng của đơn."
+    ],
+    [
+     null,
+     null,
+     "Không có yếu tố địa lý ở đây."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một đơn. Dùng nó hai lần: một lần cho ngày đầu tiên của từng khách hàng, một lần cho revenue 2013.",
+    "Một CTE (<code>first_order</code>) chứa một dòng cho mỗi khách hàng. Join trở lại các đơn không làm nhân bản khách hàng."
+   ],
+   "goal": "Mỗi loại khách hàng một dòng: khách hàng, đơn, revenue, revenue mỗi khách và tỷ trọng revenue.",
+   "watch": [
+    "Đặt WHERE YEAR(OrderDate) = 2013 bên trong CTE sẽ làm thay đổi ngày đầu tiên của mọi khách hàng.",
+    "COUNT(*) đếm đơn, COUNT(DISTINCT CustomerID) đếm khách hàng."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Khách quay lại kiếm nhiều hơn: 63% revenue 2013 từ 21% khách hàng. Data không ủng hộ việc chuyển ngân sách khỏi retention chỉ dựa trên số khách hàng.",
+    "Khách mới là đa số (8,730 so với 2,365) và mang về $16.3M. Khách quay lại mang về $27.4M, tức $11,564 mỗi người so với $1,864. Sales rep chiếm $23.1M trong revenue của khách quay lại và $9.8M trong revenue của khách mới, nên các cửa hàng tạo ra khoảng chênh.",
+    "Giữ chi tiêu retention cho các account reseller, và đánh giá acquisition ở khách online một cách riêng. Lưu ý: đây là so sánh các nhóm, không phải so sánh ngân sách. Mình không có chi phí trên mỗi khách hàng, và một khách online mới có thể trở thành khách quay lại vào năm sau."
+   ],
+   "checks": [
+    "Mình định nghĩa khách mới và khách quay lại bằng đơn đầu tiên trên mọi năm.",
+    "Mình so revenue mỗi khách cũng như tổng.",
+    "Mình kiểm tra cách chia theo kênh trước khi kết luận.",
+    "Mình nói một quyết định ngân sách vẫn còn cần gì (chi phí trên mỗi khách hàng)."
+   ]
+  },
+  "extra_sql": {
+   "title": "Quy luật có đúng ở cả hai kênh không?"
+  },
+  "questions": [
+   "Mỗi nhóm có bao nhiêu khách hàng và bao nhiêu revenue?",
+   "Một khách hàng ở mỗi nhóm mang về bao nhiêu?",
+   "Cách chia này có giống nhau ở cả hai kênh không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Đơn đầu tiên trong đời rơi vào năm đó."
+   ],
+   [
+    null,
+    "Đơn đầu tiên trước năm đó, có ít nhất một đơn trong năm."
+   ],
+   [
+    null,
+    "Revenue ÷ khách hàng distinct."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Khách hàng tính bằng nghìn và revenue tính bằng $M, các đơn 2013.",
+    "title": "Bốn trong năm khách hàng là khách mới, nhưng khách quay lại mang về nhiều revenue hơn",
+    "why": "Cùng hai nhóm trên hai thước đo: bar ghép đôi cho thấy sự lệch nhau."
+   },
+   {
+    "sub": "Revenue 2013 mỗi khách hàng, theo loại khách hàng.",
+    "title": "Một khách quay lại mang về gấp 6.2 lần revenue của một khách mới",
+    "why": "Một giá trị cho mỗi nhóm: bar bắt đầu từ zero, có xếp hạng."
+   }
+  ]
+ },
+ "adw-winback": {
+  "title": "Nên gọi cho những khách hàng đã ngưng mua nào?",
+  "brief": {
+   "subject": "Team tôi nên gọi cho ai trong quý này?",
+   "body": [
+    "Team tôi gọi được vài trăm khách hàng trước khi hết quý. Tôi muốn dồn công sức đó vào những khách hàng từng mua, đã ngưng, và có giá trị.",
+    "Hôm nay là 1/7/2014 trong data này. Nhóm khách hàng theo thời gian kể từ đơn cuối (active trong 90 ngày, cooling từ 91 đến 365, lapsed trên 365) và theo số đơn đã đặt (1, 2, 3 trở lên). Cho tôi số khách hàng, lifetime revenue và revenue mỗi khách ở từng ô.",
+    "Sau đó kiểm tra các mốc cắt: khách hàng đặt lại thường quay lại trong 90 ngày, hay 365 là mốc tốt hơn?"
+   ],
+   "ask": "Trả lời trong bốn câu: ô nào là mục tiêu, bao nhiêu khách hàng và giá trị bao nhiêu, bạn đã kiểm tra định nghĩa lapsed thế nào, và lưu ý.",
+   "facts": [
+    "Số ngày kể từ đơn cuối = 1/7/2014 trừ <code>OrderDate</code> mới nhất của khách hàng.",
+    "Lifetime revenue là tổng <code>SubTotal</code> trên mọi đơn của một khách hàng."
+   ]
+  },
+  "context": {
+   "company": "AdventureWorks Cycles có 19,119 khách hàng. Nhiều cửa hàng đặt đơn nhiều lần trong năm. Account manager có thời gian liên hệ vài trăm khách.",
+   "situation": "Team account muốn có một danh sách win-back: những khách hàng đã im lặng và đáng để bỏ công. \"Lapsed\" chưa có định nghĩa nào được thống nhất.",
+   "decision": "Ai được đưa vào danh sách, và mốc cắt định nghĩa 'lapsed' có hợp lý với cách các khách hàng này thực sự đặt lại không?"
+  },
+  "frame": {
+   "nudge": "Để gọi một khách hàng là lapsed, trước hết bạn cần biết khách hàng thường chờ bao lâu giữa hai đơn. Hãy tìm khoảng đó trước khi chọn một ô. Nó thay đổi danh sách thế nào?",
+   "tree": [
+    "<b>Ai đáng để giành lại?</b>",
+    [
+     "Recency và frequency của từng khách hàng",
+     "Giá trị của từng ô recency x frequency",
+     "Khoảng cách bình thường giữa hai đơn của cùng một khách hàng",
+     "Các ô còn lại sau khi kiểm tra khoảng cách"
+    ]
+   ],
+   "hyp": [
+    "Những khách mua lặp lại rồi im lặng mang nhiều giá trị nhất.",
+    "Mốc 90 ngày quá ngắn với những khách hàng này."
+   ],
+   "traps": [
+    "Recency cần một ngày tham chiếu. Dùng ngày sau đơn cuối cùng trong data, không phải ngày hôm nay.",
+    "Khách hàng chỉ mua một lần có thể lớn nhưng không phải 'mất': họ chưa từng trở thành khách thường xuyên.",
+    "Một cờ 'lapsed' với một mốc cắt tự bịa sẽ đưa các cuộc gọi đến những người chỉ đang ở giữa hai đơn bình thường."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một đơn: ngày, cờ kênh, khách hàng, territory, SubTotal."
+    ],
+    [
+     null,
+     null,
+     "Chi tiết dòng không cần cho giá trị khách hàng."
+    ],
+    [
+     null,
+     null,
+     "Không cần yếu tố địa lý."
+    ]
+   ],
+   "grain": [
+    "<code>ADW_Sales_orders</code>: mỗi dòng là một đơn. Dựng một dòng cho mỗi khách hàng trong một CTE: ngày đơn cuối, số đơn, revenue.",
+    "Phép kiểm tra khoảng cách dùng <code>LAG(OrderDate)</code> trên các đơn của từng khách hàng, nên nó chạy ở cấp độ đơn."
+   ],
+   "goal": "Mỗi nhóm recency và nhóm frequency một dòng: khách hàng, lifetime revenue, revenue mỗi khách.",
+   "watch": [
+    "Lặp lại các biểu thức CASE trong GROUP BY: T-SQL không group được theo alias.",
+    "Đảm bảo ngày tham chiếu nằm sau đơn cuối cùng trong data, nếu không recency có thể âm."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Bắt đầu với khách hàng mua lặp lại đang cooling hoặc lapsed. Khách cooling có từ 3 đơn trở lên là 1,068 người trị giá $49.0M; khách lapsed là 119 người trị giá $12.5M, tức $105,027 mỗi người.",
+    "Phép kiểm tra khoảng cách làm yếu cả hai mốc: khoảng cách trung bình giữa hai đơn của cùng một khách hàng là 261 ngày, 72% các đơn lặp lại đến trong vòng một năm và chỉ 25% trong vòng 90 ngày. Một mốc 90 ngày sẽ gọi phần lớn khách hàng bình thường là đã im lặng, và ngay cả mốc 365 ngày cũng bắt nhầm khoảng 28% đơn chỉ đơn giản là đến trễ.",
+    "Hãy gọi 119 khách hàng lapsed có từ 3 đơn trở lên trước (giá trị cao nhất theo đầu người), rồi đến các account cooling lớn nhất, và giữ khách hàng chỉ có một đơn ra khỏi danh sách. Hãy coi \"lapsed\" là lý do để gọi, không phải bằng chứng đã mất. Lưu ý: lifetime revenue không phải margin và một khách hàng đã đặt từ lâu có thể đã rời đi hẳn; hãy thử cuộc gọi trên một mẫu và đo phản hồi."
+   ],
+   "checks": [
+    "Mình dùng ngày tham chiếu nằm sau đơn cuối cùng.",
+    "Mình đã kiểm tra mốc 'lapsed' với khoảng cách đặt lại thật.",
+    "Mình nhìn giá trị theo từng khách hàng cũng như tổng.",
+    "Mình nêu một nhóm mục tiêu đầu tiên và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Khách hàng mua lặp lại chờ bao lâu giữa các đơn?"
+  },
+  "questions": [
+   "Ô recency và frequency nào chứa nhiều giá trị nhất?",
+   "Ô nào là mục tiêu tốt nhất cho các cuộc gọi?",
+   "Khách hàng mua lặp lại thường đặt lại trong 90 ngày hay trong một năm?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Số ngày giữa đơn cuối của khách hàng và ngày tham chiếu."
+   ],
+   [
+    null,
+    "Số đơn của mỗi khách hàng."
+   ],
+   [
+    null,
+    "Tổng SubTotal trên mọi đơn của khách hàng."
+   ],
+   [
+    null,
+    "Số ngày giữa hai đơn liên tiếp của cùng một khách hàng."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Lifetime revenue của khách hàng có từ 3 đơn trở lên, theo nhóm recency.",
+    "title": "Khách mua lặp lại đang cooling mang nhiều giá trị nhất: $49.0M",
+    "why": "Một giá trị cho mỗi nhóm: bar bắt đầu từ zero. Cột được làm nổi bật là mục tiêu."
+   },
+   {
+    "sub": "Revenue mỗi khách hàng, khách hàng có từ 3 đơn trở lên.",
+    "title": "Một khách lapsed mua lặp lại đáng giá $105,027 mỗi người",
+    "why": "Giá trị theo đầu người cho thấy một cuộc gọi đáng giá nhất ở đâu, một thứ hạng khác với các tổng."
+   }
+  ]
+ },
+ "crm-managers": {
+  "title": "Manager nào dẫn đầu về revenue, và đó là nhờ cả team hay một agent?",
+  "brief": {
+   "subject": "Rà soát bonus: revenue theo manager",
+   "body": [
+    "Tôi đang chuẩn bị buổi rà soát bonus cho manager. Tôi có một bảng xếp hạng sáu manager theo revenue và muốn kiểm tra nó trước khi dùng.",
+    "Chỉ tính deal thắng, với <code>close_value</code> là revenue. Cho tôi xem các manager, và những agent giỏi nhất đứng sau họ."
+   ],
+   "ask": "Trả lời trong ba câu: ai dẫn đầu, điều gì đứng sau vị trí dẫn đầu đó, và bảng xếp hạng có công bằng để tính bonus không.",
+   "facts": [
+    "Mỗi agent báo cáo cho một manager, trong <code>CRM_sales_teams</code>.",
+    "Revenue = <code>close_value</code> của các deal có <code>deal_stage = 'Won'</code>."
+   ]
+  },
+  "frame": {
+   "nudge": "Tổng của một manager là tổng của các agent của họ. Nếu một agent lớn hơn hẳn phần còn lại, bảng xếp hạng manager đang đo điều gì?",
+   "tree": [
+    "<b>Bảng xếp hạng manager có công bằng không?</b>",
+    [
+     "Revenue và số deal thắng theo manager",
+     "Revenue theo agent, để so sánh các team có quy mô khác nhau",
+     "Các agent hàng đầu và tỷ trọng của họ trên tổng"
+    ]
+   ],
+   "hyp": [
+    "Manager đứng đầu có một agent ngôi sao.",
+    "Nếu bỏ agent đó ra, bảng xếp hạng sẽ khác."
+   ],
+   "traps": [
+    "Chỉ đếm deal Won. Deal Lost và deal đang mở không có revenue.",
+    "Chia cho số agent đã chốt deal, không chia cho danh sách team.",
+    "Xếp hạng agent bằng RANK() OVER, vì TOP không portable."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một deal với agent, stage và giá trị."
+    ],
+    [
+     null,
+     null,
+     "Agent đến manager và văn phòng khu vực."
+    ],
+    [
+     null,
+     null,
+     "Khách hàng không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Sản phẩm không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal, đã lọc về Won.",
+    "<code>CRM_sales_teams</code>: mỗi agent một dòng, nên phép join không nhân bản deal."
+   ],
+   "goal": "Mỗi manager một dòng: agent, deal thắng, revenue và revenue mỗi agent. Sau đó liệt kê năm agent hàng đầu kèm tỷ trọng của họ trên tổng revenue.",
+   "watch": [
+    "COUNT(*) ở đây đếm các deal thắng vì WHERE chỉ giữ các dòng Won.",
+    "Bảng teams liệt kê 35 agent, nhưng chỉ có 30 người đã chốt deal. Đếm từ pipeline cho ra quy mô team thật."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Team của Melvin Marxen dẫn đầu với $2.25M, nhưng vị trí dẫn đầu dựa vào một agent.",
+    "Darcel Schlecht chốt $1.15M, chiếm 12% toàn bộ revenue và gấp 2.4 lần agent đứng sau. Nếu không có Darcel, team của Melvin chỉ có $1.10M, ngang với $1.09M của Dustin Brinkmann.",
+    "Đừng chỉ dùng bảng xếp hạng manager để tính bonus. Hãy cho thấy revenue mỗi agent và tỷ trọng của agent đứng đầu cạnh nó. Một lưu ý: đây chỉ là một năm, và một năm mạnh của một agent nói lên rất ít về manager."
+   ],
+   "checks": [
+    "Mình chỉ đếm deal thắng.",
+    "Mình nhìn xuống dưới cấp manager.",
+    "Mình nêu tỷ trọng của agent đứng đầu.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Năm agent hàng đầu (RANK() OVER cộng một tỷ trọng trên tổng; đưa vào chart thứ hai)"
+  },
+  "questions": [
+   "Team của manager nào mang về nhiều revenue nhất?",
+   "Các agent hàng đầu là ai, và mỗi người mang về bao nhiêu phần của tổng?",
+   "Bảng xếp hạng manager do cả team hay do một người tạo ra?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Tổng <code>close_value</code> trên các deal thắng."
+   ],
+   [
+    null,
+    "Revenue của manager ÷ số agent đã chốt ít nhất một deal."
+   ],
+   [
+    null,
+    "Revenue của agent ÷ revenue của tất cả agent."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Won revenue theo manager, $M.",
+    "title": "Team của Melvin Marxen dẫn đầu về revenue",
+    "why": "Một giá trị cho mỗi manager, có xếp hạng: bar bắt đầu từ zero."
+   },
+   {
+    "sub": "Năm agent hàng đầu theo won revenue, $M.",
+    "title": "Một agent chốt nhiều hơn gấp đôi người đứng sau",
+    "why": "Cùng bảng xếp hạng đó xuống thêm một cấp cho thấy agent đầu bảng cách xa phần còn lại đến mức nào."
+   }
+  ]
+ },
+ "crm-products": {
+  "title": "Revenue theo product series: vì sao phép join làm mất một sản phẩm?",
+  "brief": {
+   "subject": "Revenue theo product series",
+   "body": [
+    "Tôi muốn có won revenue cho từng product series (GTX, MG và GTK) cho buổi họp roadmap. Tên series nằm ở bảng products, còn các deal nằm ở bảng pipeline.",
+    "Một đồng nghiệp đã chạy một phép join và gửi số cho tôi, nhưng tổng trông quá thấp so với báo cáo sales. Hãy làm lại và nói cho tôi biết đã sai ở đâu."
+   ],
+   "ask": "Trả lời trong ba câu: revenue theo series, vì sao tổng đầu tiên thấp, và cần sửa gì.",
+   "facts": [
+    "Won revenue = <code>close_value</code> của các deal có <code>deal_stage = 'Won'</code>.",
+    "Series nằm ở <code>CRM_products</code> (các cột <code>product</code>, <code>series</code>, <code>sales_price</code>)."
+   ]
+  },
+  "frame": {
+   "nudge": "Sau một phép join, hãy so tổng với tổng trước đó. Nếu hai tổng khác nhau, phép join đã làm rơi những dòng nào?",
+   "tree": [
+    "<b>Vì sao tổng quá thấp?</b>",
+    [
+     "Tổng won revenue trước khi join",
+     "Tổng won revenue sau khi join",
+     "Những tên sản phẩm nào không khớp"
+    ]
+   ],
+   "hyp": [
+    "Một tên sản phẩm được viết khác nhau ở hai bảng.",
+    "Sản phẩm bị thiếu là một sản phẩm bán rất chạy."
+   ],
+   "traps": [
+    "INNER JOIN làm rơi các dòng không khớp mà không cảnh báo. Luôn kiểm tra tổng.",
+    "Tìm giá trị không khớp bằng LEFT JOIN và <code>IS NULL</code>.",
+    "Sửa tên ngay trong query bằng REPLACE, hoặc ở phía data nếu bạn sở hữu bảng đó."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Các deal với sản phẩm, stage và giá trị."
+    ],
+    [
+     null,
+     null,
+     "Ánh xạ sản phẩm sang series."
+    ],
+    [
+     null,
+     null,
+     "Agent không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Khách hàng không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal.",
+    "<code>CRM_products</code>: mỗi sản phẩm một dòng, nên phép join giữ một dòng cho mỗi deal miễn là tên khớp nhau."
+   ],
+   "goal": "Won revenue theo series cộng lại ra đúng tổng đầy đủ.",
+   "watch": [
+    "Phép join thông thường trả về một bảng trông đáng tin. Chỉ có tổng cho thấy revenue đang bị thiếu.",
+    "Phép kiểm tra không khớp cũng khớp cả deal đang mở và deal thua, nên con số đếm cao hơn riêng các deal thắng."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Series GTX mang về $7.3M (73% trong $10.0M đã thắng), MG mang về $2.3M (23%) và GTK $0.4M (4%).",
+    "Tổng đầu tiên thấp ở mức $6.5M vì pipeline viết một sản phẩm là <code>GTXPro</code> còn bảng products viết là <code>GTX Pro</code>. Phép join đã làm rơi 729 deal thắng trị giá $3.5M, vốn là sản phẩm bán chạy nhất.",
+    "Dùng query đã sửa cho roadmap và nhờ người sở hữu pipeline sửa cách viết tại nguồn. Một lưu ý: GTK 500 chỉ có 15 deal thắng, nên tỷ trọng của nó dao động rất nhiều chỉ với một cú bán lớn."
+   ],
+   "checks": [
+    "Mình đã so tổng trước và sau phép join.",
+    "Mình tìm ra sản phẩm không khớp bằng LEFT JOIN.",
+    "Mình sửa tên thay vì làm rơi các dòng.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Won revenue theo sản phẩm (cho thấy sản phẩm nào đã bị mất)"
+  },
+  "questions": [
+   "Mỗi series mang về bao nhiêu won revenue?",
+   "Revenue theo series có cộng lại đúng bằng tổng của tất cả deal thắng không?",
+   "Nếu không, sản phẩm nào đang bị thiếu và vì sao?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Tổng <code>close_value</code> trên các deal thắng."
+   ],
+   [
+    null,
+    "Revenue của series ÷ tổng won revenue."
+   ],
+   [
+    null,
+    "Tổng sau khi join − tổng trước khi join. Nó phải bằng không."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Won revenue theo product series, $M.",
+    "title": "GTX mang về gần ba phần tư revenue",
+    "why": "Ba nhóm với một giá trị mỗi nhóm: bar bắt đầu từ zero."
+   },
+   {
+    "sub": "Won revenue theo sản phẩm, $M. Cột được làm nổi bật là GTXPro.",
+    "title": "Sản phẩm bị rơi khỏi phép join lại là sản phẩm bán chạy nhất",
+    "why": "Bảy sản phẩm xếp hạng theo revenue: bar cho thấy phần bị thiếu lớn đến đâu."
+   }
+  ]
+ },
+ "crm-sectors": {
+  "title": "Nên nhắm vào sector khách hàng nào?",
+  "brief": {
+   "subject": "Chiến dịch tới nên nhắm vào sector nào?",
+   "body": [
+    "Chúng ta có ngân sách cho một chiến dịch tập trung vào một sector. Tôi muốn chọn sector mà mình thắng được nhiều revenue nhất, và tôi muốn biết điều đó đến từ việc chốt tốt hơn hay chỉ vì có nhiều deal hơn.",
+    "Dùng các deal đã đóng (Won hoặc Lost) và sector của account."
+   ],
+   "ask": "Trả lời trong ba câu: sector nào mang về nhiều revenue nhất, nó có chốt tốt hơn các sector khác không, và nên nhắm vào đâu.",
+   "facts": [
+    "Sector của mỗi khách hàng nằm ở <code>CRM_Accounts</code>, liên kết qua tên <code>account</code>.",
+    "Data viết một sector là <code>technolgy</code>. Hãy giữ nguyên cách viết khi bạn lọc."
+   ]
+  },
+  "frame": {
+   "nudge": "Revenue của một sector là số deal × win rate × quy mô deal. Trong ba thứ đó, cái nào khác nhau giữa các sector?",
+   "tree": [
+    "<b>Nên nhắm vào sector nào?</b>",
+    [
+     "Revenue theo sector",
+     "Win rate theo sector",
+     "Số deal và quy mô deal trung bình theo sector"
+    ]
+   ],
+   "hyp": [
+    "Các win rate tương tự nhau, nên revenue theo sau số lượng deal.",
+    "Một sector nhỏ có thể có quy mô deal trung bình cao."
+   ],
+   "traps": [
+    "Dùng deal đã đóng cho win rate, và deal Won cho revenue và quy mô deal.",
+    "Ở nhiều dòng deal đang mở không có account, nên inner join làm rơi chúng. Deal đã đóng thì đều có.",
+    "Đừng đọc một khoảng chênh 1 hay 2 điểm của win rate như một thế mạnh."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Các deal với account, stage và giá trị."
+    ],
+    [
+     null,
+     null,
+     "Sector của từng khách hàng."
+    ],
+    [
+     null,
+     null,
+     "Agent không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Sản phẩm không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal.",
+    "<code>CRM_Accounts</code>: mỗi account một dòng, nên phép join không nhân bản deal."
+   ],
+   "goal": "Mỗi sector một dòng: deal đã đóng, win rate, won revenue và quy mô deal thắng trung bình.",
+   "watch": [
+    "Quy mô deal trung bình chia revenue cho số deal thắng, không chia cho deal đã đóng.",
+    "Deal thua có close_value bằng 0, nên cộng chúng vào không gây hại, nhưng chia cho chúng thì có."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Retail mang về nhiều won revenue nhất ($1.87M), nhưng nó không chốt tốt hơn các sector khác.",
+    "Win rate nằm giữa 61% và 65% ở cả 10 sector, nên revenue theo sau số lượng deal. Retail có 1,267 deal đã đóng, nhiều nhất trong các sector, và một deal thắng trung bình là $2,337.",
+    "Hãy nhắm vào retail nếu mục tiêu là khối lượng. Nếu mục tiêu là tỷ lệ chốt tốt hơn, không sector nào mang lại điều đó, nên hãy nhìn vào sản phẩm hoặc agent. Data chỉ có một năm và 6,711 deal đã đóng, nên hãy giữ chiến dịch ở quy mô nhỏ và đo lường nó."
+   ],
+   "checks": [
+    "Mình dùng deal đã đóng cho win rate và deal thắng cho revenue.",
+    "Mình tách khối lượng khỏi win rate.",
+    "Mình không đọc một khoảng chênh nhỏ như một thế mạnh.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "questions": [
+   "Sector nào mang về nhiều won revenue nhất?",
+   "Có sector nào có win rate cao hơn rõ rệt không?",
+   "Revenue của một sector do số lượng deal hay do quy mô deal tạo ra?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Won ÷ (Won + Lost)."
+   ],
+   [
+    null,
+    "Tổng <code>close_value</code> trên các deal thắng."
+   ],
+   [
+    null,
+    "Won revenue ÷ số deal thắng."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Won revenue theo sector khách hàng, $M.",
+    "title": "Retail dẫn đầu về won revenue",
+    "why": "Mười sector xếp hạng theo một giá trị: bar bắt đầu từ zero."
+   },
+   {
+    "sub": "Win rate trên deal đã đóng theo sector.",
+    "title": "Win rate hầu như không khác nhau giữa các sector",
+    "why": "Trên thang 0 đến 100, các cột gần bằng nhau nói lên điều chính: sector không làm thay đổi mức độ chốt tốt của mình."
+   }
+  ]
+ },
+ "crm-agents": {
+  "title": "Ai là những người chốt deal yếu nhất, và mình có phân biệt được không?",
+  "brief": {
+   "subject": "Năm người thấp nhất về win rate: kế hoạch coaching?",
+   "body": [
+    "Mỗi agent có một số deal đã đóng khác nhau, và tôi biết một tỷ lệ từ 120 deal thì kém chắc chắn hơn một tỷ lệ từ 550 deal. Tôi vẫn cần một danh sách cho kế hoạch coaching.",
+    "Với mỗi agent, cho tôi số deal đã đóng, win rate, và biên sai số quanh tỷ lệ của cả team với số deal đó. Đánh dấu những agent có tỷ lệ cách mức trung bình của team xa hơn biên đó."
+   ],
+   "ask": "Trả lời trong ba câu: có bao nhiêu agent thực sự khác biệt, họ là ai, và bạn sẽ làm gì với những người còn lại.",
+   "facts": [
+    "Win rate = Won ÷ (Won + Lost). Deal đang mở không được tính.",
+    "Biên sai số cho tỷ lệ của team p và n deal xấp xỉ 1.96 × √(p × (1 − p) ÷ n)."
+   ]
+  },
+  "context": {
+   "company": "Một công ty B2B bán nhiều loại sản phẩm phần cứng máy tính cho các business account thông qua một team sales khoảng 30 agent ở ba văn phòng khu vực.",
+   "situation": "Sales director muốn đưa năm agent thấp nhất vào một kế hoạch coaching. Bảng xếp hạng đến thẳng từ một bảng win rate.",
+   "decision": "Những agent nào, nếu có, hoạt động khác với team, và ai xứng đáng được coaching?"
+  },
+  "frame": {
+   "nudge": "Trong 30 agent, sẽ luôn có vài người nằm cuối bất kỳ bảng xếp hạng nào. Bảng xếp hạng sẽ trông thế nào nếu mọi agent hoàn toàn như nhau và chỉ có may rủi khác nhau?",
+   "tree": [
+    "<b>Ai đang làm kém?</b>",
+    [
+     "Win rate và số deal của từng agent",
+     "Tỷ lệ của team để so sánh",
+     "Biên sai số cho số deal của từng agent",
+     "Các agent nằm ngoài biên"
+    ]
+   ],
+   "hyp": [
+    "Một số agent thấp hơn tỷ lệ của team nhiều hơn mức may rủi cho phép.",
+    "Phần lớn trong năm agent thấp nhất nằm trong phạm vi may rủi."
+   ],
+   "traps": [
+    "Deal đang mở không thuộc mẫu số.",
+    "Một danh sách 'năm người thấp nhất' luôn tồn tại, ngay cả khi không ai khác biệt.",
+    "Một cờ ở mức 95% sẽ bắt nhầm khoảng 1 trên 20 agent chỉ do may rủi. Hãy nói rõ điều đó."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một deal với agent và stage của nó."
+    ],
+    [
+     null,
+     null,
+     "Ánh xạ agent sang văn phòng; câu hỏi này tính theo từng agent."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal. Lọc về Won và Lost, group theo <code>sales_agent</code>.",
+    "CTE thứ hai giữ tỷ lệ của team một lần; một CROSS JOIN đặt nó cạnh mọi agent."
+   ],
+   "goal": "Mỗi agent một dòng: deal đã đóng, win rate, biên sai số tính bằng điểm và một kết luận.",
+   "watch": [
+    "Chia số nguyên làm mất phần thập phân: hãy viết 1.0 * won / closed.",
+    "Biên dùng tỷ lệ của team và số deal của chính agent, nên các agent nhỏ có dải rộng hơn."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Chỉ 2 trong 30 agent khác với team vượt quá phạm vi may rủi, nên một kế hoạch coaching năm người thấp nhất phần lớn sẽ là coaching cho sự may rủi.",
+    "Team thắng 63.2% số deal đã đóng. Các tỷ lệ chạy từ 55.0% (Lajuana Vencill, 231 deal) đến 70.4% (Hayden Neloms, 152 deal). Được đánh dấu: Lajuana Vencill (55.0%), Maureen Marcano (70.0%). 5 agent có dưới 150 deal đã đóng, và biên của họ từ 8 điểm trở lên.",
+    "Chỉ coaching các agent được đánh dấu, rà soát deal của họ để tìm quy luật, và kiểm tra lại sau thêm một quý data. Với mọi người còn lại, tránh xếp hạng con người dựa trên các tỷ lệ từ mẫu nhỏ. Lưu ý: với 30 agent và mốc 95%, một cờ có thể xuất hiện chỉ do ngẫu nhiên."
+   ],
+   "checks": [
+    "Mình chỉ dùng deal đã đóng.",
+    "Mình đặt một biên sai số cạnh mỗi tỷ lệ.",
+    "Mình đếm xem có bao nhiêu agent thực sự khác biệt thay vì chỉ gọi tên ai đứng cuối.",
+    "Mình nói rằng một cờ trong ba mươi có thể là may rủi."
+   ]
+  },
+  "questions": [
+   "Win rate và số deal đã đóng của từng agent là bao nhiêu?",
+   "Biên sai số của từng agent rộng đến đâu?",
+   "Có bao nhiêu agent khác với team vượt quá biên đó?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Won ÷ deal đã đóng."
+   ],
+   [
+    null,
+    "Won ÷ deal đã đóng trên tất cả agent (63.2%)."
+   ],
+   [
+    null,
+    "Xấp xỉ 1.96 × √(p × (1 − p) ÷ n) cho tỷ lệ của team p và số deal n của agent."
+   ],
+   [
+    null,
+    "Tỷ lệ của agent nằm ngoài tỷ lệ của team ± biên."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Win rate trên deal đã đóng, với các thanh sai số cho may rủi.",
+    "title": "Năm agent thấp nhất và năm agent cao nhất, kèm biên sai số",
+    "why": "Các điểm có thanh sai số không cần baseline bằng zero. Một thanh cắt qua đường của team nghĩa là agent đó có thể chỉ ở mức trung bình."
+   }
+  ]
+ },
+ "crm-stuck": {
+  "title": "Pipeline đang mở: những deal nào bị kẹt?",
+  "brief": {
+   "subject": "Dọn pipeline trước khi lập forecast",
+   "body": [
+    "Có 1,589 deal ở stage Engaging, cộng thêm 500 deal ở Prospecting chưa có engage date. Trước khi forecast, tôi muốn biết có bao nhiêu deal Engaging đã cũ.",
+    "Lấy 31/12/2017 là hôm nay. Nhóm các deal Engaging theo số ngày kể từ lúc engage: 0 đến 30, 31 đến 60, 61 đến 90, 91 đến 138 và trên 138. Sau đó cho tôi biết một deal bình thường trông thế nào khi nó chốt, để tôi đánh giá 'cũ' nghĩa là gì."
+   ],
+   "ask": "Trả lời trong ba câu: bao nhiêu deal trông như bị kẹt, bạn so chúng với cái gì, và tôi nên làm gì trước khi forecast.",
+   "facts": [
+    "Tuổi = số ngày từ <code>engage_date</code> đến 31/12/2017.",
+    "138 ngày là khoảng thời gian dài nhất mà một deal đã đóng từng mất, nên các deal cũ hơn mức đó là outlier theo chính lịch sử của data này."
+   ]
+  },
+  "context": {
+   "company": "Một công ty B2B bán nhiều loại sản phẩm phần cứng máy tính cho các business account thông qua một team sales khoảng 30 agent ở ba văn phòng khu vực.",
+   "situation": "Quý kết thúc vào 31/12. Forecast cộng mọi deal đang mở, và sales director nghi rằng nó bao gồm cả những deal không ai đang làm.",
+   "decision": "Cần đặt câu hỏi cho bao nhiêu deal đang mở, và bao nhiêu phần forecast phụ thuộc vào chúng?"
+  },
+  "frame": {
+   "nudge": "Để gọi một deal là cũ, bạn cần biết các deal thường mất bao lâu. Bạn lấy con số đó ở đâu: từ các deal đang mở hay từ các deal đã đóng?",
+   "tree": [
+    "<b>Có bao nhiêu deal đang mở bị kẹt?</b>",
+    [
+     "Tuổi của từng deal Engaging",
+     "Cycle time của các deal đã đóng (Won và Lost)",
+     "Các deal cũ hơn chu kỳ đã đóng dài nhất"
+    ]
+   ],
+   "hyp": [
+    "Phần lớn deal đang mở là deal mới.",
+    "Một cái đuôi các deal cũ làm phình forecast."
+   ],
+   "traps": [
+    "Deal đang mở không có ngày chốt. Tuổi lấy từ hôm nay trừ engage date.",
+    "Deal Prospecting không có engage date: bỏ chúng khỏi bảng tuổi và nhắc đến chúng.",
+    "Tuổi phụ thuộc vào ngày tham chiếu. Chọn một ngày và nói rõ."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Stage của deal, engage date và ngày chốt."
+    ],
+    [
+     null,
+     null,
+     "Góc nhìn theo agent là bước tiếp theo, không phải câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal. Giữ <code>deal_stage = 'Engaging'</code> cho các deal đang mở.",
+    "Deal đã đóng (Won hoặc Lost) có cả hai ngày, nên chu kỳ của chúng là <code>DATEDIFF(day, engage_date, close_date)</code>."
+   ],
+   "goal": "Mỗi nhóm tuổi một dòng: deal đang mở và tỷ trọng trên các deal đang mở.",
+   "watch": [
+    "Lặp lại toàn bộ CASE trong GROUP BY (T-SQL không có alias ở đó).",
+    "Ngày tham chiếu là một giả định. Hãy nói rõ nó cạnh các con số."
+   ]
+  },
+  "answer": {
+   "model": [
+    "1,291 trong 1,589 deal Engaging (81%) cũ hơn deal dài nhất từng đóng, nên chúng không nên được tính vào forecast cho đến khi có người xác nhận.",
+    "Các deal đã đóng mất tối đa 138 ngày, 56% chốt trong 60 ngày và 80% trong 90 ngày. Thêm 188 deal đang mở nằm giữa 91 và 138 ngày, là khoảng mà chỉ khoảng 20% deal đã đóng hoàn tất. 500 deal Prospecting không có engage date và không nằm trong số đếm này.",
+    "Yêu cầu các agent xác nhận hoặc đóng các deal quá 138 ngày trong tuần này, giảm nhóm 91 đến 138 ngày xuống một xác suất khớp với lịch sử, và báo cáo forecast có và không có chúng. Lưu ý: 31/12 là 'hôm nay' do mình giả định, và một deal có thể chậm vì một lý do chính đáng."
+   ],
+   "checks": [
+    "Mình đã nêu ngày tham chiếu.",
+    "Mình so tuổi deal với lịch sử của các deal đã đóng.",
+    "Mình không tính deal Prospecting là đã cũ.",
+    "Mình nói với VP nên làm gì trước khi forecast."
+   ]
+  },
+  "extra_sql": {
+   "title": "Các deal đã đóng trông thế nào (baseline để so sánh)"
+  },
+  "questions": [
+   "Các deal Engaging cũ đến đâu?",
+   "Các deal đã đóng thường mất bao lâu?",
+   "Có bao nhiêu deal đang mở cũ hơn bất kỳ deal nào từng đóng?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Số ngày giữa engage date và ngày tham chiếu (31/12/2017)."
+   ],
+   [
+    null,
+    "Số ngày giữa engage date và ngày chốt của một deal đã đóng."
+   ],
+   [
+    null,
+    "Deal đang mở cũ hơn chu kỳ đã đóng dài nhất trong data."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Các deal Engaging theo số ngày kể từ lúc engage, tính đến 31/12/2017.",
+    "title": "1,291 deal Engaging cũ hơn bất kỳ deal nào từng đóng",
+    "why": "Các nhóm có thứ tự, một giá trị mỗi nhóm: bar bắt đầu từ zero. Cột cuối cùng là phát hiện chính."
+   }
+  ]
+ },
+ "crm-quarterend": {
+  "title": "Deal chốt tốt hơn vào cuối quý. Là áp lực thật hay thói quen báo cáo?",
+  "brief": {
+   "subject": "Vì sao win rate tăng vọt vào cuối quý?",
+   "body": [
+    "Chart win rate theo tháng có hình răng cưa. Các tháng cuối quý trông tốt hơn hẳn các tháng ở giữa, và một exec đã hỏi liệu mình có nên \"cứ chạy thêm nhiều đợt đẩy cuối quý\".",
+    "Cho tôi win rate theo tháng của ngày chốt (tháng 3 đến tháng 12, các tháng mình có), được đánh dấu là cuối quý hay không. Sau đó so sánh hai nhóm, gồm cả thời gian deal thắng và deal thua mất để chốt, và kiểm tra xem mọi sản phẩm có cho thấy cùng một quy luật không."
+   ],
+   "ask": "Trả lời trong ba câu: hiệu ứng lớn đến đâu, điều gì có thể giải thích nó, và bạn có dựng kế hoạch trên nó không.",
+   "facts": [
+    "Các tháng cuối quý: tháng 3, 6, 9, 12.",
+    "Chỉ deal đã đóng. Data có ngày chốt từ tháng 3 đến tháng 12/2017."
+   ]
+  },
+  "context": {
+   "company": "Một công ty B2B bán nhiều loại sản phẩm phần cứng máy tính cho các business account thông qua một team sales khoảng 30 agent ở ba văn phòng khu vực.",
+   "situation": "Các sales leader nhận thấy win rate nhảy vọt vào tháng 3, 6, 9 và 12. Target và bonus theo quý được trả dựa trên deal closed-won.",
+   "decision": "Cú nhảy cuối quý là một hiệu ứng bán hàng thật mà mình dùng được, hay là dấu hiệu deal bị kéo sớm hoặc bị gắn nhãn để đạt target?"
+  },
+  "frame": {
+   "nudge": "Một quy luật gắn với lịch có thể là hiệu ứng thật hoặc là tác dụng phụ của cách ghi nhận deal. Data nào sẽ tách được hai cách giải thích đó?",
+   "tree": [
+    "<b>Hiệu ứng cuối quý có thật không?</b>",
+    [
+     "Win rate theo tháng chốt",
+     "Tháng cuối quý so với các tháng khác",
+     "Có cùng quy luật ở từng sản phẩm không?",
+     "Thời gian: deal thắng và deal thua có mất thời gian khác nhau vào cuối quý không?"
+    ]
+   ],
+   "hyp": [
+    "Các tháng cuối quý thắng thường xuyên hơn nhiều.",
+    "Hiệu ứng giống nhau ở mọi sản phẩm, điều đó chỉ về một nguyên nhân thuộc quy trình."
+   ],
+   "traps": [
+    "Win rate theo tháng <b>chốt</b> bỏ qua các deal vẫn còn mở. Hãy nói rõ điều đó.",
+    "Win rate cao vào cuối quý có thể nghĩa là nhiều deal thắng hơn hoặc ít deal thua được ghi nhận hơn.",
+    "Tháng 3 chỉ có một phần deal nếu data bắt đầu từ tháng 3: hãy đọc số deal cạnh các tỷ lệ."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Stage, engage date, ngày chốt và giá trị."
+    ],
+    [
+     null,
+     null,
+     "Góc nhìn theo agent là bước tiếp theo."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal. Lọc về Won và Lost, group theo tháng của <code>close_date</code>.",
+    "Đánh dấu các tháng cuối quý bằng <code>CASE WHEN MONTH(close_date) IN (3, 6, 9, 12)</code>."
+   ],
+   "goal": "Mỗi tháng chốt một dòng: loại tháng, deal đã đóng, deal thắng và win rate.",
+   "watch": [
+    "Group theo số tháng, không theo tên, để các tháng sắp xếp theo thứ tự lịch.",
+    "Một tháng có ít deal cho tỷ lệ nhiễu: hãy đọc số deal cạnh nó."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Hiệu ứng này lớn: 80.7% deal đã đóng là thắng ở các tháng cuối quý so với 52.3% ở các tháng còn lại, chênh 28 điểm. Mình chưa nên dựng kế hoạch bán hàng trên nó.",
+    "Khoảng chênh xuất hiện ở mọi sản phẩm và ở mọi tháng cuối quý, điều đó chỉ về một nguyên nhân thuộc quy trình hoặc thời điểm ảnh hưởng đến mọi sản phẩm. Một tháng cuối quý điển hình có 519 deal thắng so với 360 ở các tháng khác, và chỉ 124 deal thua so với 329. Deal thắng được kéo sớm vào và deal thua dường như được ghi nhận muộn hơn, nên tổng số deal đã đóng mỗi tháng gần như không đổi.",
+    "Kiểm tra cách ngày chốt được đặt (deal thua được đóng khi khách hàng nói không, hay khi có người dọn pipeline?) và so sánh số deal thắng theo quý, không theo tháng. Nếu số deal thắng mỗi quý đi ngang, một đợt đẩy cuối quý chỉ dịch chuyển thời điểm. Lưu ý: data chỉ gồm mười tháng của một năm."
+   ],
+   "checks": [
+    "Mình đã đếm số deal cạnh mỗi tỷ lệ.",
+    "Mình đã so các tháng cuối quý với phần còn lại.",
+    "Mình đã kiểm tra quy luật có đúng ở mọi sản phẩm không.",
+    "Mình đưa ra một cách giải thích về thời điểm cạnh cách giải thích về bán hàng."
+   ]
+  },
+  "extra_sql": {
+   "title": "Tháng cuối quý so với các tháng khác, kèm thời gian để chốt"
+  },
+  "questions": [
+   "Win rate của từng tháng là bao nhiêu, và có bao nhiêu deal đứng sau nó?",
+   "Khoảng chênh giữa các tháng cuối quý và phần còn lại lớn đến đâu?",
+   "Quy luật có đúng ở mọi sản phẩm không, và đó là sự thay đổi về kết quả hay về thời điểm?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Won ÷ (Won + Lost), theo tháng chốt."
+   ],
+   [
+    null,
+    "Win rate ở các tháng cuối quý − win rate ở các tháng khác, tính bằng điểm."
+   ],
+   [
+    null,
+    "Một sự dịch chuyển về thời điểm một deal được ghi nhận, không phải về việc nó có thắng hay không."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Win rate trên deal đã đóng theo tháng chốt, 2017.",
+    "title": "Win rate nhảy vọt vào tháng 3, 6, 9 và 12",
+    "why": "Mười hai nhóm có thứ tự, một giá trị mỗi nhóm: bar bắt đầu từ zero, với các tháng cuối quý được làm nổi bật."
+   }
+  ]
+ },
+ "crm-cycle": {
+  "title": "Một giao dịch bán hàng mất bao lâu, và nó có phụ thuộc vào sản phẩm không?",
+  "brief": {
+   "subject": "Độ dài chu kỳ bán hàng theo sản phẩm",
+   "body": [
+    "Tôi dùng \"60 ngày từ engage đến chốt\" trong cash forecast cho mọi sản phẩm. Team sales nói con số đó quá dài với một số sản phẩm và quá ngắn với số khác.",
+    "Với các deal thắng, cho tôi theo từng sản phẩm: số deal, số ngày mean, số ngày median và tỷ lệ chốt trong 60 ngày. Sau đó so sánh deal thắng và deal thua nói chung, vì tôi muốn biết một lời từ chối nhanh có nằm trong câu chuyện không."
+   ],
+   "ask": "Trả lời trong ba câu: tôi nên dùng độ dài chu kỳ nào, nó có khác nhau theo sản phẩm không, và mean đang che giấu điều gì.",
+   "facts": [
+    "Chu kỳ = số ngày từ <code>engage_date</code> đến <code>close_date</code>.",
+    "SQL của Lab không có hàm MEDIAN; hãy sắp xếp các deal bằng <code>ROW_NUMBER</code> và lấy một hoặc hai dòng ở giữa."
+   ]
+  },
+  "context": {
+   "company": "Một công ty B2B bán nhiều loại sản phẩm phần cứng máy tính cho các business account thông qua một team sales khoảng 30 agent ở ba văn phòng khu vực.",
+   "situation": "Finance dựng cash forecast từ các deal thắng. Họ giả định 'khoảng hai tháng' giữa lần tiếp xúc đầu tiên và một deal đã ký cho mọi sản phẩm.",
+   "decision": "Một con số có đúng cho mọi sản phẩm không, và mức trung bình có phải là cách đúng để mô tả một deal mất bao lâu không?"
+  },
+  "frame": {
+   "nudge": "Finance muốn một độ dài chu kỳ duy nhất cho cả bảy sản phẩm. Bạn kiểm tra thế nào xem một con số đã đủ tốt, hay các sản phẩm khác nhau quá nhiều để làm vậy?",
+   "tree": [
+    "<b>Finance nên giả định độ dài chu kỳ nào?</b>",
+    [
+     "Mean và median theo sản phẩm",
+     "Khoảng chênh giữa sản phẩm nhanh nhất và chậm nhất",
+     "Tỷ lệ deal trong 60 ngày được giả định",
+     "Thời điểm của deal thắng so với deal thua"
+    ]
+   ],
+   "hyp": [
+    "Các sản phẩm chỉ khác nhau vài ngày.",
+    "Deal thắng mất nhiều thời gian hơn deal thua."
+   ],
+   "traps": [
+    "Dùng deal thắng cho cash forecast. Deal thua không bao giờ trả tiền.",
+    "Một sản phẩm có 25 deal (GTK 500) cho mức trung bình rất thô.",
+    "Mean và median có thể khác nhau khi một vài deal mất rất lâu."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Stage, sản phẩm, ngày engage và ngày chốt."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal. Deal thắng có cả hai ngày.",
+    "Median theo nhóm: <code>ROW_NUMBER() OVER (PARTITION BY product ORDER BY cycle_days)</code> và <code>COUNT(*) OVER (PARTITION BY product)</code>; các dòng ở giữa là nơi <code>rn * 2 IN (n, n + 1, n + 2)</code>."
+   ],
+   "goal": "Mỗi sản phẩm một dòng: deal thắng, số ngày mean, số ngày median và tỷ lệ chốt trong 60 ngày.",
+   "watch": [
+    "AVG trên số nguyên bị cắt phần thập phân: hãy nhân với 1.0 trước.",
+    "Dòng median là dòng giữa với n lẻ và là trung bình của hai dòng giữa với n chẵn; danh sách IN bao phủ cả hai."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Sáu mươi ngày là một giả định chung khá hợp lý cho một deal thắng điển hình: median là 57 ngày và mean là 51.8. Điều nó che giấu là độ phân tán, vì chỉ 52% deal thắng chốt trong 60 ngày.",
+    "Theo median, GTXPro nhanh nhất (47 ngày) và GTK 500 chậm nhất (69 ngày, nhưng chỉ có 15 deal); các sản phẩm lớn hơn cách nhau trong vòng 14 ngày, nên một giả định riêng cho từng sản phẩm thêm được rất ít. Deal thua ngắn hơn: trung bình 41.5 ngày so với 51.8 của deal thắng, nên một lời từ chối nhanh là chuyện thường.",
+    "Giữ một đường cong thời gian duy nhất cho cash planning (ví dụ 'một nửa số deal thắng chốt trong 57 ngày, và khoảng 48 trên 100 deal mất lâu hơn 60 ngày') và xem lại GTK 500 khi nó có nhiều deal hơn. Lưu ý: chu kỳ chỉ được đo trên deal đã đóng; các deal vẫn đang mở và chậm không nằm trong các mức trung bình này."
+   ],
+   "checks": [
+    "Mình dùng deal thắng cho cash forecast.",
+    "Mình so mean với median.",
+    "Mình đọc các khác biệt giữa sản phẩm cùng với số lượng deal.",
+    "Mình đưa cho Finance một con số họ dùng được."
+   ]
+  },
+  "extra_sql": {
+   "title": "Deal thắng so với deal thua"
+  },
+  "questions": [
+   "Chu kỳ điển hình của từng sản phẩm là bao nhiêu?",
+   "Khác biệt giữa các sản phẩm có lớn hơn vài ngày không?",
+   "Deal thua chốt nhanh hơn hay chậm hơn deal thắng?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Số ngày giữa engage date và ngày chốt."
+   ],
+   [
+    null,
+    "Giá trị ở giữa của các cycle time đã sắp xếp. Một nửa số deal nhanh hơn."
+   ],
+   [
+    null,
+    "Deal thắng chốt trong 60 ngày hoặc ít hơn ÷ deal thắng."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Số ngày từ engage đến chốt, deal thắng, theo sản phẩm.",
+    "title": "Chu kỳ mean và median: các sản phẩm cách nhau trong khoảng 22 ngày",
+    "why": "Hai cách tóm tắt của cùng một phân phối: bar ghép đôi cho thấy chỗ chúng đồng ý và chỗ chúng khác nhau."
+   }
+  ]
+ },
+ "crm-pipelinevalue": {
+  "title": "Pipeline đang mở đáng giá bao nhiêu đô la?",
+  "brief": {
+   "subject": "Ước tính revenue dựa trên pipeline",
+   "body": [
+    "Có 2,089 deal đang mở (500 Prospecting và 1,589 Engaging). Deal đang mở chưa có giá trị, nên tôi cần một ước tính từ lịch sử.",
+    "Với mỗi sản phẩm, lấy các deal đang mở, win rate lịch sử và giá trị trung bình của một deal thắng, rồi nhân chúng lại: giá trị kỳ vọng = deal đang mở × win rate × giá trị thắng trung bình. Sau đó cho tôi biết khoảng dao động rộng đến đâu và điều gì có thể làm ước tính sai."
+   ],
+   "ask": "Trả lời trong bốn câu: ước tính cơ sở, khoảng dao động, sản phẩm quan trọng nhất, và lưu ý lớn nhất.",
+   "facts": [
+    "Win rate = Won ÷ (Won + Lost). Giá trị thắng trung bình = tổng <code>close_value</code> của deal thắng ÷ số deal thắng.",
+    "Prospecting và Engaging là hai stage đang mở."
+   ]
+  },
+  "context": {
+   "company": "Một công ty B2B bán nhiều loại sản phẩm phần cứng máy tính cho các business account thông qua một team sales khoảng 30 agent ở ba văn phòng khu vực.",
+   "situation": "CFO muốn một ước tính revenue từ pipeline đang mở cho giai đoạn tới. Các sales leader thường trả lời bằng tổng giá trị niêm yết của mọi deal đang mở, không phải thứ sẽ chốt được.",
+   "decision": "Một ước tính bằng đô la có thể bảo vệ được cho pipeline đang mở là bao nhiêu, và khoảng dao động quanh nó rộng đến đâu?"
+  },
+  "frame": {
+   "nudge": "Một giá trị kỳ vọng duy nhất trông chắc chắn hơn thực tế. Những input nào không chắc chắn, và sản phẩm nào phụ thuộc vào chúng nhiều nhất?",
+   "tree": [
+    "<b>Pipeline đáng giá bao nhiêu?</b>",
+    [
+     "Deal đang mở theo sản phẩm",
+     "Win rate lịch sử theo sản phẩm",
+     "Giá trị thắng trung bình theo sản phẩm",
+     "Giá trị kỳ vọng và một khoảng dao động quanh nó"
+    ]
+   ],
+   "hyp": [
+    "Hai sản phẩm lớn nhất chiếm phần lớn giá trị kỳ vọng.",
+    "Các sản phẩm nhỏ có ít deal đã đóng mang một khoảng dao động rộng."
+   ],
+   "traps": [
+    "Deal đang mở không có giá trị: đừng cộng một trường đang trống.",
+    "Win rate đến từ các deal đã đóng. Deal Prospecting ở giai đoạn sớm hơn deal Engaging và có thể thắng ít hơn, nên cơ sở có lẽ đang cao.",
+    "Giá trị thắng trung bình bị lệch bởi một vài deal lớn (GTK 500). Một khoảng dao động làm điều đó hiện ra."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Stage, sản phẩm và giá trị."
+    ],
+    [
+     null,
+     null,
+     "Giá niêm yết của sản phẩm không được dùng: hãy dùng các giá trị thắng thực tế."
+    ],
+    [
+     null,
+     null,
+     "Góc nhìn theo agent là bước tiếp theo."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal. Dựng số đếm theo sản phẩm bằng <code>SUM</code> có điều kiện.",
+    "Giá trị kỳ vọng = deal đang mở × win rate × giá trị thắng trung bình, theo sản phẩm, rồi cộng lại."
+   ],
+   "goal": "Mỗi sản phẩm một dòng: deal đang mở, win rate, giá trị thắng trung bình và giá trị kỳ vọng.",
+   "watch": [
+    "Dùng 1.0 * để tránh phép chia số nguyên trong win rate và giá trị trung bình.",
+    "Một sản phẩm có 25 deal đã đóng có win rate bạn không thể tin cậy. Hãy nhìn khoảng dao động."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Pipeline đang mở có giá trị kỳ vọng khoảng $3.1M, với khoảng dao động từ $2.9M đến $3.4M. Dùng mức cơ sở để lập kế hoạch và mức thấp để cam kết.",
+    "GTXPro và GTX Plus Pro chiếm 58% ước tính. Win rate khá gần nhau giữa các sản phẩm (khoảng 63%), nên giá trị bị chi phối bởi quy mô deal trung bình, chạy từ $55 đến $26,707. GTK 500 có khoảng dao động rộng nhất so với ước tính của nó ($157K đến $330K quanh $240K) vì nó chỉ dựa trên 25 deal đã đóng.",
+    "Lưu ý lớn nhất là stage: 500 deal đang mở vẫn ở Prospecting, sớm hơn deal Engaging. Mọi deal đã đóng đều có engage date, nên win rate lịch sử mô tả các deal đã đến được Engaging, và mức cơ sở nhiều khả năng quá cao. Hãy báo cáo ước tính theo stage khi data cho phép, và làm mới win rate mỗi quý."
+   ],
+   "checks": [
+    "Mình không cộng các giá trị trống hay giá trị niêm yết cho deal đang mở.",
+    "Mình đưa ra một khoảng dao động cùng với một con số điểm.",
+    "Mình gọi tên sản phẩm chi phối kết quả.",
+    "Mình nêu lưu ý về stage."
+   ]
+  },
+  "questions": [
+   "Mỗi sản phẩm có bao nhiêu deal đang mở, win rate bao nhiêu và giá trị thắng trung bình bao nhiêu?",
+   "Giá trị kỳ vọng theo sản phẩm và tổng cộng là bao nhiêu?",
+   "Tổng có thể dịch chuyển bao nhiêu nếu win rate và giá trị trung bình chỉ là các ước tính?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Deal đang mở × win rate × giá trị thắng trung bình."
+   ],
+   [
+    null,
+    "Ước tính được tính lại với win rate và giá trị trung bình ở các biên của khoảng tin cậy 95%."
+   ],
+   [
+    null,
+    "Deal Prospecting ở giai đoạn sớm hơn và có thể thắng ít hơn mức trung bình lịch sử."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Giá trị kỳ vọng của pipeline đang mở theo sản phẩm, với khoảng dao động 95% làm thanh sai số.",
+    "title": "GTXPro dẫn đầu với $1,019K, và các sản phẩm nhỏ có khoảng dao động rộng",
+    "why": "Một tổng cho mỗi nhóm kèm độ bất định: bar bắt đầu từ zero, thanh sai số cho khoảng dao động."
+   }
+  ]
+ },
+ "crm-inputs": {
+  "title": "Revenue theo văn phòng: nhiều deal hơn, win rate tốt hơn hay deal lớn hơn?",
+  "brief": {
+   "subject": "Điều gì thúc đẩy revenue ở từng văn phòng?",
+   "body": [
+    "Revenue theo văn phòng là một con số duy nhất, và một con số duy nhất không cho tôi điều gì để hành động. Tôi muốn thấy nó dưới dạng deal đã đóng × win rate × giá trị trung bình của một deal thắng, từng văn phòng một.",
+    "Thêm một index cho từng input so với mức trung bình của ba văn phòng (100 = trung bình) để tôi nhìn thoáng qua là biết input nào kéo từng văn phòng lên hay xuống. Sau đó đi sâu thêm một cấp cho văn phòng có khoảng chênh lớn nhất."
+   ],
+   "ask": "Trả lời trong ba câu: input nào giải thích sự khác biệt giữa các văn phòng, khoảng chênh nằm ở đâu bên trong văn phòng bạn đã đi sâu, và bạn sẽ làm gì với nó.",
+   "facts": [
+    "Deal đã đóng = Won + Lost. Revenue = tổng <code>close_value</code>, bằng 0 với deal thua.",
+    "Index = giá trị của văn phòng ÷ giá trị gộp của cả ba văn phòng × 100. Số deal và revenue được so với văn phòng trung bình."
+   ]
+  },
+  "context": {
+   "company": "Một công ty B2B bán nhiều loại sản phẩm phần cứng máy tính cho các business account thông qua một team sales khoảng 30 agent ở ba văn phòng khu vực.",
+   "situation": "Revenue trải ra ba văn phòng khu vực: West kiếm nhiều nhất, East ít nhất, và Central nằm giữa. VP Sales muốn biết mỗi văn phòng nên tập trung vào đâu.",
+   "decision": "Với mỗi văn phòng, input nào của revenue (số deal đã chốt, win rate hay quy mô deal) đang cao hoặc thấp, và nỗ lực coaching có cơ hội tốt nhất ở đâu?"
+  },
+  "frame": {
+   "nudge": "Revenue là tích của ba input. Nếu một trong số đó gần như giống nhau ở mọi văn phòng, nó không thể giải thích khoảng chênh. Đó là input nào?",
+   "tree": [
+    "<b>Vì sao revenue khác nhau theo văn phòng?</b>",
+    [
+     "Deal đã đóng (khối lượng)",
+     "Win rate (chuyển đổi)",
+     "Giá trị thắng trung bình (quy mô deal)",
+     "Bên trong văn phòng: team nào hoặc cơ cấu sản phẩm nào?"
+    ]
+   ],
+   "hyp": [
+    "Win rate gần như giống nhau ở mọi văn phòng.",
+    "Các văn phòng có nhiều deal hơn thì deal nhỏ hơn."
+   ],
+   "traps": [
+    "Giá trị thắng trung bình chia revenue cho số deal thắng, không chia cho deal đã đóng. Deal thua có giá trị 0 và sẽ kéo mức trung bình xuống.",
+    "Đừng join với danh sách sản phẩm để tìm tên sản phẩm: pipeline viết một sản phẩm khác với danh sách và phép join làm mất các deal của nó.",
+    "Một index bằng 100 là mức trung bình của ba văn phòng, không phải một target."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Stage, close value, sản phẩm, sales agent."
+    ],
+    [
+     null,
+     null,
+     "Agent, manager và văn phòng khu vực."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "goal": "Mỗi văn phòng một dòng: deal đã đóng, win rate, giá trị thắng trung bình, revenue và bốn index.",
+   "grain": [
+    "<code>CRM_sales_pipeline</code>: mỗi dòng là một deal. Giữ Won và Lost, join với teams qua <code>sales_agent</code>.",
+    "Đầu tiên dựng một dòng cho mỗi văn phòng (deal đã đóng, deal thắng, revenue) trong một CTE. Các index sau đó dùng <code>SUM(...) OVER ()</code> cho giá trị gộp."
+   ],
+   "watch": [
+    "Win rate = thắng ÷ đã đóng. Giá trị thắng trung bình = revenue ÷ thắng. Trộn lẫn hai mẫu số là lỗi thường gặp.",
+    "Nhân ba index của input và chia cho 10,000: bạn phải ra index của revenue. Nếu không, một input đang sai."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Win rate không phải là lý do các văn phòng khác nhau: nó nằm ở index 99 đến 101 ở mọi nơi. Sự khác biệt đến từ khối lượng và quy mô deal, hai thứ đi ngược chiều nhau. Central chốt nhiều deal nhất (index 116) với những deal nhỏ nhất (index 87); East chốt ít nhất (index 83) với những deal lớn nhất (index 112). West ở mức trung bình về khối lượng (100), cao hơn về quy mô deal (105) và dẫn đầu về revenue.",
+    "Bên trong Central, khoảng chênh nằm ở một team. Deal thắng của Dustin Brinkmann có giá trị trung bình $1,465, so với $2,553 của Melvin Marxen. 38.6% deal thắng của Dustin Brinkmann là sản phẩm rẻ nhất, MG Special, so với 12.2% của Melvin Marxen, và team đó không có deal GTXPro nào thắng cả.",
+    "Một workshop về win rate sẽ không giúp được Central. Hãy nhìn cơ cấu sản phẩm của team đó (họ được giao gì, họ chọn bán gì) trước mọi thứ khác. Lưu ý: đây chỉ là data deal của một năm 2017, và một khác biệt về cơ cấu chỉ ra một nguyên nhân mà chưa chứng minh được nó."
+   ],
+   "checks": [
+    "Mình dùng deal thắng, không dùng deal đã đóng, làm mẫu số cho quy mô deal.",
+    "Mình đã kiểm tra ba index nhân lại ra index của revenue.",
+    "Mình nói input nào đang đi ngang và điều đó loại trừ được gì.",
+    "Mình đi sâu vào một văn phòng và gọi tên team."
+   ]
+  },
+  "extra_sql": {
+   "title": "Xuống một cấp: các manager, kèm tỷ trọng các deal rẻ"
+  },
+  "questions": [
+   "Deal đã đóng, win rate, giá trị thắng trung bình và revenue của từng văn phòng là bao nhiêu?",
+   "Input nào giống nhau ở mọi văn phòng, và hai input nào đi ngược chiều nhau?",
+   "Bên trong văn phòng có quy mô deal thấp nhất, khoảng chênh nằm ở đâu?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Won ÷ (Won + Lost)."
+   ],
+   [
+    null,
+    "Revenue ÷ deal thắng."
+   ],
+   [
+    null,
+    "Giá trị của văn phòng ÷ giá trị gộp của mọi văn phòng × 100. 100 là mức trung bình."
+   ],
+   [
+    null,
+    "Revenue = deal đã đóng × win rate × giá trị thắng trung bình."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Index của từng input so với mức trung bình của ba văn phòng (đường đứt nét là 100, mức trung bình).",
+    "title": "Win rate đi ngang ở mức 99 đến 101. Số deal và quy mô deal kéo ngược chiều nhau",
+    "why": "Ba index cho mỗi văn phòng so với một đường tham chiếu ở mức 100: bar cho thấy input nào cao hơn hoặc thấp hơn mức trung bình."
+   },
+   {
+    "sub": "Giá trị trung bình của một deal thắng theo manager. Các manager của Central được làm nổi bật.",
+    "title": "Team của Dustin Brinkmann thắng các deal trị giá trung bình $1,465, so với $2,553 của Melvin Marxen",
+    "why": "Một giá trị cho mỗi manager, có sắp xếp: bar bắt đầu từ zero làm team thấp nhất nổi bật lên."
+   }
+  ]
+ },
+ "gbe-category": {
+  "title": "Product category nào kiếm được nhiều profit nhất?",
+  "brief": {
+   "subject": "Profit theo category cho buổi rà soát danh mục",
+   "body": [
+    "Chúng tôi rà soát danh mục sản phẩm hai lần mỗi năm và lần rà soát trước chỉ dùng revenue. Lần này tôi muốn có cả profit, để mình không bỏ hay đẩy một category vì lý do sai.",
+    "Dùng mọi đơn hàng trong data. Revenue là quantity nhân với đơn giá tính bằng USD, và profit là quantity nhân với (đơn giá − đơn vị cost)."
+   ],
+   "ask": "Trả lời trong ba câu: category nào kiếm ra profit, margin có khác nhau không, và điều đó có nghĩa gì cho buổi rà soát.",
+   "facts": [
+    "<code>GBE_Sales</code> có một dòng cho mỗi order line với product key và quantity.",
+    "Giá và cost tính bằng USD nằm ở <code>GBE_Products</code>, nơi cũng chứa category."
+   ]
+  },
+  "frame": {
+   "nudge": "Revenue và profit có thể xếp hạng các category khác nhau. Điều gì khiến chuyện đó xảy ra, và bạn kiểm tra nó thế nào?",
+   "tree": [
+    "<b>Category nào kiếm ra profit?</b>",
+    [
+     "Revenue và profit theo category",
+     "Margin = profit ÷ revenue theo category",
+     "Thứ hạng profit có khác thứ hạng revenue không"
+    ]
+   ],
+   "hyp": [
+    "Computers dẫn đầu ở cả hai.",
+    "Margin gần nhau giữa các category, nên hai thứ hạng khớp nhau."
+   ],
+   "traps": [
+    "Giá và cost nằm ở sản phẩm, quantity nằm ở lần bán. Hãy nhân chúng từng dòng một trước khi cộng.",
+    "Đừng lấy trung bình margin của từng sản phẩm. Hãy chia tổng profit cho tổng revenue.",
+    "Đừng chỉ cộng <code>Unit_Price_USD</code>: một dòng 3 đơn vị kiếm gấp 3 lần giá."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Các order line với product key và quantity."
+    ],
+    [
+     null,
+     null,
+     "Category, đơn giá và đơn vị cost tính bằng USD."
+    ],
+    [
+     null,
+     null,
+     "Cửa hàng không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Khách hàng không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Giá đã được tính bằng USD."
+    ]
+   ],
+   "grain": [
+    "<code>GBE_Sales</code>: mỗi dòng là một order line. Quantity nằm trên dòng này.",
+    "<code>GBE_Products</code>: mỗi sản phẩm một dòng, nên phép join giữ một dòng cho mỗi order line."
+   ],
+   "goal": "Mỗi category một dòng: revenue, profit và margin %. Sau đó liệt kê năm subcategory có profit cao nhất.",
+   "watch": [
+    "Margin là profit chia cho revenue ở cấp category, không phải trung bình của margin từng sản phẩm.",
+    "Chỉ làm tròn ở SELECT cuối cùng. Làm tròn bên trong phép cộng sẽ làm lệch các tổng."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Computers kiếm nhiều profit nhất ($11.3M trên $19.3M revenue), tiếp theo là home appliances ($6.3M). Cùng nhau chúng tạo nên 54% toàn bộ profit.",
+    "Margin gần như giống nhau ở mọi nơi, từ 55% (Games and Toys) đến 61% (Music, Movies and Audio Books), nên thứ hạng profit đi theo thứ hạng revenue. Subcategory có profit cao nhất là Desktops ($5.63M).",
+    "Hãy đánh giá danh mục theo khối lượng, vì không category nào là cái bẫy về profit và cũng không có người thắng ẩn nào. Games and toys nhỏ nhất với $0.72M revenue. Phân tích này dùng giá và cost niêm yết, nên bỏ qua giảm giá và trả hàng."
+   ],
+   "checks": [
+    "Mình đã nhân quantity với giá và cost trên từng dòng.",
+    "Mình đã so thứ hạng revenue với thứ hạng profit.",
+    "Mình tính margin từ các tổng.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Top năm subcategory theo profit"
+  },
+  "questions": [
+   "Category nào mang về nhiều revenue nhất và nhiều profit nhất?",
+   "Margin có khác nhau nhiều giữa các category không?",
+   "Năm subcategory có profit cao nhất là gì?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Tổng quantity × đơn giá (USD)."
+   ],
+   [
+    null,
+    "Tổng quantity × (đơn giá − đơn vị cost)."
+   ],
+   [
+    null,
+    "Profit ÷ revenue."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Revenue và profit theo category, $M, tất cả các năm.",
+    "title": "Computers và home appliances dẫn đầu cả về revenue lẫn profit",
+    "why": "Hai giá trị cho mỗi category cùng một đơn vị: grouped bar."
+   },
+   {
+    "sub": "Profit tính theo phần trăm revenue, theo category.",
+    "title": "Margin gần nhau ở mọi category",
+    "why": "Trên thang 0 đến 100, các cột gần bằng nhau cho thấy margin không phân biệt được các category."
+   }
+  ]
+ },
+ "gbe-stores": {
+  "title": "Cửa hàng ở quốc gia nào kiếm được nhiều nhất trên mỗi mét vuông?",
+  "brief": {
+   "subject": "Diện tích cửa hàng: nơi nào làm việc hiệu quả nhất?",
+   "body": [
+    "Chúng tôi đang chọn nơi đặt ngân sách cửa hàng tiếp theo. Tổng revenue theo quốc gia thiên về các thị trường lớn, nên tôi muốn revenue trên mỗi mét vuông diện tích cửa hàng.",
+    "Dùng 2019, năm đầy đủ cuối cùng trước đợt sụt giảm của 2020. Chỉ tính cửa hàng vật lý (cửa hàng online không có diện tích sàn), và chỉ các cửa hàng đã mở trong cả năm."
+   ],
+   "ask": "Trả lời trong ba câu: quốc gia nào dùng diện tích tốt nhất, quốc gia nào kém nhất, và nên làm gì với ngân sách.",
+   "facts": [
+    "<code>GBE_Stores</code> có quốc gia, diện tích sàn (<code>Square_Meters</code>) và ngày mở của từng cửa hàng.",
+    "Đơn online nằm dưới <code>StoreKey = 0</code>. Hãy loại chúng ra."
+   ]
+  },
+  "frame": {
+   "nudge": "Revenue trên mỗi mét vuông chia hai thứ nằm ở hai bảng khác nhau. Bạn cộng mỗi thứ ở cấp nào để không cái nào bị đếm hai lần?",
+   "tree": [
+    "<b>Quốc gia nào dùng diện tích tốt nhất?</b>",
+    [
+     "Revenue mỗi cửa hàng trong 2019",
+     "Diện tích sàn mỗi cửa hàng",
+     "Cả hai gộp lên cấp quốc gia, rồi revenue ÷ diện tích"
+    ]
+   ],
+   "hyp": [
+    "Quốc gia có nhiều cửa hàng nhất không phải là quốc gia có revenue trên mỗi mét vuông tốt nhất.",
+    "Cửa hàng nhỏ kiếm được nhiều hơn trên mỗi mét vuông."
+   ],
+   "traps": [
+    "Cộng revenue theo từng cửa hàng trước. Join sales với stores từng dòng một sẽ lặp lại diện tích sàn trên mọi lần bán.",
+    "Cửa hàng mở trong 2019 chỉ có một phần của năm. Hãy loại chúng ra.",
+    "Một số cửa hàng không bán được gì trong 2019. Chúng không có trong bảng revenue và rơi khỏi phép join."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Các order line với store key và ngày."
+    ],
+    [
+     null,
+     null,
+     "Đơn giá để biến quantity thành revenue."
+    ],
+    [
+     null,
+     null,
+     "Quốc gia, diện tích sàn và ngày mở."
+    ],
+    [
+     null,
+     null,
+     "Khách hàng không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Giá đã được tính bằng USD."
+    ]
+   ],
+   "grain": [
+    "<code>GBE_Sales</code>: mỗi dòng là một order line, có nhiều dòng cho mỗi cửa hàng. Cộng về một dòng cho mỗi cửa hàng <b>trước khi</b> join với bảng stores.",
+    "<code>GBE_Stores</code>: mỗi cửa hàng một dòng, nên diện tích sàn của từng cửa hàng chỉ được đếm một lần."
+   ],
+   "goal": "Mỗi quốc gia một dòng: cửa hàng, diện tích sàn, revenue 2019 và revenue trên mỗi mét vuông.",
+   "watch": [
+    "Join thẳng các dòng sales với stores rồi cộng <code>Square_Meters</code> sẽ cộng diện tích của mỗi cửa hàng một lần cho mỗi lần bán.",
+    "Revenue và diện tích sàn phải bao phủ cùng các cửa hàng, nên cả hai đều đến từ các dòng đã join."
+   ]
+  },
+  "answer": {
+   "model": [
+    "United States dùng diện tích tốt nhất với $242 trên mỗi mét vuông trong 2019, và Australia dùng kém nhất với $104.",
+    "Khoảng cách là 2.3 lần. Canada ($234) bám sát ngay sau US, rồi đến Italy ($181) và France ($164), trong khi Germany ($125) và Netherlands ($105) nằm gần cuối. Kết quả của US đến từ 20 cửa hàng có thể so sánh, nên không phải do một cửa hàng gặp may.",
+    "Đặt ngân sách tiếp theo vào US và xem xét Australia và Netherlands trước khi thêm diện tích ở đó. Diện tích sàn chỉ là một động lực: tuổi cửa hàng, giá địa phương và cơ cấu sản phẩm không có trong data này."
+   ],
+   "checks": [
+    "Mình đã cộng revenue theo từng cửa hàng trước khi join với bảng stores.",
+    "Mình chỉ dùng các cửa hàng có thể so sánh.",
+    "Mình đã loại cửa hàng online.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Để so sánh: tất cả cửa hàng theo quốc gia, dù có bán trong 2019 hay không"
+  },
+  "questions": [
+   "Revenue trên mỗi mét vuông của từng quốc gia là bao nhiêu?",
+   "Nên loại những cửa hàng nào ra để phép so sánh công bằng?",
+   "Khoảng cách giữa quốc gia tốt nhất và kém nhất lớn đến đâu?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Tổng quantity × đơn giá của từng cửa hàng trong 2019."
+   ],
+   [
+    null,
+    "Revenue của quốc gia ÷ diện tích sàn của quốc gia, cùng các cửa hàng ở cả hai."
+   ],
+   [
+    null,
+    "Mở trước khi năm bắt đầu và có doanh số trong năm."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Revenue 2019 trên mỗi mét vuông diện tích sàn, USD, các cửa hàng mở cả năm.",
+    "title": "Cửa hàng ở US kiếm được hơn gấp đôi cửa hàng ở Australia trên mỗi mét vuông",
+    "why": "Một giá trị cho mỗi quốc gia, có xếp hạng: bar bắt đầu từ zero."
+   }
+  ]
+ },
+ "gbe-2020": {
+  "title": "Revenue giảm trong 2020. Online có trụ vững hơn cửa hàng không?",
+  "brief": {
+   "subject": "2020 so với 2019, theo kênh",
+   "body": [
+    "Revenue giảm mạnh trong 2020. Board hỏi liệu cửa hàng online có làm giảm nhẹ cú sụt hay không, vì kế hoạch năm tới dựa vào nó.",
+    "So sánh từng quý của 2020 với cùng quý của 2019, cho online và cho cửa hàng một cách riêng."
+   ],
+   "ask": "Trả lời trong ba câu: mức giảm lớn đến đâu, online có làm tốt hơn không, và điều đó có nghĩa gì cho kế hoạch.",
+   "facts": [
+    "Đơn online có <code>StoreKey = 0</code> trong <code>GBE_Sales</code>. Mọi key khác là cửa hàng vật lý.",
+    "Revenue = quantity × đơn giá (USD)."
+   ]
+  },
+  "frame": {
+   "nudge": "So sánh từng quý của 2020 với cùng quý của 2019, không so với quý ngay trước nó. Vì sao đó là phép so sánh đúng cho data bán lẻ?",
+   "tree": [
+    "<b>Online có làm giảm nhẹ cú sụt không?</b>",
+    [
+     "Revenue theo năm, để đo mức giảm và kiểm tra khoảng ngày",
+     "2020 tính theo phần trăm của 2019 cho từng quý và từng kênh",
+     "Tỷ trọng revenue của online trong từng năm"
+    ]
+   ],
+   "hyp": [
+    "Online giảm ít hơn cửa hàng trong những tháng đầu của khủng hoảng.",
+    "Mức giảm lớn ở cả hai kênh trong nửa cuối năm."
+   ],
+   "traps": [
+    "Kiểm tra khoảng ngày trước. Năm cuối cùng trong data chỉ là một phần năm.",
+    "So cùng một quý của hai năm để loại bỏ yếu tố mùa vụ.",
+    "Đừng đặt các cờ 0 và 1 lên chart. Hãy nói online và cửa hàng."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Các order line với ngày, store key và quantity."
+    ],
+    [
+     null,
+     null,
+     "Đơn giá để biến quantity thành revenue."
+    ],
+    [
+     null,
+     null,
+     "Online đã được xác định bằng StoreKey = 0."
+    ],
+    [
+     null,
+     null,
+     "Khách hàng không liên quan đến câu hỏi này."
+    ]
+   ],
+   "grain": [
+    "<code>GBE_Sales</code>: mỗi dòng là một order line.",
+    "<code>GBE_Products</code>: mỗi sản phẩm một dòng, nên phép join không nhân bản các dòng."
+   ],
+   "goal": "Mỗi quý một dòng: revenue 2020 tính theo phần trăm của cùng quý trong 2019, cho online và cho cửa hàng.",
+   "watch": [
+    "T-SQL không có hàm QUARTER(). Một CASE trên MONTH() chạy được ở mọi dialect.",
+    "Một pivot bằng CASE WHEN giữ cả hai năm trên một dòng, nên phần trăm chỉ là một phép chia đơn giản."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Revenue giảm 49% trong 2020, từ $18.3M xuống $9.3M, và online không làm giảm nhẹ nó được lâu.",
+    "Q1 ngang bằng 2019 ở cả hai kênh. Trong Q2 online trụ vững hơn (69% của 2019 so với 56% của cửa hàng), nhưng đến Q3 online chỉ còn 30% và cửa hàng 29%, và trong Q4 là 22% và 20%.",
+    "Đừng dựng kế hoạch năm tới chỉ dựa vào online: nó giảm gần như bằng cửa hàng. Data cho thấy cái gì đã giảm, không cho thấy vì sao, nên hãy hỏi Operations xem hàng tồn, giao hàng hay nhu cầu là nguyên nhân."
+   ],
+   "checks": [
+    "Mình đã so cùng một quý qua hai năm.",
+    "Mình đã tách online khỏi cửa hàng.",
+    "Mình đã kiểm tra khoảng ngày.",
+    "Mình đưa ra một hành động và một lưu ý."
+   ]
+  },
+  "questions": [
+   "Tổng revenue giảm bao nhiêu trong 2020?",
+   "Mức giảm xảy ra ở những quý nào, cho online và cho cửa hàng?",
+   "Online có giảm ít hơn cửa hàng không?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Revenue của một quý 2020 ÷ revenue của cùng quý 2019 × 100."
+   ],
+   [
+    null,
+    "Revenue 2020 ÷ revenue 2019 − 1."
+   ],
+   [
+    null,
+    "Revenue online ÷ tổng revenue trong năm."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Revenue 2020 tính theo phần trăm của cùng quý trong 2019.",
+    "title": "Cả hai kênh đều rơi sau quý đầu tiên",
+    "why": "Hai kênh qua bốn quý: hai đường line trên cùng một thang."
+   }
+  ]
+ },
+ "gbe-age": {
+  "title": "Chiến dịch nên nhắm vào nhóm tuổi nào?",
+  "brief": {
+   "subject": "Một chiến dịch, một nhóm tuổi",
+   "body": [
+    "Quý tới tôi chỉ tài trợ được một chiến dịch. Tôi cần chọn nhóm tuổi cho return tốt nhất, và muốn xem con số trước.",
+    "Dùng những khách hàng đã mua hàng. Tính tuổi của từng khách hàng vào cuối 2020 từ năm sinh, chia thành sáu nhóm (dưới 25, 25 đến 34, 35 đến 44, 45 đến 54, 55 đến 64, 65 trở lên) và cho tôi số khách hàng, tỷ trọng khách hàng, revenue, tỷ trọng revenue và revenue mỗi khách hàng ở từng nhóm."
+   ],
+   "ask": "Trả lời trong ba câu: nên nhắm nhóm nào, các con số nói gì về tuổi, và bạn sẽ test điều gì thay vào đó.",
+   "facts": [
+    "Revenue = <code>Quantity × Unit_Price_USD</code>, cộng trên mọi dòng sales của khách hàng.",
+    "<code>Birthday</code> là text dạng <code>m/d/yyyy</code>: bốn ký tự cuối là năm."
+   ]
+  },
+  "context": {
+   "company": "Global Electronics Retailers bán điện thoại, máy tính, âm thanh và đồ gia dụng qua cửa hàng và một shop online ở nhiều quốc gia.",
+   "situation": "Marketing có ngân sách cho một chiến dịch nhắm vào một nhóm tuổi. CMO đoán đó nên là nhóm khách lớn tuổi nhất vì \"họ là nhóm đông nhất của mình\".",
+   "decision": "Nhóm tuổi nào đáng nhắm tới, và tuổi có thực sự phân biệt khách hàng tốt với khách hàng trung bình không?"
+  },
+  "frame": {
+   "nudge": "Một tỷ trọng revenue có thể lớn chỉ vì nhóm đó đông. Trong hai con số này, cái nào cho biết nhóm tốt hơn, cái nào chỉ cho biết nhóm lớn hơn?",
+   "tree": [
+    "<b>Nên nhắm vào nhóm tuổi nào?</b>",
+    [
+     "Khách hàng và revenue theo từng nhóm",
+     "Revenue mỗi khách hàng cạnh các tổng",
+     "Độ rộng nhóm: các nhóm không đều nhau thì không so sánh theo quy mô được"
+    ]
+   ],
+   "hyp": [
+    "Nhóm lớn tuổi nhất chứa nhiều revenue nhất.",
+    "Revenue mỗi khách hàng gần như giống nhau ở mọi nhóm."
+   ],
+   "traps": [
+    "Nhóm 65+ không có giới hạn trên và trải rộng 20 năm, trong khi các nhóm khác chỉ 10. Hãy so theo từng khách hàng.",
+    "Chỉ khách hàng đã mua mới có revenue. Khách đã đăng ký nhưng chưa mua sẽ kéo mức trung bình về không.",
+    "Một kết quả phẳng vẫn là một câu trả lời: tuổi không giải thích ai chi tiêu nhiều hơn."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một dòng sales: khách hàng, sản phẩm, quantity."
+    ],
+    [
+     null,
+     null,
+     "Ngày sinh và thông tin nhân khẩu học."
+    ],
+    [
+     null,
+     null,
+     "Đơn giá bằng USD."
+    ],
+    [
+     null,
+     null,
+     "Cửa hàng không liên quan đến câu hỏi này."
+    ],
+    [
+     null,
+     null,
+     "Giá đã được tính bằng USD."
+    ]
+   ],
+   "grain": [
+    "<code>GBE_Sales</code>: mỗi dòng là một dòng sales. Trước hết cộng revenue theo từng khách hàng trong một CTE, để mỗi khách hàng là một dòng.",
+    "<code>RIGHT(Birthday, 4)</code> là năm sinh; tuổi vào cuối 2020 là 2020 trừ đi năm đó."
+   ],
+   "goal": "Mỗi nhóm tuổi một dòng: khách hàng, tỷ trọng khách hàng, revenue, tỷ trọng revenue và revenue mỗi khách hàng.",
+   "watch": [
+    "Nếu join sales với customers và group thẳng theo nhóm, khách hàng có nhiều dòng sẽ bị đếm nhiều lần. Hãy tổng hợp về một dòng mỗi khách hàng trước.",
+    "RIGHT(Birthday, 4) là text. Hãy CAST nó trước khi tính toán."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Tuổi không phải là đòn bẩy ở đây. Nhóm 65+ chứa nhiều revenue nhất (31%) chỉ vì nó có nhiều khách hàng nhất (31%); một khách hàng ở bất kỳ nhóm nào cũng mang về khoảng $4,690.",
+    "Revenue mỗi khách hàng chạy từ $4,530 (45-54) đến $4,792 (Under 25), chênh 6%. Nhóm 65+ cũng không có giới hạn trên (65 đến 85), nên rộng hơn các nhóm khác. Chỉ 78% trong 15,266 khách hàng đã đăng ký từng mua hàng.",
+    "Đừng chọn nhóm theo quy mô. Hãy test chiến dịch theo product category, quốc gia hoặc kênh, và xem những khách đã đăng ký nhưng chưa mua như một mục tiêu riêng. Lưu ý: data này mô tả ai đã mua trong quá khứ, không phải ai sẽ phản hồi một chiến dịch."
+   ],
+   "checks": [
+    "Mình đã tổng hợp về một dòng mỗi khách hàng trước.",
+    "Mình đã so revenue mỗi khách hàng cũng như các tỷ trọng.",
+    "Mình nói rằng kết quả phẳng nghĩa là tuổi không phải đòn bẩy.",
+    "Mình đề xuất một cách cắt khác để test."
+   ]
+  },
+  "extra_sql": {
+   "title": "Ai nằm trong data: khách hàng đã đăng ký so với khách hàng đã mua"
+  },
+  "questions": [
+   "Mỗi nhóm tuổi có bao nhiêu khách hàng và bao nhiêu revenue?",
+   "Revenue mỗi khách hàng có khác nhau theo nhóm không?",
+   "Nếu nhóm lớn chỉ lớn vì có nhiều người hơn, CMO nên làm gì?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Revenue của nhóm ÷ tất cả revenue. Lớn khi nhóm đông."
+   ],
+   [
+    null,
+    "Revenue ÷ khách hàng đã mua, trong nhóm."
+   ],
+   [
+    null,
+    "2020 trừ năm sinh."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Tỷ trọng khách hàng và tỷ trọng revenue theo nhóm tuổi.",
+    "title": "Nhóm 65+ chiếm 31% revenue, và 31% khách hàng",
+    "why": "Hai tỷ trọng cho mỗi nhóm: các cột ghép đôi bám sát nhau cho thấy quy mô giải thích revenue."
+   },
+   {
+    "sub": "Revenue mỗi khách hàng đã mua, theo nhóm tuổi.",
+    "title": "Revenue mỗi khách hàng gần như phẳng theo tuổi: $4,530 đến $4,792",
+    "why": "Một giá trị cho mỗi nhóm so với một đường tham chiếu: một hàng bar phẳng chính là phát hiện."
+   }
+  ]
+ },
+ "gbe-pareto": {
+  "title": "20% sản phẩm có thật sự mang về 80% revenue không?",
+  "brief": {
+   "subject": "Kiểm tra quy tắc 80/20 trước khi cắt danh mục",
+   "body": [
+    "Chúng tôi có khoảng 2,500 sản phẩm và tôi được yêu cầu loại bỏ những sản phẩm yếu nhất. Trước khi làm, tôi muốn biết hình dạng thật của revenue: cần bao nhiêu sản phẩm để đạt một nửa, 80% và 95% revenue.",
+    "Sau đó cho tôi thấy cùng câu chuyện đó trong mười nhóm sản phẩm bằng nhau, từ bán chạy nhất đến yếu nhất, kèm tỷ trọng revenue của từng nhóm."
+   ],
+   "ask": "Trả lời trong ba câu: quy tắc 80/20 có đúng ở đây không, nửa dưới của sản phẩm chứa bao nhiêu revenue, và bạn sẽ kiểm tra gì trước khi cắt bất cứ thứ gì.",
+   "facts": [
+    "Revenue = <code>Quantity × Unit_Price_USD</code> theo từng sản phẩm, trên mọi năm trong data.",
+    "Chỉ xếp hạng các sản phẩm đã bán. <code>GBE_Products</code> liệt kê nhiều sản phẩm hơn bảng sales dùng."
+   ]
+  },
+  "context": {
+   "company": "Global Electronics Retailers bán điện thoại, máy tính, âm thanh và đồ gia dụng qua cửa hàng ở nhiều quốc gia và một shop online.",
+   "situation": "Team danh mục muốn cắt phần đuôi dài của catalog. Một manager đã trích quy tắc 80/20 trong cuộc họp: \"20% sản phẩm mang về 80% revenue, nên phần còn lại có thể bỏ.\"",
+   "decision": "Quy tắc có đúng ở đây không, phần đuôi chứa bao nhiêu revenue, và thứ hạng revenue có đủ để quyết định cắt sản phẩm nào không?"
+  },
+  "frame": {
+   "nudge": "Quy tắc nói 20% sản phẩm. 20% của những sản phẩm nào: cả catalog, hay chỉ những sản phẩm đã bán? Hãy chốt mẫu số trước khi đếm.",
+   "tree": [
+    "<b>Phần đuôi có đáng cắt không?</b>",
+    [
+     "Revenue tập trung đến đâu? (số sản phẩm để đạt 50%, 80%, 95%)",
+     "Nửa yếu nhất chứa bao nhiêu?",
+     "Thứ hạng revenue bỏ sót điều gì? (margin, sản phẩm mới, vai trò trong giỏ hàng)"
+    ]
+   ],
+   "hyp": [
+    "Khoảng 20% sản phẩm đạt 80% revenue.",
+    "Nửa dưới của sản phẩm mang về dưới 10% revenue."
+   ],
+   "traps": [
+    "Sản phẩm không có doanh số không có dòng nào trong bảng sales. Hãy quyết định chúng nằm trong hay ngoài bảng xếp hạng, và nói rõ.",
+    "Một tổng lũy kế trên danh sách đã xếp hạng cần ORDER BY bên trong window, nếu không nó không chạy theo thứ tự hạng.",
+    "Một thứ hạng yếu về revenue có thể đến từ giá thấp, mới ra mắt hoặc vai trò là phụ kiện. Nó không phải bằng chứng một sản phẩm yếu."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Mỗi dòng là một dòng sales: sản phẩm và quantity."
+    ],
+    [
+     null,
+     null,
+     "Đơn giá bằng USD. Cũng là toàn bộ catalog."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "Giá đã được tính bằng USD."
+    ]
+   ],
+   "grain": [
+    "Trước hết dựng một dòng cho mỗi sản phẩm với tổng revenue của nó (một CTE).",
+    "Sau đó xếp hạng sản phẩm và thêm tổng lũy kế của revenue: <code>SUM(...) OVER (ORDER BY revenue DESC ROWS UNBOUNDED PRECEDING)</code>. Hạng đầu tiên mà tổng lũy kế vượt 50%, 80% và 95% tổng chính là đáp án."
+   ],
+   "goal": "Ba dòng (50%, 80%, 95%): số sản phẩm cần có, số sản phẩm đã bán và tỷ lệ trên số sản phẩm đã bán.",
+   "watch": [
+    "MIN(product_rank) theo từng mốc là hạng đầu tiên đạt tỷ lệ đó. MAX sẽ cho sản phẩm cuối cùng của bảng.",
+    "Đếm sản phẩm đã bán trong cùng query, để phần trăm dùng đúng mẫu số."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Quy tắc gần đúng nhưng không chính xác. Cần 709 trong 2,492 sản phẩm đã bán (28.5%) để đạt 80% revenue, và 225 sản phẩm (9.0%) để đạt một nửa. 20% sản phẩm hàng đầu mang về 70.3%, nên phần đầu phẳng hơn một chút so với 20/80.",
+    "Phần đuôi mỏng: nửa yếu nhất của sản phẩm mang về 7.1% revenue và 30% yếu nhất khoảng 2.1%. Cắt nó sẽ loại bỏ tối đa chừng đó phần revenue quá khứ. Catalog liệt kê 2,517 sản phẩm và chỉ 2,492 đã bán, nên 25 sản phẩm không có doanh số nào.",
+    "Bắt đầu với các sản phẩm chưa từng bán, rồi rà soát những sản phẩm yếu về margin, ngày ra mắt và việc chúng có được mua cùng một sản phẩm bán chạy không. Thứ hạng revenue là bộ lọc đầu tiên, và quyết định cần nhiều hơn thế. Lưu ý: revenue được cộng trên nhiều năm, nên một sản phẩm ra mắt muộn có ít thời gian bán hơn."
+   ],
+   "checks": [
+    "Mình đã chốt mẫu số (sản phẩm đã bán) trước khi đếm.",
+    "Mình dùng tổng lũy kế sắp theo revenue.",
+    "Mình so kết quả với 20/80 và nói nó lệch bao xa.",
+    "Mình gọi tên những gì thứ hạng revenue bỏ sót trước khi cắt."
+   ]
+  },
+  "extra_sql": {
+   "title": "Cùng câu chuyện đó trong mười nhóm sản phẩm bằng nhau (NTILE)"
+  },
+  "questions": [
+   "Cần bao nhiêu sản phẩm để đạt 50%, 80% và 95% revenue?",
+   "Đó là bao nhiêu phần trăm sản phẩm, và có khớp 20/80 không?",
+   "50% sản phẩm yếu nhất mang về bao nhiêu revenue, và bạn sẽ kiểm tra gì trước khi cắt chúng?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Tỷ lệ trên tổng revenue mà bạn muốn đạt (50%, 80%, 95%)."
+   ],
+   [
+    null,
+    "Số lượng sản phẩm hàng đầu nhỏ nhất có revenue cộng lại đạt mốc."
+   ],
+   [
+    null,
+    "Một phần mười số sản phẩm đã bán, xếp hạng theo revenue. Decile 1 chứa các sản phẩm bán chạy nhất."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Tỷ trọng revenue theo nhóm sản phẩm, xếp hạng từ tốt nhất đến yếu nhất.",
+    "title": "10% sản phẩm hàng đầu mang về 52.5% revenue, nửa dưới mang về 7.1%",
+    "why": "Mười nhóm có thứ tự, một giá trị mỗi nhóm: bar bắt đầu từ zero cho thấy revenue giảm nhanh thế nào dọc theo bảng xếp hạng."
+   }
+  ]
+ },
+ "gbe-delivery": {
+  "title": "Thời gian giao hàng giảm gần một nửa. Đó có còn là headline không?",
+  "brief": {
+   "subject": "Mình có thể nói \"thời gian giao hàng giảm một nửa\" không?",
+   "body": [
+    "Việc giao hàng online của mình trông nhanh hơn nhiều so với đầu data. Tôi muốn một câu cho bản tin thường niên, và muốn bảo vệ được từng chữ nếu có người hỏi.",
+    "Cho tôi số ngày trung bình từ lúc đặt đến lúc giao của đơn online theo năm, kèm tỷ lệ giao trong 5 ngày. Sau đó kiểm tra xem mức cải thiện có đúng ở mọi quốc gia của khách hàng không, và nói cho tôi biết nó có còn đang diễn ra không."
+   ],
+   "ask": "Trả lời bằng câu headline (tối đa 25 từ) và một lưu ý mà người đọc cần biết trước khi trích dẫn nó.",
+   "facts": [
+    "Chỉ đơn online (<code>StoreKey = 0</code>) có ngày giao. Số ngày = <code>DATEDIFF(day, Order_Date, Delivery_Date)</code>.",
+    "Data sales chạy từ tháng 1/2016 đến 20/2/2021."
+   ]
+  },
+  "context": {
+   "company": "Global Electronics Retailers bán điện thoại, máy tính, âm thanh và đồ gia dụng qua cửa hàng ở nhiều quốc gia và một shop online.",
+   "situation": "Bản tin thường niên cho nhân viên đang được soạn. Head of Online muốn câu mở đầu là \"Chúng tôi đã cắt thời gian giao hàng gần một nửa\", và slide đầu tiên của deck đã được đặt tiêu đề như vậy.",
+   "decision": "Headline có đúng không, nó có còn là headline phù hợp không, và slide phải nói gì để không ai bị hiểu nhầm?"
+  },
+  "frame": {
+   "nudge": "Một headline so sánh hai thời điểm. Bản nháp đã chọn hai thời điểm nào, và một cặp khác có cho câu trả lời khác không?",
+   "tree": [
+    "<b>Mình có thể nói thời gian giao hàng giảm gần một nửa không?</b>",
+    [
+     "Con số có đúng không? (số ngày trung bình theo năm)",
+     "Các năm có so sánh được với nhau không? (số tháng trong data, số đơn)",
+     "Nó có đúng ở mọi quốc gia không?",
+     "Nó có còn đang cải thiện không?"
+    ]
+   ],
+   "hyp": [
+    "Thời gian giao hàng trung bình giảm mạnh từ 2016.",
+    "Phần lớn mức cải thiện đến sớm và đường này đã phẳng kể từ đó."
+   ],
+   "traps": [
+    "2021 chỉ có tháng 1 và tháng 2. Đừng so một năm hai tháng với một năm đầy đủ mà không nói rõ.",
+    "Một quốc gia chỉ có vài đơn trong một năm cho mức trung bình nhiễu. Hãy đọc số dòng cạnh số ngày.",
+    "Một headline đúng vẫn có thể che giấu việc không có gì thay đổi trong nhiều năm."
+   ]
+  },
+  "data": {
+   "tables": [
+    [
+     null,
+     null,
+     "Ngày đặt, ngày giao và cửa hàng. Các dòng online có ngày giao."
+    ],
+    [
+     null,
+     null,
+     "Quốc gia của khách hàng, cho phép kiểm tra theo segment."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ],
+    [
+     null,
+     null,
+     "StoreKey 0 là đủ để tìm các dòng online."
+    ],
+    [
+     null,
+     null,
+     "Không cần."
+    ]
+   ],
+   "grain": [
+    "<code>GBE_Sales</code>: mỗi dòng là một dòng sales. Giữ <code>StoreKey = 0</code> (online) và group theo <code>YEAR(Order_Date)</code>.",
+    "<code>COUNT(DISTINCT MONTH(Order_Date))</code> đếm xem có bao nhiêu tháng của mỗi năm nằm trong data."
+   ],
+   "goal": "Mỗi năm một dòng: số tháng trong data, số dòng online, số ngày trung bình và tỷ lệ giao trong 5 ngày.",
+   "watch": [
+    "AVG của số ngày nguyên bị làm tròn xuống trong SQL Server. Hãy nhân với 1.0 trước khi lấy trung bình.",
+    "Chỉ các dòng online mới có ngày giao. Nếu không lọc, các dòng tại cửa hàng là NULL và rơi khỏi mức trung bình mà không cảnh báo."
+   ]
+  },
+  "answer": {
+   "model": [
+    "Headline đúng nhưng đã cũ. Thời gian giao hàng trung bình giảm 45% từ 2016 (7.3 ngày) đến 2020 (4.0 ngày), và tỷ lệ giao trong 5 ngày đi từ 27% lên 81%. Gần như toàn bộ mức cải thiện đến vào 2018: giảm 41% trong hai năm đầu, so với 6% trong hai năm sau.",
+    "Mức cải thiện là thật ở mọi quốc gia: mỗi nơi đều cải thiện ít nhất 2 ngày từ 2016 đến 2018, nên không nhóm nào che giấu một câu chuyện khác. Những thay đổi về sau nhỏ và lẫn lộn, và Netherlands còn chậm đi. Hãy cẩn thận với các nhóm nhỏ: Netherlands có 90 dòng online trong 2020, và France chỉ có 4 trong 2021. Con số 2021 (3.9 ngày) chỉ gồm hai tháng và không nên nằm trong một đường xu hướng.",
+    "Câu gợi ý: \"Thời gian giao hàng online giảm từ 7 xuống 4 ngày giữa 2016 và 2020, và giữ quanh 4 ngày từ 2018.\" Lưu ý: mức cải thiện đã dừng, nên bản tin không nên hứa thêm nếu chưa có kế hoạch mới."
+   ],
+   "checks": [
+    "Mình đã nói có bao nhiêu tháng đứng sau mỗi năm.",
+    "Mình đã so giai đoạn đầu và cuối, không chỉ hai đầu mút.",
+    "Mình đã kiểm tra mức cải thiện ở mọi quốc gia và đọc số dòng.",
+    "Mình viết một headline mà người đọc bảo vệ được, kèm một lưu ý."
+   ]
+  },
+  "extra_sql": {
+   "title": "Có đúng ở mọi quốc gia không? Số ngày trung bình trong 2016, 2018 và 2020"
+  },
+  "questions": [
+   "Thời gian giao hàng trung bình và tỷ lệ giao trong 5 ngày của từng năm là bao nhiêu, và có bao nhiêu tháng data đứng sau mỗi năm?",
+   "Mức cải thiện xảy ra khi nào, và nó có còn đang diễn ra không?",
+   "Mức cải thiện có đúng ở mọi quốc gia không, và có bao nhiêu đơn đứng sau các nhóm nhỏ?"
+  ],
+  "metrics": [
+   [
+    null,
+    "Mean số ngày giữa ngày đặt và ngày giao, các dòng online."
+   ],
+   [
+    null,
+    "Số dòng giao trong 5 ngày hoặc ít hơn ÷ tất cả dòng online."
+   ],
+   [
+    null,
+    "Số tháng khác nhau có ít nhất một đơn trong năm."
+   ]
+  ],
+  "viz_specs": [
+   {
+    "sub": "Số ngày trung bình từ lúc đặt đến lúc giao, đơn online. 2021 chỉ có hai tháng.",
+    "title": "Thời gian giao hàng giảm từ 7.3 xuống 4.3 ngày vào 2018, rồi giữ quanh 4.0",
+    "why": "Một giá trị cho mỗi năm theo thứ tự: bar bắt đầu từ zero cho thấy mức giảm sớm và các năm phẳng sau đó, và cột được làm nổi bật đánh dấu năm chưa đầy đủ."
+   },
+   {
+    "sub": "Số ngày tiết kiệm được trên lần giao trung bình, theo quốc gia của khách hàng (âm = chậm hơn).",
+    "title": "Mọi quốc gia đều cải thiện từ 2 ngày trở lên vào 2018. Từ đó mức cải thiện nhỏ, và Netherlands mất 0.4 ngày",
+    "why": "Hai cột cho mỗi quốc gia: giai đoạn đầu lớn ở mọi nơi, giai đoạn hai gần bằng không."
+   }
+  ]
  }
 }

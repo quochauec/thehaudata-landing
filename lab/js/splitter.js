@@ -1,7 +1,7 @@
 // Draggable divider between the left pane (question, hints) and the right pane (SQL editor) of a .split layout.
 // Wide screens only (the CSS shows the bar from 980px). The width is kept per zone in this browser.
 // Drag, or focus the bar and use the arrow keys. Double-click or Home resets it.
-import { t } from "./i18n.js?v=8c134396d0";
+import { t } from "./i18n.js?v=7ba8096f9b";
 
 const MIN = 25, MAX = 72;
 const clamp = v => Math.min(MAX, Math.max(MIN, v));

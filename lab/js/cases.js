@@ -1,9 +1,9 @@
-import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=8c134396d0";
-import { MODE } from "./mode.js?v=8c134396d0";
-import * as free from "./free.js?v=8c134396d0";
-import { chip, DOMAINS } from "./domains.js?v=8c134396d0";
-import { t, getLang } from "./i18n.js?v=8c134396d0";
-import { resizable } from "./splitter.js?v=8c134396d0";
+import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=7ba8096f9b";
+import { MODE } from "./mode.js?v=7ba8096f9b";
+import * as free from "./free.js?v=7ba8096f9b";
+import { chip, DOMAINS } from "./domains.js?v=7ba8096f9b";
+import { t, getLang } from "./i18n.js?v=7ba8096f9b";
+import { resizable } from "./splitter.js?v=7ba8096f9b";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -147,11 +147,11 @@ function solveAll(c){
     <div class="ch" id="ch${i}"></div><div><button class="btn" data-tbl="tb${i}" aria-pressed="false">${t('Show table')}</button></div><div class="tbl-wrap" id="tb${i}" hidden>${table(R[v.result])}</div><p class="note" style="margin-top:6px"><b>${t('Why this chart:')}</b> ${v.why}</p></div>`).join('');
   const b2=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Visualize')}</summary><div class="bd"><p class="note">${t('Decide which chart you would build before you open ours.')}</p><details class="reveal"><summary>${c.viz_specs.length>1?t('Show the suggested charts'):t('Show the suggested chart')}</summary><div class="figs">${figs}</div></details></div></details>`;
   let b3='';
-  if(c.dig){b3+=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Dig one level deeper')}</summary><div class="bd"><p><b>${c.dig.title}</b></p><details class="reveal"><summary>Show the query and output</summary>${sqlBlock(c.dig.sql)}${table(R[c.dig.result])}<p>${c.dig.read}</p></details></div></details>`;}
+  if(c.dig){b3+=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Dig one level deeper')}</summary><div class="bd"><p><b>${c.dig.title}</b></p><details class="reveal"><summary>${t('Show the query and output')}</summary>${sqlBlock(c.dig.sql)}${table(R[c.dig.result])}<p>${c.dig.read}</p></details></div></details>`;}
   if(c.stats){const s=c.stats;
     b3+=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Test it (statistics)')}</summary><div class="bd"><p>${s.prompt}</p><div class="check" id="quiz">${s.options.map((o,i)=>`<label><input type="radio" name="qz" value="${i}"> <span>${o[0]}</span></label>`).join('')}</div><div class="fb" id="qfb" aria-live="polite"></div>
     <div class="stat">${s.tiles.map(t=>`<div class="${t[3]?'neg':''}"><b>${t[0]}</b><span>${t[1]}</span><small>${t[2]}</small></div>`).join('')}</div>${li(s.read)}<div class="card pit"><h2><small>Watch out</small></h2>${li(s.watch)}</div></div></details>`;}
-  const wi=c.whatif?`<div class="card"><h2><small>What-if</small> Click price vs profit</h2><label for="cpc" style="font-size:13px;color:var(--muted)">Click price <b id="cpcv" style="color:var(--fg)">$2.50</b></label><input type="range" id="cpc" min="0.5" max="5" step="0.05" value="2.5" style="width:100%"><div class="stat" id="wif" aria-live="polite" style="margin-top:8px"></div></div>`:'';
+  const wi=c.whatif?`<div class="card"><h2><small>${t('What-if')}</small> ${t('Click price vs profit')}</h2><label for="cpc" style="font-size:13px;color:var(--muted)">${t('Click price')} <b id="cpcv" style="color:var(--fg)">$2.50</b></label><input type="range" id="cpc" min="0.5" max="5" step="0.05" value="2.5" style="width:100%"><div class="stat" id="wif" aria-live="polite" style="margin-top:8px"></div></div>`:'';
   const b4=`<details class="blk"><summary><span class="n">${++n}</span> ${t('Conclude')}</summary><div class="bd">${wi}<p class="note" style="margin:0">${t('Write three sentences: the call, the evidence with numbers, the action and one caveat.')}</p><textarea id="anote" style="min-height:120px"></textarea>
     <details class="reveal"><summary>${t('Show the model answer')}</summary>${c.answer.model.map(p=>`<p>${p}</p>`).join('')}</details>
     <p style="margin:6px 0 4px"><b>${t('Self-check')}</b> ${t('(tick when your answer does it)')}</p><div class="check" id="rub">${c.answer.checks.map(x=>`<label><input type="checkbox"> <span>${x}</span></label>`).join('')}</div>
