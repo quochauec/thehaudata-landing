@@ -50,6 +50,9 @@
   },
   "23": {
    "sub": "13 bài SQL screen kinh điển của các công ty công nghệ lớn trên các bảng nhỏ, tổng khoảng 2 giờ. Self-join, window function, xếp hạng, trung bình trượt và logic CASE."
+  },
+  "1": {
+   "sub": "Đếm, lọc, sắp xếp, cộng tổng và tính trung bình trên một bảng, chưa cần JOIN"
   }
  },
  "questions": {
@@ -951,6 +954,46 @@
    "title": "Số ngày giữa giao dịch đầu tiên và thứ hai của user",
    "story": "Với mọi user của SQLTest_Uber_transactions có ít nhất hai giao dịch, trả về ngày của giao dịch đầu tiên, ngày của giao dịch thứ hai và số ngày giữa chúng.",
    "hint": "Đánh số các giao dịch của từng user bằng ROW_NUMBER trong một CTE, rồi self-join CTE đó: dòng 1 ở một bên và dòng 2 ở bên kia. DATEDIFF cho ra khoảng cách."
+  },
+  "L1-01": {
+   "title": "Xem thử bảng đơn hàng",
+   "story": "Sếp mới hỏi: “Dữ liệu đơn hàng của mình trông thế nào?” Hãy lấy 10 đơn đầu tiên để xem các cột và vài dòng thật.",
+   "hint": "SELECT * trả về mọi cột. TOP 10 giữ lại 10 dòng, còn ORDER BY SalesOrderID giúp 10 dòng đó giống nhau ở mỗi lần chạy."
+  },
+  "L1-02": {
+   "title": "Có bao nhiêu đơn hàng?",
+   "story": "Sếp hỏi: “Từ trước tới nay mình nhận bao nhiêu đơn?” Trả về đúng một con số.",
+   "hint": "COUNT(*) đếm số dòng. Mỗi dòng trong ADW_Sales_orders là một đơn hàng, nên kết quả đếm chính là đáp án."
+  },
+  "L1-03": {
+   "title": "Có bao nhiêu đơn online?",
+   "story": "Team marketing muốn biết trong số đó có bao nhiêu đơn đến từ website. Đơn online có OnlineOrderFlag = 1.",
+   "hint": "Giống câu trước, thêm một dòng WHERE để chỉ giữ các dòng có OnlineOrderFlag = 1."
+  },
+  "L1-04": {
+   "title": "Đơn đặt trong năm 2013",
+   "story": "Team Finance muốn biết năm 2013 bận cỡ nào. Có bao nhiêu đơn được đặt từ 2013-01-01 đến 2013-12-31?",
+   "hint": "Lọc OrderDate bằng hai điều kiện nối bằng AND: từ 2013-01-01 trở đi và trước 2014-01-01. Viết ngày theo dạng yyyy-MM-dd."
+  },
+  "L1-05": {
+   "title": "Năm đơn hàng lớn nhất",
+   "story": "Giám đốc kinh doanh muốn gọi cho những khách có đơn lớn nhất. Liệt kê 5 đơn có TotalDue cao nhất, gồm mã đơn, ngày đặt và số tiền.",
+   "hint": "Chọn ba cột, sắp TotalDue từ cao xuống thấp bằng DESC, rồi giữ 5 dòng bằng TOP 5."
+  },
+  "L1-06": {
+   "title": "Tổng doanh thu",
+   "story": "Các đơn hàng này mang về bao nhiêu tiền? Cộng TotalDue lại và trả về một con số.",
+   "hint": "SUM cộng tổng một cột. Đặt TotalDue vào trong SUM và đặt tên cho kết quả."
+  },
+  "L1-07": {
+   "title": "Một đơn hàng điển hình trông ra sao?",
+   "story": "Sếp hỏi tiếp: “Trung bình một đơn của mình trị giá bao nhiêu?” Trả về giá trị trung bình của TotalDue.",
+   "hint": "AVG dùng giống SUM, nhưng chia cho số dòng."
+  },
+  "L1-08": {
+   "title": "Online hay offline: đơn nào lớn hơn?",
+   "story": "Sếp hỏi thêm một câu: “Đơn online có giá trị bằng các đơn còn lại không?” Với mỗi giá trị của OnlineOrderFlag, trả về số đơn và TotalDue trung bình.",
+   "hint": "Đặt OnlineOrderFlag vào SELECT và GROUP BY, rồi thêm COUNT(*) và AVG(TotalDue). Bạn sẽ có một dòng cho mỗi giá trị của flag."
   }
  }
 }

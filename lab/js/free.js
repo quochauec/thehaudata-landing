@@ -1,9 +1,9 @@
 // Free Lab (practice.thehaudata.com). Everything here runs only when MODE.free is true; the mentee build loads this file but never calls it.
 // The free build is made by tools/build_free.py from the finished mentee dist/: locked cases, lessons and guides arrive as title-only
 // stubs (`locked: true`), and the model answers of the free items are served from data/answers_free.json behind an email gate.
-import { MODE } from "./mode.js?v=e58da5bb0b";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=e58da5bb0b";
-import { t as tr } from "./i18n.js?v=e58da5bb0b";
+import { MODE } from "./mode.js?v=0705d1b1c3";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=0705d1b1c3";
+import { t as tr } from "./i18n.js?v=0705d1b1c3";
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const LS = {
@@ -54,7 +54,7 @@ export function lockedPanel(title) {
 }
 export const lockedCard = (c, RANKS) => `<button class="cc locked" data-locked="${esc(c.title)}"><span class="rank ${esc(c.rank)}" style="align-self:flex-start">${esc(RANKS[c.rank])}</span><b>${esc(c.title)}</b>
   <span class="sk">${esc(c.teaser || c.skills.join(" · "))}</span><span class="row"><span class="tm">${tr("⏱ {n} min", { n: esc(c.minutes) })}</span><span class="lk">${tr("🔒 Mentee")}</span></span></button>`;
-export const lockedLesson = (n, l, count) => `<button class="cc locked" data-locked="${esc(l.title)}"><span class="tag">${esc(l.label !== l.title ? l.label : l.ds)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>
+export const lockedLesson = (n, l, count, titles = []) => `<button class="cc locked" data-locked="${esc(l.title)}"><span class="tag">${esc(l.label !== l.title ? l.label : l.ds)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>${titles.length ? `<span class="sk fex">${tr("Example questions")}: ${titles.map(esc).join(" · ")}</span>` : ""}
   <span class="row"><span class="tm">${tr("{n} questions", { n: count })} · ${esc(l.ds)}</span><span class="lk">${tr("🔒 Mentee")}</span></span></button>`;
 export function casesBanner(CH) {
   const open = CH.filter(c => !c.locked).length;
@@ -119,6 +119,40 @@ export function gateReveals(root) {
   if (closed && !root.querySelector(".fcourse")) closed.insertAdjacentHTML("afterend", courseCard(tr("Want the other {n} cases?", { n: (MODE.totals && MODE.totals.cases - 5) || "" })));
 }
 
+// ---- Start here: three small wins, a progress meter and the starter toolkit --------------------------------------------
+const hwDone = id => { try { return localStorage.getItem("hw:done:" + id) === "1"; } catch (e) { return false; } };
+const START = [
+  { id: "L1-01", title: "Run your first query", text: "Open the orders table and press Run. Ten real orders appear." },
+  { id: "L1-03", title: "Change one word", text: "Count the online orders, then change the 1 to a 0 and run it again." },
+  { id: "L1-08", title: "Answer a boss question", text: "Are online orders bigger than the rest? Say it in one sentence." },
+];
+function startHere(hw) {
+  const open = hw.questions.filter(q => +q.lesson < 20 && !q.locked), solved = open.filter(q => hwDone(q.id)).length, all = solved >= open.length && open.length > 0;
+  const next = START.find(x => !hwDone(x.id));
+  const steps = START.map((x, i) => `<li class="${hwDone(x.id) ? "ok" : ""}"><span class="sn">${hwDone(x.id) ? "✓" : i + 1}</span><div><b>${tr(x.title)}</b><span>${tr(x.text)}</span></div>
+      <button class="btn ${next && next.id === x.id ? "primary" : ""}" type="button" data-start="${x.id}">${hwDone(x.id) ? tr("Again") : tr("Start")}</button></li>`).join("");
+  const pct = open.length ? Math.round(100 * solved / open.length) : 0;
+  return `<div class="card fstart"><h2><small>${tr("Start here")}</small>${tr("Three small wins")}</h2>
+    <p>${tr("Each step takes a few minutes, and the hint nearly writes the query for you.")}</p><ol class="fsteps">${steps}</ol>
+    <div class="fmeter" role="img" aria-label="${esc(tr("You solved {n} of {m} free homework questions.", { n: solved, m: open.length }))}"><span style="width:${pct}%"></span></div>
+    <p class="fmt">${tr("You solved {n} of {m} free homework questions.", { n: solved, m: open.length })}${all ? ` <span class="fbadge">${tr("Free path finished")}</span>` : ""}</p>
+    ${all ? `<p>${tr("You finished every free question. The full Lab has the rest of the homework and all case studies.")}</p>${courseCard("Ready for the next step?")}` : ""}</div>`;
+}
+const CHEATS = [
+  { h: "JOIN", sql: ["SELECT o.SalesOrderID, t.TerritoryName", "FROM ADW_Sales_orders AS o", "JOIN ADW_Dim_Territory AS t ON t.TerritoryID = o.TerritoryID"].join(String.fromCharCode(10)), note: "Use it when the answer needs columns from two tables. The ON line says which column matches." },
+  { h: "GROUP BY", sql: ["SELECT OnlineOrderFlag, COUNT(*) AS Orders, AVG(TotalDue) AS Avg_order", "FROM ADW_Sales_orders", "GROUP BY OnlineOrderFlag"].join(String.fromCharCode(10)), note: "One row per group. Each column in SELECT is either in GROUP BY or inside COUNT, SUM or AVG." },
+  { h: "CASE WHEN", sql: ["SELECT SalesOrderID,", "  CASE WHEN TotalDue >= 10000 THEN 'Large' ELSE 'Regular' END AS Order_size", "FROM ADW_Sales_orders"].join(String.fromCharCode(10)), note: "Turns a number into a label you can then group by." },
+];
+const cheatHtml = () => `<h3>${tr("SQL cheat sheet")}</h3>` + CHEATS.map(c => `<div class="fcheat"><b>${c.h}</b><pre><code>${esc(c.sql)}</code></pre><p>${tr(c.note)}</p></div>`).join("");
+function toolkit(go) {
+  const m = showModal(`<h2>${tr("Your starter toolkit")}</h2>
+    <p><button class="btn" type="button" data-tk="guides">${tr("Open the Get into SQL study guide")}</button> <button class="btn" type="button" data-tk="thinking">${tr("Open the Analytical Thinking cards")}</button></p>
+    <div id="tkcheat">${hasEmail() ? cheatHtml() : `<p><button class="btn primary" type="button" id="tkshow">${tr("Show the SQL cheat sheet")}</button></p>`}</div>`);
+  m.box.querySelectorAll("[data-tk]").forEach(b => b.onclick = () => { m.close(); go(b.dataset.tk); });
+  const show = m.box.querySelector("#tkshow");
+  if (show) show.onclick = async () => { if (await gate(tr("Enter your email to open the SQL cheat sheet."))) { const el = document.querySelector("#tkcheat"); if (el) el.innerHTML = cheatHtml(); } };
+}
+
 // ---- Home ------------------------------------------------------------------------------------------------
 export function home({ hdr, main, hw, cs, go }) {
   const t = MODE.totals || {}, freeCases = cs.challenges.filter(c => !c.locked).length, hwq = hw.questions.filter(q => +q.lesson < 20), freeHw = hwq.filter(q => !q.locked).length, ivq = hw.questions.filter(q => +q.lesson >= 20);
@@ -126,12 +160,13 @@ export function home({ hdr, main, hw, cs, go }) {
     <p>${tr("Run T-SQL in your browser on real-looking company data. Every exercise starts from a question a business would ask: you choose what to measure and why, then check your thinking against ours. Nothing to install.")}</p>
     <p class="fvi">Luyện SQL và tư duy phân tích trên case study thực tế, ngay trên trình duyệt. Không cần cài đặt.</p></div>${sqlDemoHtml()}</div>${journey()}`;
   startSqlDemo(hdr.querySelector(".sqldemo"));
-  main.innerHTML = `<div class="hub"><div class="cards homecards">
+  main.innerHTML = `<div class="hub">${startHere(hw)}<div class="cards homecards">
       <button class="cc big" data-go="cases"><span class="tag o">${tr("{n} free", { n: freeCases })}</span><b>${tr("Case Studies")}</b><span class="sk">${tr("Read the request, plan your approach, then solve, chart and conclude. {n} of {m} cases are open.", { n: freeCases, m: cs.challenges.length })}</span><span class="row"><span class="tm">${tr("3 steps each")}</span></span></button>
       <button class="cc big" data-go="thinking"><span class="tag o">${tr("{n} free", { n: 2 })}</span><b>${tr("Analytical Thinking")}</b><span class="sk">${tr("Mini cases on real class data, each built around one common trap, plus short cards on metrics and statistics. 2 mini cases and 4 cards are open.")}</span><span class="row"><span class="tm">${tr("6 to 7 min reads")}</span></span></button>
       <button class="cc big" data-go="homework"><span class="tag">${tr("SQL topics")}</span><b>${tr("Homework")}</b><span class="sk">${tr("Start with SQL basics and joins, with an answer check. {n} of {m} questions are open.", { n: freeHw, m: hwq.length })}</span><span class="row"><span class="tm">${tr("Auto-check")}</span></span></button>
       <button class="cc big" data-go="interview"><span class="tag o">${tr("Free sample")}</span><b>${tr("Interview Prep")}</b><span class="sk">${tr("Round 1 of the mock interview: {n} SQL screen questions in the style of a real analyst test, each with a target time.", { n: ivq.length })}</span><span class="row"><span class="tm">${tr("About 45 minutes")}</span></span></button>
       <button class="cc big" data-go="guides"><span class="tag">${tr("Study Guides")}</span><b>${tr("Get into SQL")}</b><span class="sk">${tr("A one-page recap of the first SQL lesson, with the classwork solved step by step. 1 of {n} guides is open.", { n: t.guides || "" })}</span><span class="row"><span class="tm">${tr("Free guide")}</span></span></button>
+      <button class="cc big" data-toolkit="1"><span class="tag o">${tr("Free toolkit")}</span><b>${tr("Starter toolkit")}</b><span class="sk">${tr("A one-page SQL cheat sheet for JOIN, GROUP BY and CASE WHEN, plus links to the free study guide and thinking cards.")}</span><span class="row"><span class="tm">${tr("Cheat sheet")}</span></span></button>
       <button class="cc big" data-go="playground"><span class="tag g">${tr("Free practice")}</span><b>${tr("Playground")}</b><span class="sk">${tr("An open editor on the AdventureWorks, CRM and Global Electronics tables.")}</span><span class="row"><span class="tm">${tr("No exercise attached")}</span></span></button>
       <button class="cc big" data-go="dictionary"><span class="tag">${tr("Reference")}</span><b>${tr("Data Dictionary")}</b><span class="sk">${tr("Every class table: columns, types, keys and how the tables join.")}</span><span class="row"><span class="tm">ADW, CRM, GBE</span></span></button></div>
     ${courseCard("Want the full Lab?")}
@@ -140,4 +175,6 @@ export function home({ hdr, main, hw, cs, go }) {
       <li>${tr("Table names match the class SQL Server database (<code>ADW_</code>, <code>CRM_</code>, <code>GBE_</code>), so a query written here pastes into SQL Server unchanged.")}</li>
       <li>${tr("The SQL engine (about 40 MB) loads the first time you press Run, and opens from the cache after that.")}</li></ul></div></div>`;
   main.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  main.querySelectorAll("[data-start]").forEach(b => b.onclick = () => go("homework", "homework/first-steps/" + b.dataset.start));
+  const tk = main.querySelector("[data-toolkit]"); if (tk) tk.onclick = () => toolkit(go);
 }

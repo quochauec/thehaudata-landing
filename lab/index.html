@@ -632,8 +632,14 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .logo svg{display:block;flex:none}
 .logo .acc{color:var(--violet)}
 .logo .lab{font-weight:800;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);background:var(--violet-pale);border:1.5px solid var(--line);border-radius:40px;padding:2px 9px;margin-left:2px}
-nav.zones{display:flex;gap:2px;margin:0 0 0 8px;overflow-x:auto;flex:1 1 auto;scrollbar-width:none}
-nav.zones::-webkit-scrollbar{display:none}
+nav.zones{display:flex;gap:2px;margin:0 0 0 8px;flex:1 1 auto;position:relative}
+.zgrp{position:relative}
+.zgbtn::after{content:"\25BE";margin-left:6px;font-size:.8em}
+.zgrp.on>.zgbtn{color:var(--violet);background:var(--violet-pale);font-weight:800}
+.zmenu{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:80;min-width:210px;padding:6px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(91,33,255,.16);flex-direction:column;gap:2px}
+.zgrp.open>.zmenu{display:flex}
+@media (max-width:560px){nav.zones{gap:0}nav.zones button{padding:8px 9px}.zgbtn::after{margin-left:3px}.zmenu{min-width:190px}.zgrp:last-of-type .zmenu{left:auto;right:0}}
+nav.zones .zmenu button{text-align:left;border-radius:10px;padding:9px 12px;width:100%}
 nav.zones button{font:inherit;font-size:.86rem;font-weight:600;color:var(--muted);background:transparent;border:0;border-radius:40px;padding:7px 12px;cursor:pointer;white-space:nowrap;opacity:1;border-bottom:0;transition:all .2s}
 nav.zones button:hover{color:var(--violet);background:var(--violet-pale)}
 nav.zones button[aria-selected="true"]{color:var(--violet);background:var(--violet-pale);font-weight:800;border-bottom:0}
@@ -783,14 +789,20 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
   </a>
   <nav class="zones" id="zones" aria-label="Zones">
     <button data-zone="home" aria-selected="false" data-i18n>Home</button>
-    <button data-zone="guides" aria-selected="false" data-i18n>Study Guides</button>
-    <button data-zone="homework" aria-selected="false" data-i18n>Homework</button>
-    <button data-zone="interview" aria-selected="false" data-i18n>Interview Prep</button>
-    <button data-zone="cases" aria-selected="false" data-i18n>Case Studies</button>
-    <button data-zone="thinking" aria-selected="false" data-i18n>Analytical Thinking</button>
-    <button data-zone="dictionary" aria-selected="false" data-i18n>Data Dictionary</button>
-    <button data-zone="playground" aria-selected="false" data-i18n>Playground</button>
-    <button data-zone="setup" aria-selected="false" data-i18n>Installation For mentee</button>
+    <div class="zgrp" data-grp><button type="button" class="zgbtn" aria-haspopup="true" aria-expanded="false" data-i18n>Practice</button>
+      <div class="zmenu" role="group">
+        <button data-zone="homework" aria-selected="false" data-i18n>Homework</button>
+        <button data-zone="cases" aria-selected="false" data-i18n>Case Studies</button>
+        <button data-zone="interview" aria-selected="false" data-i18n>Interview Prep</button>
+        <button data-zone="playground" aria-selected="false" data-i18n>Playground</button>
+      </div></div>
+    <div class="zgrp" data-grp><button type="button" class="zgbtn" aria-haspopup="true" aria-expanded="false" data-i18n>Guidelines &amp; Self-learning</button>
+      <div class="zmenu" role="group">
+        <button data-zone="guides" aria-selected="false" data-i18n>Study Guides</button>
+        <button data-zone="thinking" aria-selected="false" data-i18n>Analytical Thinking</button>
+        <button data-zone="dictionary" aria-selected="false" data-i18n>Data Dictionary</button>
+        <button data-zone="setup" aria-selected="false" data-i18n>Installation For mentee</button>
+      </div></div>
   </nav>
   <span class="eng" id="eng" data-phase="idle"></span>
   <div class="langsw" id="langsw" role="group" aria-label="Language" data-i18n-attr="aria-label|Language"><button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="vi" aria-pressed="false">VI</button></div>
@@ -853,6 +865,6 @@ footer.sitefoot{margin:56px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0
 </footer>
 
 <script src="vendor/pyodide.js"></script>
-<script type="module" src="js/app.js?v=e58da5bb0b"></script>
+<script type="module" src="js/app.js?v=0705d1b1c3"></script>
 
 </body></html>

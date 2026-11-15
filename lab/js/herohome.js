@@ -1,6 +1,6 @@
 // Home hero pieces shared by the members Lab (app.js) and the free Lab (free.js): the learning journey strip and the animated SQL demo.
-import { esc, hl } from "./sqlpanel.js?v=e58da5bb0b";
-import { t } from "./i18n.js?v=e58da5bb0b";
+import { esc, hl } from "./sqlpanel.js?v=0705d1b1c3";
+import { t } from "./i18n.js?v=0705d1b1c3";
 
 // Learning journey strip on the home hero (same four steps as the thehaudata.com landing page). Step 3 is the one this Lab trains.
 const STEPS = [

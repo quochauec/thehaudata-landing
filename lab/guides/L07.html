@@ -845,8 +845,14 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .logo svg{display:block;flex:none}
 .logo .acc{color:var(--violet)}
 .logo .lab{font-weight:800;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);background:var(--violet-pale);border:1.5px solid var(--line);border-radius:40px;padding:2px 9px;margin-left:2px}
-nav.zones{display:flex;gap:2px;margin:0 0 0 8px;overflow-x:auto;flex:1 1 auto;scrollbar-width:none}
-nav.zones::-webkit-scrollbar{display:none}
+nav.zones{display:flex;gap:2px;margin:0 0 0 8px;flex:1 1 auto;position:relative}
+.zgrp{position:relative}
+.zgbtn::after{content:"\25BE";margin-left:6px;font-size:.8em}
+.zgrp.on>.zgbtn{color:var(--violet);background:var(--violet-pale);font-weight:800}
+.zmenu{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:80;min-width:210px;padding:6px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(91,33,255,.16);flex-direction:column;gap:2px}
+.zgrp.open>.zmenu{display:flex}
+@media (max-width:560px){nav.zones{gap:0}nav.zones button{padding:8px 9px}.zgbtn::after{margin-left:3px}.zmenu{min-width:190px}.zgrp:last-of-type .zmenu{left:auto;right:0}}
+nav.zones .zmenu button{text-align:left;border-radius:10px;padding:9px 12px;width:100%}
 nav.zones button{font:inherit;font-size:.86rem;font-weight:600;color:var(--muted);background:transparent;border:0;border-radius:40px;padding:7px 12px;cursor:pointer;white-space:nowrap;opacity:1;border-bottom:0;transition:all .2s}
 nav.zones button:hover{color:var(--violet);background:var(--violet-pale)}
 nav.zones button[aria-selected="true"]{color:var(--violet);background:var(--violet-pale);font-weight:800;border-bottom:0}

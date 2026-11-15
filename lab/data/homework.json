@@ -1,5 +1,12 @@
 {
  "lessons": {
+  "1": {
+   "title": "First steps",
+   "label": "First steps",
+   "slug": "first-steps",
+   "sub": "Count, filter, sort, total and average on one table, no join needed",
+   "ds": "ADW"
+  },
   "2": {
    "title": "Get into SQL",
    "label": "SQL Basics",
@@ -107,6 +114,531 @@
   }
  },
  "questions": [
+  {
+   "id": "L1-01",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Peek at the orders",
+   "story": "Your new boss asks: \"What does our order data look like?\" Show the first 10 orders so you can see the columns and a few real rows.",
+   "hint": "SELECT * returns every column. TOP 10 keeps 10 rows, and ORDER BY SalesOrderID makes the 10 rows the same every time.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 10,
+     "cols": [
+      "224db292792a5c5e",
+      "c50755ab3659dcaa",
+      "a163cccbb91fcd57",
+      "c4bd307cb7666599",
+      "ba10275d0931f1dd",
+      "7980a5630480cf32",
+      "d1d4aa2032c5085c",
+      "c590a51c928836ed",
+      "2051c9456157cbf5",
+      "14fbfaef4e3881be",
+      "c9d180fde52070c5",
+      "a4d374dcc3ac7b26",
+      "ce4782309a510808",
+      "8ae6171adb011679",
+      "0b04b5a7d8675f8a",
+      "64e6842a33cfa663"
+     ],
+     "req": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 10,
+     "cols": 16,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "text",
+      "text",
+      "text",
+      "number",
+      "number",
+      "number",
+      "text",
+      "number",
+      "text",
+      "text",
+      "number",
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      436635,
+      80,
+      50,
+      0,
+      297908,
+      41,
+      169731.4478,
+      16320.1607,
+      5100.0502,
+      191151.65869999997
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L1-02",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "How many orders?",
+   "story": "The boss asks: \"How many orders have we ever taken?\" Return one number.",
+   "hint": "COUNT(*) counts rows. Each row in ADW_Sales_orders is one order, so the count is the answer.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "91aae1203860db58"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      31465
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L1-03",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "How many online orders?",
+   "story": "Marketing wants to know how many of those orders came from the website. Online orders have OnlineOrderFlag = 1.",
+   "hint": "Same as the last question, plus a WHERE line that keeps only the rows with OnlineOrderFlag = 1.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "a1d25331315d5e43"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      27659
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L1-04",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Orders placed in 2013",
+   "story": "Finance asks how busy 2013 was. How many orders were placed from 2013-01-01 to 2013-12-31?",
+   "hint": "Filter OrderDate with two conditions joined by AND: on or after 2013-01-01 and before 2014-01-01. Write dates as yyyy-MM-dd.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "78a8ef370cd185b2"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      14182
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,true",
+     "group": false,
+     "where": true,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L1-05",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "The five biggest orders",
+   "story": "The sales director wants to call the customers with the biggest orders. List the 5 orders with the highest TotalDue. Show the order ID, the order date and the amount.",
+   "hint": "Pick three columns, sort TotalDue from high to low with DESC, and keep 5 rows with TOP 5.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 5,
+     "cols": [
+      "27a43faa8927c49d",
+      "fbb8760cfc75a6fe",
+      "ae00a52b605240a0"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 5,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "text",
+      "number"
+     ],
+     "nums": [
+      247405,
+      871584.9501
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L1-06",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Total revenue",
+   "story": "How much money have these orders brought in? Add up TotalDue and return one number.",
+   "hint": "SUM adds up a column. Put TotalDue inside it and give the result a name.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "ddf7eaf3ff308ef0"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      123216786.115901
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "true,false,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L1-07",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "What does a typical order look like?",
+   "story": "Now the boss asks: \"What is our average order worth?\" Return the average of TotalDue.",
+   "hint": "AVG works like SUM, but it divides by the number of rows.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 1,
+     "cols": [
+      "6f5352b983266e4b"
+     ],
+     "req": [
+      0
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 1,
+     "cols": 1,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number"
+     ],
+     "nums": [
+      3915.995109
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,false",
+     "group": false,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
+  {
+   "id": "L1-08",
+   "lesson": 1,
+   "level": "Basic",
+   "ds": "adw",
+   "title": "Online or offline: which orders are bigger?",
+   "story": "Your boss asks one more thing: \"Are online orders worth as much as the other ones?\" For each value of OnlineOrderFlag, return the number of orders and the average TotalDue.",
+   "hint": "Put OnlineOrderFlag in SELECT and in GROUP BY, then add COUNT(*) and AVG(TotalDue). You get one row per flag value.",
+   "steps": [
+    {
+     "title": null
+    }
+   ],
+   "check": "auto",
+   "graded": 0,
+   "req": null,
+   "note": null,
+   "guide": [],
+   "links": [],
+   "co": null,
+   "mins": null,
+   "specs": [
+    {
+     "n": 2,
+     "cols": [
+      "7d35be9d0a04300f",
+      "7f03acc75fdcdd49",
+      "7b801b47a83e7df9"
+     ],
+     "req": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
+   "profile": {
+    "s": {
+     "rows": 2,
+     "cols": 3,
+     "dups": 0,
+     "nulls": 0,
+     "kinds": [
+      "number",
+      "number",
+      "number"
+     ],
+     "nums": [
+      1,
+      31465,
+      25023.5202
+     ]
+    },
+    "f": {
+     "left": false,
+     "cd": false,
+     "fn": "false,true,true",
+     "group": true,
+     "where": false,
+     "period": false,
+     "nullfn": false
+    }
+   },
+   "approach": []
+  },
   {
    "id": "L2-01",
    "lesson": 2,

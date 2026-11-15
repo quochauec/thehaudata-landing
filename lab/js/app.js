@@ -1,16 +1,16 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=e58da5bb0b";
-import { mountHomework } from "./homework.js?v=e58da5bb0b";
-import { mountCases } from "./cases.js?v=e58da5bb0b";
-import { mountThinking } from "./thinking.js?v=e58da5bb0b";
-import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=e58da5bb0b";
-import * as sync from "./sync.js?v=e58da5bb0b";
-import { MODE } from "./mode.js?v=e58da5bb0b";
-import * as free from "./free.js?v=e58da5bb0b";
-import { resizable } from "./splitter.js?v=e58da5bb0b";
-import { chip, DOMAINS } from "./domains.js?v=e58da5bb0b";
-import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=e58da5bb0b";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=e58da5bb0b";
+import * as engine from "./engine.js?v=0705d1b1c3";
+import { mountHomework } from "./homework.js?v=0705d1b1c3";
+import { mountCases } from "./cases.js?v=0705d1b1c3";
+import { mountThinking } from "./thinking.js?v=0705d1b1c3";
+import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=0705d1b1c3";
+import * as sync from "./sync.js?v=0705d1b1c3";
+import { MODE } from "./mode.js?v=0705d1b1c3";
+import * as free from "./free.js?v=0705d1b1c3";
+import { resizable } from "./splitter.js?v=0705d1b1c3";
+import { chip, DOMAINS } from "./domains.js?v=0705d1b1c3";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=0705d1b1c3";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=0705d1b1c3";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -55,7 +55,7 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
   await loadHw();
-  const cs = await json("data/challenges.json?v=e58da5bb0b"); atData ??= await json("data/thinking.json?v=e58da5bb0b").catch(() => null); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  const cs = await json("data/challenges.json?v=0705d1b1c3"); atData ??= await json("data/thinking.json?v=0705d1b1c3").catch(() => null); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: (z, route) => { if (route) { try { history.replaceState(null, "", "#" + route); } catch (e) { } return setZone(z, false); } return setZone(z, true); } });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
@@ -127,18 +127,18 @@ const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ?
 // get their Vietnamese layer from the answer itself (see localize() in homework.js).
 async function loadHw() {
   if (hwData) return hwData;
-  const d = await json("data/homework.json?v=e58da5bb0b");
+  const d = await json("data/homework.json?v=0705d1b1c3");
   if (getLang() === "vi") {
-    const vi = await json("data/homework.vi.json?v=e58da5bb0b").catch(() => ({}));
+    const vi = await json("data/homework.vi.json?v=0705d1b1c3").catch(() => ({}));
     for (const [n, l] of Object.entries(vi.lessons || {})) if (d.lessons[n]) Object.assign(d.lessons[n], l);
     d.questions = d.questions.map(q => vi.questions?.[q.id] && !q.locked ? { ...mergeVi(q, vi.questions[q.id]), vi: true } : q);
   }
   return hwData = d;
 }
 async function loadCases() {
-  const d = await json("data/challenges.json?v=e58da5bb0b");
+  const d = await json("data/challenges.json?v=0705d1b1c3");
   if (getLang() !== "vi") return d;
-  const vi = await json("data/cases.vi.json?v=e58da5bb0b").catch(() => ({}));
+  const vi = await json("data/cases.vi.json?v=0705d1b1c3").catch(() => ({}));
   d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
   return d;
 }
@@ -149,11 +149,11 @@ async function cases() {
 
 // Analytical Thinking: reading cases and toolkit cards. Links out to Case Studies and Homework go through the normal deep links.
 async function thinking() {
-  atData ??= await json("data/thinking.json?v=e58da5bb0b");
+  atData ??= await json("data/thinking.json?v=0705d1b1c3");
   // Vietnamese: same sparse overlay as the cases (data/thinking.vi.json, keyed by id); an item without a translation stays English.
   let view = atData;
   if (getLang() === "vi") {
-    const vi = await json("data/thinking.vi.json?v=e58da5bb0b").catch(() => ({}));
+    const vi = await json("data/thinking.vi.json?v=0705d1b1c3").catch(() => ({}));
     const tr = x => vi[x.id] && !x.locked ? { ...mergeVi(x, vi[x.id]), vi: true } : x;
     view = { ...atData, cards: atData.cards.map(tr), cases: atData.cases.map(tr) };
   }
@@ -297,6 +297,7 @@ async function setZone(z, reset = false) {
   if (!ZONES.includes(z)) z = "home";
   current = z; document.body.classList.remove("dfull-on");
   $$("#zones [data-zone]").forEach(b => b.setAttribute("aria-selected", b.dataset.zone === z));
+  $$("#zones [data-grp]").forEach(g => { g.classList.toggle("on", !!g.querySelector(`[data-zone="${z}"]`)); g.classList.remove("open"); g.querySelector(".zgbtn").setAttribute("aria-expanded", "false"); });
   store.set("zone", z);
   // Keep a deep link such as #homework/3/<question> on first load; a nav click always resets to the zone root.
   if (reset || (location.hash || "").replace("#", "").split("/")[0] !== z) {
@@ -307,6 +308,10 @@ async function setZone(z, reset = false) {
   window.scrollTo({ top: 0 });
 }
 $$("#zones [data-zone]").forEach(b => b.onclick = () => setZone(b.dataset.zone, true));
+const closeGrps = except => $$("#zones [data-grp]").forEach(g => { if (g !== except) { g.classList.remove("open"); g.querySelector(".zgbtn").setAttribute("aria-expanded", "false"); } });
+$$("#zones .zgbtn").forEach(b => b.onclick = e => { e.stopPropagation(); const g = b.parentElement, o = !g.classList.contains("open"); closeGrps(g); g.classList.toggle("open", o); b.setAttribute("aria-expanded", String(o)); });
+document.addEventListener("click", () => closeGrps(null));
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeGrps(null); });
 // Language switch: relabel the static shell, then redraw the open zone (cases are rebuilt so the overlay applies).
 $$("#langsw [data-l]").forEach(b => b.onclick = () => setLang(b.dataset.l));
 onLang(() => { casesApp = null; hwData = null; atData = null; if (current) setZone(current); });

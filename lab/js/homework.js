@@ -1,12 +1,12 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=e58da5bb0b";
-import { MODE } from "./mode.js?v=e58da5bb0b";
-import * as free from "./free.js?v=e58da5bb0b";
-import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=e58da5bb0b";
-import { chip, chipsFor, DOMAINS } from "./domains.js?v=e58da5bb0b";
-import { t, getLang } from "./i18n.js?v=e58da5bb0b";
-import { resizable } from "./splitter.js?v=e58da5bb0b";
+import * as engine from "./engine.js?v=0705d1b1c3";
+import { MODE } from "./mode.js?v=0705d1b1c3";
+import * as free from "./free.js?v=0705d1b1c3";
+import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=0705d1b1c3";
+import { chip, chipsFor, DOMAINS } from "./domains.js?v=0705d1b1c3";
+import { t, getLang } from "./i18n.js?v=0705d1b1c3";
+import { resizable } from "./splitter.js?v=0705d1b1c3";
 
 
 const LS = {
@@ -148,7 +148,7 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
       : `<div class="eyebrow">${t("Homework")}</div><h1>${t("Homework, by topic")}</h1>
       <p>${t("The business questions from the course, on the same tables as the class database. Write T-SQL, run it, and check your answer. Some topics also have written analytics tasks: no SQL, you write the answer, then compare it with a model outline. Hints and model answers stay closed until you open them.")}</p>`;
     const cards = Object.entries(data.lessons).map(([n, l]) => {
-      const qs = byLesson(+n), done = qs.filter(q => isDone(q.id)).length; if (MODE.free && qs.length && qs.every(q => q.locked)) return free.lockedLesson(n, l, qs.length);
+      const qs = byLesson(+n), done = qs.filter(q => isDone(q.id)).length; if (MODE.free && qs.length && qs.every(q => q.locked)) return free.lockedLesson(n, l, qs.length, qs.slice(0, 3).map(q => q.title));
       return `<button class="cc" data-lesson="${n}"><span class="tag">${esc(l.label !== l.title ? l.label : l.ds)}</span><b>${esc(l.title)}</b><span class="sk">${esc(l.sub)}</span>
         <span class="doms">${chipsFor(l.ds)}</span><span class="row"><span class="tm">${t("{n} questions", { n: qs.length })} · ${esc(l.ds)}</span>${done ? `<span class="dn">${t("{n}/{m} done", { n: done, m: qs.length })}</span>` : ""}</span></button>`;
     }).join("");
