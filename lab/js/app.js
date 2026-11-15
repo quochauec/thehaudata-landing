@@ -1,14 +1,15 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=2be63d91c6";
-import { mountHomework } from "./homework.js?v=2be63d91c6";
-import { mountCases } from "./cases.js?v=2be63d91c6";
-import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=2be63d91c6";
-import * as sync from "./sync.js?v=2be63d91c6";
-import { MODE } from "./mode.js?v=2be63d91c6";
-import * as free from "./free.js?v=2be63d91c6";
-import { chip, DOMAINS } from "./domains.js?v=2be63d91c6";
-import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=2be63d91c6";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=2be63d91c6";
+import * as engine from "./engine.js?v=8c134396d0";
+import { mountHomework } from "./homework.js?v=8c134396d0";
+import { mountCases } from "./cases.js?v=8c134396d0";
+import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=8c134396d0";
+import * as sync from "./sync.js?v=8c134396d0";
+import { MODE } from "./mode.js?v=8c134396d0";
+import * as free from "./free.js?v=8c134396d0";
+import { resizable } from "./splitter.js?v=8c134396d0";
+import { chip, DOMAINS } from "./domains.js?v=8c134396d0";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=8c134396d0";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=8c134396d0";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -52,8 +53,8 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=2be63d91c6");
-  const cs = await json("data/challenges.json?v=2be63d91c6"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  hwData ??= await json("data/homework.json?v=8c134396d0");
+  const cs = await json("data/challenges.json?v=8c134396d0"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
@@ -77,7 +78,7 @@ async function home() {
         <span class="row"><span class="tm">${t("No exercise attached")}</span></span></button></div>
     ${newsHtml}
     <section class="card guidecard"><h2><small>${t("Learning guidelines")}</small> ${t("How to learn with the Lab")}</h2>
-      <p class="note">${t("The Lab lets you open hints and model answers while you practise. These guidelines show how to use them so the practice builds your own skill.")}</p>
+      <p class="note">${t("The Lab lets you open hints and model answers while you practise. Here is how to use them and still learn to solve the questions on your own.")}</p>
       <div class="gl">
         <div><h3>${t("1. How to practise a question")}</h3><ol>
           <li>${t("Read the question and write your approach first, on paper or as a comment in the editor: which tables, what one row means (the grain), which metric. Two or three minutes is enough.")}</li>
@@ -85,10 +86,10 @@ async function home() {
           <li>${t("Look at your result before you read any feedback. Check the row count, the columns and a few numbers against what the question asks. If something looks off, try to find out why before you open anything.")}</li>
           <li>${t("Press Check my answer (or compare with the expected output on open questions). Keep trying and changing your query: the hint and the model answer open after 5 different tries.")}</li></ol></div>
         <div><h3>${t("2. When to open hints and model answers")}</h3><ul>
-          <li>${t("<b>Hints:</b> open one when you have been stuck on the same problem for a while. Go back to your query after each hint and open the next one only if you are still stuck. In the Case Studies, hints come in order: a nudge first, then how to break the problem down, then what usually goes wrong.")}</li>
+          <li>${t("<b>Hints:</b> open one when you have been stuck on the same problem for a while. Go back to your query after each hint and open the next one only if you are still stuck. In the Case Studies, hints come in order: where to start, then how to break the problem down, then what usually goes wrong.")}</li>
           <li>${t("<b>Model answers:</b> open them after you have a result of your own, correct or not. For case studies and written tasks, write your own conclusion first, then compare.")}</li>
           <li>${t("<b>The 5-try rule:</b> on homework, the hint and the model answer open after 5 different tries (a Run or a Check with a changed query). A query that errors still counts. On written tasks, write a first draft of about 80 characters first.")}</li>
-          <li>${t("<b>Still stuck after that?</b> Send your mentors your query and the point where you got stuck. That message teaches you more than the answer alone.")}</li></ul></div>
+          <li>${t("<b>Still stuck after that?</b> Send your mentors your query and the point where you got stuck.")}</li></ul></div>
         <div><h3>${t("3. How to use a model answer")}</h3><ul>
           <li>${t("Compare the logic before the syntax: the grain, the joins, the filters and how the metric is defined.")}</li>
           <li>${t("If your result matched but your SQL looks different, ask which version a colleague would find easier to read, and which one still works with ten times the data.")}</li>
@@ -106,12 +107,12 @@ async function home() {
 const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
   return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=2be63d91c6");
+  hwData ??= await json("data/homework.json?v=8c134396d0");
   mountHomework({ data: hwView(false), hdr, main });
 }
 
 async function interview() {
-  hwData ??= await json("data/homework.json?v=2be63d91c6");
+  hwData ??= await json("data/homework.json?v=8c134396d0");
   mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
 }
 // Vietnamese case prose is a sparse overlay (data/cases.vi.json, keyed by case id) merged over the English case.
@@ -119,9 +120,9 @@ async function interview() {
 const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ? a.map((x, i) => mergeVi(x, b[i]))
   : a && b && typeof a === "object" && typeof b === "object" ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, mergeVi(v, b[k])])) : b;
 async function loadCases() {
-  const d = await json("data/challenges.json?v=2be63d91c6");
+  const d = await json("data/challenges.json?v=8c134396d0");
   if (getLang() !== "vi") return d;
-  const vi = await json("data/cases.vi.json?v=2be63d91c6").catch(() => ({}));
+  const vi = await json("data/cases.vi.json?v=8c134396d0").catch(() => ({}));
   d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
   return d;
 }
@@ -162,6 +163,7 @@ function playground() {
     </div>
     <div class="split-r"><div class="paneh">${t("SQL editor")}</div><div class="card"><div class="pgtabs" id="pgtabs" role="tablist" aria-label="Query tabs"></div><div id="pg"></div></div></div>
   </section>`;
+  resizable($(".pgsplit", main), "pg", 36);
   $("[data-go]", main).onclick = () => setZone("dictionary", true);
   // Up to 4 query tabs per dataset, kept in this browser. Switching a tab swaps the text in the one editor.
   const MAXTABS = 4;

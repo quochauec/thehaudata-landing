@@ -1,8 +1,9 @@
-import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=2be63d91c6";
-import { MODE } from "./mode.js?v=2be63d91c6";
-import * as free from "./free.js?v=2be63d91c6";
-import { chip, DOMAINS } from "./domains.js?v=2be63d91c6";
-import { t, getLang } from "./i18n.js?v=2be63d91c6";
+import { mount as mountSql, confirmDialog } from "./sqlpanel.js?v=8c134396d0";
+import { MODE } from "./mode.js?v=8c134396d0";
+import * as free from "./free.js?v=8c134396d0";
+import { chip, DOMAINS } from "./domains.js?v=8c134396d0";
+import { t, getLang } from "./i18n.js?v=8c134396d0";
+import { resizable } from "./splitter.js?v=8c134396d0";
 
 // Ported from case-studies-src/cases.template.html. Changes: data passed in, live SQL editor in step 3, hub wording.
 export function mountCases(DATA){
@@ -106,7 +107,7 @@ function approach(c){const f=c.frame, k='n:'+c.id+':f';
   return `<div class="lead"><span>${t('Do not touch the data yet. <b>Think first:</b> write your plan below, then open the hints one at a time.')}</span></div>
    <div class="card"><h2><small>${t('Your turn')}</small> ${t('Sketch your approach')}</h2><textarea id="fnote" placeholder="${t('Which decision sits behind this? Which metrics would you compute? Which tables? What could mislead you?')}"></textarea><p class="note" style="margin-top:6px">${t('Saved only in this browser.')}</p></div>
    <div class="card"><h2><small>${t('Hints')}</small> ${t('Open only what you need')}</h2>
-    <details class="reveal"><summary>${t('Hint 1 · A nudge')}</summary><p>${f.nudge}</p></details>
+    <details class="reveal"><summary>${t('Hint 1 · Where to start')}</summary><p>${f.nudge}</p></details>
     <details class="reveal"><summary>${t('Hint 2 · How to break it down')}</summary>${tree(f.tree)}<p style="margin:8px 0 2px"><b>${t('Hypotheses to test')}</b></p>${li(f.hyp)}</details>
     <details class="reveal"><summary>${t('Hint 3 · What usually goes wrong')}</summary>${li(f.traps)}</details>
     <details class="reveal"><summary>${t('Suggested metrics (define your own first)')}</summary><div class="tbl-wrap"><table class="j mt"><tr><th>${t('Metric')}</th><th>${t('Definition')}</th></tr>${c.metrics.map(m=>`<tr><td><b>${m[0]}</b></td><td>${m[1]}</td></tr>`).join('')}</table></div></details>
@@ -117,7 +118,7 @@ function approach(c){const f=c.frame, k='n:'+c.id+':f';
 function solveAll(c){
   const d=c.data, R=c.results, k='n:'+c.id+':a', ck='chk:'+c.id; let n=0;
   const LIVE=['adw','crm','gbe'].includes(c.dataset), DS=DATA.datasets[c.dataset];
-  afterFns.push(()=>{const host=$('#live');if(!host)return;
+  afterFns.push(()=>{const host=$('#live');if(!host)return;resizable(host.closest('.split'),'cases',45);
     if(!LIVE){host.innerHTML=`<div class="note-box">${t('This case uses the {name} database ({db}), which is too large to load here. Run its SQL in SQL Server. The expected query and output below show what you should get.',{name:DS.name,db:DS.db})}</div>`;return;}
     const h=mountSql(host,{profile:'cs',datasets:[c.dataset],sql:t('-- Write your T-SQL here. Table names match SQL Server.\n')});
     $$('pre.sql').forEach(pre=>{if(host.contains(pre)||/_{4,}|\.\.\./.test(pre.textContent))return;

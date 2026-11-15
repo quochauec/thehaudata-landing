@@ -1,11 +1,12 @@
 // Homework zone: lessons -> questions. Each question has a Vietnamese brief, a hint, the editor, an answer check
 // (where the output is fixed) and the model answer.
-import * as engine from "./engine.js?v=2be63d91c6";
-import { MODE } from "./mode.js?v=2be63d91c6";
-import * as free from "./free.js?v=2be63d91c6";
-import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=2be63d91c6";
-import { chip, chipsFor, DOMAINS } from "./domains.js?v=2be63d91c6";
-import { t } from "./i18n.js?v=2be63d91c6";
+import * as engine from "./engine.js?v=8c134396d0";
+import { MODE } from "./mode.js?v=8c134396d0";
+import * as free from "./free.js?v=8c134396d0";
+import { mount, esc, hl, resultTable, resultMeta, confirmDialog } from "./sqlpanel.js?v=8c134396d0";
+import { chip, chipsFor, DOMAINS } from "./domains.js?v=8c134396d0";
+import { t } from "./i18n.js?v=8c134396d0";
+import { resizable } from "./splitter.js?v=8c134396d0";
 
 
 const LS = {
@@ -288,6 +289,7 @@ export function mountHomework({ data, hdr, main, goHome, zone = "homework" }) {
         <details class="reveal ans" data-gate="ans"><summary data-sum="ans">${t("Approach and model answer")}</summary><div class="ansbody"></div></details>
       </div>
       <div class="split-r"><div class="paneh">${t("SQL editor")}</div><div class="panelhost"></div></div></div>`;
+    resizable($(".split", body), "hw", 45);
     const leftPane = $(".split-l", body); $(".q", leftPane).after(Object.assign(document.createElement("div"), { className: "rules" }));
     const rules = $(".rules", body);
 

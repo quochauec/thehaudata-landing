@@ -148,7 +148,7 @@
    "Mức tập trung này là rủi ro hay là mô hình bình thường?"
   ],
   "frame": {
-   "nudge": "Một con số share of revenue không có nhiều ý nghĩa nếu thiếu mốc so sánh. Trước khi chạy gì, hãy quyết định mức share nào sẽ khiến bạn lo và mức nào thì không. Câu trả lời thay đổi quyết định nào?",
+   "nudge": "Trước khi chạy query, tự đặt mốc trước: nhóm khách hàng lớn nhất nắm bao nhiêu % revenue thì bạn thấy đáng lo, bao nhiêu thì bình thường. Quyết định nào phụ thuộc vào câu trả lời này?",
    "tree": [
     "<b>Revenue có quá tập trung không?</b>",
     [
@@ -258,7 +258,7 @@
    "Bao nhiêu phần của mức giảm biến mất khi giữ nguyên channel mix?"
   ],
   "frame": {
-   "nudge": "Một con số trung bình của hai nhóm rất khác nhau sẽ dịch chuyển khi quy mô các nhóm thay đổi, dù không ai đổi hành vi. Bạn sẽ kiểm tra gì trước khi đổ lỗi cho khách hàng?",
+   "nudge": "Khi gộp hai nhóm rất khác nhau, con số trung bình vẫn có thể đổi chỉ vì một nhóm to lên, dù không ai đổi cách mua. Bạn sẽ kiểm tra gì trước khi đổ lỗi cho khách hàng?",
    "tree": [
     "<b>Vì sao AOV giảm?</b>",
     [
@@ -373,7 +373,7 @@
    "Khoảng cách này có lớn hơn mức dao động bình thường của một tỷ lệ không?"
   ],
   "frame": {
-   "nudge": "Khoảng cách nhỏ giữa ba tỷ lệ chỉ có ý nghĩa nếu nó lớn hơn mức dao động bạn mong đợi do ngẫu nhiên. Ngoài bản thân các tỷ lệ, bạn cần thêm gì?",
+   "nudge": "Win rate của ba văn phòng khá sát nhau. Chênh bao nhiêu thì bạn mới chắc đó không phải do ngẫu nhiên? Ngoài ba con số win rate, bạn cần thêm gì?",
    "tree": [
     "<b>Central có yếu hơn không?</b>",
     [
