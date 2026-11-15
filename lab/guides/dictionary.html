@@ -146,14 +146,21 @@ mark { background: var(--accent-soft); color: inherit; border-radius: 2px; }
 .dhead h2 { font-family: var(--font-mono); font-size: 18px; color: var(--primary-ink); overflow-wrap: anywhere; }
 .dhead .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
 .x { border: 1px solid var(--line); background: var(--bg); border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; line-height: 1; flex: none; }
-.dbody { overflow-y: auto; padding: 16px max(16px, env(safe-area-inset-right, 0px)) 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+/* The summary stays small and capped; the column table takes the rest of the drawer and scrolls on its own. */
+.dbody { flex: 1 1 auto; min-height: 0; overflow: hidden; padding: 10px max(16px, env(safe-area-inset-right, 0px)) 14px 20px; display: flex; flex-direction: column; gap: 8px; }
 .dbody p { margin: 0; }
-.kpis { display: flex; flex-wrap: wrap; gap: 8px 24px; font-variant-numeric: tabular-nums; }
-.kpis div b { display: block; font-size: 18px; line-height: 1.2; }
-.kpis div span { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
-.warn { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 10px 12px; border-radius: 0 8px 8px 0; }
+.dsum { flex: none; max-height: 28vh; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; }
+.dsum > p { color: var(--muted); }
+.kpis { display: flex; flex-wrap: wrap; gap: 2px 18px; font-variant-numeric: tabular-nums; }
+.kpis div { display: flex; align-items: baseline; gap: 5px; min-width: 0; }
+.kpis div b { font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+.kpis div span { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; }
+.warn { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 5px 10px; border-radius: 0 6px 6px 0; }
 .warn b { color: var(--accent); }
-.joins { display: flex; flex-direction: column; gap: 6px; }
+.joins { display: flex; flex-wrap: wrap; gap: 3px 18px; }
+.dbody > .search { flex: none; padding: 6px 10px; }
+.dbody > .cwrap { flex: 1 1 auto; min-height: 0; overflow: auto; }
+@media (max-height: 520px) { .dbody { overflow-y: auto; } .dsum { max-height: none; } .dbody > .cwrap { flex: none; overflow: visible; overflow-x: auto; } }
 .joins .jr { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
 .jbtn { font-family: var(--font-mono); font-size: 11.5px; border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 2px 8px; cursor: pointer; color: var(--primary); }
 .jbtn:hover { border-color: var(--primary); }
@@ -501,13 +508,15 @@ const DATA = {"tabs":[{"db":"Track1","name":"ADW_Dim_CreditCard","dom":"Bike ret
     const parents = byChild[name] || [], kids = byParent[name] || [];
     const jbtn = n => `<button class="jbtn" data-open="${esc(n)}">${esc(n)}</button>`;
     dbody.innerHTML = `
+      <div class="dsum">
       <p>${esc(t.desc)}</p>
-      <div class="kpis"><div><b>${fmt(t.rows)}</b><span>rows</span></div><div><b>${t.cols.length}</b><span>columns</span></div><div><b class="mono" style="font-size:14px">${esc(t.pk || "none")}</b><span>primary key (inferred)</span></div><div><b style="font-size:14px">${esc(t.src)}</b><span>source dataset</span></div></div>
+      <div class="kpis"><div><b>${fmt(t.rows)}</b><span>rows</span></div><div><b>${t.cols.length}</b><span>columns</span></div><div><span>PK</span><b class="mono">${esc(t.pk || "none")}</b></div><div><span>source</span><b>${esc(t.src)}</b></div></div>
       ${t.warn ? `<div class="warn"><b>Watch-outs.</b> ${esc(t.warn)}</div>` : ""}
       ${parents.length || kids.length ? `<div class="joins">
         ${parents.map(r => `<div class="jr"><span class="chip fk">FK</span> <span class="mono">${esc(r.cc)}</span> → ${jbtn(r.p)}<span class="mono">.${esc(r.pc)}</span>${r.soft ? `<span>(${esc(r.soft)})</span>` : ""}</div>`).join("")}
         ${kids.map(r => `<div class="jr"><span class="chip key">used by</span> ${jbtn(r.c)}<span class="mono">.${esc(r.cc)}</span> → <span class="mono">${esc(r.pc)}</span>${r.soft ? `<span>(${esc(r.soft)})</span>` : ""}</div>`).join("")}
       </div>` : ""}
+      </div>
       <input id="cq" class="search" type="search" placeholder="Filter the ${t.cols.length} columns" aria-label="Filter columns" value="${esc(q)}">
       <div class="cwrap"><table class="cols"><thead><tr><th>Column</th><th>Type</th><th>NULL</th><th>Distinct</th><th>Description, values and range</th></tr></thead><tbody id="cbody"></tbody></table></div>`;
     const draw = () => {
@@ -751,16 +760,20 @@ header.top h1{font-family:var(--font-display);font-weight:900;letter-spacing:-.0
 
 /* Table drawer: wider, with room for the column notes. The description column takes the spare width. */
 .drawer{width:min(1320px,100%)}
-.dbody{gap:18px;font-size:15px}
-.dbody > p{font-size:15.5px;max-width:95ch}
-.dhead h2{font-size:20px}
-.dhead .sub{font-size:13px}
-.kpis div b{font-size:20px}
-.kpis div span{font-size:11.5px}
-.warn{font-size:14.5px}
-.joins .jr{font-size:13.5px}
-.jbtn{font-size:12.5px;padding:3px 9px}
+/* Table summary (description, keys, joins) kept small so the columns get the height. */
+.dhead{padding-top:10px;padding-bottom:8px}
+.dbody{gap:8px;font-size:15px}
+.dsum{font-size:13px}
+.dsum > p{font-size:13.5px;max-width:110ch}
+.dhead h2{font-size:17px}
+.dhead .sub{font-size:12px}
+.kpis div b{font-size:14px}
+.kpis div span{font-size:11px}
+.warn{font-size:13px}
+.joins .jr{font-size:12.5px}
+.jbtn{font-size:12px;padding:1px 7px}
 .search{font-size:15px}
+.dbody > .search{font-size:14px}
 table.cols{min-width:760px;table-layout:fixed}
 table.cols th{font-size:12px;padding:10px 12px}
 table.cols td{padding:11px 12px}

@@ -52,7 +52,7 @@ const VI = {
   // nav and footer
   "Home": "Trang chủ", "Study Guides": "Study Guides", "Homework": "Bài tập", "Interview Prep": "Interview Prep",
   "Case Studies": "Case Studies", "Data Dictionary": "Data Dictionary", "Playground": "Playground",
-  "Installation For mentee": "Hướng dẫn cài đặt cho mentee", "Log out": "Đăng xuất",
+  "Installation For mentee": "Hướng dẫn cài đặt cho mentee", "Log out": "Đăng xuất", "Join Pro Analyst Live": "Đăng ký Pro Analyst Live",
   "Next step": "Bước tiếp theo",
   "Want to learn the full data-analytics workflow?": "Muốn học trọn quy trình làm data analytics?",
   "This Lab is one part of the TheHauData course: real-life case studies, a data-driven mindset, and the right tech stack (SQL, Power BI, Python, statistics), with a mentor beside you.": "Lab là một phần của khoá học TheHauData: case study thực tế, tư duy data-driven và bộ công cụ phù hợp (SQL, Power BI, Python, statistics), có mentor đồng hành.",

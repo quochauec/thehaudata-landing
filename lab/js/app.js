@@ -1,14 +1,14 @@
 // TheHauData Lab shell: Home, Homework, Case Studies, Playground. One SQL engine serves all of them.
-import * as engine from "./engine.js?v=bdfa751fe9";
-import { mountHomework } from "./homework.js?v=bdfa751fe9";
-import { mountCases } from "./cases.js?v=bdfa751fe9";
-import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=bdfa751fe9";
-import * as sync from "./sync.js?v=bdfa751fe9";
-import { MODE } from "./mode.js?v=bdfa751fe9";
-import * as free from "./free.js?v=bdfa751fe9";
-import { chip, DOMAINS } from "./domains.js?v=bdfa751fe9";
-import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=bdfa751fe9";
-import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=bdfa751fe9";
+import * as engine from "./engine.js?v=2be63d91c6";
+import { mountHomework } from "./homework.js?v=2be63d91c6";
+import { mountCases } from "./cases.js?v=2be63d91c6";
+import { mount as mountSql, esc, hl } from "./sqlpanel.js?v=2be63d91c6";
+import * as sync from "./sync.js?v=2be63d91c6";
+import { MODE } from "./mode.js?v=2be63d91c6";
+import * as free from "./free.js?v=2be63d91c6";
+import { chip, DOMAINS } from "./domains.js?v=2be63d91c6";
+import { t, getLang, setLang, onLang, applyStatic } from "./i18n.js?v=2be63d91c6";
+import { journey, sqlDemoHtml, startSqlDemo } from "./herohome.js?v=2be63d91c6";
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const hdr = $("#hdr"), main = $("#main");
@@ -52,8 +52,8 @@ if (!MODE.free) engine.start().then(() => engine.prefetch(["adw", "crm", "gbe"])
 
 // ---- zones -----------------------------------------------------------------------------------------
 async function home() {
-  hwData ??= await json("data/homework.json?v=bdfa751fe9");
-  const cs = await json("data/challenges.json?v=bdfa751fe9"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
+  hwData ??= await json("data/homework.json?v=2be63d91c6");
+  const cs = await json("data/challenges.json?v=2be63d91c6"); if (MODE.free) return free.home({ hdr, main, hw: hwData, cs, go: z => setZone(z, true) });
   const hwq = hwData.questions.filter(q => +q.lesson < IV_FROM), ivq = hwData.questions.filter(q => +q.lesson >= IV_FROM);
   const isDn = q => { try { return localStorage.getItem("hw:done:" + q.id) === "1"; } catch (e) { return false; } };
   const done = hwq.filter(isDn).length, ivDone = ivq.filter(isDn).length;
@@ -106,12 +106,12 @@ async function home() {
 const hwView = iv => { const keep = n => iv ? +n >= IV_FROM : +n < IV_FROM;
   return { ...hwData, interview: iv, lessons: Object.fromEntries(Object.entries(hwData.lessons).filter(([n]) => keep(n))), questions: hwData.questions.filter(q => keep(q.lesson)) }; };
 async function homework() {
-  hwData ??= await json("data/homework.json?v=bdfa751fe9");
+  hwData ??= await json("data/homework.json?v=2be63d91c6");
   mountHomework({ data: hwView(false), hdr, main });
 }
 
 async function interview() {
-  hwData ??= await json("data/homework.json?v=bdfa751fe9");
+  hwData ??= await json("data/homework.json?v=2be63d91c6");
   mountHomework({ data: hwView(true), hdr, main, zone: "interview" });
 }
 // Vietnamese case prose is a sparse overlay (data/cases.vi.json, keyed by case id) merged over the English case.
@@ -119,9 +119,9 @@ async function interview() {
 const mergeVi = (a, b) => b == null ? a : Array.isArray(a) && Array.isArray(b) ? a.map((x, i) => mergeVi(x, b[i]))
   : a && b && typeof a === "object" && typeof b === "object" ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, mergeVi(v, b[k])])) : b;
 async function loadCases() {
-  const d = await json("data/challenges.json?v=bdfa751fe9");
+  const d = await json("data/challenges.json?v=2be63d91c6");
   if (getLang() !== "vi") return d;
-  const vi = await json("data/cases.vi.json?v=bdfa751fe9").catch(() => ({}));
+  const vi = await json("data/cases.vi.json?v=2be63d91c6").catch(() => ({}));
   d.challenges = d.challenges.map(c => vi[c.id] && !c.locked ? { ...mergeVi(c, vi[c.id]), vi: true } : c);
   return d;
 }
